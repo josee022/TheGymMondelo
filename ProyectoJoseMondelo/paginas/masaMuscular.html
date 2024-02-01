@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>curso para ganar masa muscular</title>
+    <link rel="stylesheet" href="../css/a.css">
+</head>
+
+<body>
+
+    <script>
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            const slider = document.getElementById('slider');
+            const dots = document.querySelectorAll('.dot');
+            const size = document.getElementsByTagName('figure')[0].clientWidth;
+
+            if (index >= slider.children.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = slider.children.length - 1;
+            } else {
+                currentSlide = index;
+            }
+
+            slider.style.transform = 'translateX(' + -(size * currentSlide) + 'px)';
+
+            for (let i = 0; i < slider.children.length; i++) {
+                const img = slider.children[i].querySelector('img');
+                img.style.transform = i === currentSlide ? 'translateX(0)' : 'translateX(100%)';
+            }
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        setInterval(nextSlide, 5000);
+
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+
+    </script>
+
+    <header style="background-color: #000000;">
+        <img class="logo" src="../imagenes/GYM.png">
+        <div>
+
+            <nav>
+                <div>
+                    <a class="enlace" href="../index.html" style="color: #ffffff;">Home &nbsp &nbsp</a>
+                    <a class="enlace" href="nosotros.html" style="color: #ffffff;">Nosotros &nbsp &nbsp</a>
+                    <a class="enlace" href="productos.html" style="color: #ffffff;">Productos &nbsp &nbsp</a>
+                    <a class="enlace" href="cursos.html" style="color: #ffffff;">Cursos &nbsp &nbsp</a>
+                    <a class="enlace" href="subscripcion.html" style="color: #ffffff;">Subscripcion &nbsp &nbsp</a>
+                    <a class="enlace" href="contacto.html" style="color: #ffffff;">Contacto &nbsp &nbsp</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <br><br><br><br><br>
+
+    <div>
+        <img src="../imagenes/masaMuscular.jpg" alt="primer curso" class="fotoMusculo">
+    </div>
+
+    <div class="toblanco3">
+
+        <div>
+            <img class="vectorial" src="../imagenes/imagen.svg" alt="imagen vectorial">
+            <img class="vectorial1" src="../imagenes/imagen.svg" alt="imagen vectorial">
+        </div>
+        <audio controls loop muted class="audio2">
+            <source src="../audios/audio2.mp3" type="audio/mp3">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+        <div><br><br>
+            <h2 class="tituloMusculo">
+                CURSO PARA :
+            </h2>
+            <h2 class="tituloMusculo">
+                GANAR MASA MUSCULAR
+            </h2>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Nombre del Curso:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Curso para Ganar Masa Muscular
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Descripción:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Este curso está diseñado para ayudarte a desarrollar músculos de manera efectiva
+                    y segura. Si estás buscando aumentar tu fuerza, volumen muscular y mejorar tu
+                    apariencia física, este programa es ideal para ti.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Contenido del Curso:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Entrenamientos de resistencia: Se incluyen ejercicios específicos para trabajar
+                    todos los grupos musculares, utilizando pesas libres, máquinas y otros equipos.
+                </li>
+                <li class="titulin">
+                    Programas de entrenamiento personalizados: Adaptados a tus objetivos y nivel
+                    de condición física.
+                </li>
+                <li class="titulin">
+                    Nutrición para el crecimiento muscular: Aprenderás sobre la importancia de la
+                    alimentación adecuada y recibirás orientación sobre la dieta y la suplementación.
+                </li>
+                <li class="titulin">
+                    Técnicas de recuperación: Conocerás estrategias para minimizar el dolor muscular
+                    y acelerar la recuperación.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Beneficios:
+
+            </p>
+            <ul>
+                <li class="titulin">
+                    Aumento de masa muscular magra.
+
+                </li>
+                <li class="titulin">
+                    Mejora de la fuerza y resistencia.
+
+                </li>
+                <li class="titulin">
+                    Mayor definición y apariencia atlética.
+
+                </li>
+                <li class="titulin">
+                    Asesoramiento nutricional personalizado.
+
+                </li>
+                <li class="titulin">
+                    Aprendizaje de técnicas de entrenamiento efectivas.
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Duración:
+            </p>
+            <ul>
+                <li class="titulin">
+                    El curso tiene una duración de [número de semanas o meses],
+                    con [número de sesiones] sesiones de entrenamiento por semana.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Horarios:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Ofrecemos clases [días de la semana] en varios horarios para adaptarnos a
+                    tu agenda.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Requisitos:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Abierto a personas de todos los niveles de condición física, desde principiantes
+                    hasta avanzados.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Precio:
+            </p>
+            <ul>
+                <li class="titulin">
+                    El costo del curso es de [precio] y puede variar según la duración y los servicios
+                    adicionales incluidos.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Inscripción:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Puedes inscribirte en línea a través de nuestro sitio web o visitando nuestras
+                    instalaciones.
+                </li>
+            </ul>
+        </div>
+
+        <div class="espacio">
+            <p class="textoNegrita">
+                Instructores:
+            </p>
+            <ul>
+                <li class="titulin">
+                    Nuestros instructores altamente calificados te guiarán a lo largo de todo el
+                    proceso.
+                </li>
+            </ul>
+        </div>
+
+        <div class="container">
+            <div id="slider">
+                <figure>
+                    <img src="../imagenes/masa1.jpg" alt="Ilustracion">
+                </figure>
+
+                <figure>
+                    <img src="../imagenes/masa2.jpg" alt="Ilustracion">
+                </figure>
+
+                <figure>
+                    <img src="../imagenes/masa3.jpg" alt="Ilustracion">
+                </figure>
+
+                <figure>
+                    <img src="../imagenes/masa4.jpg" alt="Ilustracion">
+                </figure>
+            </div>
+
+            <div class="controls">
+                <div class="dots-container">
+                    <span class="dot" onclick="showSlide(0)"></span>
+                    <span class="dot" onclick="showSlide(1)"></span>
+                    <span class="dot" onclick="showSlide(2)"></span>
+                    <span class="dot" onclick="showSlide(3)"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabsNav">
+            <h1 class="rutina">RUTINA PARA GANAR MASA <br><br> MUSCULAR FÁCILMENTE </h1>
+            <div class="tab">
+                <input type="radio" name="tabs" id="t1" checked>
+                <label for="t1">Pecho</label>
+                <div>
+                    <ul>
+                        <li>Press banca -> 10/8/6/4 reps</li><br>
+                        <li>Press inclinado mancuernas -> 10/8/6/4 reps</li><br>
+                        <li>Apertunas mancuerna -> 10/8/6/4 reps</li><br>
+                        <li>Cruces en polea -> 10/8/6/4 reps</li><br>
+                        <li>Flexiones -> 4 series al fallo muscular</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab">
+                <input type="radio" name="tabs" id="t2">
+                <label for="t2">Espalda</label>
+                <div>
+                    <ul>
+                        <li>Remo unilateral -> 10/8/6/4 reps</li><br>
+                        <li>Polea alta agarre neutro -> 10/8/6/4 reps</li><br>
+                        <li>Polea baja agarre estrecho -> 10/8/6/4 reps</li><br>
+                        <li>Remo en punta invertido -> 10/8/6/4 reps</li><br>
+                        <li>Dominadas -> 4 series al fallo muscular</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab">
+                <input type="radio" name="tabs" id="t3">
+                <label for="t3">Piernas</label>
+                <div>
+                    <ul>
+                        <li>Prensa horizontal -> 10/8/6/4 reps</li><br>
+                        <li>Hacka -> 10/8/6/4 reps</li><br>
+                        <li>Sentadillas libre en barra -> 10/8/6/4 reps</li><br>
+                        <li>Zancadas mancuernas -> 10/8/6/4 reps</li><br>
+                        <li>Peso muerto multipower -> 4 series al fallo muscular</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab">
+                <input type="radio" name="tabs" id="t4">
+                <label for="t4">Hombros</label>
+                <div>
+                    <ul>
+                        <li>Press militar -> 10/8/6/4 reps</li><br>
+                        <li>Press arnold -> 10/8/6/4 reps</li><br>
+                        <li>Vuelos laterales -> 10/8/6/4 reps</li><br>
+                        <li>Remo clavícula -> 10/8/6/4 reps</li><br>
+                        <li>Pájaro inclinado mancuernas -> 4 series al fallo muscular</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab">
+                <input type="radio" name="tabs" id="t5">
+                <label for="t5">Bíceps/Tríceps</label>
+                <div>
+                    <ul>
+                        <li>Biceps inclinado mancuerna -> 10/8/6/4 reps</li><br>
+                        <li>Triceps fondo en máquina -> 10/8/6/4 reps</li><br>
+                        <li>Biceps barra z -> 10/8/6/4 reps</li><br>
+                        <li>Triceps extensión de cuerda -> 10/8/6/4 reps</li><br>
+                        <li>Biceps/Triceps flexiones diamante -> 4 series al fallo muscular</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <footer>
+        <hr class="lineaDorada">
+        <br><br><br>
+        <div>
+            <div>
+                <h2 class="ayudah2">AYUDA</h2><br><br>
+                <p class="terminos">Términos y condiciones</p><br><br>
+                <p class="terminos">Política de privacidad</p><br><br>
+                <p class="terminos">Política de cookies</p><br><br>
+                <p class="terminos">Preguntas frecuentes</p><br><br>
+            </div>
+
+            <div>
+                <h2 class="contactah2">CONTACTA CON NOSOTROS</h2><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/gmail.png" alt="gmail">&nbsp
+                    Gym.mondelo@gmail.com</p><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/telefono.png" alt="gmail">&nbsp 622 33 18 27
+                </p><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/instagram.png" alt="gmail">&nbsp @GymMondelo_
+                </p><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/youtube.png" alt="gmail">&nbsp GymMondelo Fit
+                </p><br><br>
+            </div>
+        </div>
+        <div>
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">
+                <img class="licencia" src="https://licensebuttons.net/l/by/4.0/88x31.png"
+                    alt="Creative Commons License">
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>

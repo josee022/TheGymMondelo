@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <link rel="stylesheet" href="../css/a.css">
+
+
+</head>
+
+<body style="background-color: #000000;">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const questions = document.querySelectorAll('.question');
+
+            questions.forEach(function (question) {
+                question.addEventListener('click', function () {
+                    const answer = this.nextElementSibling;
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                    } else {
+                        answer.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    <header class="cabecera">
+        <img class="logo" src="../imagenes/GYM.png">
+        <div>
+
+            <nav>
+                <div>
+                    <a class="enlace" href="../index.html" style="color: #ffffff;">Home &nbsp &nbsp</a>
+                    <a class="enlace" href="nosotros.html" style="color: #ffffff;">Nosotros &nbsp &nbsp</a>
+                    <a class="enlace" href="productos.html" style="color: #ffffff;">Productos &nbsp &nbsp</a>
+                    <a class="enlace" href="cursos.html" style="color: #ffffff;">Cursos &nbsp &nbsp</a>
+                    <a class="enlace" href="subscripcion.html" style="color: #ffffff;">Subscripcion &nbsp &nbsp</a>
+                    <a class="enlace" href="contacto.html" style="color: #ffffff;">Contacto &nbsp &nbsp</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="toblanco">
+        <div>
+            <img class="contacta" src="../imagenes/contacto.jpg" alt="pagina de contacto">
+            <div>
+                <div class="cuadroInfo">
+                    <h2 class="infoCuadro">
+                        CONTÁCTANOS ⬇
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <p class="textoContacto">
+                <span class="tooltip" title="Teléfono de contacto"> <span class="textoSpan">Teléfono: </span> 622 33 44 55</span>
+            </p>
+            <p class="textoContacto">
+                <span class="tooltip" title="Email de la empresa"><span class="textoSpan">Email :</span> gym.mondelo@gmail.com</span>
+            </p>
+            <p class="textoContacto">
+                <span class="tooltip" title="Nuestras distintas Redes Sociales"><span class="textoSpan">Redes Sociales:</span> gymMondelo Fit | @gymMondelo_</span>
+            </p>
+            <br>
+            <p class="textoContacto">
+                ⚫&nbsp; <span class="tooltip" title="Ubicación"><span class="textoSpan">Encuéntranos en : </span> Calle Egido, 2 28902 Getafe - Madrid (España)</span>
+            </p>
+        </div>
+
+        <div>
+            <iframe class="mapa"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3042.471171563649!2d-3.7283882234676335!3d40.30969946214595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42209582bda273%3A0x9dff343513f45b42!2sC.%20Egido%2C%202%2C%2028902%20Getafe%2C%20Madrid!5e0!3m2!1ses!2ses!4v1701292130783!5m2!1ses!2ses"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <div>
+            <hr class="lineaNegra">
+            <p class="textoFormulario">Para cualquier consulta no dudes en ponerte en contacto con nosotros.</p>
+            <p class="textoFormulario">Resolveremos cualquier duda lo antes posible</p>
+        </div>
+
+        <div>
+            <div class="formulario">
+                <input type="text" id="nombre" name="nombre" required placeholder="Nombre y Apellidos :">
+
+                <input type="email" id="correo" name="correo" required placeholder="Correo Electrónico :">
+
+                <input type="tel" id="telefono" name="telefono" required placeholder="Teléfono de contacto :">
+
+                <input type="text" id="asunto" name="asunto" required placeholder="Asunto :">
+
+                <textarea id="mensaje" name="mensaje" rows="4" required placeholder="Mensaje :"></textarea>
+
+                <button type="submit">Enviar</button>
+            </div>
+        </div>
+
+        <br><br>
+        <div class="acordeon">
+
+            <h1 class="rutina">
+                Preguntas Frecuentes
+            </h1>
+            <div class="question">
+                <p>1.- ¿Cuántos días a la semana debo venir al gimnasio?</p>
+            </div>
+            <div class="answer">
+                <p>Eso siempre dependerá de su disponibilidad y objetivos. En función de estos planificaré un tipo de
+                    entrenamiento. No es lo mismo disponer de 5 días para entrenar o de 2, aunque si se toma en serio, los
+                    beneficios pueden ser óptimos en ambos casos.</p>
+            </div>
+
+            <div class="question">
+                <p>2.- ¿Con que ejercicio puedo perder la grasa abdominal?</p>
+            </div>
+            <div class="answer">
+                <p>No solo dependerá de un ejercicio en concreto, tiene mucho que ver también la alimentación. Con el
+                    ejercicio tonificaremos esa zona y, con la alimentación, lo que haremos es reducir grasa corporal de
+                    todo el conjunto del cuerpo, no sólo de una parte localizada.
+                </p>
+            </div>
+
+            <div class="question">
+                <p>3.- Me quiero poner muy fuerte (hipertrofia), ¿Es mejor hacer máquinas o pesas?</p>
+            </div>
+            <div class="answer">
+                <p>Para lograr fuerza lo mejor es el de peso libre por el trabajo de peso y coordinación muscular que
+                    aporta. Las máquinas consiguen también el objetivo de ganancia de músculo. El peso libre se trabaja
+                    progresivamente habiendo realizado un buen trabajo de máquinas previo.</p>
+            </div>
+
+            <div class="question">
+                <p>4.- ¿Cuánto peso tengo que ponerle a cada ejercicio?</p>
+            </div>
+            <div class="answer">
+                <p>Debes colocarle el máximo peso que puedas para hacer el número de repeticiones marcadas previamente por
+                    el entrenador según el plan establecido.</p>
+            </div>
+
+            <div class="question">
+                <p>5.- Vengo mucho al gimnasio y no consigo mis objetivos ¿por qué?</p>
+            </div>
+            <div class="answer">
+                <p>Primero deberíamos tener una evaluación personal y asesoramiento para conocer y fijar esos objetivos. Ahí
+                    se reajustan los planes de entrenamiento. Deberás también cuidar la alimentación ya que es la base de
+                    todo lo que vayamos a conseguir a nivel deportivo.</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <br><br>
+    <footer>
+        <hr class="lineaDorada">
+        <div>
+            <div>
+                <h2 class="ayudah2">AYUDA</h2><br><br>
+                <p class="terminos">Términos y condiciones</p><br><br>
+                <p class="terminos">Política de privacidad</p><br><br>
+                <p class="terminos">Política de cookies</p><br><br>
+                <p class="terminos">Preguntas frecuentes</p><br><br>
+            </div>
+
+            <div>
+                <h2 class="contactah2">CONTACTA CON NOSOTROS</h2><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/gmail.png" alt="gmail">&nbsp
+                    Gym.mondelo@gmail.com</p><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/telefono.png" alt="gmail">&nbsp 622 33 18 27
+                </p><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/instagram.png" alt="gmail">&nbsp @GymMondelo_
+                </p><br><br>
+                <p class="terminos2"><img class="gmail" src="../imagenes/youtube.png" alt="gmail">&nbsp GymMondelo Fit
+                </p><br><br>
+            </div>
+        </div>
+        <div>
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">
+                <img class="licencia" src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="Creative Commons License">
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
