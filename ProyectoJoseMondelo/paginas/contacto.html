@@ -13,21 +13,16 @@
 <body style="background-color: #000000;">
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+         document.addEventListener('DOMContentLoaded', function () {
             const questions = document.querySelectorAll('.question');
 
             questions.forEach(function (question) {
                 question.addEventListener('click', function () {
                     const answer = this.nextElementSibling;
-                    if (answer.style.display === 'block') {
-                        answer.style.display = 'none';
-                    } else {
-                        answer.style.display = 'block';
-                    }
+                    answer.classList.toggle('show-answer');
                 });
             });
         });
-
     </script>
 
     <header class="cabecera">
@@ -128,13 +123,13 @@
         <br><br>
         <div class="acordeon">
 
-            <h1 class="rutina">
+            <h1 class="rutina" aria-label="Acordeon preguntas frecuentes">
                 Preguntas Frecuentes
             </h1>
             <div class="question">
-                <p>1.- ¿Cuántos días a la semana debo venir al gimnasio?</p>
+                <button class="botonAcordeon" aria-controls="pregunta 1" aria-expanded="true">1.- ¿Cuántos días a la semana debo venir al gimnasio?</button>
             </div>
-            <div class="answer">
+            <div class="answer" id="pregunta1">
                 <p>Eso siempre dependerá de su disponibilidad y objetivos. En función de estos planificaré un tipo de
                     entrenamiento. No es lo mismo disponer de 5 días para entrenar o de 2, aunque si se toma en serio,
                     los
@@ -142,7 +137,7 @@
             </div>
 
             <div class="question">
-                <p>2.- ¿Con que ejercicio puedo perder la grasa abdominal?</p>
+                <button class="botonAcordeon" aria-controls="pregunta 2" aria-expanded="true">2.- ¿Con que ejercicio puedo perder la grasa abdominal?</button>
             </div>
             <div class="answer">
                 <p>No solo dependerá de un ejercicio en concreto, tiene mucho que ver también la alimentación. Con el
@@ -152,7 +147,7 @@
             </div>
 
             <div class="question">
-                <p>3.- Me quiero poner muy fuerte (hipertrofia), ¿Es mejor hacer máquinas o pesas?</p>
+                <button class="botonAcordeon" aria-controls="pregunta 3" aria-expanded="true">3.- Me quiero poner muy fuerte (hipertrofia), ¿Es mejor hacer máquinas o pesas?</button>
             </div>
             <div class="answer">
                 <p>Para lograr fuerza lo mejor es el de peso libre por el trabajo de peso y coordinación muscular que
@@ -161,7 +156,7 @@
             </div>
 
             <div class="question">
-                <p>4.- ¿Cuánto peso tengo que ponerle a cada ejercicio?</p>
+                <button class="botonAcordeon" aria-controls="pregunta 4" aria-expanded="true">4.- ¿Cuánto peso tengo que ponerle a cada ejercicio?</button>
             </div>
             <div class="answer">
                 <p>Debes colocarle el máximo peso que puedas para hacer el número de repeticiones marcadas previamente
@@ -170,7 +165,7 @@
             </div>
 
             <div class="question">
-                <p>5.- Vengo mucho al gimnasio y no consigo mis objetivos ¿por qué?</p>
+                <button class="botonAcordeon" aria-controls="pregunta 5" aria-expanded="true">5.- Vengo mucho al gimnasio y no consigo mis objetivos ¿por qué?</button>
             </div>
             <div class="answer">
                 <p>Primero deberíamos tener una evaluación personal y asesoramiento para conocer y fijar esos objetivos.

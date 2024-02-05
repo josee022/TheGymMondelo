@@ -1081,20 +1081,10 @@ audio.audio2 {
 
 
 /*acordeon*/
-
 .acordeon {
     width: 300px;
-    margin-top: -60px;
+    margin-top: 20px;
     margin-left: 70px;
-}
-
-.question {
-    background-color: #bd8009;
-    border-radius: 20px;
-    color: #fff;
-    cursor: pointer;
-    padding: 10px;
-    margin-bottom: 5px;
 }
 
 .answer {
@@ -1105,6 +1095,19 @@ audio.audio2 {
 
 .answer p {
     margin: 0;
+}
+
+.botonAcordeon {
+    background-color: #ffb932;
+    margin-top: 10px;
+    margin-right: 50px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.show-answer {
+    display: block !important;
 }
 
 
