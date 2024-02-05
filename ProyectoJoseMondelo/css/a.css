@@ -623,7 +623,7 @@ p.informacionx {
 div.toblanco {
     background-color: #ffffff;
     width: 1895px;
-    height: 4220px;
+    height: 4580px;
     margin-top: 120px;
 
 }
@@ -1132,6 +1132,7 @@ audio.audio2 {
     border-radius: 8px;
     transition: transform 0.3s ease;
 }
+
 .galeriaxx:hover img {
     width: 100%;
     height: auto;
@@ -1157,6 +1158,7 @@ audio.audio2 {
     border-radius: 8px;
     transition: transform 0.3s ease;
 }
+
 .lightbox:hover img {
     width: 60%;
     max-height: 60%;
@@ -1171,4 +1173,23 @@ audio.audio2 {
     cursor: pointer;
     color: #fff;
     font-size: 20px;
+}
+
+
+/*fielset y legend*/
+fieldset {
+    background-color: #f0ede9;
+    border-color: rgb(237, 236, 231);
+    border: 20px groove (internal value);
+    border-radius: 20px;
+    width: 1200px;
+    margin-left: 300px;
+}
+
+legend {
+    font-size: 50px
+}
+
+label.labelito {
+    margin-left: 200px;
 }

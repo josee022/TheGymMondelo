@@ -31,10 +31,10 @@
     </script>
 
     <header class="cabecera">
-        <img class="logo" src="../imagenes/GYM.png">
+        <img class="logo" src="../imagenes/GYM.png" alt="logos">
         <div>
 
-            <nav>
+            <nav aria-label="enlaces web" aria-current="contacto">
                 <div>
                     <a class="enlace" href="../index.html" style="color: #ffffff;">Home &nbsp &nbsp</a>
                     <a class="enlace" href="nosotros.html" style="color: #ffffff;">Nosotros &nbsp &nbsp</a>
@@ -94,19 +94,34 @@
 
         <div>
             <form action="" method="post">
-                <div class="formulario">
-                    <input type="text" id="nombre" name="nombre" required placeholder="Nombre y Apellidos :">
+                <fieldset>
+                    <legend>¡ Atención al cliente !</legend>
+                    <div class="formulario">
+                        <label class="labelito" for="nombre">*Obligatorio</label>
+                        <input type="text" id="nombre" name="nombre" aria-required placeholder="Nombre :" autocomplete="on">
 
-                    <input type="email" id="correo" name="correo" required placeholder="Correo Electrónico :">
+                        <label class="labelito" for="nombre">*Obligatorio</label>
+                        <input type="text" id="apellido1" name="apellido1" aria-required
+                            placeholder="Primer apellido :" autocomplete="on">
 
-                    <input type="tel" id="telefono" name="telefono" required placeholder="Teléfono de contacto :">
+                        <input type="text" id="apellido2" name="apellido2"
+                            placeholder="Segundo apellido :" autocomplete="on">
 
-                    <input type="text" id="asunto" name="asunto" required placeholder="Asunto :">
+                            <label class="labelito" for="nombre">*Obligatorio</label>
+                        <input type="email" id="correo" name="correo" aria-required placeholder="Correo Electrónico :" autocomplete="on">
 
-                    <textarea id="mensaje" name="mensaje" rows="4" required placeholder="Mensaje :"></textarea>
+                        <label class="labelito" for="nombre">*Obligatorio</label>
+                        <input type="tel" id="telefono" name="telefono" aria-required placeholder="Teléfono de contacto :" autocomplete="on">
 
-                    <button type="submit">Enviar</button>
-                </div>
+                        <label class="labelito" for="nombre">*Obligatorio</label>
+                        <input type="text" id="asunto" name="asunto" aria-required placeholder="Asunto :" autocomplete="on">
+
+                        <label class="labelito" for="nombre">*Obligatorio</label>
+                        <textarea id="mensaje" name="mensaje" rows="4" aria-required placeholder="Mensaje :" autocomplete="on"></textarea>
+
+                        <button type="submit">Enviar</button>
+                    </div>
+                </fieldset>
             </form>
         </div>
 
