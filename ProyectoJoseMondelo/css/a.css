@@ -856,7 +856,7 @@ img.fotoMusculo {
 div.toblanco3 {
     background-color: #ffffff;
     width: 1895px;
-    height: 4100px;
+    height: 4400px;
     margin-top: -40px;
 }
 
@@ -1195,4 +1195,33 @@ legend {
 
 label.labelito {
     margin-left: 200px;
+}
+
+
+/*tabla en masa muscular*/
+
+.tabla-curso {
+    width: 90%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-top: 250px;
+    margin-left: 100px;
+}
+
+.tabla-curso th, .tabla-curso td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-curso th {
+    background-color: #f2f2f2;
+}
+caption.caption {
+    font-size: 50px;
+    background-color: #bbb;
 }
