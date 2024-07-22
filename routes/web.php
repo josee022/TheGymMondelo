@@ -40,5 +40,4 @@ Route::get('/ejemplo', function () {
     return Inertia::render('Ejemplo');
 });
 
-
 require __DIR__.'/auth.php';
