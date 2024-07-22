@@ -94,7 +94,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 60,
+            'expire' => 60, //numero minutos hasta que expire el recordar mi inicio de sesión
             'throttle' => 60,
         ],
     ],
