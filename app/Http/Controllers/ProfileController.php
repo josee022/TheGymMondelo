@@ -14,11 +14,22 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's profile information.
+     */
+    public function show(Request $request): Response
+    {
+        return Inertia::render('Dashboard', [
+            'user' => $request->user(),
+        ]);
+    }
+
+    /**
+     * Display the user's profile form for editing.
      */
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
+            'user' => $request->user(),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -27,37 +38,57 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function update(Request $request): RedirectResponse
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+        'fecha_nacimiento' => 'nullable|date',
+        'sexo' => 'nullable|string|in:Masculino,Femenino,Otro',
+        'altura' => 'nullable|numeric',
+        'peso' => 'nullable|numeric',
+        'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
+    ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    $user = $request->user();
+    $user->fill($request->only([
+        'name',
+        'email',
+        'fecha_nacimiento',
+        'sexo',
+        'altura',
+        'peso',
+        'nivel_actividad'
+    ]));
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
     }
+
+    $user->save();
+
+    return Redirect::route('dashboard');
+}
+
 
     /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+{
+    $request->validate([
+        'password' => ['required', 'current_password'],
+    ]);
 
-        $user = $request->user();
+    $user = $request->user();
 
-        Auth::logout();
+    Auth::logout();
 
-        $user->delete();
+    $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        return Redirect::to('/');
-    }
+    return Redirect::to('/');
+}
 }
