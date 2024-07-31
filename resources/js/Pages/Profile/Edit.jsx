@@ -9,6 +9,7 @@ export default function Edit({ user }) {
     const { data, setData, patch, processing, errors } = useForm({
         name: user.name || '',
         email: user.email || '',
+        biografia: user.biografia || '',
         fecha_nacimiento: user.fecha_nacimiento || '',
         sexo: user.sexo || '',
         altura: user.altura || '',
@@ -56,6 +57,19 @@ export default function Edit({ user }) {
                         required
                     />
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="biografia" value="Biografía" />
+                    <TextInput
+                        id="biografia"
+                        name="biografia"
+                        value={data.biografia}
+                        className="mt-1 block w-full"
+                        autoComplete="biografia"
+                        onChange={(e) => setData('biografia', e.target.value)}
+                    />
+                    <InputError message={errors.biografia} className="mt-2" />
                 </div>
 
                 <div className="mt-4">

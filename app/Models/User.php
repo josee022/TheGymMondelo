@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'fecha_nacimiento', 'sexo', 'altura', 'peso', 'nivel_actividad', 'puntos'
+        'name', 'email', 'password', 'fecha_nacimiento', 'sexo', 'altura', 'peso', 'nivel_actividad', 'puntos','biografia',
     ];
 
     /**
@@ -41,11 +41,6 @@ class User extends Authenticatable
     ];
 
     protected $table = 'users';
-
-    public function perfil()
-    {
-        return $this->hasOne(Perfil::class, 'usuario_id');
-    }
 
     public function reservas()
     {

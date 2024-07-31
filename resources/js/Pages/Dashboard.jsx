@@ -23,6 +23,7 @@ export default function Dashboard({ auth }) {
                             <p><strong>Altura :</strong> {user.altura} cm</p>
                             <p><strong>Peso:</strong> {user.peso} kg</p>
                             <p><strong>Nivel de actividad:</strong> {user.nivel_actividad}</p>
+                            <p><strong>Biografía:</strong> {user.biografia}</p>
 
                             <div className="flex mt-4">
                             <a href="/profile/edit" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
