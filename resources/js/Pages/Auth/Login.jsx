@@ -5,6 +5,7 @@ export default function GrayBackgroundPage() {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
+        remember: false, // Añadido para el checkbox de "Recordarme"
     });
 
     const handleSubmit = (e) => {
@@ -102,6 +103,19 @@ export default function GrayBackgroundPage() {
                                     className={`w-full px-4 py-2 border rounded-md bg-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a3e635] ${errors.password ? 'border-red-500' : ''}`}
                                 />
                                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                            </div>
+
+                            {/* Checkbox "Recordarme" */}
+                            <div className="mb-4 flex items-center">
+                                <input
+                                    id="remember"
+                                    name="remember"
+                                    type="checkbox"
+                                    checked={data.remember}
+                                    onChange={(e) => setData('remember', e.target.checked)}
+                                    className="mr-2 h-4 w-4"
+                                />
+                                <label htmlFor="remember" className="text-white text-sm">Recordarme</label>
                             </div>
 
                             {/* Enlace para recuperar contraseña */}
