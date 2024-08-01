@@ -48,6 +48,7 @@ class ProfileController extends Controller
         'altura' => 'nullable|numeric',
         'peso' => 'nullable|numeric',
         'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
+        'biografia' => 'nullable|string|max:255',
     ]);
 
     $user = $request->user();
@@ -58,7 +59,8 @@ class ProfileController extends Controller
         'sexo',
         'altura',
         'peso',
-        'nivel_actividad'
+        'nivel_actividad',
+        'biografia',
     ]));
 
     if ($user->isDirty('email')) {

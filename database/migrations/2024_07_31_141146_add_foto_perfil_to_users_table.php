@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('perfiles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
-            $table->text('biografia')->nullable();
-            $table->string('foto_perfil')->nullable();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('foto_perfil')->nullable()->after('biografia');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('perfiles');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('foto_perfil');
+        });
     }
 };

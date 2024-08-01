@@ -11,25 +11,40 @@ export default function Dashboard({ auth }) {
         >
             <Head title="Panel de control" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <h3 className="text-lg font-semibold">Informacion del perfil.</h3>
-                            <p><strong>Nombre:</strong> {user.name}</p>
-                            <p><strong>Correo electrónico:</strong> {user.email}</p>
-                            <p><strong>Fecha de nacimiento:</strong> {user.fecha_nacimiento}</p>
-                            <p><strong>Sexo:</strong> {user.sexo}</p>
-                            <p><strong>Altura :</strong> {user.altura} cm</p>
-                            <p><strong>Peso:</strong> {user.peso} kg</p>
-                            <p><strong>Nivel de actividad:</strong> {user.nivel_actividad}</p>
+            <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
+                {/* Contenedor principal */}
+                <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+                    {/* Encabezado */}
+                    <div className="text-center mb-6">
+                        <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
+                            <span className="relative inline-block">
+                                <span className="absolute inset-x-0 bottom-0 h-1" style={{ backgroundColor: '#a3e635' }}></span>
+                                <span className="relative">Información del Perfil</span>
+                            </span>
+                        </h1>
+                    </div>
 
-                            <div className="flex mt-4">
-                            <a href="/profile/edit" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
-                            Editar perfil </a>
-
-                            </div>
+                    {/* Información del perfil */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-gray-900">
+                        <div>
+                            <p className="mb-4"><strong className="text-gray-700">Nombre:</strong> {user.name}</p>
+                            <p className="mb-4"><strong className="text-gray-700">Correo electrónico:</strong> {user.email}</p>
+                            <p className="mb-4"><strong className="text-gray-700">Fecha de nacimiento:</strong> {user.fecha_nacimiento}</p>
+                            <p className="mb-4"><strong className="text-gray-700">Sexo:</strong> {user.sexo}</p>
                         </div>
+                        <div>
+                            <p className="mb-4"><strong className="text-gray-700">Altura:</strong> {user.altura} cm</p>
+                            <p className="mb-4"><strong className="text-gray-700">Peso:</strong> {user.peso} kg</p>
+                            <p className="mb-4"><strong className="text-gray-700">Nivel de actividad:</strong> {user.nivel_actividad}</p>
+                            <p className="mb-4"><strong className="text-gray-700">Biografía:</strong> {user.biografia}</p>
+                        </div>
+                    </div>
+
+                    {/* Botón de editar perfil */}
+                    <div className="mt-6 text-center">
+                        <a href="/profile/edit" className="bg-[#a3e635] text-black px-4 py-2 rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-[#a3e635]">
+                            Editar perfil
+                        </a>
                     </div>
                 </div>
             </div>
