@@ -67,10 +67,9 @@ export default function Edit({ user }) {
                                     type="email"
                                     name="email"
                                     value={data.email}
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full bg-gray-200"
                                     autoComplete="email"
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    required
+                                    readOnly
                                 />
                                 <InputError message={errors.email} className="mt-2" />
                             </div>
