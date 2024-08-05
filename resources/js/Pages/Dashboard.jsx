@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, isEntrenador }) {
     const user = auth.user;
 
     return (
@@ -39,6 +39,14 @@ export default function Dashboard({ auth }) {
                             <p className="mb-4"><strong className="text-gray-700">Biografía:</strong> {user.biografia}</p>
                         </div>
                     </div>
+
+                    {/* Mensaje si el usuario es entrenador */}
+                    {isEntrenador && (
+                        <div className="bg-green-100 text-green-800 p-4 rounded-md mt-6">
+                            <h3 className="text-xl font-semibold">Licencia de Entrenador en TheGymMondelo</h3>
+                            <p>¡Felicidades! Eres un entrenador certificado.</p>
+                        </div>
+                    )}
 
                     {/* Botón de editar perfil */}
                     <div className="mt-6 text-center">

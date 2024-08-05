@@ -23,7 +23,7 @@ export default function Index({ auth, entrenadores }) {
                             <div key={entrenador.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
                                 <h2 className="text-2xl font-semibold mb-2">{entrenador.usuario.name}</h2>
                                 <p className="mb-2"><strong className="text-gray-700">Especialidad:</strong> {entrenador.especialidad}</p>
-                                <p className="mb-2"><strong className="text-gray-700">Tarifa:</strong> {entrenador.tarifa} €/Mes</p>
+                                <p className="mb-2"><strong className="text-gray-700">Tarifa:</strong> {entrenador.tarifa} €/h</p>
                             </div>
                         ))}
                     </div>

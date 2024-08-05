@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Reserva;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -16,13 +18,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile information.
      */
-    public function show(Request $request): Response
+    public function show()
     {
-        return Inertia::render('Dashboard', [
-            'user' => $request->user(),
+        $user = Auth::user();
+        $reservas = Reserva::where('usuario_id', $user->id)->with('clase')->get();
+
+        return inertia('Dashboard', [
+            'user' => $user,
+            'reservas' => $reservas,
+            'isEntrenador' => $user->isEntrenador()
         ]);
     }
-
     /**
      * Display the user's profile form for editing.
      */

@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'fecha_nacimiento', 'sexo', 'altura', 'peso', 'nivel_actividad', 'puntos','biografia', 'foto_perfil',
+        'name', 'email', 'password', 'fecha_nacimiento', 'sexo', 'altura', 'peso', 'nivel_actividad', 'puntos', 'biografia', 'foto_perfil',
     ];
 
     /**
@@ -92,4 +92,8 @@ class User extends Authenticatable
         return $this->hasMany(Diario::class, 'usuario_id');
     }
 
+    public function isEntrenador()
+    {
+        return $this->entrenador !== null;
+    }
 }
