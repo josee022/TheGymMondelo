@@ -37,7 +37,7 @@ class ReservaPolicy
      */
     public function update(User $user, Reserva $reserva): bool
     {
-        //
+        return $user->id === $reserva->usuario_id;
     }
 
     /**

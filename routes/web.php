@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,18 +28,26 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware(['auth'])->group(function () {
+
     Route::get('/dashboard', [ProfileController::class, 'show'])->name('dashboard');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/entrenadores', [EntrenadorController::class, 'index'])->name('entrenadores.index');
-});
 
+    Route::get('/entrenadores', [EntrenadorController::class, 'index'])->name('entrenadores.index');
+
+    // Rutas para las clases
+    Route::get('/clases', [ClaseController::class, 'index'])->name('clases.index');
+    Route::get('/clases/{id}', [ClaseController::class, 'show'])->name('clases.show');
+    Route::post('/clases/{id}/reserve', [ClaseController::class, 'reserve'])->name('clases.reserve');
+
+    // Rutas para reservas
+    Route::post('/reservas/{reserva}/confirm', [ReservaController::class, 'confirm'])->name('reservas.confirm');
+    Route::post('/reservas/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
+});
 
 Route::get('/ejemplo', function () {
     return Inertia::render('Ejemplo');

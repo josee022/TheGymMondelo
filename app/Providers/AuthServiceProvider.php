@@ -5,7 +5,9 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Entrenador;
+use App\Models\Reserva;
 use App\Policies\EntrenadorPolicy;
+use App\Policies\ReservaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -17,7 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Entrenador::class => EntrenadorPolicy::class,
-
+        Reserva::class => ReservaPolicy::class,
     ];
 
     /**

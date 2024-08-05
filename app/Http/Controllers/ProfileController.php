@@ -21,12 +21,14 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $reservas = Reserva::where('usuario_id', $user->id)->with('clase')->get();
+        $reservas = $user->reservas()->with('clase')->get(); // Obtener reservas con detalles de la clase
 
-        return inertia('Dashboard', [
-            'user' => $user,
-            'reservas' => $reservas,
-            'isEntrenador' => $user->isEntrenador()
+        return Inertia::render('Dashboard', [
+            'auth' => [
+                'user' => $user
+            ],
+            'isEntrenador' => $user->isEntrenador(),
+            'reservas' => $reservas
         ]);
     }
     /**
