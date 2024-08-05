@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEntrenadorRequest;
 use App\Http\Requests\UpdateEntrenadorRequest;
 use App\Models\Entrenador;
+use Inertia\Inertia;
+
 
 class EntrenadorController extends Controller
 {
@@ -13,7 +15,10 @@ class EntrenadorController extends Controller
      */
     public function index()
     {
-        //
+        $entrenadores = Entrenador::with('usuario')->get();
+        return Inertia::render('Entrenadores/Index', [
+            'entrenadores' => $entrenadores,
+        ]);
     }
 
     /**
