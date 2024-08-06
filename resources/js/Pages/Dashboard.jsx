@@ -80,6 +80,7 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                                     <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {reserva.clase.fecha}</p>
                                     <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {reserva.clase.hora_inicio} - {reserva.clase.hora_fin}</p>
                                     <p className="mb-2"><strong className="text-gray-700">Estado:</strong> {reserva.estado}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Fecha/Hora de creación:</strong> {reserva.fecha_reserva}</p> {/* Nueva línea para la fecha de reserva */}
                                     {reserva.estado === 'Pendiente' && (
                                         <div className="mt-4">
                                             <Link

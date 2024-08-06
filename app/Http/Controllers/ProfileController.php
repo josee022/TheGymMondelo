@@ -21,7 +21,7 @@ class ProfileController extends Controller
     public function show()
 {
     $user = Auth::user();
-    $reservas = $user->reservas()->with('clase')->paginate(2); // Obtener reservas con detalles de la clase
+    $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2); // Obtener reservas con detalles de la clase
 
     return Inertia::render('Dashboard', [
         'auth' => [
