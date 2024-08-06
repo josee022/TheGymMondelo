@@ -95,7 +95,13 @@ export default function Authenticated({ user = {}, header, children }) {
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
+                            Panel de control
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('entrenadores.index')} active={route().current('entrenadores.index')}>
+                            Entrenadores
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('clases.index')} active={route().current('clases.index')}>
+                            Clases
                         </ResponsiveNavLink>
                     </div>
 
@@ -106,9 +112,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('dashboard')}>Perfil</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Log Out
+                                Cerrar sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>
