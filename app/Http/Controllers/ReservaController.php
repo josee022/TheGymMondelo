@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReservaRequest;
 use App\Http\Requests\UpdateReservaRequest;
 use App\Models\Reserva;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ReservaController extends Controller
 {
@@ -15,7 +18,7 @@ class ReservaController extends Controller
 
         $reserva->update(['estado' => 'Confirmada']);
 
-        return redirect()->route('profile')->with('success', 'Reserva confirmada.');
+        return redirect()->route('dashboard')->with('success', 'Reserva confirmada.');
     }
 
     public function cancel(Reserva $reserva)
@@ -24,7 +27,7 @@ class ReservaController extends Controller
 
         $reserva->update(['estado' => 'Cancelada']);
 
-        return redirect()->route('profile')->with('success', 'Reserva cancelada.');
+        return redirect()->route('dashboard')->with('success', 'Reserva cancelada.');
     }
 
     /**
@@ -46,9 +49,20 @@ class ReservaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreReservaRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'clase_id' => 'required|exists:clases,id',
+        ]);
+
+        Reserva::create([
+            'usuario_id' => Auth::id(),
+            'clase_id' => $request->input('clase_id'),
+            'fecha_reserva' => now(),
+            'estado' => 'Pendiente',
+        ]);
+
+        return Redirect::route('dashboard')->with('success', 'Reserva realizada con éxito.');
     }
 
     /**
@@ -70,9 +84,17 @@ class ReservaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReservaRequest $request, Reserva $reserva)
+    public function update(Request $request, Reserva $reserva)
     {
-        //
+        $request->validate([
+            'estado' => 'required|in:Confirmada,Cancelada',
+        ]);
+
+        $reserva->update([
+            'estado' => $request->input('estado'),
+        ]);
+
+        return Redirect::route('dashboard')->with('success', 'Reserva actualizada con éxito.');
     }
 
     /**

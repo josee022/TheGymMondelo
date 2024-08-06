@@ -45,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/clases/{id}/reserve', [ClaseController::class, 'reserve'])->name('clases.reserve');
 
     // Rutas para reservas
+    Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
+    Route::patch('/reservas/{reserva}', [ReservaController::class, 'update'])->name('reservas.update');
     Route::post('/reservas/{reserva}/confirm', [ReservaController::class, 'confirm'])->name('reservas.confirm');
     Route::post('/reservas/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
 });
@@ -53,4 +55,4 @@ Route::get('/ejemplo', function () {
     return Inertia::render('Ejemplo');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

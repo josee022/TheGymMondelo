@@ -19,18 +19,21 @@ class ProfileController extends Controller
      * Display the user's profile information.
      */
     public function show()
-    {
-        $user = Auth::user();
-        $reservas = $user->reservas()->with('clase')->get(); // Obtener reservas con detalles de la clase
+{
+    $user = Auth::user();
+    $reservas = $user->reservas()->with('clase')->paginate(2); // Obtener reservas con detalles de la clase
 
-        return Inertia::render('Dashboard', [
-            'auth' => [
-                'user' => $user
-            ],
-            'isEntrenador' => $user->isEntrenador(),
-            'reservas' => $reservas
-        ]);
-    }
+    return Inertia::render('Dashboard', [
+        'auth' => [
+            'user' => $user
+        ],
+        'isEntrenador' => $user->isEntrenador(),
+        'reservas' => $reservas->toArray(), // Convertir a array para manipular en el frontend
+    ]);
+}
+
+
+
     /**
      * Display the user's profile form for editing.
      */
@@ -47,58 +50,58 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(Request $request): RedirectResponse
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
-        'fecha_nacimiento' => 'nullable|date',
-        'sexo' => 'nullable|string|in:Masculino,Femenino,Otro',
-        'altura' => 'nullable|numeric',
-        'peso' => 'nullable|numeric',
-        'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
-        'biografia' => 'nullable|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+            'fecha_nacimiento' => 'nullable|date',
+            'sexo' => 'nullable|string|in:Masculino,Femenino,Otro',
+            'altura' => 'nullable|numeric',
+            'peso' => 'nullable|numeric',
+            'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
+            'biografia' => 'nullable|string|max:255',
+        ]);
 
-    $user = $request->user();
-    $user->fill($request->only([
-        'name',
-        'email',
-        'fecha_nacimiento',
-        'sexo',
-        'altura',
-        'peso',
-        'nivel_actividad',
-        'biografia',
-    ]));
+        $user = $request->user();
+        $user->fill($request->only([
+            'name',
+            'email',
+            'fecha_nacimiento',
+            'sexo',
+            'altura',
+            'peso',
+            'nivel_actividad',
+            'biografia',
+        ]));
 
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return Redirect::route('dashboard');
     }
-
-    $user->save();
-
-    return Redirect::route('dashboard');
-}
 
 
     /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
-{
-    $request->validate([
-        'password' => ['required', 'current_password'],
-    ]);
+    {
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
 
-    $user = $request->user();
+        $user = $request->user();
 
-    Auth::logout();
+        Auth::logout();
 
-    $user->delete();
+        $user->delete();
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    return Redirect::to('/');
-}
+        return Redirect::to('/');
+    }
 }

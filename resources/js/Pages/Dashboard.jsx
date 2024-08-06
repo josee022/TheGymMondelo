@@ -1,8 +1,21 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import Pagination from '@/Components/Pagination';
 
 export default function Dashboard({ auth, isEntrenador, reservas }) {
     const user = auth.user;
+
+    // Función para determinar el fondo basado en el estado de la reserva
+    const getReservaBackgroundColor = (estado) => {
+        switch (estado) {
+            case 'Confirmada':
+                return 'bg-green-100';
+            case 'Cancelada':
+                return 'bg-red-100';
+            default:
+                return 'bg-gray-100';
+        }
+    };
 
     return (
         <AuthenticatedLayout
@@ -58,11 +71,11 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                     {/* Sección de reservas */}
                     <div className="mt-12">
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">Mis Reservas</h2>
-                        {reservas.length === 0 ? (
+                        {reservas.data.length === 0 ? (
                             <p className="text-gray-600">No tienes reservas realizadas.</p>
                         ) : (
-                            reservas.map((reserva) => (
-                                <div key={reserva.id} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
+                            reservas.data.map((reserva) => (
+                                <div key={reserva.id} className={`${getReservaBackgroundColor(reserva.estado)} p-4 rounded-lg shadow-md mb-4`}>
                                     <h3 className="text-xl font-semibold mb-2">Clase de {reserva.clase.nombre}</h3>
                                     <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {reserva.clase.fecha}</p>
                                     <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {reserva.clase.hora_inicio} - {reserva.clase.hora_fin}</p>
@@ -88,6 +101,8 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                                 </div>
                             ))
                         )}
+
+                        <Pagination links={reservas.links} />
                     </div>
                 </div>
             </div>
