@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, isEntrenador, reservas }) {
     const user = auth.user;
 
     return (
@@ -40,11 +40,54 @@ export default function Dashboard({ auth }) {
                         </div>
                     </div>
 
+                    {/* Mensaje si el usuario es entrenador */}
+                    {isEntrenador && (
+                        <div className="bg-green-100 text-green-800 p-4 rounded-md mt-6">
+                            <h3 className="text-xl font-semibold">Licencia de Entrenador en TheGymMondelo</h3>
+                            <p>¡Felicidades! Eres un entrenador certificado.</p>
+                        </div>
+                    )}
+
                     {/* Botón de editar perfil */}
                     <div className="mt-6 text-center">
                         <a href="/profile/edit" className="bg-[#a3e635] text-black px-4 py-2 rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-[#a3e635]">
                             Editar perfil
                         </a>
+                    </div>
+
+                    {/* Sección de reservas */}
+                    <div className="mt-12">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Mis Reservas</h2>
+                        {reservas.length === 0 ? (
+                            <p className="text-gray-600">No tienes reservas realizadas.</p>
+                        ) : (
+                            reservas.map((reserva) => (
+                                <div key={reserva.id} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
+                                    <h3 className="text-xl font-semibold mb-2">Clase de {reserva.clase.nombre}</h3>
+                                    <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {reserva.clase.fecha}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {reserva.clase.hora_inicio} - {reserva.clase.hora_fin}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Estado:</strong> {reserva.estado}</p>
+                                    {reserva.estado === 'Pendiente' && (
+                                        <div className="mt-4">
+                                            <Link
+                                                href={`/reservas/${reserva.id}/confirm`}
+                                                method="POST"
+                                                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
+                                            >
+                                                Confirmar Reserva
+                                            </Link>
+                                            <Link
+                                                href={`/reservas/${reserva.id}/cancel`}
+                                                method="POST"
+                                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                            >
+                                                Cancelar Reserva
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

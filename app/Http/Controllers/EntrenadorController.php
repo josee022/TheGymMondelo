@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEntrenadorRequest;
 use App\Http\Requests\UpdateEntrenadorRequest;
 use App\Models\Entrenador;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
+
+
 
 class EntrenadorController extends Controller
 {
@@ -13,9 +20,11 @@ class EntrenadorController extends Controller
      */
     public function index()
     {
-        //
+        $entrenadores = Entrenador::with('usuario')->get();
+        return Inertia::render('Entrenadores/Index', [
+            'entrenadores' => $entrenadores,
+        ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -45,16 +54,14 @@ class EntrenadorController extends Controller
      */
     public function edit(Entrenador $entrenador)
     {
-        //
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEntrenadorRequest $request, Entrenador $entrenador)
+    public function update(Request $request, Entrenador $entrenador)
     {
-        //
+
     }
+
 
     /**
      * Remove the specified resource from storage.

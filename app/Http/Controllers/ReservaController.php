@@ -8,6 +8,25 @@ use App\Models\Reserva;
 
 class ReservaController extends Controller
 {
+
+    public function confirm(Reserva $reserva)
+    {
+        $this->authorize('update', $reserva);
+
+        $reserva->update(['estado' => 'Confirmada']);
+
+        return redirect()->route('profile')->with('success', 'Reserva confirmada.');
+    }
+
+    public function cancel(Reserva $reserva)
+    {
+        $this->authorize('update', $reserva);
+
+        $reserva->update(['estado' => 'Cancelada']);
+
+        return redirect()->route('profile')->with('success', 'Reserva cancelada.');
+    }
+
     /**
      * Display a listing of the resource.
      */

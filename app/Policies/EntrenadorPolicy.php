@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\Entrenador;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
+
 
 class EntrenadorPolicy
 {
@@ -13,7 +14,7 @@ class EntrenadorPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +22,7 @@ class EntrenadorPolicy
      */
     public function view(User $user, Entrenador $entrenador): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,23 +30,25 @@ class EntrenadorPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Entrenador $entrenador): bool
-    {
-        //
-    }
+    public function update(User $user, Entrenador $entrenador) : bool
+{
+
+    return true;
+}
+
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Entrenador $entrenador): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +56,7 @@ class EntrenadorPolicy
      */
     public function restore(User $user, Entrenador $entrenador): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +64,6 @@ class EntrenadorPolicy
      */
     public function forceDelete(User $user, Entrenador $entrenador): bool
     {
-        //
+        return true;
     }
 }
