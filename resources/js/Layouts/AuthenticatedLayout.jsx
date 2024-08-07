@@ -25,13 +25,24 @@ export default function Authenticated({ user = {}, header, children }) {
                     {/* Enlaces de navegación */}
                     <div className="flex-1 flex items-center justify-center space-x-8">
                         <NavLink
+                            href={route('inicio.index')}
+                            active={route().current('inicio.index')}
+                            className="text-white text-xl relative group"
+                        >
+                            Inicio
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('inicio.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
+                        <NavLink
                             href={route('dashboard')}
                             active={route().current('dashboard')}
                             className="text-white text-xl relative group"
                         >
                             Panel de control
                             <span
-                                className={`absolute inset-x-0 bottom-0 h-1  transition-transform transform ${route().current('dashboard') ? 'scale-x-100' : 'scale-x-0'}`}
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('dashboard') ? 'scale-x-100' : 'scale-x-0'}`}
                                 style={{ transformOrigin: 'left' }}
                             />
                         </NavLink>
@@ -42,7 +53,7 @@ export default function Authenticated({ user = {}, header, children }) {
                         >
                             Entrenadores
                             <span
-                                className={`absolute inset-x-0 bottom-0 h-1  transition-transform transform ${route().current('entrenadores.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('entrenadores.index') ? 'scale-x-100' : 'scale-x-0'}`}
                                 style={{ transformOrigin: 'left' }}
                             />
                         </NavLink>
@@ -53,7 +64,7 @@ export default function Authenticated({ user = {}, header, children }) {
                         >
                             Clases
                             <span
-                                className={`absolute inset-x-0 bottom-0 h-1  transition-transform transform ${route().current('clases.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('clases.index') ? 'scale-x-100' : 'scale-x-0'}`}
                                 style={{ transformOrigin: 'left' }}
                             />
                         </NavLink>
@@ -67,7 +78,7 @@ export default function Authenticated({ user = {}, header, children }) {
                                     <span className="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-lime-400 hover:bg-lime-600 focus:outline-none transition ease-in-out duration-150"
+                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black bg-lime-400 hover:bg-lime-600 focus:outline-none transition ease-in-out duration-150"
                                         >
                                             {user.name || 'Usuario'}
                                             <svg
@@ -78,7 +89,7 @@ export default function Authenticated({ user = {}, header, children }) {
                                             >
                                                 <path
                                                     fillRule="evenodd"
-                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
@@ -99,6 +110,9 @@ export default function Authenticated({ user = {}, header, children }) {
                 {/* Menú móvil */}
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink href={route('inicio.index')} active={route().current('inicio.index')}>
+                            Inicio
+                        </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                             Panel de control
                         </ResponsiveNavLink>

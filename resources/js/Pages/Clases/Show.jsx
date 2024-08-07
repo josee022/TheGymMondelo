@@ -14,7 +14,10 @@ export default function Show({ auth, clase, entrenador }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Información sobre nuestra clase seleccionada : </h2>}
+        >
             <Head title={`Clase: ${clase.nombre}`} />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">

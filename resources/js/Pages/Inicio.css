@@ -1,0 +1,179 @@
+/* ./Inicio.css */
+
+/* Contenedor principal */
+.contenedor-principal {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 112px); /* Altura de la vista menos el tamaño del encabezado */
+}
+
+/* Contenedor de la imagen */
+.contenedor-imagen {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Imagen de fondo */
+.imagen-fondo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(70%); /* Oscurece la imagen para mayor contraste */
+}
+
+/* Contenedor del rectángulo dentro del contenedor de imagen */
+.contenedor-rectangulo-imagen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el rectángulo */
+}
+
+/* Rectángulo verde dentro del contenedor de imagen */
+.rectangulo-imagen {
+    background-color: #a3e635;
+    padding: 30px; /* Tamaño del rectángulo */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+    animation: bounce 1.5s infinite; /* Animación de rebote */
+    text-align: center; /* Alinea el texto al centro del rectángulo */
+}
+
+/* Animación de rebote */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Estilo del texto dentro del rectángulo de imagen */
+.titulo-imagen {
+    color: black;
+    font-size: 3rem; /* Tamaño de la fuente */
+    font-weight: bold; /* Fuente en negrita */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra en el texto */
+    animation: fadeIn 2s ease-in-out; /* Animación de aparición */
+}
+
+/* Contenedor gris */
+.contenedor-gris {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center;
+    background-color: #6b7280; /* Color gris claro */
+}
+
+/* Contenedor del rectángulo dentro del contenedor gris */
+.contenedor-rectangulo-gris {
+    text-align: center;
+    margin-bottom: 1.5rem; /* Espacio debajo del rectángulo verde */
+}
+
+/* Rectángulo verde dentro del contenedor gris */
+.rectangulo-gris {
+    background-color: #a3e635;
+    padding: 30px; /* Tamaño del rectángulo */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+    animation: bounce 1.5s infinite; /* Animación de rebote */
+    margin-bottom: 1.5rem; /* Espacio debajo del rectángulo verde */
+}
+
+/* Estilo del texto dentro del rectángulo gris */
+.titulo-gris {
+    color: black;
+    font-size: 2rem; /* Tamaño de la fuente */
+    font-weight: bold; /* Fuente en negrita */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Sombra en el texto */
+    animation: fadeIn 2s ease-in-out; /* Animación de aparición */
+}
+
+/* Descripción y estrella */
+.descripcion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; /* Espacio entre el párrafo y la estrella */
+    text-align: center;
+    margin-bottom: 1.5rem; /* Espacio debajo de la descripción */
+}
+
+/* Párrafo de la descripción */
+.descripcion p {
+    margin: 0;
+    max-width: 500px; /* Limita el ancho del párrafo para mejor legibilidad */
+}
+
+/* Imagen SVG de la estrella */
+.estrella {
+    width: 48px;
+    height: 48px;
+    color: #a3e635; /* Color lime-400 */
+}
+
+/* Título de tips */
+.titulo-tips {
+    font-size: 2rem; /* Tamaño de la fuente */
+    font-weight: bold; /* Fuente en negrita */
+    color: black; /* Color del texto */
+    border-bottom: 2px solid black; /* Línea de subrayado */
+    padding-bottom: 0.5rem; /* Espacio entre el texto y la línea */
+    margin-top: 1rem; /* Espacio encima del título */
+    text-align: center; /* Centra el texto */
+}
+
+/* Contenedores de información */
+.contenedor-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite que los contenedores se ajusten si el tamaño es insuficiente */
+    gap: 1rem; /* Espacio entre los contenedores */
+    padding: 1rem; /* Espacio alrededor del contenedor principal */
+    justify-content: space-between; /* Distribuye el espacio entre los contenedores */
+    max-width: 1200px; /* Limita el ancho máximo del contenedor */
+    margin: 0 auto; /* Centra el contenedor principal en la página */
+}
+
+/* Contenedor de información individual */
+.info-item {
+    background-color: #cbd5e1; /* Color de fondo */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+    width: 22%; /* Ajusta el ancho según el diseño */
+    height: 300px; /* Altura del contenedor */
+    display: flex;
+    flex-direction: column; /* Alinea los hijos verticalmente */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra el contenido verticalmente */
+    text-align: center; /* Centra el texto dentro del contenedor */
+    padding: 1rem; /* Espacio interno */
+}
+
+/* Estilo para los encabezados */
+.info-item h3 {
+    margin-bottom: 0.5rem; /* Espacio debajo del encabezado */
+    font-size: 18px; /* Tamaño de fuente para el encabezado */
+    font-weight: bold; /* Negrita para el encabezado */
+}
+
+/* Estilo para los párrafos */
+.tamañoFuente {
+    font-size: 13px; /* Tamaño de fuente fijo para el párrafo */
+    line-height: 1.5; /* Espacio entre líneas para mejor legibilidad */
+    margin: 0; /* Elimina márgenes adicionales alrededor del párrafo */
+}
+
+.aumentoTamaño {
+    font-size: 20px;
+}

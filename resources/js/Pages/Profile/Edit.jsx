@@ -25,7 +25,7 @@ export default function Edit({ user }) {
     return (
         <AuthenticatedLayout
             user={user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Editar perfil</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Editar perfil : </h2>}
         >
             <Head title="Editar perfil" />
 
