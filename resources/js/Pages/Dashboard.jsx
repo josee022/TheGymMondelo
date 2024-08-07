@@ -1,8 +1,46 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import Pagination from '@/Components/Pagination';
 
 export default function Dashboard({ auth, isEntrenador, reservas }) {
     const user = auth.user;
+
+    // Función para determinar el fondo basado en el estado de la reserva
+    const getReservaBackgroundColor = (estado) => {
+        switch (estado) {
+            case 'Confirmada':
+                return 'bg-green-100';
+            case 'Cancelada':
+                return 'bg-red-100';
+            default:
+                return 'bg-gray-100';
+        }
+    };
+
+    // Función para formatear la fecha y hora de la reserva
+    const formatFechaReserva = (timestamp) => {
+        const fecha = new Date(timestamp);
+        const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }); // Formato: dd-mm-yyyy
+        const horaFormateada = fecha.toLocaleTimeString('es-ES', { hour12: false }); // Formato: HH:mm:ss
+        return `La reserva se creó el ${fechaFormateada} a las ${horaFormateada}`;
+    };
+
+    // Función para formatear la fecha de la clase
+    const formatFechaClase = (fecha) => {
+        const fechaObj = new Date(fecha);
+        return fechaObj.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }); // Formato: dd-mm-yyyy
+    };
+
+    // Ordenar las reservas de más reciente a más antigua
+    const reservasOrdenadas = reservas.data.sort((a, b) => new Date(b.fecha_reserva) - new Date(a.fecha_reserva));
 
     return (
         <AuthenticatedLayout
@@ -58,15 +96,16 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                     {/* Sección de reservas */}
                     <div className="mt-12">
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">Mis Reservas</h2>
-                        {reservas.length === 0 ? (
+                        {reservasOrdenadas.length === 0 ? (
                             <p className="text-gray-600">No tienes reservas realizadas.</p>
                         ) : (
-                            reservas.map((reserva) => (
-                                <div key={reserva.id} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
+                            reservasOrdenadas.map((reserva) => (
+                                <div key={reserva.id} className={`${getReservaBackgroundColor(reserva.estado)} p-4 rounded-lg shadow-md mb-4`}>
                                     <h3 className="text-xl font-semibold mb-2">Clase de {reserva.clase.nombre}</h3>
-                                    <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {reserva.clase.fecha}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {formatFechaClase(reserva.clase.fecha)}</p>
                                     <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {reserva.clase.hora_inicio} - {reserva.clase.hora_fin}</p>
                                     <p className="mb-2"><strong className="text-gray-700">Estado:</strong> {reserva.estado}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Fecha/Hora de la reserva:</strong> {formatFechaReserva(reserva.fecha_reserva)}</p>
                                     {reserva.estado === 'Pendiente' && (
                                         <div className="mt-4">
                                             <Link
@@ -88,6 +127,8 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                                 </div>
                             ))
                         )}
+
+                        <Pagination links={reservas.links} />
                     </div>
                 </div>
             </div>

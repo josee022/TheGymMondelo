@@ -3,15 +3,21 @@ import { Head, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react';
 
-export default function Show({ clase, entrenador }) {
-    const { post } = useForm();
+export default function Show({ auth, clase, entrenador }) {
+    const { post } = useForm({
+        clase_id: clase.id,
+    });
 
-    const handleReserve = () => {
-        post(`/clases/${clase.id}/reserve`);
+    const handleReserve = (e) => {
+        e.preventDefault();
+        post(route('reservas.store'));
     };
 
     return (
-        <AuthenticatedLayout user={clase.user}>
+        <AuthenticatedLayout
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Información sobre nuestra clase seleccionada : </h2>}
+        >
             <Head title={`Clase: ${clase.nombre}`} />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">

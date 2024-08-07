@@ -4,7 +4,10 @@ import { Head, Link } from '@inertiajs/react';
 
 export default function Index({ clases, user }) {
     return (
-        <AuthenticatedLayout user={user}>
+        <AuthenticatedLayout
+            user={user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Nuestras Distintas Clases : </h2>}
+        >
             <Head title="Clases Disponibles" />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
