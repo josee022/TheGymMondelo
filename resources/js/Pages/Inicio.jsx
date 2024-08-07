@@ -1,6 +1,6 @@
-// Inicio.jsx
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import Footer from '@/Components/Footer'; // Asegúrate de que la ruta al archivo Footer.jsx sea correcta
 import './Inicio.css'; // Importa el archivo CSS
 
 export default function Inicio({ auth }) {
@@ -89,7 +89,7 @@ export default function Inicio({ auth }) {
 
             {/* Contenedor comienza ya */}
             <div className="contenedor-footer">
-                <a href="/clases/index" className="boton-comienza">
+                <a href="/clases" className="boton-comienza">
                     Comienza hoy con tu cambio →
                 </a>
                 <p className="mensaje-footer">
@@ -100,7 +100,7 @@ export default function Inicio({ auth }) {
             {/* Contenedor de mensaje adicional */}
             <div className="contenedor-mensaje">
                 <p className="mensaje-adicional">
-                    Te queremos explicar la diferencia entre trabajar por tu cuenta y contar con <br /> un equipo profesional como <span className="highlight">TheGymMondelo</span> para que sepas lo <br /> importante que es el soporte deportivo en tu rutina →
+                    <strong> Te queremos explicar la diferencia entre trabajar por tu cuenta y contar con <br /> un equipo profesional como <span className="highlight">TheGymMondelo</span> para que sepas lo <br /> importante que es el soporte deportivo en tu rutina → </strong>
                 </p>
             </div>
 
@@ -145,12 +145,100 @@ export default function Inicio({ auth }) {
             <div className="contenedor-mensaje-adicional">
                 <span className="emoticono izquierda">⭣</span>
                 <p className="mensaje-adicional">
-                    !! Esto puedes conseguir si te apuntas a realizar tu <br />
-                    cambio de físico y vida con nosotros !!
+                    <strong> !! Esto puedes conseguir si te apuntas a realizar tu <br />
+                    cambio de físico y vida con nosotros !! </strong>
                 </p>
                 <span className="emoticono derecha">⭣</span>
             </div>
 
+            {/* Nuevo contenedor para el título y las imágenes */}
+            <div className="contenedor-gris-oscuro">
+                <div className="contenedor-cuadrado">
+                    <h1 className="titulo-principal"> <strong>ÚNETE A LA REVOLUCIÓN DEL MOVIMIENTO</strong> </h1>
+                    <div className="contenido-flex">
+                        <div className="texto">
+                            <p>
+                                Transforma tu cuerpo y tu vida con nuestros <br />
+                                <strong>PLANES DE ENTRENAMIENTO</strong> diseñados para <br />
+                                <strong>PERDER PESO, TONIFICAR y GANAR MÚSCULO.</strong>
+                            </p>
+                            <p>
+                                Entrena donde quieras, cuando quieras, <br />
+                                sin necesidad de equipo. Cada plan incluye <br />
+                                <strong>GUÍAS DE NUTRICIÓN</strong> adaptadas a tus <br />
+                                objetivos específicos.
+                            </p>
+                            <p>
+                                Además, disfruta de nuestros <br />
+                                <strong>PROGRAMAS</strong> con más de 1000 rutinas: <br />
+                                entrenamiento de fuerza, cardio, glúteos, yoga, <br />
+                                pilates, combate, cross house, ejercicios para niños, <br />
+                                rutinas rápidas, entrenamientos en vivo diarios <br />
+                                y mucho más.
+                            </p>
+                            <p>
+                                Independientemente de tu nivel de <br />
+                                experiencia, nuestros ejercicios están diseñados <br />
+                                para que puedas progresar desde el nivel más básico <br />
+                                hasta el más avanzado.
+                            </p>
+                        </div>
+                        <div className="imagen-derecha">
+                            <img src="/imagenes/index/4-fotoCardio.jpg" alt="Cardio" className="imagen-media" />
+                        </div>
+                    </div>
+                    <div className="imagen-ancha">
+                        <img src="/imagenes/index/5-sala.jpg" alt="Sala" className="imagen-pequeña" />
+                    </div>
+                </div>
+                <h2 className="titulo-seccion">PLANES DE EJERCICIO Y ALIMENTACIÓN</h2>
+                <div className="contenedor-imagenes">
+                    <div className="imagen-alineada">
+                        <img src="/imagenes/index/6-adelgazar.jpg" alt="Adelgazar" />
+                        <div className="texto-imagen">ADELGAZAR</div>
+                    </div>
+                    <div className="imagen-alineada">
+                        <img src="/imagenes/index/7-musculacion.jpg" alt="Musculación" />
+                        <div className="texto-imagen">MUSCULACIÓN</div>
+                    </div>
+                    <div className="imagen-alineada">
+                        <img src="/imagenes/index/8-definicion.jpg" alt="Definición" />
+                        <div className="texto-imagen">DEFINICIÓN</div>
+                    </div>
+                    <div className="imagen-alineada">
+                        <img src="/imagenes/index/9-muchoMas.jpg" alt="Mucho Más" />
+                        <div className="texto-imagen">MUCHO MÁS</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="contenedor-blanco">
+                <h1 className='masGrande'>⭐ ⭐ ⭐ ⭐ ⭐</h1> <br />
+                <h1 className='masGrande2'> <strong> OPINIONES DE NUESTROS CLIENTES </strong> </h1> <br />
+                <h2 className='masGrande'>
+                    <strong> Únete a miles de personas de nuestra comunidad para ayudarnos<br />
+                    todos poco a poco a mejorar, es importante la relación,<br />
+                    el buen ambiente, y sobre todo ver consejos y resultados<br />
+                    de otros clientes ayuda a motivarse y querer conseguir<br />
+                    ese cuerpo tán soñado y mejorar la salud. </strong>
+                </h2>
+
+                {/* Contenedor negro para los posts */}
+                <div className="contenedor-posts">
+                    <div className="contenedor-negro">
+                        {/* Aquí se imprimirán los posts de los usuarios */}
+                        <p className="texto-post">Contenido del post...</p>
+                    </div>
+
+                    {/* Contenedor de botones para navegación */}
+                    <div className="contenedor-botones">
+                        <button className="boton-navegacion">{"<"}</button>
+                        <button className="boton-navegacion">{">"}</button>
+                    </div>
+                </div>
+            </div>
+
+            <Footer /> {/* Aquí se coloca el Footer */}
         </AuthenticatedLayout>
     );
 }

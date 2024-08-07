@@ -1,0 +1,84 @@
+/* Estilo para el pie de página */
+.footer {
+    background-color: #27272a; /* Fondo oscuro */
+    padding: 20px; /* Espaciado interno */
+    color: white; /* Color del texto */
+    font-size: 1.1rem; /* Aumenta el tamaño de la fuente */
+    position: relative; /* Para posicionar la imagen de la licencia */
+}
+
+/* Estilo para el contenedor del logo y el título */
+.footer-content {
+    display: flex; /* Usa Flexbox para alinear los elementos */
+    align-items: center; /* Centra verticalmente los elementos */
+    width: 100%; /* Ocupa todo el ancho del footer */
+    margin-bottom: 20px; /* Espacio entre el contenido y las columnas */
+}
+
+/* Estilo para el logo */
+.footer-logo {
+    width: 50px; /* Ancho del logo */
+    height: 50px; /* Altura del logo */
+    border-radius: 50%; /* Hace el logo redondeado */
+    margin-right: 10px; /* Espacio entre el logo y el título */
+}
+
+/* Estilo para el título */
+.footer-title {
+    margin: 0; /* Elimina margen adicional */
+    color: #a3e635; /* Color del título */
+    font-size: 1.7rem; /* Tamaño de fuente del título */
+    font-weight: bold; /* Peso de fuente en negrita */
+}
+
+/* Estilo para la línea horizontal */
+.footer-line {
+    flex: 1; /* Ocupa el espacio restante en el footer */
+    border: none; /* Elimina el borde predeterminado */
+    border-top: 2px solid #a3e635; /* Línea color lime 400 */
+    margin-left: 20px; /* Espacio entre el título y la línea */
+}
+
+/* Estilo para las columnas de información */
+.footer-columns {
+    display: flex; /* Usa Flexbox para alinear las columnas */
+    justify-content: space-between; /* Espacio entre las columnas */
+    margin-top: 20px; /* Espaciado superior */
+    margin-left: 50px; /* Espacio desde la izquierda para mover las columnas a la derecha */
+}
+
+/* Estilo para cada columna */
+.footer-column {
+    flex: 1; /* Cada columna ocupa el mismo espacio */
+    margin-right: 20px; /* Espacio entre columnas */
+}
+
+.footer-column-title {
+    font-size: 1.3rem; /* Tamaño de fuente del título de columna */
+    margin-bottom: 10px; /* Espacio inferior */
+    color: #a3e635; /* Color del título */
+    text-transform: uppercase; /* Texto en mayúsculas */
+}
+
+.footer-column-list {
+    list-style: none; /* Elimina los puntos de lista */
+    padding: 0; /* Elimina el relleno */
+    color: white; /* Color del texto de la lista */
+}
+
+.footer-column-list li {
+    margin-bottom: 10px; /* Espacio entre los elementos de la lista */
+}
+
+/* Estilo para la imagen de la licencia */
+.footer-license {
+    position: absolute; /* Posiciona la imagen en la esquina */
+    bottom: 10px; /* Distancia desde abajo */
+    right: 10px; /* Distancia desde la derecha */
+}
+
+.footer-license-image {
+    width: 150px; /* Ancho de la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+    border-radius: 10px; /* Bordes redondeados */
+}

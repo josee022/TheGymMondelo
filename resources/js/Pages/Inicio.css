@@ -334,3 +334,213 @@ hr {
     margin: 0; /* Elimina márgenes adicionales */
     z-index: 1; /* Asegura que el mensaje esté por encima de los emoticonos */
 }
+
+.contenedor-gris-oscuro {
+    background-color: #52525b; /* Color de fondo gris oscuro */
+    padding: 40px 20px; /* Espaciado interno */
+    display: flex; /* Usa Flexbox para centrar el contenido */
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: center; /* Centra horizontalmente */
+    width: 100%; /* Asegura que ocupe el ancho total */
+}
+
+.contenedor-cuadrado {
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 40px; /* Espaciado interno */
+    width: 95vw; /* Ancho del cuadrado (95% del viewport) */
+    max-width: 1400px; /* Ancho máximo para evitar que el cuadrado sea demasiado grande */
+    box-sizing: border-box; /* Incluye padding en el ancho total */
+    position: relative; /* Posiciona elementos internos relativamente */
+    overflow: hidden; /* Oculta cualquier contenido desbordado */
+    transition: transform 0.3s ease; /* Transición suave para el efecto de animación */
+}
+
+.contenedor-cuadrado:hover {
+    transform: scale(1.02); /* Escala ligeramente el contenedor en hover */
+}
+
+.contenido-flex {
+    display: flex; /* Usa Flexbox para alinear el contenido */
+    justify-content: space-between; /* Distribuye el espacio entre texto e imagen */
+    margin-bottom: 30px; /* Espacio debajo del contenido flexible */
+    width: 100%; /* Asegura que ocupe el ancho total del contenedor cuadrado */
+}
+
+.texto {
+    flex: 2; /* Ocupa el doble de espacio que la imagen */
+    padding-right: 20px; /* Espacio entre el texto y la imagen */
+    font-size: var(--font-size-texto, 1.4rem); /* Tamaño de fuente ajustable con variable CSS */
+    line-height: 1.6; /* Espacio entre líneas */
+}
+
+.imagen-derecha {
+    flex: 1; /* Ocupa el espacio restante */
+}
+
+.imagen-media {
+    max-width: 600px; /* Ancho máximo ajustado de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 8px; /* Bordes redondeados */
+    transition: transform 0.3s ease; /* Transición suave para el efecto de animación */
+}
+
+.imagen-ancha {
+    width: 100%; /* Ancho total del contenedor */
+    margin-top: 30px; /* Espacio encima de la imagen */
+}
+
+.imagen-pequeña {
+    width: 100%; /* Ancho total del contenedor */
+    height: 500px; /* Altura ajustada de la imagen */
+    object-fit: cover; /* Ajusta la imagen para cubrir el contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+    transition: transform 0.3s ease; /* Transición suave para el efecto de animación */
+}
+
+.titulo-seccion {
+    font-size: 2rem; /* Tamaño del título */
+    color: #000; /* Color del texto */
+    text-align: center; /* Centra el texto */
+    margin: 40px 0; /* Espacio arriba y abajo del título */
+    font-weight: bold; /* Fuente en negrita */
+}
+
+/* Estilo para el título principal */
+.titulo-principal {
+    font-size: 35px; /* Tamaño del texto */
+    text-align: center; /* Centra el texto */
+    color: #000000; /* Color del texto */
+    margin-bottom: 30px; /* Espacio debajo del título */
+}
+
+/* Estilo para el título de la sección */
+.titulo-seccion {
+    font-size: 3rem; /* Tamaño grande para el título de la sección */
+    color: #ffffff; /* Color del texto */
+    text-align: center; /* Centra el texto */
+    margin: 40px 0; /* Espacio arriba y abajo del título */
+    font-weight: bold; /* Fuente en negrita */
+}
+
+/* Estilo para el contenedor de imágenes */
+.contenedor-imagenes {
+    display: flex; /* Usa Flexbox para alinear las imágenes en fila */
+    justify-content: center; /* Centra las imágenes horizontalmente */
+    gap: 20px; /* Espacio entre las imágenes */
+    flex-wrap: wrap; /* Permite que las imágenes se ajusten si el espacio es insuficiente */
+    margin-bottom: 40px; /* Espacio debajo del contenedor de imágenes */
+}
+
+/* Estilo para cada imagen */
+.imagen-alineada {
+    position: relative; /* Permite posicionar el texto sobre la imagen */
+    width: 300px; /* Ancho mayor para las imágenes */
+    height: 200px; /* Altura mayor para las imágenes */
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden; /* Oculta cualquier contenido desbordado */
+    transition: transform 0.3s ease; /* Transición suave para el efecto de animación */
+}
+
+.imagen-alineada:hover {
+    transform: scale(1.05); /* Escala ligeramente la imagen en hover */
+}
+
+/* Estilo para el texto sobre las imágenes */
+.texto-imagen {
+    position: absolute; /* Posiciona el texto sobre la imagen */
+    top: 50%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta el texto al centro exacto */
+    color: #fff; /* Color blanco */
+    font-size: 1.5rem; /* Tamaño del texto */
+    font-weight: bold; /* Fuente en negrita */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejorar la legibilidad */
+}
+
+/* Estilo para las imágenes dentro del contenedor de 'ÚNETE A LA REVOLUCIÓN DEL MOVIMIENTO' */
+.contenedor-cuadrado .imagen-derecha img,
+.contenedor-cuadrado .imagen-ancha img {
+    transition: transform 0.3s ease; /* Transición suave para ambos efectos */
+}
+
+/* Efecto hover para la imagen en la clase 'imagen-derecha' */
+.contenedor-cuadrado .imagen-derecha img:hover {
+    transform: scale(1.05); /* Escala ligeramente la imagen en hover */
+}
+
+/* Efecto hover para la imagen en la clase 'imagen-ancha' */
+.contenedor-cuadrado .imagen-ancha img:hover {
+    transform: scale(1.05); /* Escala ligeramente la imagen en hover */
+}
+
+/* Estilo para el contenedor blanco */
+.contenedor-blanco {
+    background-color: #fff; /* Fondo blanco */
+    padding: 40px 20px; /* Espaciado interno */
+    text-align: center; /* Centra el texto */
+}
+
+/* Estilo para el contenedor de los posts */
+.contenedor-posts {
+    margin-top: 40px; /* Espacio arriba del contenedor de posts */
+    position: relative; /* Permite la posición absoluta de los botones */
+}
+
+/* Estilo para el contenedor negro */
+.contenedor-negro {
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    padding: 40px; /* Espaciado interno aumentado */
+    border-radius: 12px; /* Bordes redondeados */
+    max-width: 800px; /* Ancho máximo ajustado */
+    height: 400px; /* Altura ajustada */
+    margin: 0 auto; /* Centra el contenedor negro */
+    display: flex; /* Usa Flexbox para centrar el contenido */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    overflow: hidden; /* Oculta cualquier contenido desbordado */
+}
+
+/* Estilo para el párrafo dentro del contenedor negro */
+.texto-post {
+    font-size: 1.5rem; /* Tamaño de fuente aumentado */
+    text-align: center; /* Centra el texto dentro del párrafo */
+    margin: 0; /* Elimina márgenes adicionales */
+}
+
+/* Estilo para el contenedor de botones */
+.contenedor-botones {
+    margin-top: 20px; /* Espacio arriba de los botones */
+    display: flex; /* Usa Flexbox para alinear los botones */
+    justify-content: space-between; /* Espacio entre los botones */
+    max-width: 220px; /* Ancho máximo de los botones */
+    margin: 20px auto 0; /* Margen arriba, auto centrado, sin margen abajo */
+}
+
+/* Estilo para los botones de navegación */
+.boton-navegacion {
+    background-color: #a3e635; /* Color lime 400 */
+    color: #000; /* Texto negro */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; /* Bordes redondeados */
+    font-size: 1.5rem; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el fondo */
+}
+
+.boton-navegacion:hover {
+    background-color: #8bce2f; /* Color lime 300 para hover */
+}
+
+.masGrande {
+    font-size: 20px;
+}
+.masGrande2 {
+    font-size: 35px;
+}
+
+
+/* FOOTER */
+
