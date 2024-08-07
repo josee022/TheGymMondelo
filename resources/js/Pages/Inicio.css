@@ -174,6 +174,163 @@
     margin: 0; /* Elimina márgenes adicionales alrededor del párrafo */
 }
 
+/* Estilo para el párrafo con mayor tamaño de fuente */
 .aumentoTamaño {
-    font-size: 20px;
+    font-size: 20px; /* Tamaño de fuente mayor */
+}
+
+/* Nuevo contenedor al pie de la página */
+.contenedor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+}
+
+.boton-comienza {
+    background-color: #a3e635; /* Color lime 400 */
+    color: #000; /* Texto negro */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; /* Bordes redondeados */
+    text-decoration: none; /* Elimina subrayado del enlace */
+    font-weight: bold; /* Fuente en negrita */
+}
+
+.mensaje-footer {
+    margin: 0;
+    font-size: 16px; /* Tamaño de fuente del mensaje */
+    text-align: right; /* Alineación del mensaje a la derecha */
+}
+
+/* Nuevo contenedor de mensaje adicional */
+.contenedor-mensaje {
+    background-color: #fff; /* Fondo blanco */
+    padding: 40px 20px; /* Espaciado interno */
+    text-align: center; /* Centra el texto */
+}
+
+.mensaje-adicional {
+    font-size: 30px; /* Tamaño de fuente grande */
+    color: #000; /* Color de texto negro */
+    line-height: 1.5; /* Espacio entre líneas */
+}
+
+.highlight {
+    color: #a3e635; /* Color lime 400 */
+    font-weight: bold; /* Negrita para resaltar */
+}
+
+/* Contenedores con fondo color */
+.contenedores-color {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 1rem; /* Espacio entre los contenedores */
+}
+
+.contenedor-rosado,
+.contenedor-verde {
+    flex: 1; /* Ambos contenedores ocupan el mismo espacio */
+    border-radius: 12px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    color: #000; /* Color de texto negro por defecto */
+    display: flex;
+    flex-direction: column; /* Alinea el contenido verticalmente */
+}
+
+.contenedor-rosado {
+    background-color: #fecaca; /* Fondo rosado */
+}
+
+.contenedor-verde {
+    background-color: #d9f99d; /* Fondo verde */
+}
+
+.titulo-rosado,
+.titulo-verde {
+    margin-bottom: 1rem; /* Espacio debajo del título */
+    font-size: 1.5rem; /* Tamaño de fuente del título */
+    font-weight: bold; /* Negrita para el título */
+}
+
+.contenido-rosado,
+.contenido-verde {
+    flex: 1; /* Ocupa el espacio restante */
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #000; /* Línea negra entre los párrafos */
+    margin: 1rem 0; /* Espacio arriba y abajo de la línea */
+}
+
+.contenido-rosado p,
+.contenido-verde p {
+    margin: 0; /* Elimina márgenes adicionales alrededor del párrafo */
+    font-size: 16px; /* Tamaño de fuente para los párrafos */
+    line-height: 1.5; /* Espacio entre líneas para mejor legibilidad */
+}
+
+/* Contenedor de mensaje de resultado */
+.contenedor-resultado {
+    display: flex; /* Usa Flexbox para alinear el contenido */
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    background-color: #000; /* Fondo negro para el contenedor */
+    padding: 20px; /* Espaciado interno del contenedor */
+    margin: 0 auto; /* Centra el contenedor en la página */
+    max-width: 100%; /* Limita el ancho máximo al 100% del contenedor padre */
+    box-sizing: border-box; /* Incluye el padding en el ancho total del contenedor */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde del contenedor */
+}
+
+/* Estilo del texto dentro del contenedor de resultado */
+.mensaje-resultado {
+    color: #fff; /* Color blanco para el texto */
+    font-family: fantasy; /* Fuente de fantasía */
+    font-size: 30px; /* Tamaño de fuente */
+    text-align: center; /* Centra el texto dentro del párrafo */
+    margin: 0; /* Elimina márgenes adicionales */
+}
+
+/* Contenedor de mensaje adicional */
+.contenedor-mensaje-adicional {
+    display: flex; /* Usa Flexbox para alinear el contenido */
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    background-color: #fff; /* Fondo blanco para el contenedor */
+    padding: 20px; /* Espaciado interno del contenedor */
+    margin: 20px 0; /* Margen arriba y abajo */
+    max-width: 100%; /* Limita el ancho máximo al 100% del contenedor padre */
+    box-sizing: border-box; /* Incluye el padding en el ancho total del contenedor */
+    height: 100px; /* Altura del contenedor ajustada */
+    position: relative; /* Posiciona los elementos internos relativamente */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde del contenedor */
+}
+
+/* Emoticonos */
+.emoticono {
+    font-size: 96px; /* Tamaño del emoticono (doble del tamaño original) */
+    color: #000; /* Color negro para el emoticono */
+    position: absolute; /* Posiciona el emoticono absolutamente dentro del contenedor */
+}
+
+.emoticono.izquierda {
+    left: 20px; /* Espacio desde el borde izquierdo del contenedor */
+}
+
+.emoticono.derecha {
+    right: 20px; /* Espacio desde el borde derecho del contenedor */
+}
+
+.mensaje-adicional {
+    color: #000; /* Color negro para el texto */
+    font-family: 'Arial', sans-serif; /* Fuente típica para una web de gimnasio */
+    font-size: 30px; /* Tamaño de fuente mayor */
+    text-align: center; /* Centra el texto dentro del párrafo */
+    margin: 0; /* Elimina márgenes adicionales */
+    z-index: 1; /* Asegura que el mensaje esté por encima de los emoticonos */
 }
