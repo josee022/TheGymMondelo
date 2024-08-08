@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import CalculadoraKcal from '@/Components/CalculadoraKcal';
+
 
 export default function Index({ auth, entrenadores }) {
     return (
@@ -30,7 +32,8 @@ export default function Index({ auth, entrenadores }) {
                             </div>
                         ))}
                     </div>
-                </div>
+                </div> <br />
+            <CalculadoraKcal />
             </div>
         </AuthenticatedLayout>
     );
