@@ -100,8 +100,8 @@ const CalculadoraKcal = () => {
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
                     >
                         <option value="mantenimiento">Mantenimiento</option>
-                        <option value="perdida">Pérdida</option>
-                        <option value="ganancia">Ganancia</option>
+                        <option value="perdida">Pérdida de grasa</option>
+                        <option value="ganancia">Ganancia muscular</option>
                     </select>
                 </div>
             </div>
