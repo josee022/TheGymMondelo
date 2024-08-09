@@ -4,6 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
+
 export default function Authenticated({ user = {}, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
@@ -68,6 +69,17 @@ export default function Authenticated({ user = {}, header, children }) {
                                 style={{ transformOrigin: 'left' }}
                             />
                         </NavLink>
+                        <NavLink
+                            href={route('blogs.create')}
+                            active={route().current('blogs.create')}
+                            className="text-white text-xl relative group"
+                        >
+                            Blog
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('blogs.create') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
                     </div>
 
                     {/* Menú de usuario */}
@@ -121,6 +133,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('clases.index')} active={route().current('clases.index')}>
                             Clases
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('blogs.create')} active={route().current('blogs.create')}>
+                            Blog
                         </ResponsiveNavLink>
                     </div>
 

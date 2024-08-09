@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\InicioController;
@@ -55,7 +56,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reservas/{reserva}/confirm', [ReservaController::class, 'confirm'])->name('reservas.confirm');
     Route::post('/reservas/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
 
-
+    // Rutas para blogs
+    Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
 });
 
 Route::get('/ejemplo', function () {

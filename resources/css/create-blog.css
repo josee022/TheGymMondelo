@@ -1,0 +1,23 @@
+/* resources/css/create-blog.css */
+
+@keyframes move-up-down {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.bg-custom {
+    background-color: #4caf50; /* lime-400 */
+    color: #000; /* black */
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: move-up-down 3s ease-in-out infinite;
+}
