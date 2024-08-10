@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import Footer from '@/Components/Footer';
+
 
 
 export default function Index({ auth, entrenadores }) {
@@ -33,6 +35,7 @@ export default function Index({ auth, entrenadores }) {
                     </div>
                 </div>
             </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

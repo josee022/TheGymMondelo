@@ -13,7 +13,8 @@ class BlogPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        // Implement logic if needed
+        return true;
     }
 
     /**
@@ -21,7 +22,8 @@ class BlogPolicy
      */
     public function view(User $user, Blog $blog): bool
     {
-        //
+        // Any user can view a blog
+        return true;
     }
 
     /**
@@ -29,7 +31,8 @@ class BlogPolicy
      */
     public function create(User $user): bool
     {
-        //
+        // Implement logic if needed
+        return true;
     }
 
     /**
@@ -37,7 +40,8 @@ class BlogPolicy
      */
     public function update(User $user, Blog $blog): bool
     {
-        //
+        // Only the author of the blog can update it
+        return $user->id === $blog->autor_id;
     }
 
     /**
@@ -45,7 +49,8 @@ class BlogPolicy
      */
     public function delete(User $user, Blog $blog): bool
     {
-        //
+        // Only the author of the blog can delete it
+        return $user->id === $blog->autor_id;
     }
 
     /**
@@ -53,7 +58,8 @@ class BlogPolicy
      */
     public function restore(User $user, Blog $blog): bool
     {
-        //
+        // Implement logic if needed
+        return false;
     }
 
     /**
@@ -61,6 +67,7 @@ class BlogPolicy
      */
     public function forceDelete(User $user, Blog $blog): bool
     {
-        //
+        // Implement logic if needed
+        return false;
     }
 }

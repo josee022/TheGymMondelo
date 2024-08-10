@@ -2,6 +2,8 @@ import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react';
+import Footer from '@/Components/Footer';
+
 
 export default function Show({ auth, clase, entrenador }) {
     const { post } = useForm({
@@ -50,6 +52,7 @@ export default function Show({ auth, clase, entrenador }) {
                     </div>
                 </div>
             </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

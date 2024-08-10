@@ -1,6 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
+import Footer from '@/Components/Footer';
+
 
 export default function Dashboard({ auth, isEntrenador, reservas }) {
     const user = auth.user;
@@ -132,6 +134,7 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                     </div>
                 </div>
             </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

@@ -57,8 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reservas/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
 
     // Rutas para blogs
-    Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
-    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+    Route::resource('blogs', BlogController::class);
+
 });
 
 Route::get('/ejemplo', function () {
