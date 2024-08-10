@@ -4,6 +4,8 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import InputError from '@/Components/InputError';
+import Footer from '@/Components/Footer';
+
 
 export default function Edit({ user }) {
     const { data, setData, patch, processing, errors } = useForm({
@@ -173,6 +175,7 @@ export default function Edit({ user }) {
                     </form>
                 </div>
             </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }
