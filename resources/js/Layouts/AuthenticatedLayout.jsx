@@ -37,17 +37,6 @@ export default function Authenticated({ user = {}, header, children }) {
                             />
                         </NavLink>
                         <NavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
-                            className="text-white text-xl relative group"
-                        >
-                            Panel de control
-                            <span
-                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('dashboard') ? 'scale-x-100' : 'scale-x-0'}`}
-                                style={{ transformOrigin: 'left' }}
-                            />
-                        </NavLink>
-                        <NavLink
                             href={route('entrenadores.index')}
                             active={route().current('entrenadores.index')}
                             className="text-white text-xl relative group"
@@ -124,9 +113,6 @@ export default function Authenticated({ user = {}, header, children }) {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('inicio.index')} active={route().current('inicio.index')}>
                             Inicio
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Panel de control
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('entrenadores.index')} active={route().current('entrenadores.index')}>
                             Entrenadores
