@@ -182,32 +182,41 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                                     </form>
                                 ) : (
                                     <>
-                                        <div className="absolute top-0 left-0 p-2">
-                                            <p className="text-gray-600 text-sm font-semibold">Autor del Post: {blog.autor?.name || 'Desconocido'}</p>
-                                        </div>
-                                        <div className="absolute top-0 right-0 p-2 text-right">
-                                            <p className="text-gray-500 text-sm">{formatFechaBlog(blog.fecha_publicacion)}</p>
-                                        </div>
-                                        <div className="mt-10">
-                                            <h3 className="text-lg font-semibold text-gray-800">{blog.titulo}</h3>
-                                            <p className="text-gray-600">{blog.contenido}</p>
-                                        </div>
-                                        {isEntrenador && (auth.user.id === blog.autor_id) && (
-                                            <div className="flex justify-end space-x-2 mt-4">
-                                                <button
-                                                    onClick={() => handleEdit(blog)}
-                                                    className="bg-lime-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(blog.id)}
-                                                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                >
-                                                    Eliminar
-                                                </button>
+                                        <div className="relative p-4">
+                                            <div className="absolute top-0 left-0 p-2">
+                                                <p className="text-gray-600 text-sm font-semibold">
+                                                    Autor del Post: {blog.autor?.name || 'Desconocido'}
+                                                </p>
                                             </div>
-                                        )}
+                                            <div className="absolute top-0 right-0 p-2 text-right">
+                                                <p className="text-gray-500 text-sm">
+                                                    {formatFechaBlog(blog.fecha_publicacion)}
+                                                </p>
+                                            </div>
+                                            <div className="mt-10">
+                                                <h3 className="text-2xl font-semibold text-gray-800">{blog.titulo}</h3>
+                                                <p className="text-gray-600 text-base break-words">
+                                                    {blog.contenido}
+                                                </p>
+                                            </div>
+                                            {isEntrenador && (auth.user.id === blog.autor_id) && (
+                                                <div className="flex justify-end space-x-2 mt-4">
+                                                    <button
+                                                        onClick={() => handleEdit(blog)}
+                                                        className="bg-lime-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                    >
+                                                        Editar
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(blog.id)}
+                                                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+
                                     </>
                                 )}
                             </div>

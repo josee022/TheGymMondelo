@@ -1,9 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Footer from '@/Components/Footer'; // Asegúrate de que la ruta al archivo Footer.jsx sea correcta
 import './Inicio.css'; // Importa el archivo CSS
+import { usePage } from '@inertiajs/react';
 
 export default function Inicio({ auth }) {
+
+    // Suponiendo que esta función formatea la fecha y hora adecuadamente
+    const formatFechaBlog = (fecha_publicacion) => {
+        const date = new Date(fecha_publicacion);
+        return date.toLocaleDateString('es-ES') + ' ' + date.toLocaleTimeString('es-ES');
+    };
+
+    // Access blogs from the page props
+    const { blogs } = usePage().props;
+
+    // Ordenar los blogs del más reciente al más antiguo
+    const sortedBlogs = [...blogs].sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
+
+    // State for current blog index
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Handlers for navigation
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    };
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, sortedBlogs.length - 1));
+    };
+
     return (
         <AuthenticatedLayout user={auth}>
             <div className="contenedor-principal">
@@ -109,7 +135,7 @@ export default function Inicio({ auth }) {
                 <div className="contenedor-rosado">
                     <h3 className="titulo-rosado">Preparación propia  ❌</h3>
                     <div className="contenido-rosado">
-                        <p>❌ Planificacion: El echo de crear tus propias rutinas y planes de entrenamiento sin conocimiento previo puede afectar a tu progreso. Podría llegar un punto en el que quedes atrapado en esa misma rutina permanente y no avances como se debe, al no tener nadie que te plantee un entreno efectivo y adecuado para tu propósito.</p>
+                        <p>❌ Planificacion: El hecho de crear tus propias rutinas y planes de entrenamiento sin conocimiento previo puede afectar a tu progreso. Podría llegar un punto en el que quedes atrapado en esa misma rutina permanente y no avances como se debe, al no tener nadie que te plantee un entreno efectivo y adecuado para tu propósito.</p>
                         <hr />
                         <p>❌ Ejercicios: Mantener la efectividad y la variedad en tus entrenamientos es crucial. Sin una orientación adecuada, es probable que tus rutinas se vuelvan monótonas e ineficaces, lo cual puede llevarte al desinterés y la falta de motivación. Además, ejecutar ejercicios con técnica incorrecta aumenta el riesgo de lesiones. La ausencia de progresión adecuada puede resultar en estancamiento y frustración en tus objetivos físicos.</p>
                         <hr />
@@ -146,7 +172,7 @@ export default function Inicio({ auth }) {
                 <span className="emoticono izquierda">⭣</span>
                 <p className="mensaje-adicional">
                     <strong> !! Esto puedes conseguir si te apuntas a realizar tu <br />
-                    cambio de físico y vida con nosotros !! </strong>
+                        cambio de físico y vida con nosotros !! </strong>
                 </p>
                 <span className="emoticono derecha">⭣</span>
             </div>
@@ -212,30 +238,66 @@ export default function Inicio({ auth }) {
                 </div>
             </div>
 
+            {/* Contenedor blanco con los posts */}
             <div className="contenedor-blanco">
                 <h1 className='masGrande'>⭐ ⭐ ⭐ ⭐ ⭐</h1> <br />
                 <h1 className='masGrande2'> <strong> OPINIONES DE NUESTROS CLIENTES </strong> </h1> <br />
                 <h2 className='masGrande'>
                     <strong> Únete a miles de personas de nuestra comunidad para ayudarnos<br />
-                    todos poco a poco a mejorar, es importante la relación,<br />
-                    el buen ambiente, y sobre todo ver consejos y resultados<br />
-                    de otros clientes ayuda a motivarse y querer conseguir<br />
-                    ese cuerpo tán soñado y mejorar la salud. </strong>
+                        todos poco a poco a mejorar, es importante la relación,<br />
+                        el buen ambiente, y sobre todo ver consejos y resultados<br />
+                        de otros clientes ayuda a motivarse y querer conseguir<br />
+                        ese cuerpo tán soñado y mejorar la salud. </strong>
                 </h2>
 
                 {/* Contenedor negro para los posts */}
                 <div className="contenedor-posts">
                     <div className="contenedor-negro">
-                        {/* Aquí se imprimirán los posts de los usuarios */}
-                        <p className="texto-post">Contenido del post...</p>
+                        {sortedBlogs.length > 0 ? (
+                            <>
+                                {/* Información del post */}
+                                <div className="info-post">
+                                    <p className="autor-post">
+                                        Autor del Post: Entrenador {sortedBlogs[currentIndex].autor?.name || 'Desconocido'}
+                                    </p>
+                                    <p className="fecha-post">
+                                        {formatFechaBlog(sortedBlogs[currentIndex].fecha_publicacion)}
+                                    </p>
+                                </div> <br />
+                                <div className="contenido-post">
+                                    <h3 className="titulo-post">
+                                        {sortedBlogs[currentIndex].titulo}
+                                    </h3>
+                                    <p className="texto-post">
+                                        {sortedBlogs[currentIndex].contenido}
+                                    </p>
+                                </div>
+                            </>
+                        ) : (
+                            <p className="texto-post">No hay posts disponibles.</p>
+                        )}
                     </div>
 
                     {/* Contenedor de botones para navegación */}
                     <div className="contenedor-botones">
-                        <button className="boton-navegacion">{"<"}</button>
-                        <button className="boton-navegacion">{">"}</button>
+                        <button
+                            className="boton-navegacion"
+                            onClick={handlePrev}
+                            disabled={currentIndex === 0}
+                        >
+                            {"<"}
+                        </button>
+                        <button
+                            className="boton-navegacion"
+                            onClick={handleNext}
+                            disabled={currentIndex === sortedBlogs.length - 1}
+                        >
+                            {">"}
+                        </button>
                     </div>
                 </div>
+
+
             </div>
 
             <Footer /> {/* Aquí se coloca el Footer */}
