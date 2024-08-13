@@ -69,7 +69,7 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                         <div>
                             <p className="mb-4"><strong className="text-gray-700">Nombre:</strong> {user.name}</p>
                             <p className="mb-4"><strong className="text-gray-700">Correo electrónico:</strong> {user.email}</p>
-                            <p className="mb-4"><strong className="text-gray-700">Fecha de nacimiento:</strong> {user.fecha_nacimiento}</p>
+                            <p className="mb-4"><strong className="text-gray-700">Fecha de nacimiento:</strong> {formatFechaClase(user.fecha_nacimiento)}</p>
                             <p className="mb-4"><strong className="text-gray-700">Sexo:</strong> {user.sexo}</p>
                         </div>
                         <div>

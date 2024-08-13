@@ -4,7 +4,6 @@ import { Head, Link } from '@inertiajs/react';
 import Footer from '@/Components/Footer';
 
 
-
 export default function Index({ auth, entrenadores }) {
     return (
         <AuthenticatedLayout

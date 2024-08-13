@@ -5,6 +5,17 @@ import Footer from '@/Components/Footer';
 
 
 export default function Index({ clases, user }) {
+
+    // Función para formatear la fecha de la clase
+    const formatFechaClase = (fecha) => {
+        const fechaObj = new Date(fecha);
+        return fechaObj.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }); // Formato: dd-mm-yyyy
+    };
+
     return (
         <AuthenticatedLayout
             user={user}
@@ -27,7 +38,7 @@ export default function Index({ clases, user }) {
                         {clases.map((clase) => (
                             <div key={clase.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
                                 <h2 className="text-2xl font-semibold mb-2">{clase.nombre}</h2>
-                                <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {clase.fecha}</p>
+                                <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {formatFechaClase(clase.fecha)}</p>
                                 <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {clase.hora_inicio} - {clase.hora_fin}</p>
                                 <Link href={`/clases/${clase.id}`} className="text-blue-500">Ver detalles</Link>
                             </div>

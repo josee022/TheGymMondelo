@@ -482,57 +482,154 @@ hr {
 }
 
 /* Estilo para el contenedor de los posts */
+/* Inicio.css */
+
+/* Estilo para el contenedor de los posts */
 .contenedor-posts {
-    margin-top: 40px; /* Espacio arriba del contenedor de posts */
-    position: relative; /* Permite la posición absoluta de los botones */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
 }
 
-/* Estilo para el contenedor negro */
+/* Estilo para el contenedor negro del post */
 .contenedor-negro {
-    background-color: #000; /* Fondo negro */
-    color: #fff; /* Texto blanco */
-    padding: 40px; /* Espaciado interno aumentado */
-    border-radius: 12px; /* Bordes redondeados */
-    max-width: 800px; /* Ancho máximo ajustado */
-    height: 400px; /* Altura ajustada */
-    margin: 0 auto; /* Centra el contenedor negro */
-    display: flex; /* Usa Flexbox para centrar el contenido */
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-    overflow: hidden; /* Oculta cualquier contenido desbordado */
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 10px; /* Ajusta el radio del borde */
+    max-width: 800px; /* Aumenta el ancho máximo del contenedor */
+    width: 100%;
+    position: relative; /* Posicionamiento relativo para los elementos absolutos */
 }
 
-/* Estilo para el párrafo dentro del contenedor negro */
+/* Estilo para la información del post (autor y fecha) */
+.info-post {
+    position: absolute;
+    top: 10px; /* Espaciado desde la parte superior */
+    width: calc(100% - 20px); /* Ancho total menos el padding */
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.autor-post {
+    font-size: 0.9rem;
+    color: gray;
+}
+
+.fecha-post {
+    font-size: 0.9rem;
+    color: gray;
+}
+
+/* Estilo para el contenedor de los posts */
+.contenedor-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Esto alinea el contenedor de los posts al centro, puedes ajustar si es necesario */
+    margin: 20px;
+}
+
+/* Estilo para el contenedor negro del post */
+.contenedor-negro {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden; /* Oculta el contenido que sobresale */
+    word-wrap: break-word; /* Asegura que el texto largo se ajuste dentro del contenedor */
+}
+
+/* Estilo para la información del post */
+.info-post {
+    position: relative; /* Cambiado a 'relative' para eliminar el posicionamiento absoluto */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Añadir margen inferior para separar de contenido */
+}
+
+/* Estilo para el autor del post */
+.autor-post {
+    color: #a3e635;
+    font-size: 0.875rem; /* Tamaño del texto */
+    overflow: hidden; /* Oculta el texto que sobresale */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+    white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+}
+
+/* Estilo para la fecha del post */
+.fecha-post {
+    color: #e2e2e2;
+    font-size: 0.875rem; /* Tamaño del texto */
+    overflow: hidden; /* Oculta el texto que sobresale */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+    white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+}
+
+.contenido-post {
+    margin-top: 0; /* Ajusta según sea necesario */
+}
+
+/* Estilo para el título del post */
+.titulo-post {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+    text-align: left; /* Alinea el título a la izquierda */
+    overflow-wrap: break-word; /* Asegura que el texto largo se ajuste dentro del contenedor */
+}
+
+/* Estilo para el texto del post */
 .texto-post {
-    font-size: 1.5rem; /* Tamaño de fuente aumentado */
-    text-align: center; /* Centra el texto dentro del párrafo */
-    margin: 0; /* Elimina márgenes adicionales */
+    font-size: 1rem;
+    color: white;
+    line-height: 1.5;
+    white-space: pre-line; /* Mantiene los saltos de línea */
+    text-align: left; /* Alinea el contenido a la izquierda */
+    overflow-wrap: break-word; /* Asegura que el texto largo se ajuste dentro del contenedor */
+    word-wrap: break-word; /* Asegura que el texto largo se ajuste dentro del contenedor */
 }
 
-/* Estilo para el contenedor de botones */
+/* Estilo para el contenedor de los botones */
 .contenedor-botones {
-    margin-top: 20px; /* Espacio arriba de los botones */
-    display: flex; /* Usa Flexbox para alinear los botones */
-    justify-content: space-between; /* Espacio entre los botones */
-    max-width: 220px; /* Ancho máximo de los botones */
-    margin: 20px auto 0; /* Margen arriba, auto centrado, sin margen abajo */
+    display: flex;
+    justify-content: space-between; /* Esto distribuye el espacio entre los botones */
+    gap: 50px; /* Ajusta el valor para el espacio deseado entre los botones */
+    margin-top: 10px;
 }
+
 
 /* Estilo para los botones de navegación */
 .boton-navegacion {
-    background-color: #a3e635; /* Color lime 400 */
-    color: #000; /* Texto negro */
+    background-color: #a3e635; /* Color de fondo lime-400 */
     border: none;
+    color: black;
     padding: 10px 20px;
-    border-radius: 25px; /* Bordes redondeados */
-    font-size: 1.5rem; /* Tamaño de fuente */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    transition: background-color 0.3s ease; /* Transición suave para el fondo */
+    border-radius: 50%; /* Redondeo completo para el botón */
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Puedes añadir margen si es necesario para ajustar el espaciado adicional */
 }
 
-.boton-navegacion:hover {
-    background-color: #8bce2f; /* Color lime 300 para hover */
+
+/* Estilo para el botón de navegación deshabilitado */
+.boton-navegacion:disabled {
+    background-color: #d6d6d6;
+    cursor: not-allowed;
 }
+
+
+
+
 
 .masGrande {
     font-size: 20px;
@@ -540,7 +637,3 @@ hr {
 .masGrande2 {
     font-size: 35px;
 }
-
-
-/* FOOTER */
-

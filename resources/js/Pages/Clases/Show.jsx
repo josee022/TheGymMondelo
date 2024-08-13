@@ -6,6 +6,17 @@ import Footer from '@/Components/Footer';
 
 
 export default function Show({ auth, clase, entrenador }) {
+
+    // Función para formatear la fecha de la clase
+    const formatFechaClase = (fecha) => {
+        const fechaObj = new Date(fecha);
+        return fechaObj.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }); // Formato: dd-mm-yyyy
+    };
+
     const { post } = useForm({
         clase_id: clase.id,
     });
@@ -26,7 +37,7 @@ export default function Show({ auth, clase, entrenador }) {
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                     <h1 className="text-4xl font-bold text-gray-800 mb-2">{clase.nombre}</h1>
                     <p className="mb-2"><strong className="text-gray-700">Descripción:</strong> {clase.descripcion || 'No disponible'}</p>
-                    <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {clase.fecha}</p>
+                    <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {formatFechaClase(clase.fecha)}</p>
                     <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {clase.hora_inicio} - {clase.hora_fin}</p>
                     <p className="mb-2"><strong className="text-gray-700">Capacidad:</strong> {clase.capacidad}</p>
 

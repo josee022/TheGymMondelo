@@ -8,6 +8,9 @@ const CalculadoraKcal = () => {
     const [actividad, setActividad] = useState('1.2');
     const [objetivo, setObjetivo] = useState('mantenimiento');
     const [calorias, setCalorias] = useState(null);
+    const [proteinas, setProteinas] = useState(null);
+    const [grasas, setGrasas] = useState(null);
+    const [carbohidratos, setCarbohidratos] = useState(null);
 
     const calcularCalorias = () => {
         let tmb;
@@ -31,7 +34,17 @@ const CalculadoraKcal = () => {
                 break;
         }
 
+        // Calcular macronutrientes
+        const proteinasGramos = peso * (objetivo === 'ganancia' ? 2.2 : 1.6);
+        const grasasCalorias = caloriasDiarias * 0.25; // 25% de las calorías para grasas
+        const grasasGramos = grasasCalorias / 9; // 1 gramo de grasa = 9 calorías
+        const carbohidratosCalorias = caloriasDiarias - (proteinasGramos * 4) - (grasasGramos * 9);
+        const carbohidratosGramos = carbohidratosCalorias / 4; // 1 gramo de carbohidrato = 4 calorías
+
         setCalorias(Math.round(caloriasDiarias));
+        setProteinas(Math.round(proteinasGramos));
+        setGrasas(Math.round(grasasGramos));
+        setCarbohidratos(Math.round(carbohidratosGramos));
     };
 
     return (
@@ -114,8 +127,17 @@ const CalculadoraKcal = () => {
                 </button>
             </div>
             {calorias && (
-                <div className="mt-4 text-center text-lime-400 text-lg animate-pulse">
-                    Calorías Diarias: {calorias} kcal
+                <div className="mt-4">
+                    <div className="text-lime-400 text-lg text-center mb-2">
+                        Calorías Diarias: {calorias} kcal
+                    </div>
+                    <div className="text-lime-400 text-lg">
+                        <ul className="list-disc list-inside ml-4">
+                            <li>Proteínas: {proteinas} g</li>
+                            <li>Grasas: {grasas} g</li>
+                            <li>Carbohidratos: {carbohidratos} g</li>
+                        </ul>
+                    </div>
                 </div>
             )}
         </div>
