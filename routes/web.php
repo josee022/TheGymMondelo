@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\EntrenadorController;
+use App\Http\Controllers\ForoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservaController;
@@ -58,6 +59,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para blogs
     Route::resource('blogs', BlogController::class);
+
+    // Rutas para foros
+    Route::resource('foros', ForoController::class);
 
 });
 

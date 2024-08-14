@@ -13,7 +13,7 @@ class ForoPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ForoPolicy
      */
     public function view(User $user, Foro $foro): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class ForoPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class ForoPolicy
      */
     public function update(User $user, Foro $foro): bool
     {
-        //
+        return $user->id === $foro->usuario_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class ForoPolicy
      */
     public function delete(User $user, Foro $foro): bool
     {
-        //
+        return $user->id === $foro->usuario_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class ForoPolicy
      */
     public function restore(User $user, Foro $foro): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class ForoPolicy
      */
     public function forceDelete(User $user, Foro $foro): bool
     {
-        //
+        return false;
     }
 }
