@@ -13,7 +13,7 @@ class ComentarioForoPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ComentarioForoPolicy
      */
     public function view(User $user, ComentarioForo $comentarioForo): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class ComentarioForoPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class ComentarioForoPolicy
      */
     public function update(User $user, ComentarioForo $comentarioForo): bool
     {
-        //
+        return $user->id === $comentarioForo->usuario_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class ComentarioForoPolicy
      */
     public function delete(User $user, ComentarioForo $comentarioForo): bool
     {
-        //
+        return $user->id === $comentarioForo->usuario_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class ComentarioForoPolicy
      */
     public function restore(User $user, ComentarioForo $comentarioForo): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class ComentarioForoPolicy
      */
     public function forceDelete(User $user, ComentarioForo $comentarioForo): bool
     {
-        //
+        return false;
     }
 }

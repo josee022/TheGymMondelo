@@ -17,6 +17,9 @@ export default function CreateForo({ auth, foros }) {
         contenido: '',
     });
 
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [commentsData, setCommentsData] = useState({});
+
     const handleCreateSubmit = (e) => {
         e.preventDefault();
         post(route('foros.store'), {
@@ -30,9 +33,6 @@ export default function CreateForo({ auth, foros }) {
             onSuccess: () => {
                 setEditingForoId(null);
                 clearErrors();
-            },
-            onError: () => {
-                // Manejo de errores si es necesario
             },
         });
     };
@@ -63,10 +63,86 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
+    const handleCreateComment = (e, foroId) => {
+        e.preventDefault();
+
+        if (!commentsData[foroId]?.newCommentContent?.trim()) return;
+
+        Inertia.post(route('comentarios.store', foroId), {
+            contenido: commentsData[foroId].newCommentContent,
+            onSuccess: () => {
+                setCommentsData(prev => ({
+                    ...prev,
+                    [foroId]: { newCommentContent: '' },
+                }));
+            },
+            onError: (error) => {
+                console.error('Error al crear el comentario:', error);
+            },
+        });
+    };
+
+    const handleCommentChange = (e, foroId) => {
+        setCommentsData(prev => ({
+            ...prev,
+            [foroId]: { ...prev[foroId], newCommentContent: e.target.value },
+        }));
+    };
+
+    const handleEditComment = (comment) => {
+        setEditingCommentId(comment.id);
+        setCommentsData(prev => ({
+            ...prev,
+            [comment.foro_id]: { editCommentContent: comment.contenido },
+        }));
+    };
+
+    const handleEditCommentSubmit = (e, commentId) => {
+        e.preventDefault();
+        const foroId = Object.keys(commentsData).find(id => commentsData[id]?.editCommentContent !== undefined);
+
+        Inertia.patch(route('comentarios.update', commentId), {
+            contenido: commentsData[foroId]?.editCommentContent || '',
+            onSuccess: () => {
+                setEditingCommentId(null);
+                setCommentsData(prev => ({
+                    ...prev,
+                    [foroId]: { editCommentContent: '' },
+                }));
+            },
+            onError: (error) => {
+                console.error('Error al editar el comentario:', error);
+            },
+        });
+    };
+
+    const handleCancelCommentEdit = () => {
+        setEditingCommentId(null);
+    };
+
+    const handleDeleteComment = (commentId) => {
+        if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+            Inertia.delete(route('comentarios.destroy', commentId), {
+                onSuccess: () => {
+                    console.log('Comentario eliminado con éxito');
+                },
+                onError: (error) => {
+                    console.error('Error al eliminar el comentario:', error);
+                },
+            });
+        }
+    };
+
     const formatFechaForo = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return `Creado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
+    };
+
+    const formatFechaComentario = (timestamp) => {
+        const fecha = new Date(timestamp);
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return `Publicado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
     };
 
     return (
@@ -125,6 +201,7 @@ export default function CreateForo({ auth, foros }) {
                             <span className="relative">Foros Recientes</span>
                         </span>
                     </h2>
+                    <br />
                     <div className="space-y-4">
                         {foros.data.map((foro) => (
                             <div
@@ -132,7 +209,7 @@ export default function CreateForo({ auth, foros }) {
                                 className="relative bg-[#d9f99d] p-4 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
                             >
                                 {editingForoId === foro.id ? (
-                                    <form onSubmit={handleEditSubmit} className="space-y-6">
+                                    <form onSubmit={handleEditSubmit} className="space-y-4">
                                         <div>
                                             <label className="block text-gray-700 text-sm font-bold mb-2">Título</label>
                                             <input
@@ -190,12 +267,11 @@ export default function CreateForo({ auth, foros }) {
                                                 </p>
                                             </div>
 
-                                            {/* Verificación para mostrar los botones solo al creador */}
                                             {auth.user.id === foro.usuario_id && (
                                                 <div className="flex justify-end space-x-2 mt-4">
                                                     <button
                                                         onClick={() => handleEdit(foro)}
-                                                        className="bg-lime-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                        className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                                     >
                                                         Editar
                                                     </button>
@@ -207,6 +283,98 @@ export default function CreateForo({ auth, foros }) {
                                                     </button>
                                                 </div>
                                             )}
+                                        </div>
+
+                                        <div className="mt-6 space-y-4">
+                                            <h4 className="text-xl font-semibold text-gray-800 mb-2">COMENTARIOS :</h4>
+
+                                            <form
+                                                onSubmit={(e) => handleCreateComment(e, foro.id)}
+                                                className="mb-4 space-y-4"
+                                            >
+                                                <textarea
+                                                    value={commentsData[foro.id]?.newCommentContent || ''}
+                                                    onChange={(e) => handleCommentChange(e, foro.id)}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-24"
+                                                    placeholder="Escribe tu comentario aquí..."
+                                                />
+                                                <div className="flex justify-end">
+                                                    <button
+                                                        type="submit"
+                                                        className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                    >
+                                                        Agregar Comentario
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                            {foro.comentarios.map((comentario) => (
+                                                <div
+                                                    key={comentario.id}
+                                                    className="relative bg-gray-100 p-4 rounded-lg shadow-md"
+                                                >
+                                                    {editingCommentId === comentario.id ? (
+                                                        <form onSubmit={(e) => handleEditCommentSubmit(e, comentario.id)} className="space-y-4">
+                                                            <div>
+                                                                <textarea
+                                                                    value={commentsData[foro.id]?.editCommentContent || ''}
+                                                                    onChange={(e) => setCommentsData(prev => ({
+                                                                        ...prev,
+                                                                        [foro.id]: { editCommentContent: e.target.value }
+                                                                    }))}
+                                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-24"
+                                                                />
+                                                                {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
+                                                            </div>
+                                                            <div className="flex justify-end">
+                                                                <button
+                                                                    type="submit"
+                                                                    className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                >
+                                                                    Guardar
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className="ml-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                    onClick={handleCancelCommentEdit}
+                                                                >
+                                                                    Cancelar
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    ) : (
+                                                        <>
+                                                            <div className="relative p-2">
+                                                                <p className="text-gray-600 text-sm font-semibold">
+                                                                    Autor del Comentario: {comentario.usuario?.name || 'Desconocido'}
+                                                                </p>
+                                                                <p className="text-gray-500 text-sm">
+                                                                    {formatFechaComentario(comentario.fecha_comentario)}
+                                                                </p>
+                                                                <p className="text-gray-600 text-base mt-2">
+                                                                    {comentario.contenido}
+                                                                </p>
+                                                            </div>
+                                                            {auth.user.id === comentario.usuario_id && (
+                                                                <div className="flex justify-end space-x-2 mt-4">
+                                                                    <button
+                                                                        onClick={() => handleEditComment(comentario)}
+                                                                        className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                    >
+                                                                        Editar
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDeleteComment(comentario.id)}
+                                                                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                    >
+                                                                        Eliminar
+                                                                    </button>
+                                                                </div>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            ))}
                                         </div>
                                     </>
                                 )}
