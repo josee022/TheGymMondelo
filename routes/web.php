@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
+use App\Http\Controllers\ComentarioForoController;
 use App\Http\Controllers\EntrenadorController;
+use App\Http\Controllers\ForoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservaController;
@@ -59,6 +61,13 @@ Route::middleware(['auth'])->group(function () {
     // Rutas para blogs
     Route::resource('blogs', BlogController::class);
 
+    // Rutas para foros
+    Route::resource('foros', ForoController::class);
+
+    // Rutas para comentarios
+    Route::post('/comentarios/{foro}', [ComentarioForoController::class, 'store'])->name('comentarios.store');
+    Route::patch('comentarios/{comentarioForo}', [ComentarioForoController::class, 'update'])->name('comentarios.update');
+    Route::delete('comentarios/{comentarioForo}', [ComentarioForoController::class, 'destroy'])->name('comentarios.destroy');
 });
 
 Route::get('/ejemplo', function () {

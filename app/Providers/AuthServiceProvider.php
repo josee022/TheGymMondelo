@@ -6,9 +6,11 @@ namespace App\Providers;
 
 use App\Models\Blog;
 use App\Models\Entrenador;
+use App\Models\Foro;
 use App\Models\Reserva;
 use App\Policies\BlogPolicy;
 use App\Policies\EntrenadorPolicy;
+use App\Policies\ForoPolicy;
 use App\Policies\ReservaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -23,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         Entrenador::class => EntrenadorPolicy::class,
         Reserva::class => ReservaPolicy::class,
         Blog::class => BlogPolicy::class,
+        Foro::class => ForoPolicy::class,
     ];
 
     /**

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreComentarioForoRequest;
 use App\Http\Requests\UpdateComentarioForoRequest;
 use App\Models\ComentarioForo;
+use App\Models\Foro;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ComentarioForoController extends Controller
 {
@@ -27,10 +31,22 @@ class ComentarioForoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreComentarioForoRequest $request)
-    {
-        //
-    }
+    public function store(Request $request, Foro $foro)
+{
+    $request->validate([
+        'contenido' => 'required|string|max:1000',
+    ]);
+
+    $comentario = new ComentarioForo();
+    $comentario->foro_id = $foro->id;
+    $comentario->usuario_id = Auth::id();
+    $comentario->contenido = $request->input('contenido');
+    $comentario->fecha_comentario = now();
+    $comentario->save();
+
+    return Redirect::back()->with('success', 'Comentario añadido con éxito.');
+}
+
 
     /**
      * Display the specified resource.
@@ -51,9 +67,17 @@ class ComentarioForoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateComentarioForoRequest $request, ComentarioForo $comentarioForo)
+    public function update(Request $request, ComentarioForo $comentarioForo)
     {
-        //
+        $this->authorize('update', $comentarioForo);
+
+        $request->validate([
+            'contenido' => 'required|string|max:1000',
+        ]);
+
+        $comentarioForo->update($request->only('contenido'));
+
+        return Redirect::back()->with('success', 'Comentario actualizado con éxito.');
     }
 
     /**
@@ -61,6 +85,10 @@ class ComentarioForoController extends Controller
      */
     public function destroy(ComentarioForo $comentarioForo)
     {
-        //
+        $this->authorize('delete', $comentarioForo);
+
+        $comentarioForo->delete();
+
+        return Redirect::back()->with('success', 'Comentario eliminado con éxito.');
     }
 }

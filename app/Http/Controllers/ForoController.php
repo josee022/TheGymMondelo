@@ -5,16 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreForoRequest;
 use App\Http\Requests\UpdateForoRequest;
 use App\Models\Foro;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ForoController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    $user = auth()->user();
+    // Ordenar los comentarios por fecha de comentario de más recientes a más antiguos
+    $foros = Foro::with(['usuario', 'comentarios' => function ($query) {
+        $query->orderBy('fecha_comentario', 'desc'); // Ordenar los comentarios aquí
+    }])->orderBy('fecha_publicacion', 'desc')->paginate(1);
+
+    return Inertia::render('Foros/Index', [
+        'auth' => ['user' => $user],
+        'foros' => $foros,
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -27,9 +44,21 @@ class ForoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreForoRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'contenido' => 'required|string',
+        ]);
+
+        Foro::create([
+            'titulo' => $request->titulo,
+            'contenido' => $request->contenido,
+            'usuario_id' => auth()->user()->id,
+            'fecha_publicacion' => now(),
+        ]);
+
+        return redirect()->route('foros.index')->with('success', 'Foro creado exitosamente.');
     }
 
     /**
@@ -51,9 +80,20 @@ class ForoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateForoRequest $request, Foro $foro)
+    public function update(Request $request, Foro $foro)
     {
-        //
+        $this->authorize('update', $foro);
+
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'contenido' => 'required|string',
+        ]);
+
+        $foro->titulo = $request->titulo;
+        $foro->contenido = $request->contenido;
+        $foro->save();
+
+        return redirect()->back()->with('success', 'Foro actualizado exitosamente.');
     }
 
     /**
@@ -61,6 +101,10 @@ class ForoController extends Controller
      */
     public function destroy(Foro $foro)
     {
-        //
+        $this->authorize('delete', $foro);
+
+        $foro->delete();
+
+        return redirect()->back()->with('success', 'Foro eliminado exitosamente.');
     }
 }

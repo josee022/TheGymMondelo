@@ -25,12 +25,7 @@ class ComentarioForo extends Model
         return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    public function comentarioPadre()
-    {
-        return $this->belongsTo(ComentarioForo::class, 'comentario_id');
-    }
-
-    public function comentariosHijos()
+    public function respuestas()
     {
         return $this->hasMany(ComentarioForo::class, 'comentario_id');
     }

@@ -69,6 +69,17 @@ export default function Authenticated({ user = {}, header, children }) {
                                 style={{ transformOrigin: 'left' }}
                             />
                         </NavLink>
+                        <NavLink
+                            href={route('foros.index')}
+                            active={route().current('foros.index')}
+                            className="text-white text-xl relative group"
+                        >
+                            Foro
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('foros.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
                     </div>
 
                     {/* Menú de usuario */}
@@ -122,6 +133,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('blogs.create')} active={route().current('blogs.create')}>
                             Blog
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('foros.index')} active={route().current('foros.index')}>
+                            Foro
                         </ResponsiveNavLink>
                     </div>
 
