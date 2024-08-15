@@ -6,26 +6,27 @@ import { usePage } from '@inertiajs/react';
 
 export default function Inicio({ auth }) {
 
-    // Suponiendo que esta función formatea la fecha y hora adecuadamente
+    // Función para formatear la fecha y hora del blog
     const formatFechaBlog = (fecha_publicacion) => {
         const date = new Date(fecha_publicacion);
         return date.toLocaleDateString('es-ES') + ' ' + date.toLocaleTimeString('es-ES');
     };
 
-    // Access blogs from the page props
+    // Accede a los blogs desde las propiedades de la página
     const { blogs } = usePage().props;
 
-    // Ordenar los blogs del más reciente al más antiguo
+    // Ordena los blogs del más reciente al más antiguo
     const sortedBlogs = [...blogs].sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
 
-    // State for current blog index
+    // Estado para el índice del blog actual
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Handlers for navigation
+    // Función para ir al blog anterior
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
     };
 
+    // Función para ir al blog siguiente
     const handleNext = () => {
         setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, sortedBlogs.length - 1));
     };
@@ -135,7 +136,7 @@ export default function Inicio({ auth }) {
                 <div className="contenedor-rosado">
                     <h3 className="titulo-rosado">Preparación propia  ❌</h3>
                     <div className="contenido-rosado">
-                        <p>❌ Planificacion: El hecho de crear tus propias rutinas y planes de entrenamiento sin conocimiento previo puede afectar a tu progreso. Podría llegar un punto en el que quedes atrapado en esa misma rutina permanente y no avances como se debe, al no tener nadie que te plantee un entreno efectivo y adecuado para tu propósito.</p>
+                        <p>❌ Planificación: El hecho de crear tus propias rutinas y planes de entrenamiento sin conocimiento previo puede afectar a tu progreso. Podría llegar un punto en el que quedes atrapado en esa misma rutina permanente y no avances como se debe, al no tener nadie que te plantee un entreno efectivo y adecuado para tu propósito.</p>
                         <hr />
                         <p>❌ Ejercicios: Mantener la efectividad y la variedad en tus entrenamientos es crucial. Sin una orientación adecuada, es probable que tus rutinas se vuelvan monótonas e ineficaces, lo cual puede llevarte al desinterés y la falta de motivación. Además, ejecutar ejercicios con técnica incorrecta aumenta el riesgo de lesiones. La ausencia de progresión adecuada puede resultar en estancamiento y frustración en tus objetivos físicos.</p>
                         <hr />
@@ -149,7 +150,7 @@ export default function Inicio({ auth }) {
                 <div className="contenedor-verde">
                     <h3 className="titulo-verde">Preparación profesional  ✅</h3>
                     <div className="contenido-verde">
-                        <p>✅ Planificacion: Te daremos un plan y rutina de entrenamiento específica para tu cuerpo y lo que necesites ya que disponemos de varios planes diferentes según el objetivo del cliente Y lo más importante, todo pautado por profesionales que llevan muchos años dando resultados positivos en varios de nuestros clientes.</p>
+                        <p>✅ Planificación: Te daremos un plan y rutina de entrenamiento específica para tu cuerpo y lo que necesites ya que disponemos de varios planes diferentes según el objetivo del cliente Y lo más importante, todo pautado por profesionales que llevan muchos años dando resultados positivos en varios de nuestros clientes.</p>
                         <hr />
                         <p>✅ Ejercicios: Disfruta de rutinas guiadas por expertos que aseguran la técnica correcta para optimizar resultados y reducir el riesgo de lesiones. Puedes elegir entre sesiones adaptadas a todos los niveles y entornos, como hogar, aire libre o gimnasio. Con una amplia gama de más de 100 entrenamientos que abarcan cardio, fuerza, yoga y pilates, siempre tendrás opciones variadas y contenido nuevo semanalmente.</p>
                         <hr />
@@ -157,7 +158,7 @@ export default function Inicio({ auth }) {
                         <hr />
                         <p>✅ Motivación: Estarás rodeado de personas con metas similares, lo cual aumenta significativamente tus probabilidades de éxito según la investigación. La comunidad ofrece un ambiente de apoyo y camaradería crucial para mantener tu motivación y consistencia. Además, participarás en desafíos, sorteos y eventos sorpresa que mantendrán vivo tu interés y compromiso.</p>
                         <hr />
-                        <p>✅ Hábitos:  Los planes están diseñados utilizando principios científicos de hábitos, lo que te permite adoptar un estilo de vida saludable de manera gradual y constante, sin depender solo de la motivación. Esto previene el abandono y evita el efecto rebote, asegurando un cambio duradero tanto mental como físico, que mantendrás a lo largo de tu vida en lugar de ser algo temporal con recaídas.</p>
+                        <p>✅ Hábitos: Los planes están diseñados utilizando principios científicos de hábitos, lo que te permite adoptar un estilo de vida saludable de manera gradual y constante, sin depender solo de la motivación. Esto previene el abandono y evita el efecto rebote, asegurando un cambio duradero tanto mental como físico, que mantendrás a lo largo de tu vida en lugar de ser algo temporal con recaídas.</p>
                     </div>
                 </div>
             </div>
@@ -247,7 +248,7 @@ export default function Inicio({ auth }) {
                         todos poco a poco a mejorar, es importante la relación,<br />
                         el buen ambiente, y sobre todo ver consejos y resultados<br />
                         de otros clientes ayuda a motivarse y querer conseguir<br />
-                        ese cuerpo tán soñado y mejorar la salud. </strong>
+                        ese cuerpo tan soñado y mejorar la salud. </strong>
                 </h2>
 
                 {/* Contenedor negro para los posts */}
@@ -296,7 +297,6 @@ export default function Inicio({ auth }) {
                         </button>
                     </div>
                 </div>
-
 
             </div>
 

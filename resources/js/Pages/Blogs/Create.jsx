@@ -4,33 +4,37 @@ import Footer from '@/Components/Footer';
 import { useForm } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/Pagination';
-import '../../../css/create-blog.css';
+import '../../../css/create-blog.css'; // Importa el archivo CSS personalizado
 
 export default function CreateBlog({ auth, isEntrenador, blogs }) {
+    // Hook de formulario para manejar datos de creación de un nuevo blog
     const { data, setData, post, reset, errors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para gestionar la edición de un blog específico
     const [editingBlogId, setEditingBlogId] = useState(null);
     const { data: editFormData, setData: setEditFormData, patch, clearErrors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Maneja el envío del formulario para crear un nuevo blog
     const handleCreateSubmit = (e) => {
         e.preventDefault();
         post(route('blogs.store'), {
-            onSuccess: () => reset(),
+            onSuccess: () => reset(), // Resetea el formulario en caso de éxito
         });
     };
 
+    // Maneja el envío del formulario para actualizar un blog existente
     const handleEditSubmit = (e) => {
         e.preventDefault();
         patch(route('blogs.update', editingBlogId), {
             onSuccess: () => {
-                setEditingBlogId(null);
-                clearErrors();
+                setEditingBlogId(null); // Finaliza el modo de edición en caso de éxito
+                clearErrors(); // Limpia los errores del formulario
             },
             onError: () => {
                 // Manejo de errores si es necesario
@@ -38,6 +42,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
         });
     };
 
+    // Configura el formulario con los datos del blog que se está editando
     const handleEdit = (blog) => {
         setEditingBlogId(blog.id);
         setEditFormData({
@@ -46,11 +51,13 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
         });
     };
 
+    // Cancela el modo de edición y limpia los errores
     const handleCancelEdit = () => {
         setEditingBlogId(null);
         clearErrors();
     };
 
+    // Maneja la eliminación de un blog después de confirmar la acción
     const handleDelete = (blogId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este blog?')) {
             Inertia.delete(route('blogs.destroy', blogId), {
@@ -64,6 +71,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
         }
     };
 
+    // Formatea la fecha del blog para su visualización en el formato deseado
     const formatFechaBlog = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -77,6 +85,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
         >
             <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+                    {/* Solo los entrenadores pueden ver el formulario para crear un nuevo blog */}
                     {isEntrenador ? (
                         <>
                             <div className="text-center mb-6">
@@ -88,6 +97,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                                 </h1>
                             </div>
 
+                            {/* Formulario para crear un nuevo blog */}
                             <form onSubmit={handleCreateSubmit} className="space-y-6">
                                 <div>
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Título</label>
@@ -136,11 +146,13 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                         </span>
                     </h2>
                     <div className="space-y-4">
+                        {/* Muestra la lista de blogs */}
                         {blogs.data.map((blog) => (
                             <div
                                 key={blog.id}
                                 className="relative bg-[#d9f99d] p-4 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
                             >
+                                {/* Si el blog está en modo de edición, muestra el formulario de edición */}
                                 {editingBlogId === blog.id ? (
                                     <form onSubmit={handleEditSubmit} className="space-y-6">
                                         <div>
@@ -199,6 +211,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                                                     {blog.contenido}
                                                 </p>
                                             </div>
+                                            {/* Muestra los botones de editar y eliminar solo si el usuario es el autor del blog */}
                                             {isEntrenador && (auth.user.id === blog.autor_id) && (
                                                 <div className="flex justify-end space-x-2 mt-4">
                                                     <button
@@ -216,13 +229,13 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                                                 </div>
                                             )}
                                         </div>
-
                                     </>
                                 )}
                             </div>
                         ))}
                     </div>
 
+                    {/* Componente de paginación para manejar la paginación de blogs */}
                     <Pagination class="mt-6" links={blogs.links} />
                 </div>
             </div>

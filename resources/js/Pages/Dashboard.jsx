@@ -1,60 +1,59 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-import Pagination from '@/Components/Pagination';
-import Footer from '@/Components/Footer';
-
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'; // Importa el layout que envuelve la página
+import { Head, Link } from '@inertiajs/react'; // Importa componentes de InertiaJS para manejo de estado y enlaces
+import Pagination from '@/Components/Pagination'; // Importa el componente de paginación
+import Footer from '@/Components/Footer'; // Importa el componente de pie de página
 
 export default function Dashboard({ auth, isEntrenador, reservas }) {
-    const user = auth.user;
+    const user = auth.user; // Extrae el usuario autenticado del objeto auth
 
-    // Función para determinar el fondo basado en el estado de la reserva
+    // Función para determinar el color de fondo de la reserva según su estado
     const getReservaBackgroundColor = (estado) => {
         switch (estado) {
             case 'Confirmada':
-                return 'bg-green-100';
+                return 'bg-green-100'; // Verde claro para reservas confirmadas
             case 'Cancelada':
-                return 'bg-red-100';
+                return 'bg-red-100'; // Rojo claro para reservas canceladas
             default:
-                return 'bg-gray-100';
+                return 'bg-gray-100'; // Gris claro para otros estados
         }
     };
 
     // Función para formatear la fecha y hora de la reserva
     const formatFechaReserva = (timestamp) => {
-        const fecha = new Date(timestamp);
+        const fecha = new Date(timestamp); // Convierte el timestamp en un objeto Date
         const fechaFormateada = fecha.toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-        }); // Formato: dd-mm-yyyy
-        const horaFormateada = fecha.toLocaleTimeString('es-ES', { hour12: false }); // Formato: HH:mm:ss
-        return `La reserva se creó el ${fechaFormateada} a las ${horaFormateada}`;
+        }); // Formatea la fecha como dd-mm-yyyy
+        const horaFormateada = fecha.toLocaleTimeString('es-ES', { hour12: false }); // Formatea la hora en formato HH:mm:ss
+        return `La reserva se creó el ${fechaFormateada} a las ${horaFormateada}`; // Devuelve la fecha y hora en un formato legible
     };
 
     // Función para formatear la fecha de la clase
     const formatFechaClase = (fecha) => {
-        const fechaObj = new Date(fecha);
+        const fechaObj = new Date(fecha); // Convierte la fecha en un objeto Date
         return fechaObj.toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-        }); // Formato: dd-mm-yyyy
+        }); // Formatea la fecha como dd-mm-yyyy
     };
 
-    // Ordenar las reservas de más reciente a más antigua
+    // Ordena las reservas de la más reciente a la más antigua
     const reservasOrdenadas = reservas.data.sort((a, b) => new Date(b.fecha_reserva) - new Date(a.fecha_reserva));
 
     return (
         <AuthenticatedLayout
-            user={user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Panel de control del usuario :</h2>}
+            user={user} // Pasa el usuario al layout autenticado
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Panel de control del usuario :</h2>} // Encabezado del panel de control
         >
-            <Head title="Panel de control" />
+            <Head title="Panel de control" /> {/* Establece el título de la página */}
 
             <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
                 {/* Contenedor principal */}
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-                    {/* Encabezado */}
+                    {/* Encabezado de la sección */}
                     <div className="text-center mb-6">
                         <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
                             <span className="relative inline-block">
@@ -64,7 +63,7 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                         </h1>
                     </div>
 
-                    {/* Información del perfil */}
+                    {/* Información del perfil del usuario */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-gray-900">
                         <div>
                             <p className="mb-4"><strong className="text-gray-700">Nombre:</strong> {user.name}</p>
@@ -88,7 +87,7 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                         </div>
                     )}
 
-                    {/* Botón de editar perfil */}
+                    {/* Botón para editar el perfil del usuario */}
                     <div className="mt-6 text-center">
                         <a href="/profile/edit" className="bg-[#a3e635] text-black px-4 py-2 rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-[#a3e635]">
                             Editar perfil
@@ -130,11 +129,11 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                             ))
                         )}
 
-                        <Pagination links={reservas.links} />
+                        <Pagination links={reservas.links} /> {/* Componente de paginación para las reservas */}
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer /> {/* Pie de página */}
         </AuthenticatedLayout>
     );
 }

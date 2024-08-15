@@ -14,9 +14,8 @@ class BlogController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth'); // Aplica el middleware de autenticación a todas las acciones del controlador.
     }
-    
     /**
      * Display a listing of the resource.
      */
@@ -30,10 +29,11 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        $isEntrenador = $user->entrenador()->exists();
-        $blogs = Blog::with('autor')->orderBy('fecha_publicacion', 'desc')->paginate(2);
+        $user = auth()->user(); // Obtiene el usuario actualmente autenticado.
+        $isEntrenador = $user->entrenador()->exists(); // Verifica si el usuario es un entrenador.
+        $blogs = Blog::with('autor')->orderBy('fecha_publicacion', 'desc')->paginate(2); // Obtiene los blogs paginados, ordenados por fecha de publicación.
 
+        // Retorna la vista de creación de blogs con la información del usuario y los blogs.
         return Inertia::render('Blogs/Create', [
             'auth' => ['user' => $user],
             'isEntrenador' => $isEntrenador,
@@ -46,18 +46,21 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+        // Validar los datos de entrada.
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'contenido' => 'required|string',
+            'titulo' => 'required|string|max:255', // Título requerido, cadena de texto con un máximo de 255 caracteres.
+            'contenido' => 'required|string', // Contenido requerido, cadena de texto.
         ]);
 
+        // Crear un nuevo blog con los datos validados.
         Blog::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
-            'autor_id' => auth()->user()->id,
-            'fecha_publicacion' => now(),
+            'autor_id' => auth()->user()->id, // ID del autor (usuario actualmente autenticado).
+            'fecha_publicacion' => now(), // Fecha y hora actual.
         ]);
 
+        // Redirigir al usuario a la página de creación de blogs con un mensaje de éxito.
         return redirect()->route('blogs.create')->with('success', 'Blog creado exitosamente.');
     }
 
@@ -82,17 +85,20 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        $this->authorize('update', $blog);
+        $this->authorize('update', $blog); // Verificar que el usuario está autorizado para actualizar el blog.
 
+        // Validar los datos de entrada.
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'contenido' => 'required|string',
+            'titulo' => 'required|string|max:255', // Título requerido, cadena de texto con un máximo de 255 caracteres.
+            'contenido' => 'required|string', // Contenido requerido, cadena de texto.
         ]);
 
+        // Actualizar el blog con los datos validados.
         $blog->titulo = $request->titulo;
         $blog->contenido = $request->contenido;
-        $blog->save();
+        $blog->save(); // Guardar los cambios en la base de datos.
 
+        // Redirigir al usuario a la página anterior con un mensaje de éxito.
         return redirect()->back()->with('success', 'Blog actualizado exitosamente.');
     }
 
@@ -101,10 +107,11 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        $this->authorize('delete', $blog);
+        $this->authorize('delete', $blog); // Verificar que el usuario está autorizado para eliminar el blog.
 
-        $blog->delete();
+        $blog->delete(); // Eliminar el blog de la base de datos.
 
+        // Redirigir al usuario a la página anterior con un mensaje de éxito.
         return redirect()->back()->with('success', 'Blog eliminado exitosamente.');
     }
 }

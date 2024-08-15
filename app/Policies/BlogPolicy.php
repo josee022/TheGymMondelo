@@ -40,7 +40,7 @@ class BlogPolicy
      */
     public function update(User $user, Blog $blog): bool
     {
-        // Only the author of the blog can update it
+        // Verificar si el usuario es el autor del blog
         return $user->id === $blog->autor_id;
     }
 
@@ -49,7 +49,7 @@ class BlogPolicy
      */
     public function delete(User $user, Blog $blog): bool
     {
-        // Only the author of the blog can delete it
+        // Verificar si el usuario es el autor del blog
         return $user->id === $blog->autor_id;
     }
 

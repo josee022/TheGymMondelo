@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const CalculadoraKcal = () => {
+    // Estados para los datos de entrada y resultados
     const [edad, setEdad] = useState('');
     const [peso, setPeso] = useState('');
     const [altura, setAltura] = useState('');
@@ -12,35 +13,40 @@ const CalculadoraKcal = () => {
     const [grasas, setGrasas] = useState(null);
     const [carbohidratos, setCarbohidratos] = useState(null);
 
+    // Función para calcular las calorías y macronutrientes
     const calcularCalorias = () => {
         let tmb;
 
+        // Cálculo del TMB (Tasa Metabólica Basal) según el género
         if (genero === 'hombre') {
             tmb = 88.36 + (13.4 * peso) + (4.8 * altura) - (5.7 * edad);
         } else {
             tmb = 447.6 + (9.2 * peso) + (3.1 * altura) - (4.3 * edad);
         }
 
+        // Ajuste del TMB según el nivel de actividad
         let caloriasDiarias = tmb * parseFloat(actividad);
 
+        // Ajuste de las calorías según el objetivo
         switch (objetivo) {
             case 'perdida':
-                caloriasDiarias *= 0.8;
+                caloriasDiarias *= 0.8; // Reducción de calorías para pérdida de grasa
                 break;
             case 'ganancia':
-                caloriasDiarias *= 1.2;
+                caloriasDiarias *= 1.2; // Aumento de calorías para ganancia muscular
                 break;
             default:
                 break;
         }
 
-        // Calcular macronutrientes
+        // Cálculo de macronutrientes
         const proteinasGramos = peso * (objetivo === 'ganancia' ? 2.2 : 1.6);
         const grasasCalorias = caloriasDiarias * 0.25; // 25% de las calorías para grasas
         const grasasGramos = grasasCalorias / 9; // 1 gramo de grasa = 9 calorías
         const carbohidratosCalorias = caloriasDiarias - (proteinasGramos * 4) - (grasasGramos * 9);
         const carbohidratosGramos = carbohidratosCalorias / 4; // 1 gramo de carbohidrato = 4 calorías
 
+        // Actualización del estado con los resultados
         setCalorias(Math.round(caloriasDiarias));
         setProteinas(Math.round(proteinasGramos));
         setGrasas(Math.round(grasasGramos));
@@ -53,6 +59,7 @@ const CalculadoraKcal = () => {
                 Calculadora Kcal Diarias
             </h2>
             <div className="space-y-3">
+                {/* Campo para seleccionar el género */}
                 <div>
                     <label className="block text-lime-400">Género</label>
                     <select
@@ -64,6 +71,7 @@ const CalculadoraKcal = () => {
                         <option value="mujer">Mujer</option>
                     </select>
                 </div>
+                {/* Campo para ingresar la edad */}
                 <div>
                     <label className="block text-lime-400">Edad</label>
                     <input
@@ -73,6 +81,7 @@ const CalculadoraKcal = () => {
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
                     />
                 </div>
+                {/* Campo para ingresar el peso en kg */}
                 <div>
                     <label className="block text-lime-400">Peso (kg)</label>
                     <input
@@ -82,6 +91,7 @@ const CalculadoraKcal = () => {
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
                     />
                 </div>
+                {/* Campo para ingresar la altura en cm */}
                 <div>
                     <label className="block text-lime-400">Altura (cm)</label>
                     <input
@@ -91,6 +101,7 @@ const CalculadoraKcal = () => {
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
                     />
                 </div>
+                {/* Campo para seleccionar el nivel de actividad */}
                 <div>
                     <label className="block text-lime-400">Actividad</label>
                     <select
@@ -105,6 +116,7 @@ const CalculadoraKcal = () => {
                         <option value="1.9">Super Activo</option>
                     </select>
                 </div>
+                {/* Campo para seleccionar el objetivo */}
                 <div>
                     <label className="block text-lime-400">Objetivo</label>
                     <select
@@ -118,6 +130,7 @@ const CalculadoraKcal = () => {
                     </select>
                 </div>
             </div>
+            {/* Botón para calcular las calorías */}
             <div className="mt-4 text-center">
                 <button
                     onClick={calcularCalorias}
@@ -126,6 +139,7 @@ const CalculadoraKcal = () => {
                     Calcular
                 </button>
             </div>
+            {/* Mostrar los resultados */}
             {calorias && (
                 <div className="mt-4">
                     <div className="text-lime-400 text-lg text-center mb-2">

@@ -21,6 +21,8 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
+
+     // Definición de politicas
     protected $policies = [
         Entrenador::class => EntrenadorPolicy::class,
         Reserva::class => ReservaPolicy::class,

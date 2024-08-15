@@ -20,7 +20,9 @@ class EntrenadorController extends Controller
      */
     public function index()
     {
+        // Obtiene todos los entrenadores junto con la relación 'usuario'
         $entrenadores = Entrenador::with('usuario')->get();
+        // Renderiza la vista 'Entrenadores/Index' y pasa los datos de los entrenadores
         return Inertia::render('Entrenadores/Index', [
             'entrenadores' => $entrenadores,
         ]);

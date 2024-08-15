@@ -6,143 +6,168 @@ import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/Pagination';
 
 export default function CreateForo({ auth, foros }) {
+    // Hook de formulario para crear nuevos foros
     const { data, setData, post, reset, errors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para gestionar el ID del foro que se está editando
     const [editingForoId, setEditingForoId] = useState(null);
     const { data: editFormData, setData: setEditFormData, patch, clearErrors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para gestionar el ID del comentario que se está editando
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [commentsData, setCommentsData] = useState({});
 
+    // Maneja la sumisión del formulario para crear un nuevo foro
     const handleCreateSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga de la página)
+
+        // Realiza una petición POST para crear un nuevo foro
         post(route('foros.store'), {
-            onSuccess: () => reset(),
+            onSuccess: () => reset(), // Resetea los datos del formulario al éxito
         });
     };
 
+    // Maneja la sumisión del formulario para editar un foro existente
     const handleEditSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga de la página)
+
+        // Realiza una petición PATCH para actualizar un foro existente
         patch(route('foros.update', editingForoId), {
             onSuccess: () => {
-                setEditingForoId(null);
-                clearErrors();
+                setEditingForoId(null); // Cancela el estado de edición al éxito
+                clearErrors(); // Limpia los errores
             },
         });
     };
 
+    // Configura el formulario para editar un foro específico
     const handleEdit = (foro) => {
-        setEditingForoId(foro.id);
+        setEditingForoId(foro.id); // Establece el ID del foro que se está editando
         setEditFormData({
             titulo: foro.titulo,
             contenido: foro.contenido,
-        });
+        }); // Prellena el formulario con los datos del foro
     };
 
+    // Cancela la edición del foro
     const handleCancelEdit = () => {
-        setEditingForoId(null);
-        clearErrors();
+        setEditingForoId(null); // Restablece el estado de edición
+        clearErrors(); // Limpia los errores del formulario
     };
 
+    // Elimina un foro después de una confirmación
     const handleDelete = (foroId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este foro?')) {
+            // Muestra un diálogo de confirmación antes de eliminar el foro
             Inertia.delete(route('foros.destroy', foroId), {
                 onSuccess: () => {
-                    console.log('Foro eliminado con éxito');
+                    console.log('Foro eliminado con éxito'); // Mensaje en la consola al eliminar el foro exitosamente
                 },
                 onError: (error) => {
-                    console.error('Error al eliminar el foro:', error);
+                    console.error('Error al eliminar el foro:', error); // Mensaje en la consola si ocurre un error
                 },
             });
         }
     };
 
+    // Maneja la creación de un nuevo comentario en un foro específico
     const handleCreateComment = (e, foroId) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga de la página)
 
+        // Verifica que el contenido del comentario no esté vacío antes de enviar la petición
         if (!commentsData[foroId]?.newCommentContent?.trim()) return;
 
+        // Realiza una petición POST para agregar un nuevo comentario
         Inertia.post(route('comentarios.store', foroId), {
             contenido: commentsData[foroId].newCommentContent,
             onSuccess: () => {
                 setCommentsData(prev => ({
                     ...prev,
-                    [foroId]: { newCommentContent: '' },
+                    [foroId]: { newCommentContent: '' }, // Limpia el contenido del comentario después del éxito
                 }));
             },
             onError: (error) => {
-                console.error('Error al crear el comentario:', error);
+                console.error('Error al crear el comentario:', error); // Mensaje en la consola si ocurre un error
             },
         });
     };
 
+    // Maneja los cambios en el contenido del comentario
     const handleCommentChange = (e, foroId) => {
         setCommentsData(prev => ({
             ...prev,
-            [foroId]: { ...prev[foroId], newCommentContent: e.target.value },
+            [foroId]: { ...prev[foroId], newCommentContent: e.target.value }, // Actualiza el contenido del comentario en el estado
         }));
     };
 
+    // Configura el formulario para editar un comentario específico
     const handleEditComment = (comment) => {
-        setEditingCommentId(comment.id);
+        setEditingCommentId(comment.id); // Establece el ID del comentario que se está editando
         setCommentsData(prev => ({
             ...prev,
-            [comment.foro_id]: { editCommentContent: comment.contenido },
+            [comment.foro_id]: { editCommentContent: comment.contenido }, // Prellena el formulario con el contenido del comentario
         }));
     };
 
+    // Maneja la sumisión del formulario para editar un comentario existente
     const handleEditCommentSubmit = (e, commentId) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga de la página)
         const foroId = Object.keys(commentsData).find(id => commentsData[id]?.editCommentContent !== undefined);
 
+        // Realiza una petición PATCH para actualizar un comentario existente
         Inertia.patch(route('comentarios.update', commentId), {
             contenido: commentsData[foroId]?.editCommentContent || '',
             onSuccess: () => {
-                setEditingCommentId(null);
+                setEditingCommentId(null); // Cancela el estado de edición del comentario al éxito
                 setCommentsData(prev => ({
                     ...prev,
-                    [foroId]: { editCommentContent: '' },
+                    [foroId]: { editCommentContent: '' }, // Limpia el contenido del comentario en el estado
                 }));
             },
             onError: (error) => {
-                console.error('Error al editar el comentario:', error);
+                console.error('Error al editar el comentario:', error); // Mensaje en la consola si ocurre un error
             },
         });
     };
 
+    // Cancela la edición del comentario
     const handleCancelCommentEdit = () => {
-        setEditingCommentId(null);
+        setEditingCommentId(null); // Restablece el estado de edición del comentario
     };
 
+    // Elimina un comentario después de una confirmación
     const handleDeleteComment = (commentId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+            // Muestra un diálogo de confirmación antes de eliminar el comentario
             Inertia.delete(route('comentarios.destroy', commentId), {
                 onSuccess: () => {
-                    console.log('Comentario eliminado con éxito');
+                    console.log('Comentario eliminado con éxito'); // Mensaje en la consola al eliminar el comentario exitosamente
                 },
                 onError: (error) => {
-                    console.error('Error al eliminar el comentario:', error);
+                    console.error('Error al eliminar el comentario:', error); // Mensaje en la consola si ocurre un error
                 },
             });
         }
     };
 
+    // Formatea la fecha de publicación del foro en un formato legible
     const formatFechaForo = (timestamp) => {
-        const fecha = new Date(timestamp);
-        const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return `Creado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
+        const fecha = new Date(timestamp); // Crea un objeto Date a partir del timestamp
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }; // Opciones de formato para la fecha
+        return `Creado el ${fecha.toLocaleDateString('es-ES', opciones)}`; // Devuelve la fecha formateada en español
     };
 
+    // Formatea la fecha de publicación del comentario en un formato legible
     const formatFechaComentario = (timestamp) => {
-        const fecha = new Date(timestamp);
-        const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return `Publicado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
+        const fecha = new Date(timestamp); // Crea un objeto Date a partir del timestamp
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }; // Opciones de formato para la fecha
+        return `Publicado el ${fecha.toLocaleDateString('es-ES', opciones)}`; // Devuelve la fecha formateada en español
     };
 
     return (

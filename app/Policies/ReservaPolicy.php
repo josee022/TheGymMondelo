@@ -37,6 +37,7 @@ class ReservaPolicy
      */
     public function update(User $user, Reserva $reserva): bool
     {
+        // Comprobación si el usuario es el mismo que hizo la reserva
         return $user->id === $reserva->usuario_id;
     }
 

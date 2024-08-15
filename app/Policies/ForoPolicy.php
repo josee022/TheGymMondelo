@@ -37,6 +37,7 @@ class ForoPolicy
      */
     public function update(User $user, Foro $foro): bool
     {
+        // Validar que el usuario sea el autor del foro
         return $user->id === $foro->usuario_id;
     }
 
@@ -45,6 +46,7 @@ class ForoPolicy
      */
     public function delete(User $user, Foro $foro): bool
     {
+        // Validar que el usuario sea el autor del foro
         return $user->id === $foro->usuario_id;
     }
 

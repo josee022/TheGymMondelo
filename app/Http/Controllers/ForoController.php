@@ -13,6 +13,7 @@ class ForoController extends Controller
 
     public function __construct()
     {
+        // Asegura que todas las rutas de este controlador requieran autenticación
         $this->middleware('auth');
     }
     /**
@@ -26,13 +27,18 @@ class ForoController extends Controller
         $foros = Foro::with([
             'usuario', // Carga el autor del foro
             'comentarios' => function ($query) {
-                $query->orderBy('fecha_comentario', 'desc') // Ordena los comentarios por fecha de manera descendente
-                    ->with('usuario'); // Carga el autor del comentario
+                // Ordena los comentarios por fecha de manera descendente
+                $query->orderBy('fecha_comentario', 'desc')
+                    // Carga el autor del comentario
+                    ->with('usuario');
             }
         ])
-            ->orderBy('fecha_publicacion', 'desc') // Ordena los foros por fecha de manera descendente
+            // Ordena los foros por fecha de publicación de manera descendente
+            ->orderBy('fecha_publicacion', 'desc')
+            // Paginación de los foros, mostrando 2 por página
             ->paginate(2);
 
+        // Retorna la vista con los datos necesarios para el componente Inertia
         return Inertia::render('Foros/Index', [
             'auth' => ['user' => $user],
             'foros' => $foros,
@@ -53,11 +59,13 @@ class ForoController extends Controller
      */
     public function store(Request $request)
     {
+        // Valida los datos del formulario
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'required|string',
         ]);
 
+        // Crea un nuevo foro con los datos proporcionados
         Foro::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
@@ -65,6 +73,7 @@ class ForoController extends Controller
             'fecha_publicacion' => now(),
         ]);
 
+        // Redirige al índice de foros con un mensaje de éxito
         return redirect()->route('foros.index')->with('success', 'Foro creado exitosamente.');
     }
 
@@ -89,17 +98,21 @@ class ForoController extends Controller
      */
     public function update(Request $request, Foro $foro)
     {
+        // Autoriza la acción de actualización del foro
         $this->authorize('update', $foro);
 
+        // Valida los datos del formulario
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'required|string',
         ]);
 
+        // Actualiza los datos del foro
         $foro->titulo = $request->titulo;
         $foro->contenido = $request->contenido;
         $foro->save();
 
+        // Redirige hacia atrás con un mensaje de éxito
         return redirect()->back()->with('success', 'Foro actualizado exitosamente.');
     }
 
@@ -108,10 +121,13 @@ class ForoController extends Controller
      */
     public function destroy(Foro $foro)
     {
+        // Autoriza la acción de eliminación del foro
         $this->authorize('delete', $foro);
 
+        // Elimina el foro
         $foro->delete();
 
+        // Redirige hacia atrás con un mensaje de éxito
         return redirect()->back()->with('success', 'Foro eliminado exitosamente.');
     }
 }
