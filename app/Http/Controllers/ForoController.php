@@ -19,18 +19,25 @@ class ForoController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $user = auth()->user();
-    // Ordenar los comentarios por fecha de comentario de más recientes a más antiguos
-    $foros = Foro::with(['usuario', 'comentarios' => function ($query) {
-        $query->orderBy('fecha_comentario', 'desc'); // Ordenar los comentarios aquí
-    }])->orderBy('fecha_publicacion', 'desc')->paginate(1);
+    {
+        $user = auth()->user();
 
-    return Inertia::render('Foros/Index', [
-        'auth' => ['user' => $user],
-        'foros' => $foros,
-    ]);
-}
+        // Recupera los foros con el usuario y los comentarios asociados
+        $foros = Foro::with([
+            'usuario', // Carga el autor del foro
+            'comentarios' => function ($query) {
+                $query->orderBy('fecha_comentario', 'desc') // Ordena los comentarios por fecha de manera descendente
+                    ->with('usuario'); // Carga el autor del comentario
+            }
+        ])
+            ->orderBy('fecha_publicacion', 'desc') // Ordena los foros por fecha de manera descendente
+            ->paginate(2);
+
+        return Inertia::render('Foros/Index', [
+            'auth' => ['user' => $user],
+            'foros' => $foros,
+        ]);
+    }
 
 
     /**
