@@ -36,6 +36,7 @@ class ComentarioForoController extends Controller
         // Valida los datos del formulario
         $request->validate([
             'contenido' => 'required|string|max:1000', // El campo 'contenido' es obligatorio, debe ser una cadena de texto y no puede exceder los 1000 caracteres
+            'comentario_id' => 'nullable|exists:comentarios_foros,id', // Validar que el comentario_id exista si se envía
         ]);
 
         // Crea una nueva instancia del modelo ComentarioForo
@@ -44,6 +45,11 @@ class ComentarioForoController extends Controller
         $comentario->usuario_id = Auth::id(); // Asigna el ID del usuario autenticado
         $comentario->contenido = $request->input('contenido'); // Asigna el contenido del comentario
         $comentario->fecha_comentario = now(); // Asigna la fecha actual
+
+        // Si el request tiene un comentario_id, este comentario es una respuesta
+        if ($request->filled('comentario_id')) {
+            $comentario->comentario_id = $request->input('comentario_id');
+        }
         $comentario->save(); // Guarda el comentario en la base de datos
 
         // Redirige de vuelta a la página anterior con un mensaje de éxito
