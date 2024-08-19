@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 
 const CalculadoraIMC = () => {
+    // Estados para los datos de entrada y resultados
     const [peso, setPeso] = useState('');
     const [altura, setAltura] = useState('');
     const [imc, setImc] = useState(null);
     const [interpretacionImc, setInterpretacionImc] = useState('');
 
+    // Función para calcular el IMC (Índice de Masa Corporal)
     const calcularIMC = () => {
+        // Verifica que tanto peso como altura estén ingresados
         if (peso && altura) {
+            // Convertir altura a metros y calcular IMC
             const alturaEnMetros = altura / 100;
             const imcCalculado = peso / (alturaEnMetros * alturaEnMetros);
-            setImc(imcCalculado.toFixed(2));
+            setImc(imcCalculado.toFixed(2)); // Redondear el IMC a dos decimales
 
-            // Interpretación del IMC
+            // Determinar la interpretación del IMC
             let interpretacion = '';
             if (imcCalculado < 16) {
                 interpretacion = 'Desnutrición severa';
@@ -32,6 +36,7 @@ const CalculadoraIMC = () => {
                 interpretacion = 'Obesidad clase 3 (muy severa o mórbida)';
             }
 
+            // Actualizar el estado con la interpretación del IMC
             setInterpretacionImc(interpretacion);
         }
     };
@@ -42,6 +47,7 @@ const CalculadoraIMC = () => {
                 Índice de Masa Corporal
             </h2>
             <div className="space-y-3">
+                {/* Campo para ingresar el peso en kg */}
                 <div>
                     <label className="block text-lime-400">Peso (kg)</label>
                     <input
@@ -51,6 +57,7 @@ const CalculadoraIMC = () => {
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
                     />
                 </div>
+                {/* Campo para ingresar la altura en cm */}
                 <div>
                     <label className="block text-lime-400">Altura (cm)</label>
                     <input
@@ -61,6 +68,7 @@ const CalculadoraIMC = () => {
                     />
                 </div>
             </div>
+            {/* Botón para calcular el IMC */}
             <div className="mt-4 text-center">
                 <button
                     onClick={calcularIMC}
@@ -69,9 +77,10 @@ const CalculadoraIMC = () => {
                     Calcular IMC
                 </button>
             </div>
+            {/* Mostrar el IMC calculado y su interpretación */}
             {imc && (
                 <div className="mt-4 text-center text-lime-400 text-lg animate-pulse">
-                    Tu IMC es de : {imc}
+                    Tu IMC es de: {imc}
                 </div>
             )}
             {imc && (

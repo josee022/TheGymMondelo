@@ -5,10 +5,12 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Blog;
+use App\Models\ComentarioForo;
 use App\Models\Entrenador;
 use App\Models\Foro;
 use App\Models\Reserva;
 use App\Policies\BlogPolicy;
+use App\Policies\ComentarioForoPolicy;
 use App\Policies\EntrenadorPolicy;
 use App\Policies\ForoPolicy;
 use App\Policies\ReservaPolicy;
@@ -21,11 +23,14 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
+
+     // Definición de politicas
     protected $policies = [
         Entrenador::class => EntrenadorPolicy::class,
         Reserva::class => ReservaPolicy::class,
         Blog::class => BlogPolicy::class,
         Foro::class => ForoPolicy::class,
+        ComentarioForo::class => ComentarioForoPolicy::class,
     ];
 
     /**

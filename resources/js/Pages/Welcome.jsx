@@ -1,9 +1,10 @@
-import { Link, Head } from '@inertiajs/react';
+import { Link, Head } from '@inertiajs/react'; // Importa los componentes Link y Head de InertiaJS
 
 export default function Welcome({ auth }) {
     return (
         <>
-            <Head title="Bienvenido" />
+            <Head title="Bienvenido" /> {/* Establece el título de la página */}
+
             {/* Contenedor principal con imagen de fondo */}
             <div className="relative min-h-screen bg-cover bg-center"
                  style={{ backgroundImage: `url('/imagenes/login_register/2-loginRegister.jpg')` }}>
@@ -11,9 +12,9 @@ export default function Welcome({ auth }) {
                 {/* Logo en la esquina superior izquierda */}
                 <div className="absolute top-0 left-0 p-6">
                     <img
-                        src="/imagenes/logo/1-logoWeb.png"
-                        alt="Logo"
-                        className="w-32 h-auto rounded-full"
+                        src="/imagenes/logo/1-logoWeb.png" // Ruta de la imagen del logo
+                        alt="Logo" // Texto alternativo para la imagen
+                        className="w-32 h-auto rounded-full" // Estilos para el logo
                     />
                 </div>
 
@@ -22,7 +23,7 @@ export default function Welcome({ auth }) {
                     {/* Condicional para mostrar diferentes enlaces según el estado de autenticación */}
                     {auth.user ? (
                         <Link
-                            href={route('dashboard')}
+                            href={route('dashboard')} // Ruta al dashboard del usuario autenticado
                             className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 block text-center rounded-full px-6 py-2 bg-gray-100 border border-gray-300"
                         >
                             Perfil
@@ -30,7 +31,7 @@ export default function Welcome({ auth }) {
                     ) : (
                         <>
                             <Link
-                                href={route('login')}
+                                href={route('login')} // Ruta a la página de inicio de sesión
                                 className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 block text-center rounded-full px-6 py-2 bg-gray-100 border border-gray-300"
                             >
                                 Inicio de Sesión
@@ -56,7 +57,7 @@ export default function Welcome({ auth }) {
                         </p>
                         {/* Enlace para registrarse */}
                         <Link
-                            href={route('register')}
+                            href={route('register')} // Ruta a la página de registro
                             className="inline-block px-8 py-4 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition duration-200"
                         >
                             Únete Ahora

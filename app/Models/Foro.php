@@ -22,6 +22,6 @@ class Foro extends Model
 
     public function comentarios()
     {
-        return $this->hasMany(ComentarioForo::class, 'foro_id');
+        return $this->hasMany(ComentarioForo::class, 'foro_id')->with('usuario', 'respuestas');
     }
 }

@@ -37,6 +37,7 @@ class ComentarioForoPolicy
      */
     public function update(User $user, ComentarioForo $comentarioForo): bool
     {
+        // Validar si el usuario es el autor del comentario
         return $user->id === $comentarioForo->usuario_id;
     }
 
@@ -45,6 +46,7 @@ class ComentarioForoPolicy
      */
     public function delete(User $user, ComentarioForo $comentarioForo): bool
     {
+        // Validar si el usuario es el autor del comentario
         return $user->id === $comentarioForo->usuario_id;
     }
 

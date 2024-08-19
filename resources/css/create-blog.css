@@ -1,23 +1,25 @@
 /* resources/css/create-blog.css */
 
+/* Animación para mover el elemento hacia arriba y hacia abajo */
 @keyframes move-up-down {
     0% {
-        transform: translateY(0);
+        transform: translateY(0); /* Posición inicial del elemento */
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-10px); /* Mueve el elemento 10px hacia arriba en el punto medio de la animación */
     }
     100% {
-        transform: translateY(0);
+        transform: translateY(0); /* Regresa a la posición inicial del elemento */
     }
 }
 
+/* Estilo personalizado para elementos con la clase .bg-custom */
 .bg-custom {
-    background-color: #4caf50; /* lime-400 */
-    color: #000; /* black */
-    padding: 16px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    animation: move-up-down 3s ease-in-out infinite;
+    background-color: #4caf50; /* Color de fondo verde (lime-400) */
+    color: #000; /* Color del texto negro */
+    padding: 16px; /* Espaciado interior de 16px */
+    border-radius: 8px; /* Bordes redondeados con un radio de 8px */
+    text-align: center; /* Centra el texto horizontalmente */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra del cuadro para darle un efecto de profundidad */
+    animation: move-up-down 3s ease-in-out infinite; /* Aplica la animación 'move-up-down' con duración de 3 segundos, suavidad en el inicio y final, y repetición infinita */
 }

@@ -6,50 +6,64 @@ import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/Pagination';
 
 export default function CreateForo({ auth, foros }) {
-    const { data, setData, post, reset, errors } = useForm({
+    // Maneja el estado y las funciones de formulario para crear un foro
+    const { data: createForoData, setData: setCreateForoData, post, reset, errors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para manejar el ID del foro que se está editando
     const [editingForoId, setEditingForoId] = useState(null);
-    const { data: editFormData, setData: setEditFormData, patch, clearErrors } = useForm({
+    // Maneja el estado y las funciones de formulario para editar un foro
+    const { data: editForoData, setData: setEditForoData, patch, clearErrors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para manejar el ID del comentario que se está editando
     const [editingCommentId, setEditingCommentId] = useState(null);
-    const [commentsData, setCommentsData] = useState({});
+    // Estado para manejar las respuestas a los comentarios
+    const [responses, setResponses] = useState({});
+    // Estado para manejar el contenido del comentario que se está escribiendo
+    const [commentData, setCommentData] = useState('');
 
+    // Función para manejar el envío del formulario de creación de foro
     const handleCreateSubmit = (e) => {
         e.preventDefault();
+        // Envia los datos del formulario al servidor para crear un nuevo foro
         post(route('foros.store'), {
-            onSuccess: () => reset(),
+            onSuccess: () => reset(), // Resetea el formulario en caso de éxito
         });
     };
 
+    // Función para manejar el envío del formulario de edición de foro
     const handleEditSubmit = (e) => {
         e.preventDefault();
+        // Envía los datos del formulario al servidor para actualizar el foro existente
         patch(route('foros.update', editingForoId), {
             onSuccess: () => {
-                setEditingForoId(null);
-                clearErrors();
+                setEditingForoId(null); // Limpia el estado de edición al completar con éxito
+                clearErrors(); // Limpia los errores de validación
             },
         });
     };
 
+    // Función para preparar un foro para la edición
     const handleEdit = (foro) => {
-        setEditingForoId(foro.id);
-        setEditFormData({
+        setEditingForoId(foro.id); // Establece el ID del foro en edición
+        setEditForoData({
             titulo: foro.titulo,
             contenido: foro.contenido,
         });
     };
 
+    // Función para cancelar la edición del foro
     const handleCancelEdit = () => {
-        setEditingForoId(null);
-        clearErrors();
+        setEditingForoId(null); // Limpia el estado de edición
+        clearErrors(); // Limpia los errores de validación
     };
 
+    // Función para eliminar un foro
     const handleDelete = (foroId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este foro?')) {
             Inertia.delete(route('foros.destroy', foroId), {
@@ -63,52 +77,59 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
-    const handleCreateComment = (e, foroId) => {
+    // Función para manejar el envío de un comentario
+    const handleCommentSubmit = (e, foroId) => {
         e.preventDefault();
-
-        if (!commentsData[foroId]?.newCommentContent?.trim()) return;
+        if (!commentData.trim()) return; // No hace nada si el comentario está vacío
 
         Inertia.post(route('comentarios.store', foroId), {
-            contenido: commentsData[foroId].newCommentContent,
-            onSuccess: () => {
-                setCommentsData(prev => ({
-                    ...prev,
-                    [foroId]: { newCommentContent: '' },
-                }));
-            },
+            contenido: commentData,
+            onSuccess: () => setCommentData(''), // Limpia el estado del comentario en caso de éxito
             onError: (error) => {
-                console.error('Error al crear el comentario:', error);
+                console.error('Error al agregar comentario:', error);
             },
         });
     };
 
-    const handleCommentChange = (e, foroId) => {
-        setCommentsData(prev => ({
+    // Función para manejar el envío de una respuesta a un comentario
+    const handleResponseSubmit = (e, foroId, comentarioId) => {
+        e.preventDefault();
+        const responseContent = responses[comentarioId] || '';
+        if (!responseContent.trim()) return; // No hace nada si la respuesta está vacía
+
+        Inertia.post(route('comentarios.store', foroId), {
+            contenido: responseContent,
+            comentario_id: comentarioId,
+            onSuccess: () => {
+                setResponses(prev => ({ ...prev, [comentarioId]: '' })); // Limpia la respuesta en caso de éxito
+            },
+            onError: (error) => {
+                console.error('Error al agregar respuesta:', error);
+            },
+        });
+    };
+
+    // Función para manejar los cambios en el campo de respuesta a un comentario
+    const handleCommentChange = (e, comentarioId) => {
+        setResponses(prev => ({
             ...prev,
-            [foroId]: { ...prev[foroId], newCommentContent: e.target.value },
+            [comentarioId]: e.target.value,
         }));
     };
 
+    // Función para preparar un comentario para la edición
     const handleEditComment = (comment) => {
         setEditingCommentId(comment.id);
-        setCommentsData(prev => ({
-            ...prev,
-            [comment.foro_id]: { editCommentContent: comment.contenido },
-        }));
     };
 
+    // Función para manejar el envío de la edición de un comentario
     const handleEditCommentSubmit = (e, commentId) => {
         e.preventDefault();
-        const foroId = Object.keys(commentsData).find(id => commentsData[id]?.editCommentContent !== undefined);
-
         Inertia.patch(route('comentarios.update', commentId), {
-            contenido: commentsData[foroId]?.editCommentContent || '',
+            contenido: responses[commentId],
             onSuccess: () => {
-                setEditingCommentId(null);
-                setCommentsData(prev => ({
-                    ...prev,
-                    [foroId]: { editCommentContent: '' },
-                }));
+                setEditingCommentId(null); // Limpia el estado de edición del comentario en caso de éxito
+                setResponses(prev => ({ ...prev, [commentId]: '' }));
             },
             onError: (error) => {
                 console.error('Error al editar el comentario:', error);
@@ -116,10 +137,12 @@ export default function CreateForo({ auth, foros }) {
         });
     };
 
+    // Función para cancelar la edición de un comentario
     const handleCancelCommentEdit = () => {
         setEditingCommentId(null);
     };
 
+    // Función para eliminar un comentario
     const handleDeleteComment = (commentId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
             Inertia.delete(route('comentarios.destroy', commentId), {
@@ -133,12 +156,57 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
+    // Función para preparar una respuesta para la edición
+    const handleEditResponse = (respuesta) => {
+        setEditingCommentId(respuesta.id);
+        setResponses((prev) => ({
+            ...prev,
+            [respuesta.id]: respuesta.contenido,
+        }));
+    };
+
+    // Función para manejar el envío de la edición de una respuesta
+    const handleEditResponseSubmit = (e, respuestaId) => {
+        e.preventDefault();
+        Inertia.patch(route('comentarios.update', respuestaId), {
+            contenido: responses[respuestaId],
+            onSuccess: () => {
+                setEditingCommentId(null); // Limpia el estado de edición de la respuesta en caso de éxito
+                setResponses((prev) => ({ ...prev, [respuestaId]: '' }));
+            },
+            onError: (error) => {
+                console.error('Error al editar la respuesta:', error);
+            },
+        });
+    };
+
+    // Función para cancelar la edición de una respuesta
+    const handleCancelResponseEdit = () => {
+        setEditingCommentId(null);
+    };
+
+    // Función para eliminar una respuesta
+    const handleDeleteResponse = (respuestaId) => {
+        if (confirm('¿Estás seguro de que quieres eliminar esta respuesta?')) {
+            Inertia.delete(route('comentarios.destroy', respuestaId), {
+                onSuccess: () => {
+                    console.log('Respuesta eliminada con éxito');
+                },
+                onError: (error) => {
+                    console.error('Error al eliminar la respuesta:', error);
+                },
+            });
+        }
+    };
+
+    // Función para formatear la fecha de publicación del foro
     const formatFechaForo = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return `Creado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
+        return `Publicado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
     };
 
+    // Función para formatear la fecha de publicación del comentario
     const formatFechaComentario = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -166,8 +234,8 @@ export default function CreateForo({ auth, foros }) {
                             <label className="block text-gray-700 text-sm font-bold mb-2">Título</label>
                             <input
                                 type="text"
-                                value={data.titulo}
-                                onChange={(e) => setData('titulo', e.target.value)}
+                                value={createForoData.titulo}
+                                onChange={(e) => setCreateForoData('titulo', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
                             />
                             {errors.titulo && <span className="text-red-500 text-sm">{errors.titulo}</span>}
@@ -176,8 +244,8 @@ export default function CreateForo({ auth, foros }) {
                         <div>
                             <label className="block text-gray-700 text-sm font-bold mb-2">Contenido</label>
                             <textarea
-                                value={data.contenido}
-                                onChange={(e) => setData('contenido', e.target.value)}
+                                value={createForoData.contenido}
+                                onChange={(e) => setCreateForoData('contenido', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-32"
                             />
                             {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
@@ -202,6 +270,7 @@ export default function CreateForo({ auth, foros }) {
                         </span>
                     </h2>
                     <br />
+                    <br />
                     <div className="space-y-4">
                         {foros.data.map((foro) => (
                             <div
@@ -214,8 +283,8 @@ export default function CreateForo({ auth, foros }) {
                                             <label className="block text-gray-700 text-sm font-bold mb-2">Título</label>
                                             <input
                                                 type="text"
-                                                value={editFormData.titulo}
-                                                onChange={(e) => setEditFormData('titulo', e.target.value)}
+                                                value={editForoData.titulo}
+                                                onChange={(e) => setEditForoData('titulo', e.target.value)}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
                                             />
                                             {errors.titulo && <span className="text-red-500 text-sm">{errors.titulo}</span>}
@@ -224,24 +293,24 @@ export default function CreateForo({ auth, foros }) {
                                         <div>
                                             <label className="block text-gray-700 text-sm font-bold mb-2">Contenido</label>
                                             <textarea
-                                                value={editFormData.contenido}
-                                                onChange={(e) => setEditFormData('contenido', e.target.value)}
+                                                value={editForoData.contenido}
+                                                onChange={(e) => setEditForoData('contenido', e.target.value)}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-32"
                                             />
                                             {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
                                         </div>
 
-                                        <div className="flex justify-end">
+                                        <div className="flex justify-between">
                                             <button
                                                 type="submit"
                                                 className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                             >
-                                                Guardar
+                                                Actualizar
                                             </button>
                                             <button
                                                 type="button"
-                                                className="ml-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                                 onClick={handleCancelEdit}
+                                                className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                             >
                                                 Cancelar
                                             </button>
@@ -249,143 +318,192 @@ export default function CreateForo({ auth, foros }) {
                                     </form>
                                 ) : (
                                     <>
-                                        <div className="relative p-4">
-                                            <div className="absolute top-0 left-0 p-2">
-                                                <p className="text-gray-600 text-sm font-semibold">
-                                                    Autor del Foro: {foro.usuario?.name || 'Desconocido'}
-                                                </p>
-                                            </div>
-                                            <div className="absolute top-0 right-0 p-2 text-right">
-                                                <p className="text-gray-500 text-sm">
-                                                    {formatFechaForo(foro.fecha_publicacion)}
-                                                </p>
-                                            </div>
-                                            <div className="mt-10">
-                                                <h3 className="text-2xl font-semibold text-gray-800">{foro.titulo}</h3>
-                                                <p className="text-gray-600 text-base break-words">
-                                                    {foro.contenido}
-                                                </p>
-                                            </div>
-
-                                            {auth.user.id === foro.usuario_id && (
-                                                <div className="flex justify-end space-x-2 mt-4">
-                                                    <button
-                                                        onClick={() => handleEdit(foro)}
-                                                        className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                    >
-                                                        Editar
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDelete(foro.id)}
-                                                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                    >
-                                                        Eliminar
-                                                    </button>
-                                                </div>
-                                            )}
+                                        <div className="flex justify-between mb-2">
+                                            <div className="text-gray-600 text-sm">Autor: {foro.usuario?.name || 'Desconocido'}</div>
+                                            <div className="text-gray-600 text-sm">{formatFechaForo(foro.created_at)}</div>
                                         </div>
+                                        <div className="text-lg font-semibold">{foro.titulo}</div>
+                                        <div className="text-gray-800 mb-2 whitespace-pre-wrap break-words">{foro.contenido}</div>
+                                        {auth.user.id === foro.usuario_id && (
+                                            <div className="flex justify-between mt-4">
+                                                <button
+                                                    onClick={() => handleEdit(foro)}
+                                                    className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(foro.id)}
+                                                    className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        )}
 
-                                        <div className="mt-6 space-y-4">
-                                            <h4 className="text-xl font-semibold text-gray-800 mb-2">COMENTARIOS :</h4>
-
-                                            <form
-                                                onSubmit={(e) => handleCreateComment(e, foro.id)}
-                                                className="mb-4 space-y-4"
-                                            >
+                                        <div className="mt-6">
+                                            <form onSubmit={(e) => handleCommentSubmit(e, foro.id)} className="flex flex-col space-y-4">
                                                 <textarea
-                                                    value={commentsData[foro.id]?.newCommentContent || ''}
-                                                    onChange={(e) => handleCommentChange(e, foro.id)}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-24"
-                                                    placeholder="Escribe tu comentario aquí..."
+                                                    value={commentData}
+                                                    onChange={(e) => setCommentData(e.target.value)}
+                                                    placeholder="Escribe un comentario..."
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-20"
                                                 />
-                                                <div className="flex justify-end">
-                                                    <button
-                                                        type="submit"
-                                                        className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                    >
-                                                        Agregar Comentario
-                                                    </button>
-                                                </div>
+                                                <button
+                                                    type="submit"
+                                                    className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                >
+                                                    Agregar Comentario
+                                                </button>
                                             </form>
 
-                                            {foro.comentarios.map((comentario) => (
-                                                <div
-                                                    key={comentario.id}
-                                                    className="relative bg-gray-100 p-4 rounded-lg shadow-md"
-                                                >
-                                                    {editingCommentId === comentario.id ? (
-                                                        <form onSubmit={(e) => handleEditCommentSubmit(e, comentario.id)} className="space-y-4">
-                                                            <div>
-                                                                <textarea
-                                                                    value={commentsData[foro.id]?.editCommentContent || ''}
-                                                                    onChange={(e) => setCommentsData(prev => ({
-                                                                        ...prev,
-                                                                        [foro.id]: { editCommentContent: e.target.value }
-                                                                    }))}
-                                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-24"
-                                                                />
-                                                                {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
-                                                            </div>
-                                                            <div className="flex justify-end">
-                                                                <button
-                                                                    type="submit"
-                                                                    className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                                >
-                                                                    Guardar
-                                                                </button>
-                                                                <button
-                                                                    type="button"
-                                                                    className="ml-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                                    onClick={handleCancelCommentEdit}
-                                                                >
-                                                                    Cancelar
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    ) : (
-                                                        <>
-                                                            <div className="relative p-2">
-                                                                <p className="text-gray-600 text-sm font-semibold">
-                                                                    Autor del Comentario: {comentario.usuario?.name || 'Desconocido'}
-                                                                </p>
-                                                                <p className="text-gray-500 text-sm">
-                                                                    {formatFechaComentario(comentario.fecha_comentario)}
-                                                                </p>
-                                                                <p className="text-gray-600 text-base mt-2">
-                                                                    {comentario.contenido}
-                                                                </p>
-                                                            </div>
-                                                            {auth.user.id === comentario.usuario_id && (
-                                                                <div className="flex justify-end space-x-2 mt-4">
+                                            <div className="mt-6 space-y-4">
+                                                {foro.comentarios.map((comentario) => (
+                                                    <div key={comentario.id} className="relative bg-[#f0f4c3] p-4 rounded-lg shadow-md">
+                                                        {editingCommentId === comentario.id ? (
+                                                            <form onSubmit={(e) => handleEditCommentSubmit(e, comentario.id)} className="space-y-4">
+                                                                <div>
+                                                                    <label className="block text-gray-700 text-sm font-bold mb-2">Contenido</label>
+                                                                    <textarea
+                                                                        value={responses[comentario.id] || comentario.contenido}
+                                                                        onChange={(e) => handleCommentChange(e, comentario.id)}
+                                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-32"
+                                                                    />
+                                                                    {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
+                                                                </div>
+
+                                                                <div className="flex justify-between">
                                                                     <button
-                                                                        onClick={() => handleEditComment(comentario)}
-                                                                        className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                        type="submit"
+                                                                        className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                                                     >
-                                                                        Editar
+                                                                        Actualizar Comentario
                                                                     </button>
                                                                     <button
-                                                                        onClick={() => handleDeleteComment(comentario.id)}
-                                                                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                        type="button"
+                                                                        onClick={handleCancelCommentEdit}
+                                                                        className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                                                     >
-                                                                        Eliminar
+                                                                        Cancelar
                                                                     </button>
                                                                 </div>
-                                                            )}
-                                                        </>
-                                                    )}
-                                                </div>
-                                            ))}
+                                                            </form>
+                                                        ) : (
+                                                            <>
+                                                                <div className="flex justify-between mb-2">
+                                                                    <div className="text-gray-600 text-sm">Autor: {comentario.usuario?.name || 'Desconocido'}</div>
+                                                                    <div className="text-gray-600 text-sm">{formatFechaComentario(comentario.created_at)}</div>
+                                                                </div>
+                                                                <p className="text-gray-800 whitespace-pre-wrap break-words">{comentario.contenido}</p>
+
+                                                                {auth.user.id === comentario.usuario_id && (
+                                                                    <div className="flex justify-between mt-4">
+                                                                        <button
+                                                                            onClick={() => handleEditComment(comentario)}
+                                                                            className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                        >
+                                                                            Editar
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => handleDeleteComment(comentario.id)}
+                                                                            className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                        >
+                                                                            Eliminar
+                                                                        </button>
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="mt-4">
+                                                                    <form onSubmit={(e) => handleResponseSubmit(e, foro.id, comentario.id)} className="flex flex-col space-y-4">
+                                                                        <textarea
+                                                                            value={responses[comentario.id] || ''}
+                                                                            onChange={(e) => handleCommentChange(e, comentario.id)}
+                                                                            placeholder="Escribe una respuesta..."
+                                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-20"
+                                                                        />
+                                                                        <button
+                                                                            type="submit"
+                                                                            className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                        >
+                                                                            Agregar Respuesta
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                        {/* Mostrar respuestas aquí */}
+                                                        {comentario.respuestas && comentario.respuestas.map((respuesta) => (
+                                                            <div key={respuesta.id} className="relative bg-[#e2e8f0] p-4 rounded-lg shadow-md mt-2">
+                                                                <div className="flex justify-between mb-2">
+                                                                    <div className="text-gray-600 text-sm">Autor: {respuesta.usuario?.name || 'Desconocido'}</div>
+                                                                    <div className="text-gray-600 text-sm">{formatFechaComentario(respuesta.created_at)}</div>
+                                                                </div>
+                                                                {editingCommentId === respuesta.id ? (
+                                                                    <form onSubmit={(e) => handleEditResponseSubmit(e, respuesta.id)} className="space-y-4">
+                                                                        <div>
+                                                                            <textarea
+                                                                                value={responses[respuesta.id] || ''}
+                                                                                onChange={(e) => handleCommentChange(e, respuesta.id)}
+                                                                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-20"
+                                                                            />
+                                                                            {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
+                                                                        </div>
+
+                                                                        <div className="flex justify-between">
+                                                                            <button
+                                                                                type="submit"
+                                                                                className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                            >
+                                                                                Actualizar Respuesta
+                                                                            </button>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={handleCancelResponseEdit}
+                                                                                className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                            >
+                                                                                Cancelar
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                ) : (
+                                                                    <>
+                                                                        <p className="text-gray-800 whitespace-pre-wrap break-words">{respuesta.contenido}</p>
+                                                                        {auth.user.id === respuesta.usuario_id && (
+                                                                            <div className="flex justify-between mt-4">
+                                                                                <button
+                                                                                    onClick={() => handleEditResponse(respuesta)}
+                                                                                    className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                >
+                                                                                    Editar
+                                                                                </button>
+                                                                                <button
+                                                                                    onClick={() => handleDeleteResponse(respuesta.id)}
+                                                                                    className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                >
+                                                                                    Eliminar
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        ))}
+
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     </>
                                 )}
                             </div>
                         ))}
                     </div>
-
-                    <Pagination className="mt-6" links={foros.links} />
+                        <br />
+                    <div className="mt-6">
+                        <Pagination links={foros.links} />
+                    </div>
                 </div>
             </div>
-
             <Footer />
         </AuthenticatedLayout>
     );

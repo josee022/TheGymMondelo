@@ -18,17 +18,17 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        // Obtener las clases futuras
+        // Obtiene las clases futuras, ordenadas por fecha
         $clases = Clase::where('fecha', '>', now()->toDateString())
             ->orderBy('fecha')
             ->get();
 
+        // Renderiza la vista 'Clases/Index' con las clases futuras y el usuario autenticado
         return Inertia::render('Clases/Index', [
             'clases' => $clases,
             'user' => auth()->user(),
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -50,7 +50,10 @@ class ClaseController extends Controller
      */
     public function show($id)
     {
+        // Obtiene la clase especificada por ID, incluyendo información del entrenador asociado
         $clase = Clase::with('entrenador.usuario')->findOrFail($id);
+
+        // Renderiza la vista 'Clases/Show' con la información de la clase y del entrenador
         return Inertia::render('Clases/Show', [
             'clase' => $clase,
             'entrenador' => $clase->entrenador,
@@ -83,20 +86,24 @@ class ClaseController extends Controller
 
     public function reserve(Request $request, Clase $clase)
     {
+        // Obtiene el usuario autenticado
         $user = Auth::user();
 
+        // Verifica si ya existe una reserva para esta clase por parte del usuario
         if (Reserva::where('usuario_id', $user->id)
             ->where('clase_id', $clase->id)
             ->exists()) {
+            // Redirige de vuelta con un mensaje de error si ya se ha reservado la clase
             return redirect()->back()->with('error', 'Ya has reservado esta clase.');
         }
 
-        // Crear la reserva
+        // Crea una nueva reserva para el usuario y la clase especificada
         Reserva::create([
             'usuario_id' => $user->id,
             'clase_id' => $clase->id,
         ]);
 
+        // Redirige al perfil del usuario con un mensaje de éxito
         return redirect()->route('profile')->with('success', 'Clase reservada con éxito.');
     }
 }

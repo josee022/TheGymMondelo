@@ -92,6 +92,7 @@ class User extends Authenticatable
         return $this->hasMany(Diario::class, 'usuario_id');
     }
 
+    // Ver si el usuario es entrenador
     public function isEntrenador()
     {
         return $this->entrenador !== null;
