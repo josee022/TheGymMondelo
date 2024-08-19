@@ -6,51 +6,64 @@ import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/Pagination';
 
 export default function CreateForo({ auth, foros }) {
+    // Maneja el estado y las funciones de formulario para crear un foro
     const { data: createForoData, setData: setCreateForoData, post, reset, errors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para manejar el ID del foro que se está editando
     const [editingForoId, setEditingForoId] = useState(null);
+    // Maneja el estado y las funciones de formulario para editar un foro
     const { data: editForoData, setData: setEditForoData, patch, clearErrors } = useForm({
         titulo: '',
         contenido: '',
     });
 
+    // Estado para manejar el ID del comentario que se está editando
     const [editingCommentId, setEditingCommentId] = useState(null);
+    // Estado para manejar las respuestas a los comentarios
     const [responses, setResponses] = useState({});
-    const [commentData, setCommentData] = useState(''); // Estado para manejar los comentarios
+    // Estado para manejar el contenido del comentario que se está escribiendo
+    const [commentData, setCommentData] = useState('');
 
+    // Función para manejar el envío del formulario de creación de foro
     const handleCreateSubmit = (e) => {
         e.preventDefault();
+        // Envia los datos del formulario al servidor para crear un nuevo foro
         post(route('foros.store'), {
-            onSuccess: () => reset(),
+            onSuccess: () => reset(), // Resetea el formulario en caso de éxito
         });
     };
 
+    // Función para manejar el envío del formulario de edición de foro
     const handleEditSubmit = (e) => {
         e.preventDefault();
+        // Envía los datos del formulario al servidor para actualizar el foro existente
         patch(route('foros.update', editingForoId), {
             onSuccess: () => {
-                setEditingForoId(null);
-                clearErrors();
+                setEditingForoId(null); // Limpia el estado de edición al completar con éxito
+                clearErrors(); // Limpia los errores de validación
             },
         });
     };
 
+    // Función para preparar un foro para la edición
     const handleEdit = (foro) => {
-        setEditingForoId(foro.id);
+        setEditingForoId(foro.id); // Establece el ID del foro en edición
         setEditForoData({
             titulo: foro.titulo,
             contenido: foro.contenido,
         });
     };
 
+    // Función para cancelar la edición del foro
     const handleCancelEdit = () => {
-        setEditingForoId(null);
-        clearErrors();
+        setEditingForoId(null); // Limpia el estado de edición
+        clearErrors(); // Limpia los errores de validación
     };
 
+    // Función para eliminar un foro
     const handleDelete = (foroId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este foro?')) {
             Inertia.delete(route('foros.destroy', foroId), {
@@ -64,29 +77,31 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
+    // Función para manejar el envío de un comentario
     const handleCommentSubmit = (e, foroId) => {
         e.preventDefault();
-        if (!commentData.trim()) return;
+        if (!commentData.trim()) return; // No hace nada si el comentario está vacío
 
         Inertia.post(route('comentarios.store', foroId), {
             contenido: commentData,
-            onSuccess: () => setCommentData(''),
+            onSuccess: () => setCommentData(''), // Limpia el estado del comentario en caso de éxito
             onError: (error) => {
                 console.error('Error al agregar comentario:', error);
             },
         });
     };
 
+    // Función para manejar el envío de una respuesta a un comentario
     const handleResponseSubmit = (e, foroId, comentarioId) => {
         e.preventDefault();
         const responseContent = responses[comentarioId] || '';
-        if (!responseContent.trim()) return;
+        if (!responseContent.trim()) return; // No hace nada si la respuesta está vacía
 
         Inertia.post(route('comentarios.store', foroId), {
             contenido: responseContent,
             comentario_id: comentarioId,
             onSuccess: () => {
-                setResponses(prev => ({ ...prev, [comentarioId]: '' }));
+                setResponses(prev => ({ ...prev, [comentarioId]: '' })); // Limpia la respuesta en caso de éxito
             },
             onError: (error) => {
                 console.error('Error al agregar respuesta:', error);
@@ -94,6 +109,7 @@ export default function CreateForo({ auth, foros }) {
         });
     };
 
+    // Función para manejar los cambios en el campo de respuesta a un comentario
     const handleCommentChange = (e, comentarioId) => {
         setResponses(prev => ({
             ...prev,
@@ -101,16 +117,18 @@ export default function CreateForo({ auth, foros }) {
         }));
     };
 
+    // Función para preparar un comentario para la edición
     const handleEditComment = (comment) => {
         setEditingCommentId(comment.id);
     };
 
+    // Función para manejar el envío de la edición de un comentario
     const handleEditCommentSubmit = (e, commentId) => {
         e.preventDefault();
         Inertia.patch(route('comentarios.update', commentId), {
             contenido: responses[commentId],
             onSuccess: () => {
-                setEditingCommentId(null);
+                setEditingCommentId(null); // Limpia el estado de edición del comentario en caso de éxito
                 setResponses(prev => ({ ...prev, [commentId]: '' }));
             },
             onError: (error) => {
@@ -119,10 +137,12 @@ export default function CreateForo({ auth, foros }) {
         });
     };
 
+    // Función para cancelar la edición de un comentario
     const handleCancelCommentEdit = () => {
         setEditingCommentId(null);
     };
 
+    // Función para eliminar un comentario
     const handleDeleteComment = (commentId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
             Inertia.delete(route('comentarios.destroy', commentId), {
@@ -136,6 +156,7 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
+    // Función para preparar una respuesta para la edición
     const handleEditResponse = (respuesta) => {
         setEditingCommentId(respuesta.id);
         setResponses((prev) => ({
@@ -144,12 +165,13 @@ export default function CreateForo({ auth, foros }) {
         }));
     };
 
+    // Función para manejar el envío de la edición de una respuesta
     const handleEditResponseSubmit = (e, respuestaId) => {
         e.preventDefault();
         Inertia.patch(route('comentarios.update', respuestaId), {
             contenido: responses[respuestaId],
             onSuccess: () => {
-                setEditingCommentId(null);
+                setEditingCommentId(null); // Limpia el estado de edición de la respuesta en caso de éxito
                 setResponses((prev) => ({ ...prev, [respuestaId]: '' }));
             },
             onError: (error) => {
@@ -158,10 +180,12 @@ export default function CreateForo({ auth, foros }) {
         });
     };
 
+    // Función para cancelar la edición de una respuesta
     const handleCancelResponseEdit = () => {
         setEditingCommentId(null);
     };
 
+    // Función para eliminar una respuesta
     const handleDeleteResponse = (respuestaId) => {
         if (confirm('¿Estás seguro de que quieres eliminar esta respuesta?')) {
             Inertia.delete(route('comentarios.destroy', respuestaId), {
@@ -175,12 +199,14 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
+    // Función para formatear la fecha de publicación del foro
     const formatFechaForo = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return `Publicado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
     };
 
+    // Función para formatear la fecha de publicación del comentario
     const formatFechaComentario = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -243,6 +269,7 @@ export default function CreateForo({ auth, foros }) {
                             <span className="relative">Foros Recientes</span>
                         </span>
                     </h2>
+                    <br />
                     <br />
                     <div className="space-y-4">
                         {foros.data.map((foro) => (
@@ -471,7 +498,7 @@ export default function CreateForo({ auth, foros }) {
                             </div>
                         ))}
                     </div>
-
+                        <br />
                     <div className="mt-6">
                         <Pagination links={foros.links} />
                     </div>

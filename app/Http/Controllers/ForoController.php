@@ -20,30 +20,38 @@ class ForoController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $user = auth()->user();
+    {
+        // Obtiene el usuario autenticado actual.
+        $user = auth()->user();
 
-    $foros = Foro::with([
-        'usuario', // Usuario que creó el foro
-        'comentarios' => function ($query) {
-            $query->whereNull('comentario_id') // Solo comentarios principales
-                ->orderBy('fecha_comentario', 'desc')
-                ->with([
-                    'usuario',
-                    'respuestas' => function ($query) {
-                        $query->orderBy('fecha_comentario', 'desc')->with('usuario');
-                    }
-                ]);
-        }
-    ])
-    ->orderBy('fecha_publicacion', 'desc')
-    ->paginate(1);
+        // Consulta los foros con relaciones y ordena los resultados.
+        $foros = Foro::with([
+            'usuario', // Carga la relación del usuario que creó el foro.
+            'comentarios' => function ($query) {
+                // Filtra los comentarios para obtener solo los comentarios principales
+                // (los que no tienen un comentario padre).
+                $query->whereNull('comentario_id')
+                    ->orderBy('fecha_comentario', 'desc') // Ordena los comentarios principales por fecha en orden descendente.
+                    ->with([
+                        'usuario', // Carga la relación del usuario que creó el comentario.
+                        'respuestas' => function ($query) {
+                            // Carga las respuestas de los comentarios y ordena por fecha en orden descendente.
+                            $query->orderBy('fecha_comentario', 'desc')
+                                ->with('usuario'); // Carga la relación del usuario que creó cada respuesta.
+                        }
+                    ]);
+            }
+        ])
+            ->orderBy('fecha_publicacion', 'desc') // Ordena los foros por fecha de publicación en orden descendente.
+            ->paginate(1); // Pagina los resultados mostrando 1 foro por página.
 
-    return Inertia::render('Foros/Index', [
-        'auth' => ['user' => $user],
-        'foros' => $foros,
-    ]);
-}
+        // Devuelve una vista Inertia con los datos de los foros y el usuario autenticado.
+        return Inertia::render('Foros/Index', [
+            'auth' => ['user' => $user], // Pasa el usuario autenticado a la vista.
+            'foros' => $foros, // Pasa los foros paginados a la vista.
+        ]);
+    }
+
 
 
 
