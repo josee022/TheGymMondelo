@@ -136,6 +136,45 @@ export default function CreateForo({ auth, foros }) {
         }
     };
 
+    const handleEditResponse = (respuesta) => {
+        setEditingCommentId(respuesta.id);
+        setResponses((prev) => ({
+            ...prev,
+            [respuesta.id]: respuesta.contenido,
+        }));
+    };
+
+    const handleEditResponseSubmit = (e, respuestaId) => {
+        e.preventDefault();
+        Inertia.patch(route('comentarios.update', respuestaId), {
+            contenido: responses[respuestaId],
+            onSuccess: () => {
+                setEditingCommentId(null);
+                setResponses((prev) => ({ ...prev, [respuestaId]: '' }));
+            },
+            onError: (error) => {
+                console.error('Error al editar la respuesta:', error);
+            },
+        });
+    };
+
+    const handleCancelResponseEdit = () => {
+        setEditingCommentId(null);
+    };
+
+    const handleDeleteResponse = (respuestaId) => {
+        if (confirm('¿Estás seguro de que quieres eliminar esta respuesta?')) {
+            Inertia.delete(route('comentarios.destroy', respuestaId), {
+                onSuccess: () => {
+                    console.log('Respuesta eliminada con éxito');
+                },
+                onError: (error) => {
+                    console.error('Error al eliminar la respuesta:', error);
+                },
+            });
+        }
+    };
+
     const formatFechaForo = (timestamp) => {
         const fecha = new Date(timestamp);
         const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -366,17 +405,63 @@ export default function CreateForo({ auth, foros }) {
                                                             </>
                                                         )}
                                                         {/* Mostrar respuestas aquí */}
-                                                        <div className="mt-4">
-                                                            {comentario.respuestas && comentario.respuestas.map((respuesta) => (
-                                                                <div key={respuesta.id} className="relative bg-[#e2e8f0] p-4 rounded-lg shadow-md mt-2">
-                                                                    <div className="flex justify-between mb-2">
-                                                                        <div className="text-gray-600 text-sm">Autor: {respuesta.usuario?.name || 'Desconocido'}</div>
-                                                                        <div className="text-gray-600 text-sm">{formatFechaComentario(respuesta.created_at)}</div>
-                                                                    </div>
-                                                                    <p className="text-gray-800 whitespace-pre-wrap break-words">{respuesta.contenido}</p>
+                                                        {comentario.respuestas && comentario.respuestas.map((respuesta) => (
+                                                            <div key={respuesta.id} className="relative bg-[#e2e8f0] p-4 rounded-lg shadow-md mt-2">
+                                                                <div className="flex justify-between mb-2">
+                                                                    <div className="text-gray-600 text-sm">Autor: {respuesta.usuario?.name || 'Desconocido'}</div>
+                                                                    <div className="text-gray-600 text-sm">{formatFechaComentario(respuesta.created_at)}</div>
                                                                 </div>
-                                                            ))}
-                                                        </div>
+                                                                {editingCommentId === respuesta.id ? (
+                                                                    <form onSubmit={(e) => handleEditResponseSubmit(e, respuesta.id)} className="space-y-4">
+                                                                        <div>
+                                                                            <textarea
+                                                                                value={responses[respuesta.id] || ''}
+                                                                                onChange={(e) => handleCommentChange(e, respuesta.id)}
+                                                                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-20"
+                                                                            />
+                                                                            {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
+                                                                        </div>
+
+                                                                        <div className="flex justify-between">
+                                                                            <button
+                                                                                type="submit"
+                                                                                className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                            >
+                                                                                Actualizar Respuesta
+                                                                            </button>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={handleCancelResponseEdit}
+                                                                                className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                            >
+                                                                                Cancelar
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                ) : (
+                                                                    <>
+                                                                        <p className="text-gray-800 whitespace-pre-wrap break-words">{respuesta.contenido}</p>
+                                                                        {auth.user.id === respuesta.usuario_id && (
+                                                                            <div className="flex justify-between mt-4">
+                                                                                <button
+                                                                                    onClick={() => handleEditResponse(respuesta)}
+                                                                                    className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                >
+                                                                                    Editar
+                                                                                </button>
+                                                                                <button
+                                                                                    onClick={() => handleDeleteResponse(respuesta.id)}
+                                                                                    className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                >
+                                                                                    Eliminar
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        ))}
+
                                                     </div>
                                                 ))}
                                             </div>

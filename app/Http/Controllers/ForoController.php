@@ -31,14 +31,14 @@ class ForoController extends Controller
                 ->with([
                     'usuario',
                     'respuestas' => function ($query) {
-                        $query->orderBy('fecha_comentario', 'asc')->with('usuario');
+                        $query->orderBy('fecha_comentario', 'desc')->with('usuario');
                     }
                 ]);
         }
     ])
     ->orderBy('fecha_publicacion', 'desc')
     ->paginate(1);
-    
+
     return Inertia::render('Foros/Index', [
         'auth' => ['user' => $user],
         'foros' => $foros,
