@@ -8,6 +8,7 @@ use App\Http\Controllers\ForoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\SuscripcionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -68,6 +69,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comentarios/{foro}', [ComentarioForoController::class, 'store'])->name('comentarios.store');
     Route::patch('comentarios/{comentarioForo}', [ComentarioForoController::class, 'update'])->name('comentarios.update');
     Route::delete('comentarios/{comentarioForo}', [ComentarioForoController::class, 'destroy'])->name('comentarios.destroy');
+
+    // Rutas para suscripciones
+    Route::resource('suscripciones', SuscripcionController::class);
 });
 
 Route::get('/ejemplo', function () {

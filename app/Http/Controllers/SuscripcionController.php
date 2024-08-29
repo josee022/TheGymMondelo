@@ -13,7 +13,7 @@ class SuscripcionController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Suscripciones/Index');
     }
 
     /**
