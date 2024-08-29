@@ -30,9 +30,9 @@ export default function Edit({ user }) {
             user={user} // Pasa el objeto de usuario al layout autenticado
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edición del perfil de usuario : </h2>} // Encabezado del panel de edición
         >
-            <Head title="Editar perfil" /> // Establece el título de la página
+            <Head title="Editar perfil" />
 
-            <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
+            <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 {/* Contenedor principal */}
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                     {/* Encabezado del formulario */}

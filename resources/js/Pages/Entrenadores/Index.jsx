@@ -13,7 +13,7 @@ export default function Index({ auth, entrenadores }) {
             <Head title="Entrenadores" />
             {/* Establece el título de la página */}
 
-            <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
+            <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 {/* Contenedor principal con fondo gris y espaciado vertical */}
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                     {/* Contenedor principal del contenido */}

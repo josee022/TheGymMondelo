@@ -4,6 +4,7 @@ import Footer from '@/Components/Footer';
 import { useForm } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/Pagination';
+import { router } from '@inertiajs/react';
 
 export default function CreateForo({ auth, foros }) {
     // Maneja el estado y las funciones de formulario para crear un foro
@@ -66,7 +67,7 @@ export default function CreateForo({ auth, foros }) {
     // Función para eliminar un foro
     const handleDelete = (foroId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este foro?')) {
-            Inertia.delete(route('foros.destroy', foroId), {
+            router.delete(route('foros.destroy', foroId), {
                 onSuccess: () => {
                     console.log('Foro eliminado con éxito');
                 },
@@ -82,7 +83,7 @@ export default function CreateForo({ auth, foros }) {
         e.preventDefault();
         if (!commentData.trim()) return; // No hace nada si el comentario está vacío
 
-        Inertia.post(route('comentarios.store', foroId), {
+        router.post(route('comentarios.store', foroId), {
             contenido: commentData,
             onSuccess: () => setCommentData(''), // Limpia el estado del comentario en caso de éxito
             onError: (error) => {
@@ -97,7 +98,7 @@ export default function CreateForo({ auth, foros }) {
         const responseContent = responses[comentarioId] || '';
         if (!responseContent.trim()) return; // No hace nada si la respuesta está vacía
 
-        Inertia.post(route('comentarios.store', foroId), {
+        router.post(route('comentarios.store', foroId), {
             contenido: responseContent,
             comentario_id: comentarioId,
             onSuccess: () => {
@@ -125,7 +126,7 @@ export default function CreateForo({ auth, foros }) {
     // Función para manejar el envío de la edición de un comentario
     const handleEditCommentSubmit = (e, commentId) => {
         e.preventDefault();
-        Inertia.patch(route('comentarios.update', commentId), {
+        router.patch(route('comentarios.update', commentId), {
             contenido: responses[commentId],
             onSuccess: () => {
                 setEditingCommentId(null); // Limpia el estado de edición del comentario en caso de éxito
@@ -145,7 +146,7 @@ export default function CreateForo({ auth, foros }) {
     // Función para eliminar un comentario
     const handleDeleteComment = (commentId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
-            Inertia.delete(route('comentarios.destroy', commentId), {
+            router.delete(route('comentarios.destroy', commentId), {
                 onSuccess: () => {
                     console.log('Comentario eliminado con éxito');
                 },
@@ -168,7 +169,7 @@ export default function CreateForo({ auth, foros }) {
     // Función para manejar el envío de la edición de una respuesta
     const handleEditResponseSubmit = (e, respuestaId) => {
         e.preventDefault();
-        Inertia.patch(route('comentarios.update', respuestaId), {
+        router.patch(route('comentarios.update', respuestaId), {
             contenido: responses[respuestaId],
             onSuccess: () => {
                 setEditingCommentId(null); // Limpia el estado de edición de la respuesta en caso de éxito
@@ -188,7 +189,7 @@ export default function CreateForo({ auth, foros }) {
     // Función para eliminar una respuesta
     const handleDeleteResponse = (respuestaId) => {
         if (confirm('¿Estás seguro de que quieres eliminar esta respuesta?')) {
-            Inertia.delete(route('comentarios.destroy', respuestaId), {
+            router.delete(route('comentarios.destroy', respuestaId), {
                 onSuccess: () => {
                     console.log('Respuesta eliminada con éxito');
                 },
@@ -218,7 +219,7 @@ export default function CreateForo({ auth, foros }) {
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Foros TheGymMondelo :</h2>}
         >
-            <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
+            <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                     <div className="text-center mb-6">
                         <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
