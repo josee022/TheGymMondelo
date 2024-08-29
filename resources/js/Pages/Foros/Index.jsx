@@ -81,16 +81,22 @@ export default function CreateForo({ auth, foros }) {
     // Función para manejar el envío de un comentario
     const handleCommentSubmit = (e, foroId) => {
         e.preventDefault();
+
         if (!commentData.trim()) return; // No hace nada si el comentario está vacío
 
         router.post(route('comentarios.store', foroId), {
             contenido: commentData,
-            onSuccess: () => setCommentData(''), // Limpia el estado del comentario en caso de éxito
-            onError: (error) => {
-                console.error('Error al agregar comentario:', error);
+        }, {
+            onFinish: () => {
+                setCommentData(''); // Limpia el estado del comentario
             },
+        })
+        .catch((error) => {
+            console.error('Error al agregar comentario:', error);
         });
     };
+
+
 
     // Función para manejar el envío de una respuesta a un comentario
     const handleResponseSubmit = (e, foroId, comentarioId) => {
