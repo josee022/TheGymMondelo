@@ -91,9 +91,9 @@ export default function CreateForo({ auth, foros }) {
                 setCommentData(''); // Limpia el estado del comentario
             },
         })
-        .catch((error) => {
-            console.error('Error al agregar comentario:', error);
-        });
+            .catch((error) => {
+                console.error('Error al agregar comentario:', error);
+            });
     };
 
 
@@ -124,30 +124,49 @@ export default function CreateForo({ auth, foros }) {
         }));
     };
 
+
     // Función para preparar un comentario para la edición
     const handleEditComment = (comment) => {
         setEditingCommentId(comment.id);
+        setResponses(prev => ({ ...prev, [comment.id]: comment.contenido }));
     };
 
     // Función para manejar el envío de la edición de un comentario
-    const handleEditCommentSubmit = (e, commentId) => {
+    const handleEditCommentSubmit = async (e, commentId) => {
         e.preventDefault();
-        router.patch(route('comentarios.update', commentId), {
-            contenido: responses[commentId],
-            onSuccess: () => {
-                setEditingCommentId(null); // Limpia el estado de edición del comentario en caso de éxito
-                setResponses(prev => ({ ...prev, [commentId]: '' }));
-            },
-            onError: (error) => {
-                console.error('Error al editar el comentario:', error);
-            },
-        });
+
+        // Obtén el contenido actualizado del estado
+        const updatedContent = responses[commentId];
+
+        try {
+            await router.patch(route('comentarios.update', commentId), {
+                contenido: updatedContent,
+            });
+
+            // Limpia el estado de edición y el contenido del textarea
+            setEditingCommentId(null);
+            setResponses(prev => ({ ...prev, [commentId]: '' }));
+
+            // Actualiza el contenido del comentario en la interfaz
+            foro.comentarios = foro.comentarios.map((comentario) =>
+                comentario.id === commentId ? { ...comentario, contenido: updatedContent } : comentario
+            );
+        } catch (error) {
+            console.error('Error al editar el comentario:', error);
+        }
     };
 
     // Función para cancelar la edición de un comentario
     const handleCancelCommentEdit = () => {
+        // Limpia el estado de edición y el contenido del textarea
         setEditingCommentId(null);
+        setResponses(prev => {
+            const newResponses = { ...prev };
+            delete newResponses[editingCommentId]; // Elimina el comentario en edición del estado
+            return newResponses;
+        });
     };
+
 
     // Función para eliminar un comentario
     const handleDeleteComment = (commentId) => {
@@ -364,6 +383,7 @@ export default function CreateForo({ auth, foros }) {
                                                 </button>
                                             </form>
 
+
                                             <div className="mt-6 space-y-4">
                                                 {foro.comentarios.map((comentario) => (
                                                     <div key={comentario.id} className="relative bg-[#f0f4c3] p-4 rounded-lg shadow-md">
@@ -372,8 +392,8 @@ export default function CreateForo({ auth, foros }) {
                                                                 <div>
                                                                     <label className="block text-gray-700 text-sm font-bold mb-2">Contenido</label>
                                                                     <textarea
-                                                                        value={responses[comentario.id] || comentario.contenido}
-                                                                        onChange={(e) => handleCommentChange(e, comentario.id)}
+                                                                        value={responses[comentario.id] || ''}
+                                                                        onChange={(e) => setResponses(prev => ({ ...prev, [comentario.id]: e.target.value }))}
                                                                         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-32"
                                                                     />
                                                                     {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
@@ -424,7 +444,7 @@ export default function CreateForo({ auth, foros }) {
                                                                     <form onSubmit={(e) => handleResponseSubmit(e, foro.id, comentario.id)} className="flex flex-col space-y-4">
                                                                         <textarea
                                                                             value={responses[comentario.id] || ''}
-                                                                            onChange={(e) => handleCommentChange(e, comentario.id)}
+                                                                            onChange={(e) => setResponses(prev => ({ ...prev, [comentario.id]: e.target.value }))}
                                                                             placeholder="Escribe una respuesta..."
                                                                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-20"
                                                                         />
@@ -505,7 +525,7 @@ export default function CreateForo({ auth, foros }) {
                             </div>
                         ))}
                     </div>
-                        <br />
+                    <br />
                     <div className="mt-6">
                         <Pagination links={foros.links} />
                     </div>
