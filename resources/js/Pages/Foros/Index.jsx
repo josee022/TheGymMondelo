@@ -104,17 +104,22 @@ export default function CreateForo({ auth, foros }) {
         const responseContent = responses[comentarioId] || '';
         if (!responseContent.trim()) return; // No hace nada si la respuesta está vacía
 
+        // Limpia el campo de respuesta antes de enviar la solicitud
+        setResponses(prev => ({ ...prev, [comentarioId]: '' }));
+
         router.post(route('comentarios.store', foroId), {
             contenido: responseContent,
             comentario_id: comentarioId,
             onSuccess: () => {
-                setResponses(prev => ({ ...prev, [comentarioId]: '' })); // Limpia la respuesta en caso de éxito
+                console.log('Respuesta agregada con éxito');
+                // Si prefieres mantenerlo aquí, asegúrate de que onSuccess se ejecute correctamente
             },
             onError: (error) => {
                 console.error('Error al agregar respuesta:', error);
             },
         });
     };
+
 
     // Función para manejar los cambios en el campo de respuesta a un comentario
     const handleCommentChange = (e, comentarioId) => {
@@ -185,30 +190,42 @@ export default function CreateForo({ auth, foros }) {
     // Función para preparar una respuesta para la edición
     const handleEditResponse = (respuesta) => {
         setEditingCommentId(respuesta.id);
-        setResponses((prev) => ({
-            ...prev,
-            [respuesta.id]: respuesta.contenido,
-        }));
+        setResponses(prev => ({ ...prev, [respuesta.id]: respuesta.contenido }));
     };
 
     // Función para manejar el envío de la edición de una respuesta
-    const handleEditResponseSubmit = (e, respuestaId) => {
+    const handleEditResponseSubmit = async (e, respuestaId) => {
         e.preventDefault();
-        router.patch(route('comentarios.update', respuestaId), {
-            contenido: responses[respuestaId],
-            onSuccess: () => {
-                setEditingCommentId(null); // Limpia el estado de edición de la respuesta en caso de éxito
-                setResponses((prev) => ({ ...prev, [respuestaId]: '' }));
-            },
-            onError: (error) => {
-                console.error('Error al editar la respuesta:', error);
-            },
-        });
+
+        // Obtén el contenido actualizado del estado
+        const updatedContent = responses[respuestaId];
+
+        try {
+            await router.patch(route('comentarios.update', respuestaId), {
+                contenido: updatedContent,
+            });
+
+            // Limpia el estado de edición y el contenido del textarea
+            setEditingCommentId(null);
+            setResponses(prev => ({ ...prev, [respuestaId]: '' }));
+
+            // Actualiza el contenido de la respuesta en la interfaz
+            comentario.respuestas = comentario.respuestas.map((respuesta) =>
+                respuesta.id === respuestaId ? { ...respuesta, contenido: updatedContent } : respuesta
+            );
+        } catch (error) {
+            console.error('Error al editar la respuesta:', error);
+        }
     };
 
     // Función para cancelar la edición de una respuesta
     const handleCancelResponseEdit = () => {
         setEditingCommentId(null);
+        setResponses(prev => {
+            const newResponses = { ...prev };
+            delete newResponses[editingCommentId]; // Elimina la respuesta en edición del estado
+            return newResponses;
+        });
     };
 
     // Función para eliminar una respuesta
@@ -470,7 +487,7 @@ export default function CreateForo({ auth, foros }) {
                                                                         <div>
                                                                             <textarea
                                                                                 value={responses[respuesta.id] || ''}
-                                                                                onChange={(e) => handleCommentChange(e, respuesta.id)}
+                                                                                onChange={(e) => setResponses(prev => ({ ...prev, [respuesta.id]: e.target.value }))}
                                                                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-20"
                                                                             />
                                                                             {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
