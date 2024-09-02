@@ -1,9 +1,26 @@
 import React from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'; // Importa el diseño de autenticación
-import { Head } from '@inertiajs/react'; // Importa los componentes de InertiaJS
-import Footer from '@/Components/Footer'; // Importa el componente Footer
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, useForm } from '@inertiajs/react';
+import Footer from '@/Components/Footer';
+import { router } from '@inertiajs/react';
+import { toast, ToastContainer } from 'react-toastify'; // Importa toast y ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Importa el CSS de react-toastify
 
 export default function Suscripciones({ auth }) {
+
+    const handleSubscription = (tipo) => {
+        router.post(route('suscripciones.store'), { tipo }, {
+            onSuccess: () => {
+                // Mostrar un mensaje de éxito
+                toast.success('¡Suscripción creada con éxito!');
+            },
+            onError: () => {
+                // Mostrar un mensaje de error
+                toast.error('Hubo un error al crear la suscripción. Inténtalo nuevamente.');
+            },
+        });
+    };
+
     // Precios base
     const precioMensual = 25;
     const descuentoSemestral = 0.15; // 15% de descuento
@@ -18,12 +35,12 @@ export default function Suscripciones({ auth }) {
 
     return (
         <AuthenticatedLayout
-            user={auth.user} // Pasa el usuario autenticado
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Nuestras Suscripciones : </h2>}
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Nuestras Suscripciones :</h2>}
         >
             <Head title="Suscripciones" />
 
-            {/* Sección de presentación ajustada */}
+            {/* Sección de presentación */}
             <div className="relative flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 via-slate-700 to-slate-500 text-white py-6">
                 <h1 className="text-3xl font-bold mb-2 animate-fade-in">TU CAMBIO FÍSICO Y DE VIDA</h1>
                 <p className="text-sm text-gray-300 text-center max-w-md mb-4 animate-slide-up">
@@ -36,15 +53,13 @@ export default function Suscripciones({ auth }) {
                 </div>
             </div>
 
+            {/* Contenido */}
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
-                {/* Contenedor principal con fondo */}
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1 rounded-lg p-6">
-                    {/* Contenedor central */}
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-gray-800 mb-2 relative">
                             <span className="relative inline-block">
                                 <span className="absolute inset-x-0 bottom-0 h-1 bg-green-400"></span>
-                                {/* Línea verde debajo del título */}
                                 <span className="relative">Planes de Suscripción</span>
                             </span>
                         </h1>
@@ -52,9 +67,8 @@ export default function Suscripciones({ auth }) {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-gray-900">
-                        {/* Contenedores de suscripción */}
+                        {/* Suscripción Mensual */}
                         <div className="relative bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
-                            {/* Suscripción mensual */}
                             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-400 text-white py-1 px-3 rounded-full shadow-lg">
                                 Mensual
                             </div>
@@ -64,7 +78,9 @@ export default function Suscripciones({ auth }) {
                             <p className="text-center text-xs text-gray-600">y después:</p>
                             <p className="text-center text-2xl font-bold mb-2">€25/mes</p>
                             <p className="text-center text-xs text-gray-600 mb-4">[Pago de €25 al mes]</p>
-                            <button className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
+                            <button
+                                onClick={() => handleSubscription('Mensual')} // Evento onClick para enviar la suscripción
+                                className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
                                 ¡Suscribirme!
                             </button>
                             <ul className="mt-4 text-gray-800 text-sm">
@@ -81,8 +97,8 @@ export default function Suscripciones({ auth }) {
                             </ul>
                         </div>
 
+                        {/* Suscripción Semestral */}
                         <div className="relative bg-gray-300 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
-                            {/* Suscripción semestral */}
                             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-400 text-white py-1 px-3 rounded-full shadow-lg">
                                 Semestral
                             </div>
@@ -96,7 +112,9 @@ export default function Suscripciones({ auth }) {
                             <p className="text-center text-2xl font-bold text-red-500 mb-2 line-through">€25/mes</p>
                             <p className="text-center text-2xl font-bold mb-2">€{precioSemestral}/mes</p>
                             <p className="text-center text-xs text-gray-600 mb-4">[Pago de €{pagoSemestral} cada 6 meses]</p>
-                            <button className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
+                            <button
+                                onClick={() => handleSubscription('Semestral')}
+                                className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
                                 ¡Suscribirme!
                             </button>
                             <ul className="mt-4 text-gray-800 text-sm">
@@ -117,8 +135,8 @@ export default function Suscripciones({ auth }) {
                             </ul>
                         </div>
 
+                        {/* Suscripción Anual */}
                         <div className="relative bg-gray-400 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
-                            {/* Suscripción anual */}
                             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-400 text-white py-1 px-3 rounded-full shadow-lg">
                                 Anual
                             </div>
@@ -132,7 +150,9 @@ export default function Suscripciones({ auth }) {
                             <p className="text-center text-2xl font-bold text-red-500 mb-2 line-through">€25/mes</p>
                             <p className="text-center text-2xl font-bold mb-2">€{precioAnual}/mes</p>
                             <p className="text-center text-xs text-gray-600 mb-4">[Pago de €{pagoAnual} cada 12 meses]</p>
-                            <button className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
+                            <button
+                                onClick={() => handleSubscription('Anual')}
+                                className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
                                 ¡Suscribirme!
                             </button>
                             <ul className="mt-4 text-gray-800 text-sm">
@@ -163,7 +183,9 @@ export default function Suscripciones({ auth }) {
                     </div>
                 </div>
             </div>
+
             <Footer />
+            <ToastContainer />
         </AuthenticatedLayout>
     );
 }

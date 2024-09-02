@@ -17,7 +17,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Yoga Matutino',
                 'descripcion' => 'Clase de yoga para principiantes enfocada en la flexibilidad y la relajación.',
-                'fecha' => '2024-09-01',
+                'fecha' => '2024-10-01',
                 'hora_inicio' => '08:00:00',
                 'hora_fin' => '09:00:00',
                 'entrenador_id' => 1,
@@ -26,7 +26,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Entrenamiento Funcional',
                 'descripcion' => 'Clase intensa de entrenamiento funcional para mejorar la fuerza y la resistencia.',
-                'fecha' => '2024-09-02',
+                'fecha' => '2024-10-02',
                 'hora_inicio' => '18:00:00',
                 'hora_fin' => '19:30:00',
                 'entrenador_id' => 1,
