@@ -21,24 +21,29 @@ class ProfileController extends Controller
      * @return \Inertia\Response
      */
     public function show()
-    {
-        // Obtener el usuario autenticado
-        $user = Auth::user();
+{
+    // Obtener el usuario autenticado
+    $user = Auth::user();
 
-        // Obtener las reservas del usuario, incluyendo los detalles de la clase asociada,
-        // ordenadas por fecha de reserva de manera descendente y paginadas de 2 en 2
-        $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2);
+    // Obtener las reservas del usuario, incluyendo los detalles de la clase asociada,
+    // ordenadas por fecha de reserva de manera descendente y paginadas de 2 en 2
+    $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2);
 
-        // Renderizar la vista 'Dashboard' utilizando Inertia, pasando el usuario autenticado,
-        // si el usuario es entrenador, y las reservas como un array
-        return Inertia::render('Dashboard', [
-            'auth' => [
-                'user' => $user
-            ],
-            'isEntrenador' => $user->isEntrenador(), // Determina si el usuario es entrenador
-            'reservas' => $reservas->toArray(), // Convertir a array para manipulación en el frontend
-        ]);
-    }
+    // Obtener las suscripciones del usuario, ordenadas por fecha de inicio de manera descendente
+    $suscripciones = $user->suscripciones()->orderBy('fecha_inicio', 'desc')->paginate(1);
+
+    // Renderizar la vista 'Dashboard' utilizando Inertia, pasando el usuario autenticado,
+    // si el usuario es entrenador, las reservas y las suscripciones como arrays
+    return Inertia::render('Dashboard', [
+        'auth' => [
+            'user' => $user
+        ],
+        'isEntrenador' => $user->isEntrenador(), // Determina si el usuario es entrenador
+        'reservas' => $reservas->toArray(), // Convertir a array para manipulación en el frontend
+        'suscripciones' => $suscripciones->toArray(), // Convertir a array para manipulación en el frontend
+    ]);
+}
+
 
     /**
      * Muestra el formulario para editar la información del perfil del usuario.
@@ -134,4 +139,3 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 }
-

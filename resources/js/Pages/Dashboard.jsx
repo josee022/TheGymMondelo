@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react'; // Importa componentes de Inertia
 import Pagination from '@/Components/Pagination'; // Importa el componente de paginación
 import Footer from '@/Components/Footer'; // Importa el componente de pie de página
 
-export default function Dashboard({ auth, isEntrenador, reservas }) {
+export default function Dashboard({ auth, isEntrenador, reservas, suscripciones }) {
     const user = auth.user; // Extrae el usuario autenticado del objeto auth
 
     // Función para determinar el color de fondo de la reserva según su estado
@@ -42,6 +42,31 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
 
     // Ordena las reservas de la más reciente a la más antigua
     const reservasOrdenadas = reservas.data.sort((a, b) => new Date(b.fecha_reserva) - new Date(a.fecha_reserva));
+
+    // Función para determinar el color de fondo de la suscripción según su estado
+    const getSuscripcionBackgroundColor = (estado) => {
+        switch (estado) {
+            case 'Activa':
+                return 'bg-blue-100'; // Azul claro para suscripciones activas
+            case 'Caducada':
+                return 'bg-gray-100'; // Gris claro para suscripciones caducadas
+            default:
+                return 'bg-gray-200'; // Gris más claro para otros estados
+        }
+    };
+
+    // Función para formatear la fecha de la suscripción
+    const formatFechaSuscripcion = (fecha) => {
+        const fechaObj = new Date(fecha); // Convierte la fecha en un objeto Date
+        return fechaObj.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }); // Formatea la fecha como dd-mm-yyyy
+    };
+
+    // Ordena las suscripciones de la más reciente a la más antigua
+    const suscripcionesOrdenadas = suscripciones.data.sort((a, b) => new Date(b.fecha_inicio) - new Date(a.fecha_inicio));
 
     return (
         <AuthenticatedLayout
@@ -130,6 +155,25 @@ export default function Dashboard({ auth, isEntrenador, reservas }) {
                         )}
 
                         <Pagination links={reservas.links} /> {/* Componente de paginación para las reservas */}
+                    </div>
+
+                    {/* Sección de suscripciones */}
+                    <div className="mt-12">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Mi Suscripción en TheGymMondelo</h2>
+                        {suscripcionesOrdenadas.length === 0 ? (
+                            <p className="text-gray-600">No tienes ninguna suscripción activa en estos momentos.</p>
+                        ) : (
+                            suscripcionesOrdenadas.map((suscripcion) => (
+                                <div key={suscripcion.id} className={`${getSuscripcionBackgroundColor(suscripcion.estado)} p-4 rounded-lg shadow-md mb-4`}>
+                                    <h3 className="text-xl font-semibold mb-2">Suscripción {suscripcion.tipo}</h3>
+                                    <p className="mb-2"><strong className="text-gray-700">Fecha de inicio:</strong> {formatFechaSuscripcion(suscripcion.fecha_inicio)}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Fecha de fin:</strong> {formatFechaSuscripcion(suscripcion.fecha_fin)}</p>
+                                    <p className="mb-2"><strong className="text-gray-700">Estado:</strong> {suscripcion.estado}</p>
+                                </div>
+                            ))
+                        )}
+
+                        <Pagination links={suscripciones.links} /> {/* Componente de paginación para las suscripciones */}
                     </div>
                 </div>
             </div>
