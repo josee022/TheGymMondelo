@@ -91,26 +91,46 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                     {/* Información del perfil del usuario */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-gray-900">
                         <div>
-                            <p className="mb-4"><strong className="text-gray-700">Nombre:</strong> {user.name}</p>
-                            <p className="mb-4"><strong className="text-gray-700">Correo electrónico:</strong> {user.email}</p>
-                            <p className="mb-4"><strong className="text-gray-700">Fecha de nacimiento:</strong> {formatFechaClase(user.fecha_nacimiento)}</p>
-                            <p className="mb-4"><strong className="text-gray-700">Sexo:</strong> {user.sexo}</p>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Nombre:</strong> {user.name}</p>
+                            </div>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Correo electrónico:</strong> {user.email}</p>
+                            </div>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Fecha de nacimiento:</strong> {formatFechaClase(user.fecha_nacimiento)}</p>
+                            </div>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Sexo:</strong> {user.sexo}</p>
+                            </div>
                         </div>
                         <div>
-                            <p className="mb-4"><strong className="text-gray-700">Altura:</strong> {user.altura} cm</p>
-                            <p className="mb-4"><strong className="text-gray-700">Peso:</strong> {user.peso} kg</p>
-                            <p className="mb-4"><strong className="text-gray-700">Nivel de actividad:</strong> {user.nivel_actividad}</p>
-                            <p className="mb-4"><strong className="text-gray-700">Biografía:</strong> {user.biografia}</p>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Altura:</strong> {user.altura} cm</p>
+                            </div>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Peso:</strong> {user.peso} kg</p>
+                            </div>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Nivel de actividad:</strong> {user.nivel_actividad}</p>
+                            </div>
+                            <div className="mb-4 p-4 bg-slate-800 text-white rounded-lg transition-transform transform hover:scale-105">
+                                <p><strong className="text-gray-300">Biografía:</strong> {user.biografia}</p>
+                            </div>
                         </div>
                     </div>
 
+
+
                     {/* Mensaje si el usuario es entrenador */}
                     {isEntrenador && (
-                        <div className="bg-green-100 text-green-800 p-4 rounded-md mt-6">
+                        <div className="bg-green-100 text-green-800 p-4 rounded-md mt-6 transition-transform transform hover:scale-105 hover:bg-green-200">
                             <h3 className="text-xl font-semibold">Licencia de Entrenador en TheGymMondelo</h3>
                             <p>¡Felicidades! Eres un entrenador certificado.</p>
                         </div>
                     )}
+
+
 
                     {/* Botón para editar el perfil del usuario */}
                     <div className="mt-6 text-center">
@@ -126,7 +146,10 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                             <p className="text-gray-600">No tienes reservas realizadas.</p>
                         ) : (
                             reservasOrdenadas.map((reserva) => (
-                                <div key={reserva.id} className={`${getReservaBackgroundColor(reserva.estado)} p-4 rounded-lg shadow-md mb-4`}>
+                                <div
+                                    key={reserva.id}
+                                    className={`${getReservaBackgroundColor(reserva.estado)} p-4 rounded-lg shadow-md mb-4 transition-transform transform hover:scale-105`}
+                                >
                                     <h3 className="text-xl font-semibold mb-2">Clase de {reserva.clase.nombre}</h3>
                                     <p className="mb-2"><strong className="text-gray-700">Fecha:</strong> {formatFechaClase(reserva.clase.fecha)}</p>
                                     <p className="mb-2"><strong className="text-gray-700">Hora:</strong> {reserva.clase.hora_inicio} - {reserva.clase.hora_fin}</p>
@@ -161,7 +184,13 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                     <div className="mt-12">
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">Mi Suscripción en TheGymMondelo</h2>
                         {suscripcionesOrdenadas.length === 0 ? (
-                            <p className="text-gray-600">No tienes ninguna suscripción activa en estos momentos.</p>
+                            <div className="text-center p-6 rounded-md bg-gradient-to-r from-gray-700 via-gray-800 to-black shadow-lg animate-pulse">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m-1-4h.01M12 4v.01M6 8h.01M18 8h.01M6 16h.01M18 16h.01M9 12h6" />
+                                </svg>
+                                <p className="text-2xl font-semibold text-white">No tienes ninguna suscripción activa en estos momentos.</p>
+                                <p className="text-lg text-gray-300 mt-2">¡Es el momento perfecto para unirte a nuestras clases y mejorar tu salud!</p>
+                            </div>
                         ) : (
                             suscripcionesOrdenadas.map((suscripcion) => (
                                 <div key={suscripcion.id} className={`${getSuscripcionBackgroundColor(suscripcion.estado)} p-4 rounded-lg shadow-md mb-4`}>
@@ -171,6 +200,19 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                                     <p className="mb-2"><strong className="text-white text-xl">Fecha de inicio:</strong> {formatFechaSuscripcion(suscripcion.fecha_inicio)}</p>
                                     <p className="mb-2"><strong className="text-white text-xl">Fecha de fin:</strong> {formatFechaSuscripcion(suscripcion.fecha_fin)}</p>
                                     <p className="mb-2"><strong className="text-white text-xl">Estado:</strong> {suscripcion.estado}</p>
+
+                                    {/* Botón para deshabilitar la suscripción */}
+                                    {suscripcion.estado === 'Activa' && (
+                                        <div className="text-right mt-4">
+                                            <Link
+                                                href={`/suscripciones/${suscripcion.id}/disable`}
+                                                method="POST"
+                                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                            >
+                                                Deshabilitar
+                                            </Link>
+                                        </div>
+                                    )}
                                 </div>
                             ))
                         )}

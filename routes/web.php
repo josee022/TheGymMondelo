@@ -72,6 +72,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para suscripciones
     Route::resource('suscripciones', SuscripcionController::class);
+
+    // Ruta para deshabilitar suscripciones
+    Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
+    
 });
 
 Route::get('/ejemplo', function () {

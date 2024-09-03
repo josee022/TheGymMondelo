@@ -71,6 +71,24 @@ class SuscripcionController extends Controller
         return redirect()->back()->with('success', '¡Suscripción creada con éxito!');
     }
 
+    public function disable($id)
+    {
+        // Obtener la suscripción por ID
+        $suscripcion = Suscripcion::findOrFail($id);
+
+        // Verificar que la suscripción pertenece al usuario autenticado
+        if ($suscripcion->usuario_id !== Auth::id()) {
+            return redirect()->back()->withErrors(['No tienes permiso para deshabilitar esta suscripción.']);
+        }
+
+        // Cambiar el estado a 'Inactiva'
+        $suscripcion->estado = 'Inactiva';
+        $suscripcion->save();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Suscripción deshabilitada exitosamente.');
+    }
+
 
 
     /**
