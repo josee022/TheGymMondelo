@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import Footer from '@/Components/Footer';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { router } from '@inertiajs/react';
-import { toast, ToastContainer } from 'react-toastify'; // Importa toast y ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Importa el CSS de react-toastify
 
 export default function Suscripciones({ auth }) {
+    const { flash } = usePage().props;
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
 
     const handleSubscription = (tipo) => {
-        router.post(route('suscripciones.store'), { tipo }, {
-            onSuccess: () => {
-                // Mostrar un mensaje de éxito
-                toast.success('¡Suscripción creada con éxito!');
-            },
-            onError: () => {
-                // Mostrar un mensaje de error
-                toast.error('Hubo un error al crear la suscripción. Inténtalo nuevamente.');
-            },
-        });
+        router.post(route('suscripciones.store'), { tipo });
     };
 
     // Precios base
@@ -39,8 +40,6 @@ export default function Suscripciones({ auth }) {
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Nuestras Suscripciones :</h2>}
         >
             <Head title="Suscripciones" />
-
-            {/* Sección de presentación */}
             <div className="relative flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 via-slate-700 to-slate-500 text-white py-6">
                 <h1 className="text-3xl font-bold mb-2 animate-fade-in">TU CAMBIO FÍSICO Y DE VIDA</h1>
                 <p className="text-sm text-gray-300 text-center max-w-md mb-4 animate-slide-up">
@@ -53,7 +52,6 @@ export default function Suscripciones({ auth }) {
                 </div>
             </div>
 
-            {/* Contenido */}
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1 rounded-lg p-6">
                     <div className="text-center mb-8">
@@ -79,7 +77,7 @@ export default function Suscripciones({ auth }) {
                             <p className="text-center text-2xl font-bold mb-2">€25/mes</p>
                             <p className="text-center text-xs text-gray-600 mb-4">[Pago de €25 al mes]</p>
                             <button
-                                onClick={() => handleSubscription('Mensual')} // Evento onClick para enviar la suscripción
+                                onClick={() => handleSubscription('Mensual')}
                                 className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
                                 ¡Suscribirme!
                             </button>
@@ -124,32 +122,28 @@ export default function Suscripciones({ auth }) {
                                 <br />
                                 <li>✅ Acceso a clases grupales</li>
                                 <br />
-                                <li>✅ Pautas medias de alimentación</li>
+                                <li>✅ Pautas personalizadas de alimentación</li>
                                 <br />
                                 <li>✅ Acceso a la comunidad online</li>
-                                <br />
-                                <li>✅ 10% de descuento en la tienda</li>
-                                <br />
-                                <li>✅ Aplicación móvil para seguimiento</li>
                                 <br />
                             </ul>
                         </div>
 
                         {/* Suscripción Anual */}
-                        <div className="relative bg-gray-400 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div className="relative bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
                             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-400 text-white py-1 px-3 rounded-full shadow-lg">
                                 Anual
                             </div>
                             <p className="text-center text-md font-semibold text-gray-800 mt-6">Pago Anual</p>
                             <br />
                             <div className="text-center">
-                                <span className="inline-block bg-lime-400 text-white text-xs px-2 py-1 rounded-full mb-2">-40%</span>
+                                <span className="inline-block bg-lime-400 text-white text-xs px-2 py-1 rounded-full mb-2">-20%</span>
                             </div>
                             <p className="text-center text-lg font-bold mb-2">5 DÍAS GRATIS</p>
                             <p className="text-center text-xs text-gray-600">y después:</p>
                             <p className="text-center text-2xl font-bold text-red-500 mb-2 line-through">€25/mes</p>
                             <p className="text-center text-2xl font-bold mb-2">€{precioAnual}/mes</p>
-                            <p className="text-center text-xs text-gray-600 mb-4">[Pago de €{pagoAnual} cada 12 meses]</p>
+                            <p className="text-center text-xs text-gray-600 mb-4">[Pago de €{pagoAnual} al año]</p>
                             <button
                                 onClick={() => handleSubscription('Anual')}
                                 className="w-full bg-green-400 text-white py-1 px-3 rounded-lg hover:bg-green-500 transition duration-300">
@@ -162,28 +156,15 @@ export default function Suscripciones({ auth }) {
                                 <br />
                                 <li>✅ Acceso a clases grupales</li>
                                 <br />
-                                <li>✅ Pautas avanzadas de alimentación</li>
+                                <li>✅ Pautas personalizadas de alimentación</li>
                                 <br />
                                 <li>✅ Acceso a la comunidad online</li>
-                                <br />
-                                <li>✅ 20% de descuento en la tienda</li>
-                                <br />
-                                <li>✅ Aplicación móvil para seguimiento</li>
-                                <br />
-                                <li>✅ Nuevo contenido/rutinas semanal</li>
-                                <br />
-                                <li>✅ Retos, premios y sorpresas</li>
-                                <br />
-                                <li>✅ Acceso a eventos exclusivos</li>
-                                <br />
-                                <li>✅ Canal exclusivo de Telegram</li>
                                 <br />
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
             <Footer />
             <ToastContainer />
         </AuthenticatedLayout>

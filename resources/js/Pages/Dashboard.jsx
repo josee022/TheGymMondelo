@@ -47,7 +47,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
     const getSuscripcionBackgroundColor = (estado) => {
         switch (estado) {
             case 'Activa':
-                return 'bg-blue-100'; // Azul claro para suscripciones activas
+                return 'bg-gradient-to-b from-slate-900 via-slate-700 to-slate-500 text-white'; // Azul claro para suscripciones activas
             case 'Caducada':
                 return 'bg-gray-100'; // Gris claro para suscripciones caducadas
             default:
@@ -165,15 +165,15 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                         ) : (
                             suscripcionesOrdenadas.map((suscripcion) => (
                                 <div key={suscripcion.id} className={`${getSuscripcionBackgroundColor(suscripcion.estado)} p-4 rounded-lg shadow-md mb-4`}>
-                                    <h3 className="text-xl font-semibold mb-2">Suscripción {suscripcion.tipo}</h3>
-                                    <p className="mb-2"><strong className="text-gray-700">Fecha de inicio:</strong> {formatFechaSuscripcion(suscripcion.fecha_inicio)}</p>
-                                    <p className="mb-2"><strong className="text-gray-700">Fecha de fin:</strong> {formatFechaSuscripcion(suscripcion.fecha_fin)}</p>
-                                    <p className="mb-2"><strong className="text-gray-700">Estado:</strong> {suscripcion.estado}</p>
+                                    <h3 className="text-3xl font-semibold mb-2 text-center">
+                                        Suscripción {suscripcion.tipo}
+                                    </h3>
+                                    <p className="mb-2"><strong className="text-white text-xl">Fecha de inicio:</strong> {formatFechaSuscripcion(suscripcion.fecha_inicio)}</p>
+                                    <p className="mb-2"><strong className="text-white text-xl">Fecha de fin:</strong> {formatFechaSuscripcion(suscripcion.fecha_fin)}</p>
+                                    <p className="mb-2"><strong className="text-white text-xl">Estado:</strong> {suscripcion.estado}</p>
                                 </div>
                             ))
                         )}
-
-                        <Pagination links={suscripciones.links} /> {/* Componente de paginación para las suscripciones */}
                     </div>
                 </div>
             </div>

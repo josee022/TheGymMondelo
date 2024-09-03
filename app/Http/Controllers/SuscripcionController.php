@@ -39,6 +39,17 @@ class SuscripcionController extends Controller
 
         $user = auth()->user();
 
+        // Verificar si el usuario ya tiene una suscripción activa
+        $suscripcionActiva = Suscripcion::where('usuario_id', $user->id)
+            ->where('estado', 'Activa')
+            ->where('fecha_fin', '>=', Carbon::now())
+            ->first();
+
+        if ($suscripcionActiva) {
+            // Redirigir con un mensaje flash de error
+            return redirect()->back()->with('error', 'Ya tienes una suscripción activa.');
+        }
+
         // Determinar las fechas de inicio y fin
         $fechaInicio = Carbon::now();
         $fechaFin = match ($request->tipo) {
@@ -56,9 +67,11 @@ class SuscripcionController extends Controller
             'estado' => 'Activa',
         ]);
 
-        // Redirigir con un mensaje de éxito
+        // Redirigir con un mensaje flash de éxito
         return redirect()->back()->with('success', '¡Suscripción creada con éxito!');
     }
+
+
 
     /**
      * Display the specified resource.
