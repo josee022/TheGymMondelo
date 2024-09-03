@@ -34,7 +34,7 @@ export default function Show({ auth, clase, entrenador }) {
         >
             <Head title={`Clase: ${clase.nombre}`} /> {/* Establece el título de la página con el nombre de la clase */}
 
-            <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
+            <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 {/* Contenedor principal con fondo gris y espacio para el contenido */}
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                     <h1 className="text-4xl font-bold text-gray-800 mb-2">{clase.nombre}</h1>

@@ -22,6 +22,11 @@
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
-        "react-icons": "^5.2.1"
+        "@inertiajs/progress": "^0.2.7",
+        "react-icons": "^5.2.1",
+        "react-toastify": "^10.0.5"
+    },
+    "resolutions": {
+        "axios": "^0.27.3"
     }
 }

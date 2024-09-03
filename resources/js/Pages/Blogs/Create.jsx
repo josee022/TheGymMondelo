@@ -5,6 +5,7 @@ import { useForm } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Pagination from '@/Components/Pagination';
 import '../../../css/create-blog.css'; // Importa el archivo CSS personalizado
+import { router } from '@inertiajs/react';
 
 export default function CreateBlog({ auth, isEntrenador, blogs }) {
     // Hook de formulario para manejar datos de creación de un nuevo blog
@@ -60,7 +61,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
     // Maneja la eliminación de un blog después de confirmar la acción
     const handleDelete = (blogId) => {
         if (confirm('¿Estás seguro de que quieres eliminar este blog?')) {
-            Inertia.delete(route('blogs.destroy', blogId), {
+            router.delete(route('blogs.destroy', blogId), {
                 onSuccess: () => {
                     console.log('Blog eliminado con éxito');
                 },
@@ -83,7 +84,7 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Blogs TheGymMondelo :</h2>}
         >
-            <div className="relative min-h-screen flex flex-col items-center bg-gray-700 py-12">
+            <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
                     {/* Solo los entrenadores pueden ver el formulario para crear un nuevo blog */}
                     {isEntrenador ? (
