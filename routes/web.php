@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ComentarioForoController;
+use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\InicioController;
@@ -75,7 +76,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Ruta para deshabilitar suscripciones
     Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
-    
+
+    // Rutas para dietas
+    Route::resource('dietas', DietaController::class);
+
 });
 
 Route::get('/ejemplo', function () {

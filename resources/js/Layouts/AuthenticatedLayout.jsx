@@ -59,6 +59,17 @@ export default function Authenticated({ user = {}, header, children }) {
                             />
                         </NavLink>
                         <NavLink
+                            href={route('dietas.index')}
+                            active={route().current('dietas.index')}
+                            className="text-white text-xl relative group"
+                        >
+                            Dietas
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('dietas.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
+                        <NavLink
                             href={route('suscripciones.index')}
                             active={route().current('suscripciones.index')}
                             className="text-white text-xl relative group"
@@ -141,6 +152,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('clases.index')} active={route().current('clases.index')}>
                             Clases
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('dietas.index')} active={route().current('dietas.index')}>
+                            Dietas
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('suscripciones.index')} active={route().current('suscripciones.index')}>
                             Suscripciones
