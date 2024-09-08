@@ -115,8 +115,14 @@ export default function Dietas({ auth }) {
             {/* Sección de Resúmenes Informativos */}
             <div className="bg-gradient-to-r from-green-50 to-green-100 py-12">
                 <div className="container mx-auto px-6">
-                    <h2 className="text-4xl font-bold text-gray-800 text-center mb-10">Todo lo que Necesitas Saber</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <motion.h2
+                        className="text-5xl font-bold text-center text-gray-800 mb-12 underline underline-offset-8 decoration-slate-400"
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7 }}
+                    >
+                        Todo Lo Que Necesitas Saber
+                    </motion.h2>                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Macronutrientes */}
                         <motion.div
                             className="bg-green-200 p-8 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-500 hover:-translate-y-3"
@@ -225,7 +231,7 @@ export default function Dietas({ auth }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7 }}
                     >
-                        Nuestros Planes Personalizados
+                        Nuestros Planes De Dietas Personalizados
                     </motion.h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -271,7 +277,7 @@ export default function Dietas({ auth }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7 }}
                 >
-                    Calculadoras Fitness
+                    Calculadoras De Ayuda Sobre Información Fitness
                 </motion.h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
 
