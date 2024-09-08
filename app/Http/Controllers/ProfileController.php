@@ -36,8 +36,11 @@ class ProfileController extends Controller
         // ordenadas por fecha de reserva de manera descendente y paginadas de 2 en 2
         $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2);
 
+        // Obtener la dieta del usuario (asumiendo que hay una relación entre el usuario y la dieta)
+        $dieta = $user->dietas()->first(); // Obtener la primera dieta asociada al usuario
+
         // Renderizar la vista 'Dashboard' utilizando Inertia, pasando el usuario autenticado,
-        // si el usuario es entrenador, las reservas y las suscripciones como arrays
+        // si el usuario es entrenador, las reservas, las suscripciones y la dieta como arrays
         return Inertia::render('Dashboard', [
             'auth' => [
                 'user' => $user
@@ -45,8 +48,10 @@ class ProfileController extends Controller
             'isEntrenador' => $user->isEntrenador(), // Determina si el usuario es entrenador
             'reservas' => $reservas->toArray(), // Convertir a array para manipulación en el frontend
             'suscripciones' => $suscripciones->toArray(), // Convertir a array para manipulación en el frontend
+            'dieta' => $dieta ? $dieta->toArray() : null, // Pasar la dieta si existe
         ]);
     }
+
 
 
     /**

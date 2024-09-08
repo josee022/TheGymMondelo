@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDietaRequest;
 use App\Http\Requests\UpdateDietaRequest;
 use App\Models\Dieta;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DietaController extends Controller
 {
@@ -13,7 +15,7 @@ class DietaController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Dietas/Index');
     }
 
     /**
@@ -27,10 +29,34 @@ class DietaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDietaRequest $request)
-    {
-        //
+    public function store(Request $request)
+{
+    // Validar los datos recibidos
+    $request->validate([
+        'objetivo' => 'required|in:Pérdida de peso,Ganancia muscular,Mantenimiento', // Incluimos 'Mejor rendimiento'
+        'descripcion' => 'required|string',
+    ]);
+
+    // Verificar si el usuario ya tiene una dieta
+    $dietaExistente = Dieta::where('usuario_id', Auth::id())->first();
+
+    if ($dietaExistente) {
+        // Si ya tiene una dieta, redirigir con un mensaje de error
+        return redirect()->back()->with('error', 'Ya tienes una dieta activa. No puedes adquirir otra.');
     }
+
+    // Si no tiene una dieta, proceder a crear una nueva
+    $dieta = new Dieta();
+    $dieta->usuario_id = Auth::id(); // El usuario que está logueado
+    $dieta->objetivo = $request->objetivo; // El objetivo seleccionado
+    $dieta->descripcion = $request->descripcion; // La descripción
+    $dieta->save(); // Guardar en la base de datos
+
+    // Redirigir con un mensaje de éxito
+    return redirect()->back()->with('success', '¡Dieta seleccionada con éxito!');
+}
+
+
 
     /**
      * Display the specified resource.
