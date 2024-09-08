@@ -53,6 +53,20 @@ const CalculadoraKcal = () => {
         setCarbohidratos(Math.round(carbohidratosGramos));
     };
 
+    // Función para vaciar los campos y limpiar resultados
+    const vaciarCampos = () => {
+        setEdad('');
+        setPeso('');
+        setAltura('');
+        setGenero('hombre');
+        setActividad('1.2');
+        setObjetivo('mantenimiento');
+        setCalorias(null);
+        setProteinas(null);
+        setGrasas(null);
+        setCarbohidratos(null);
+    };
+
     return (
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs transform -translate-x-4">
             <h2 className="text-xl font-bold text-center text-lime-400 mb-4 animate-bounce">
@@ -130,13 +144,19 @@ const CalculadoraKcal = () => {
                     </select>
                 </div>
             </div>
-            {/* Botón para calcular las calorías */}
-            <div className="mt-4 text-center">
+            {/* Botones para calcular y vaciar */}
+            <div className="mt-4 flex justify-center space-x-4">
                 <button
                     onClick={calcularCalorias}
                     className="bg-lime-400 text-gray-900 py-1 px-3 rounded hover:bg-lime-500 transition transform hover:-translate-y-1 hover:scale-105"
                 >
                     Calcular
+                </button>
+                <button
+                    onClick={vaciarCampos}
+                    className="bg-red-500 text-black py-1 px-3 rounded hover:bg-red-500 transition transform hover:-translate-y-1 hover:scale-105"
+                >
+                    Vaciar
                 </button>
             </div>
             {/* Mostrar los resultados */}

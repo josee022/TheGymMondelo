@@ -9,14 +9,11 @@ const CalculadoraIMC = () => {
 
     // Función para calcular el IMC (Índice de Masa Corporal)
     const calcularIMC = () => {
-        // Verifica que tanto peso como altura estén ingresados
         if (peso && altura) {
-            // Convertir altura a metros y calcular IMC
             const alturaEnMetros = altura / 100;
             const imcCalculado = peso / (alturaEnMetros * alturaEnMetros);
             setImc(imcCalculado.toFixed(2)); // Redondear el IMC a dos decimales
 
-            // Determinar la interpretación del IMC
             let interpretacion = '';
             if (imcCalculado < 16) {
                 interpretacion = 'Desnutrición severa';
@@ -36,9 +33,16 @@ const CalculadoraIMC = () => {
                 interpretacion = 'Obesidad clase 3 (muy severa o mórbida)';
             }
 
-            // Actualizar el estado con la interpretación del IMC
             setInterpretacionImc(interpretacion);
         }
+    };
+
+    // Función para vaciar los campos y limpiar resultados
+    const vaciarCampos = () => {
+        setPeso('');
+        setAltura('');
+        setImc(null);
+        setInterpretacionImc('');
     };
 
     return (
@@ -68,13 +72,19 @@ const CalculadoraIMC = () => {
                     />
                 </div>
             </div>
-            {/* Botón para calcular el IMC */}
-            <div className="mt-4 text-center">
+            {/* Botones para calcular y vaciar */}
+            <div className="mt-4 flex justify-center space-x-4">
                 <button
                     onClick={calcularIMC}
                     className="bg-lime-400 text-gray-900 py-1 px-3 rounded hover:bg-lime-500 transition transform hover:-translate-y-1 hover:scale-105"
                 >
                     Calcular IMC
+                </button>
+                <button
+                    onClick={vaciarCampos}
+                    className="bg-red-500 text-black py-1 px-3 rounded hover:bg-red-500 transition transform hover:-translate-y-1 hover:scale-105"
+                >
+                    Vaciar
                 </button>
             </div>
             {/* Mostrar el IMC calculado y su interpretación */}

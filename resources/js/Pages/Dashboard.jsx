@@ -2,8 +2,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'; // Importa el l
 import { Head, Link } from '@inertiajs/react'; // Importa componentes de InertiaJS para manejo de estado y enlaces
 import Pagination from '@/Components/Pagination'; // Importa el componente de paginación
 import Footer from '@/Components/Footer'; // Importa el componente de pie de página
+import { FaWeight, FaDumbbell, FaHeartbeat } from 'react-icons/fa'; // Iconos representativos
 
-export default function Dashboard({ auth, isEntrenador, reservas, suscripciones }) {
+export default function Dashboard({ auth, isEntrenador, reservas, suscripciones, dieta }) {
     const user = auth.user; // Extrae el usuario autenticado del objeto auth
 
     // Función para determinar el color de fondo de la reserva según su estado
@@ -68,6 +69,110 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
     // Ordena las suscripciones de la más reciente a la más antigua
     const suscripcionesOrdenadas = suscripciones.data.sort((a, b) => new Date(b.fecha_inicio) - new Date(a.fecha_inicio));
 
+    // Función para obtener icono según el objetivo de la dieta
+    const getDietaIcon = (objetivo) => {
+        switch (objetivo) {
+            case 'Pérdida de peso':
+                return <FaWeight className="text-red-400 text-4xl" />;
+            case 'Ganancia muscular':
+                return <FaDumbbell className="text-blue-400 text-4xl" />;
+            case 'Mantenimiento':
+                return <FaHeartbeat className="text-green-400 text-4xl" />;
+            default:
+                return <FaHeartbeat className="text-gray-400 text-4xl" />;
+        }
+    };
+
+    // Función para obtener los detalles de la dieta según el objetivo
+    const getDietaInfo = (objetivo) => {
+        switch (objetivo) {
+            case 'Pérdida de peso':
+                return {
+                    comidas: [
+                        'Ensalada de espinacas con pollo y vinagreta ligera',
+                        'Sopa de verduras sin crema',
+                        'Pollo a la plancha con brócoli al vapor',
+                        'Pescado blanco con limón y ensalada de pepino',
+                        'Batido verde detox con espinacas, apio y manzana',
+                        'Tofu a la parrilla con ensalada de col rizada',
+                        'Omelette de claras de huevo con champiñones y espinacas',
+                        'Yogur griego bajo en grasa con moras y nueces',
+                        'Zanahorias baby con hummus de garbanzos',
+                        'Té verde sin azúcar y rodajas de pepino como snack'
+                    ],
+                    descripcion: `Esta dieta está diseñada para reducir la ingesta calórica diaria mientras te proporciona los nutrientes necesarios para mantener un nivel de energía saludable.
+
+Se basa en alimentos bajos en grasa y ricos en fibra, como las verduras de hoja verde, proteínas magras y fuentes limitadas de carbohidratos complejos.
+
+Se recomienda beber mucha agua, evitar azúcares añadidos y comer porciones controladas.
+
+Las comidas son simples pero efectivas, con un enfoque en alimentos frescos, no procesados, y evitando el exceso de grasas saturadas o carbohidratos refinados.
+
+El ejercicio cardiovascular complementa esta dieta para acelerar el proceso de pérdida de peso y mantener la masa muscular.`
+                };
+
+            case 'Ganancia muscular':
+                return {
+                    comidas: [
+                        'Huevos revueltos con avena y un plátano',
+                        'Pechuga de pollo a la plancha con arroz integral y espinacas',
+                        'Batido de proteínas con leche de almendra, mantequilla de maní y avena',
+                        'Salmón al horno con quinoa y espárragos',
+                        'Carne magra con batata y brócoli',
+                        'Tortilla de claras de huevo con pavo y espinacas',
+                        'Pollo a la parrilla con aguacate y arroz integral',
+                        'Batido post-entrenamiento con proteínas, avena y arándanos',
+                        'Filete de ternera con puré de patatas y verduras asadas',
+                        'Ensalada de atún con aguacate, tomate y aceite de oliva'
+                    ],
+                    descripcion: `Este plan de dieta está centrado en la ingesta de alimentos ricos en proteínas y carbohidratos complejos para ayudar a la construcción y reparación muscular.
+
+El consumo adecuado de calorías es esencial, aumentando gradualmente las porciones de carbohidratos y proteínas para proporcionar la energía necesaria durante los entrenamientos intensivos.
+
+Es recomendable incluir fuentes de proteínas de alta calidad, como pechuga de pollo, carne magra y huevos, junto con carbohidratos de bajo índice glucémico como la quinoa y el arroz integral.
+
+No se deben olvidar las grasas saludables, como las del aguacate, para asegurar una recuperación muscular adecuada y mejorar el rendimiento.
+
+La hidratación constante y los suplementos de proteínas pueden ser necesarios en esta etapa de ganancia muscular.`
+                };
+
+            case 'Mantenimiento':
+                return {
+                    comidas: [
+                        'Tostadas de pan integral con aguacate y huevo poché',
+                        'Salmón a la parrilla con ensalada de espinacas y quinoa',
+                        'Pollo al horno con batata y judías verdes',
+                        'Yogur griego con miel, nueces y frutas frescas',
+                        'Arroz integral con verduras salteadas y tofu',
+                        'Sándwich integral de pavo con aguacate y tomate',
+                        'Ensalada de garbanzos con verduras frescas y aderezo de limón',
+                        'Sopa de lentejas con espinacas y zanahorias',
+                        'Frutas variadas como manzanas, peras y uvas',
+                        'Almendras y nueces como snack saludable'
+                    ],
+                    descripcion: `La dieta de mantenimiento tiene como objetivo preservar el peso actual mientras se sigue un patrón alimenticio saludable y equilibrado.
+
+Este enfoque incluye una combinación de proteínas magras, carbohidratos complejos y grasas saludables para asegurar que el cuerpo reciba todos los macronutrientes necesarios sin exceder en calorías.
+
+Es clave mantener porciones adecuadas y evitar alimentos procesados o con azúcares añadidos.
+
+La actividad física regular, como el entrenamiento de fuerza y el cardio moderado, debe mantenerse para apoyar el equilibrio entre las calorías consumidas y las gastadas.
+
+Esta dieta es flexible y permite disfrutar de una variedad de alimentos nutritivos y frescos mientras se promueve un estilo de vida saludable.`
+                };
+
+            default:
+                return {
+                    comidas: [],
+                    descripcion: 'No hay detalles disponibles para este objetivo.'
+                };
+        }
+    };
+
+
+    // Obtener detalles de la dieta según el objetivo del usuario
+    const dietaInfo = getDietaInfo(dieta.objetivo);
+
     return (
         <AuthenticatedLayout
             user={user} // Pasa el usuario al layout autenticado
@@ -77,7 +182,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 {/* Contenedor principal */}
-                <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+                <div className="w-full max-w-4xl mx-auto bg-gradient-to-r from-gray-100 to-slate-300 shadow-md rounded-lg p-6">
                     {/* Encabezado de la sección */}
                     <div className="text-center mb-6">
                         <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
@@ -138,7 +243,10 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                             Editar perfil
                         </a>
                     </div>
+                </div>
+                <br />
 
+                <div className="w-full max-w-4xl mx-auto bg-gradient-to-r from-gray-100 to-slate-300 shadow-md rounded-lg p-6">
                     {/* Sección de reservas */}
                     <div className="mt-12">
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">Mis Reservas</h2>
@@ -179,7 +287,10 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
 
                         <Pagination links={reservas.links} /> {/* Componente de paginación para las reservas */}
                     </div>
+                </div>
+                <br />
 
+                <div className="w-full max-w-4xl mx-auto bg-gradient-to-r from-gray-100 to-slate-300 shadow-md rounded-lg p-6">
                     {/* Sección de suscripciones */}
                     <div className="mt-12">
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">Mi Suscripción en TheGymMondelo</h2>
@@ -216,6 +327,34 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones 
                                 </div>
                             ))
                         )}
+                    </div>
+                </div>
+
+                <br />
+
+                {/* Contenedor principal */}
+                <div className="w-full max-w-7xl mx-auto bg-gradient-to-r from-gray-100 to-slate-300 shadow-lg rounded-lg p-8">
+
+                    {/* Encabezado de la sección */}
+                    <div className="text-center mb-6">
+                        <h1 className="text-4xl font-bold text-gray-700 mb-2">Información de la Dieta</h1>
+                    </div>
+
+                    {/* Sección de la dieta del usuario */}
+                    <div className="p-8 bg-gradient-to-r from-blue-50 via-white to-blue-50 text-gray-700 rounded-lg shadow-lg mb-6 transition-transform transform hover:scale-105">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="text-2xl font-semibold">Dieta: {dieta.objetivo}</div>
+                            {/* Icono según el objetivo */}
+                            <div>{getDietaIcon(dieta.objetivo)}</div>
+                        </div>
+                        <p className="mb-6 text-gray-600 leading-relaxed">{dietaInfo.descripcion}</p>
+
+                        <h3 className="text-xl font-bold mb-4">Comidas sugeridas:</h3>
+                        <ul className="list-disc pl-6 space-y-2">
+                            {dietaInfo.comidas.map((comida, index) => (
+                                <li key={index} className="text-gray-600">{comida}</li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </div>

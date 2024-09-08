@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { router } from '@inertiajs/react';
 import { motion } from 'framer-motion'; // Librería para animaciones
 import { FiHeart, FiTarget, FiActivity, FiTrendingUp, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import CalculadoraIMC from '@/Components/CalculadoraIMC'; // Importa el componente de la calculadora de IMC
+import CalculadoraKcal from '@/Components/CalculadoraKcal'; // Importa el componente de la calculadora de kcal
+import { FaDumbbell, FaHeartbeat } from 'react-icons/fa'; // Importa iconos de react-icons
 
 export default function Dietas({ auth }) {
     const { flash } = usePage().props;
@@ -16,9 +19,10 @@ export default function Dietas({ auth }) {
             toast.success(flash.success);
         }
         if (flash?.error) {
-            toast.error(flash.error);
+            toast.error(flash.error);  // Mostrar el mensaje de error si ya tiene una dieta
         }
     }, [flash]);
+
 
     // Función para manejar el registro de dietas
     const handleDieta = (objetivo, descripcion) => {
@@ -259,8 +263,40 @@ export default function Dietas({ auth }) {
                     </div>
                 </div>
             </div>
-            <Footer />
 
+            <div className="min-h-screen bg-gradient-to-r from-lime-600 via-lime-400 to-lime-600 flex flex-col justify-center items-center py-16">
+                <motion.h2
+                    className="text-5xl font-bold text-center text-gray-800 mb-12 underline underline-offset-8 decoration-slate-400"
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7 }}
+                >
+                    Calculadoras Fitness
+                </motion.h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
+
+                    {/* Calculadora IMC */}
+                    <div className="bg-gradient-to-br from-lime-50 via-lime-100 to-lime-300 shadow-lg rounded-lg p-8 transition-transform transform hover:scale-105 hover:shadow-xl flex flex-col justify-center items-center">
+                        <div className="flex items-center justify-center mb-4">
+                            <FaHeartbeat className="text-red-500 text-4xl" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Calculadora IMC</h2>
+                        <CalculadoraIMC />
+                    </div>
+
+                    {/* Calculadora Kcal */}
+                    <div className="bg-gradient-to-br from-lime-50 via-lime-100 to-lime-300 shadow-lg rounded-lg p-8 transition-transform transform hover:scale-105 hover:shadow-xl flex flex-col justify-center items-center">
+                        <div className="flex items-center justify-center mb-4">
+                            <FaDumbbell className="text-green-500 text-4xl" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Calculadora de Calorías</h2>
+                        <CalculadoraKcal />
+                    </div>
+
+                </div>
+            </div>
+
+            <Footer />
             <ToastContainer />
         </AuthenticatedLayout>
     );
