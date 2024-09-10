@@ -85,10 +85,11 @@ Route::middleware(['auth'])->group(function () {
     // Rutas para programas
     Route::resource('programas', ProgramaController::class);
     Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
-});
 
-Route::get('/ejemplo', function () {
-    return Inertia::render('Ejemplo');
+    Route::get('/contacto', function () {
+        return Inertia::render('Contacto/Index');
+    })->name('contacto');
+
 });
 
 require __DIR__ . '/auth.php';

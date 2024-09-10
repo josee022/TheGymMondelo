@@ -244,12 +244,12 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
         >
             <Head title="Panel de control" /> {/* Establece el título de la página */}
 
-            <div className="w-full mx-4 bg-gradient-to-b from-slate-900 via-slate-700 to-slate-500 shadow-lg rounded-xl p-8">
+            <div className="w-full px-4 bg-gradient-to-b from-slate-900 via-slate-700 to-slate-500 shadow-lg rounded-xl p-8 overflow-hidden"> {/* Ajuste de padding */}
                 {/* Contenedor para hacer flex horizontal */}
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Primer contenedor (Información del perfil) */}
                     <div className="w-full lg:w-1/2">
-                        <div className="w-full bg-gradient-to-r from-gray-100 to-lime-200 shadow-lg rounded-xl p-8 ">
+                        <div className="w-full bg-gradient-to-r from-gray-100 to-lime-200 shadow-lg rounded-xl p-8">
                             {/* Encabezado de la sección */}
                             <div className="text-center mb-8">
                                 <h1 className="text-5xl font-extrabold text-gray-800 mb-3 relative">
@@ -314,7 +314,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
 
                     {/* Segundo contenedor (Mis Reservas) */}
                     <div className="w-full lg:w-1/2">
-                        <div className="w-full bg-gradient-to-r from-gray-100 to-lime-200 shadow-lg rounded-xl p-8 ">
+                        <div className="w-full bg-gradient-to-r from-gray-100 to-lime-200 shadow-lg rounded-xl p-8">
                             {/* Sección de reservas */}
                             <div className="text-center mb-8">
                                 <h1 className="text-5xl font-extrabold text-gray-800 mb-3 relative">
@@ -367,7 +367,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                 </div>
             </div>
 
-            <div className="w-full mx-4 bg-gradient-to-b from-slate-100 via-slate-300 to-slate-400 shadow-lg rounded-xl p-8">
+            <div className="w-full px-4 bg-gradient-to-b from-slate-100 via-slate-300 to-slate-400 shadow-lg rounded-xl p-8 overflow-hidden">
 
                 {/* Sección de Suscripciones */}
                 <div className="bg-gradient-to-r from-black via-gray-900 to-green-800 p-8 rounded-lg shadow-md">
@@ -468,7 +468,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                 </div>
             </div>
 
-            <div className="w-full mx-4 bg-gradient-to-b from-lime-400 via-lime-300 to-slate-200 shadow-lg rounded-xl p-8">
+            <div className="w-full px-4 bg-gradient-to-b from-lime-400 via-lime-300 to-slate-200 shadow-lg rounded-xl p-8 overflow-hidden">
 
                 {/* Contenedor principal */}
                 <div className="w-4/5 max-w-7xl mx-auto bg-gradient-to-b from-slate-200 via-lime-300 to-lime-400 shadow-lg rounded-lg p-8">

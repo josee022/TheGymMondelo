@@ -113,15 +113,15 @@ export default function Programas({ auth, programas }) {
                                 <p className="text-gray-400 mb-4">{programa.descripcion}</p>
                                 <div className="text-lime-400 flex items-center mb-2">
                                     <FiClock className="mr-2" />
-                                    <p>Duración: {programa.duracion} semanas</p>
+                                    <p>Duración : {programa.duracion} semanas</p>
                                 </div>
                                 <div className="text-lime-400 flex items-center mb-2">
                                     <FiTrendingUp className="mr-2" />
-                                    <p>Nivel: {programa.nivel}</p>
+                                    <p>Nivel : {programa.nivel}</p>
                                 </div>
                                 <div className="text-lime-400 flex items-center mb-4">
                                     <FiDollarSign className="mr-2" />
-                                    <p>Precio: €{typeof programa.precio === 'number' ? programa.precio.toFixed(2) : parseFloat(programa.precio).toFixed(2)}</p>
+                                    <p>Precio : {typeof programa.precio === 'number' ? programa.precio.toFixed(2) : parseFloat(programa.precio).toFixed(2)} €</p>
                                 </div>
                                 <button
                                     className="bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600 transition-colors duration-300"
