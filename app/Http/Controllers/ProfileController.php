@@ -39,8 +39,11 @@ class ProfileController extends Controller
         // Obtener la dieta del usuario (asumiendo que hay una relación entre el usuario y la dieta)
         $dieta = $user->dietas()->first(); // Obtener la primera dieta asociada al usuario
 
+        // Obtener las adquisiciones de los programas del usuario, incluyendo los detalles del programa
+        $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
+
         // Renderizar la vista 'Dashboard' utilizando Inertia, pasando el usuario autenticado,
-        // si el usuario es entrenador, las reservas, las suscripciones y la dieta como arrays
+        // si el usuario es entrenador, las reservas, las suscripciones, la dieta y las adquisiciones como arrays
         return Inertia::render('Dashboard', [
             'auth' => [
                 'user' => $user
@@ -49,8 +52,10 @@ class ProfileController extends Controller
             'reservas' => $reservas->toArray(), // Convertir a array para manipulación en el frontend
             'suscripciones' => $suscripciones->toArray(), // Convertir a array para manipulación en el frontend
             'dieta' => $dieta ? $dieta->toArray() : null, // Pasar la dieta si existe
+            'adquisiciones' => $adquisiciones->toArray(), // Pasar las adquisiciones de los programas
         ]);
     }
+
 
 
 

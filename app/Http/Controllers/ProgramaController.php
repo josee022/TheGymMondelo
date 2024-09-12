@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProgramaRequest;
 use App\Http\Requests\UpdateProgramaRequest;
 use App\Models\Programa;
+use Inertia\Inertia;
+use App\Models\AdquisicionPrograma;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramaController extends Controller
 {
@@ -13,7 +17,13 @@ class ProgramaController extends Controller
      */
     public function index()
     {
-        //
+        $programas = Programa::all();
+        return Inertia::render(
+            'Programas/Index',
+            [
+                'programas' => $programas
+            ]
+        );
     }
 
     /**

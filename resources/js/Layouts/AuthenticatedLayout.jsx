@@ -70,6 +70,17 @@ export default function Authenticated({ user = {}, header, children }) {
                             />
                         </NavLink>
                         <NavLink
+                            href={route('programas.index')}
+                            active={route().current('programas.index')}
+                            className="text-white text-xl relative group"
+                        >
+                            Programas
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('programas.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
+                        <NavLink
                             href={route('suscripciones.index')}
                             active={route().current('suscripciones.index')}
                             className="text-white text-xl relative group"
@@ -99,6 +110,17 @@ export default function Authenticated({ user = {}, header, children }) {
                             Foro
                             <span
                                 className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('foros.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
+                        <NavLink
+                            href={route('contacto')}
+                            active={route().current('contacto')}
+                            className="text-white text-xl relative group"
+                        >
+                            Contacto
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('contacto') ? 'scale-x-100' : 'scale-x-0'}`}
                                 style={{ transformOrigin: 'left' }}
                             />
                         </NavLink>
@@ -156,6 +178,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         <ResponsiveNavLink href={route('dietas.index')} active={route().current('dietas.index')}>
                             Dietas
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('programas.index')} active={route().current('programas.index')}>
+                            Programas
+                        </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('suscripciones.index')} active={route().current('suscripciones.index')}>
                             Suscripciones
                         </ResponsiveNavLink>
@@ -164,6 +189,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('foros.index')} active={route().current('foros.index')}>
                             Foro
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('contacto')} active={route().current('contacto')}>
+                            Contacto
                         </ResponsiveNavLink>
                     </div>
 

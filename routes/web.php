@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ComentarioForoController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SuscripcionController;
 use Illuminate\Foundation\Application;
@@ -80,10 +82,14 @@ Route::middleware(['auth'])->group(function () {
     // Rutas para dietas
     Route::resource('dietas', DietaController::class);
 
-});
+    // Rutas para programas
+    Route::resource('programas', ProgramaController::class);
+    Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
 
-Route::get('/ejemplo', function () {
-    return Inertia::render('Ejemplo');
+    Route::get('/contacto', function () {
+        return Inertia::render('Contacto/Index');
+    })->name('contacto');
+
 });
 
 require __DIR__ . '/auth.php';
