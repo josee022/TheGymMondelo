@@ -11,16 +11,16 @@ const Acordeon = () => {
 
     const faqs = [
         {
-            question: "¿Qué es Fuertafit?",
-            answer: "Fuertafit es un innovador programa de entrenamiento diseñado para ayudarte a alcanzar tus objetivos de fitness de manera efectiva y divertida. Ofrecemos entrenamientos personalizados, planes de alimentación balanceados y acceso a una comunidad de apoyo para que tu viaje fitness sea lo más exitoso posible."
+            question: "¿Qué es TheGymMondelo?",
+            answer: "TheGymMondelo es un innovador programa de entrenamiento diseñado para ayudarte a alcanzar tus objetivos de fitness de manera efectiva y divertida. Ofrecemos entrenamientos personalizados, planes de alimentación balanceados y acceso a una comunidad de apoyo para que tu viaje fitness sea lo más exitoso posible."
         },
         {
             question: "¿Qué tiene de diferente a otras opciones?",
-            answer: "A diferencia de otros programas, Fuertafit combina tecnología avanzada con un enfoque personalizado. Utilizamos aplicaciones móviles para seguimiento y ajustes en tiempo real, mientras que nuestros entrenadores ofrecen soporte continuo y planes de ejercicio que se adaptan a tus necesidades específicas."
+            answer: "A diferencia de otros programas, TheGymMondelo combina tecnología avanzada con un enfoque personalizado. Utilizamos aplicaciones móviles para seguimiento y ajustes en tiempo real, mientras que nuestros entrenadores ofrecen soporte continuo y planes de ejercicio que se adaptan a tus necesidades específicas."
         },
         {
             question: "¿Es una suscripción? ¿Cómo funciona?",
-            answer: "Sí, Fuertafit funciona bajo un modelo de suscripción. Puedes elegir entre varios planes que ofrecen diferentes niveles de acceso y soporte. Una vez suscrito, tendrás acceso completo a todos los recursos del programa, incluyendo entrenamientos, planes de alimentación y soporte de la comunidad."
+            answer: "Sí, TheGymMondelo funciona bajo un modelo de suscripción. Puedes elegir entre varios planes que ofrecen diferentes niveles de acceso y soporte. Una vez suscrito, tendrás acceso completo a todos los recursos del programa, incluyendo entrenamientos, planes de alimentación y soporte de la comunidad."
         },
         {
             question: "¿Cuál es el tiempo de permanencia?",
@@ -40,11 +40,11 @@ const Acordeon = () => {
         },
         {
             question: "Yo ya estoy en forma, ¿esto es para mí?",
-            answer: "Sí, Fuertafit está diseñado para todos los niveles de fitness, incluyendo aquellos que ya están en forma. Nuestros entrenamientos son personalizables y desafiantes, ideales para mantener y mejorar tu nivel actual de condición física."
+            answer: "Sí, TheGymMondelo está diseñado para todos los niveles de fitness, incluyendo aquellos que ya están en forma. Nuestros entrenamientos son personalizables y desafiantes, ideales para mantener y mejorar tu nivel actual de condición física."
         },
         {
             question: "Todavía no tengo el cuerpo que quiero, ¿esto es para mí?",
-            answer: "Absolutamente. Fuertafit está diseñado para ayudarte a alcanzar tus objetivos de forma progresiva y efectiva. Ofrecemos planes de ejercicio adaptados a tus necesidades específicas y soporte constante para ayudarte a lograr el cuerpo que deseas."
+            answer: "Absolutamente. TheGymMondelo está diseñado para ayudarte a alcanzar tus objetivos de forma progresiva y efectiva. Ofrecemos planes de ejercicio adaptados a tus necesidades específicas y soporte constante para ayudarte a lograr el cuerpo que deseas."
         },
         {
             question: "¿Durante cuánto tiempo estaré disfrutando el precio de la oferta?",
@@ -55,6 +55,7 @@ const Acordeon = () => {
             answer: "El Aviso Médico es una recomendación para que consultes con un médico antes de comenzar cualquier programa de ejercicio, especialmente si tienes condiciones de salud preexistentes. Queremos asegurarnos de que todos nuestros usuarios estén en condiciones óptimas para comenzar su entrenamiento."
         }
     ];
+
 
     return (
         <motion.div

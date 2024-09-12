@@ -53,7 +53,7 @@ export default function Dietas({ auth }) {
         },
         {
             title: 'Ganancia Muscular',
-            icon: <FiActivity className="text-sky-500" size={32} />,
+            icon: <FiActivity className="text-blue-500" size={32} />,
             description: 'Plan ideal para ganar masa muscular y mejorar la fuerza.',
             details: [
                 'Alto contenido proteico.',
@@ -61,8 +61,8 @@ export default function Dietas({ auth }) {
                 'Planes de comidas post-entrenamiento.',
                 'Asesoría en suplementos.',
             ],
-            color: 'sky-500',
-            bgColor: 'bg-sky-50',
+            color: 'blue-500',
+            bgColor: 'bg-blue-50',
             objetivo: 'Ganancia muscular', // El objetivo específico
         },
         {
