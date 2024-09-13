@@ -2,13 +2,14 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import Footer from '@/Components/Footer';
-import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa'; // Importar íconos para redes sociales
+import { motion } from 'framer-motion';
+import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin, FaHeartbeat, FaRunning, FaDumbbell } from 'react-icons/fa'; // Importar íconos para redes sociales
 
 export default function Index({ auth, entrenadores }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-3xl text-gray-800 leading-tight">Nuestros Entrenadores</h2>}
+            header={<h2 className="font-semibold text-3xl text-gray-800 leading-tight">Nuestros Entrenadores :</h2>}
         >
             <Head title="Entrenadores" />
 
@@ -16,6 +17,7 @@ export default function Index({ auth, entrenadores }) {
                 {/* Efecto de burbujas flotantes en el fondo */}
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-lime-300 to-transparent opacity-50 pointer-events-none animate-pulse"></div>
                 <div className="absolute bottom-0 right-0 w-full h-full bg-gradient-to-r from-transparent via-lime-300 to-transparent opacity-50 pointer-events-none animate-bounce"></div>
+
 
                 {/* Contenedor principal */}
                 <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105">
@@ -58,6 +60,7 @@ export default function Index({ auth, entrenadores }) {
                         </div>
                     </div>
                 </div>
+
             </div>
             <Footer />
         </AuthenticatedLayout>
