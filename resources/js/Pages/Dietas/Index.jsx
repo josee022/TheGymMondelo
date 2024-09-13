@@ -47,9 +47,9 @@ export default function Dietas({ auth }) {
                 'Plan de ejercicio complementario.',
                 'Asesoría personalizada semanal.',
             ],
-            color: 'green-500',
-            bgColor: 'bg-green-50',
-            objetivo: 'Pérdida de peso', // El objetivo específico
+            color: 'green-500', // Color principal
+            bgColor: 'bg-green-50', // Color de fondo
+            objetivo: 'Pérdida de peso',
         },
         {
             title: 'Ganancia Muscular',
@@ -63,7 +63,7 @@ export default function Dietas({ auth }) {
             ],
             color: 'blue-500',
             bgColor: 'bg-blue-50',
-            objetivo: 'Ganancia muscular', // El objetivo específico
+            objetivo: 'Ganancia muscular',
         },
         {
             title: 'Mejor Rendimiento',
@@ -77,7 +77,7 @@ export default function Dietas({ auth }) {
             ],
             color: 'red-500',
             bgColor: 'bg-red-50',
-            objetivo: 'Mantenimiento', // El objetivo específico
+            objetivo: 'Mantenimiento',
         },
     ];
 
@@ -115,7 +115,7 @@ export default function Dietas({ auth }) {
             {/* Sección de Resúmenes Informativos */}
             <div className="bg-gradient-to-r from-green-50 to-green-100 py-12">
                 <div className="container mx-auto px-6">
-                <motion.h2
+                    <motion.h2
                         className="text-5xl font-bold text-center text-gray-800 mb-12 underline underline-offset-8 decoration-slate-400"
                         initial={{ opacity: 0, y: -50 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -222,7 +222,6 @@ export default function Dietas({ auth }) {
                 </div>
             </div>
 
-            {/* Sección Dietas */}
             <div className="py-16 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300">
                 <div className="container mx-auto px-6">
                     <motion.h2
@@ -259,7 +258,10 @@ export default function Dietas({ auth }) {
                                 <div className="text-center">
                                     <button
                                         onClick={() => handleDieta(plan.objetivo, plan.description)}
-                                        className={`bg-${plan.color} text-white py-3 px-6 rounded-full hover:bg-opacity-90 transition duration-300`}
+                                        className={`py-3 px-6 rounded-full hover:bg-opacity-90 transition duration-300 ${plan.color === 'blue-500' ? 'bg-blue-500' :
+                                                plan.color === 'green-500' ? 'bg-green-500' :
+                                                    'bg-red-500'
+                                            } text-white`}
                                     >
                                         ¡Adquiere Aquí!
                                     </button>
@@ -269,7 +271,6 @@ export default function Dietas({ auth }) {
                     </div>
                 </div>
             </div>
-
             <div className="min-h-screen bg-gradient-to-r from-lime-600 via-lime-400 to-lime-600 flex flex-col justify-center items-center py-16">
                 <motion.h2
                     className="text-5xl font-bold text-center text-gray-800 mb-12 underline underline-offset-8 decoration-slate-400"
