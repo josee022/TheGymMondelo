@@ -231,11 +231,9 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
         }
     };
 
-
-
-
     // Obtener detalles de la dieta según el objetivo del usuario
-    const dietaInfo = getDietaInfo(dieta.objetivo);
+    const dietaInfo = dieta ? getDietaInfo(dieta.objetivo) : null;
+
 
     return (
         <AuthenticatedLayout
@@ -484,47 +482,55 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                     </div>
                     <br />
 
-                    {/* Sección de la dieta del usuario */}
                     <div className="p-8 bg-gradient-to-br from-green-100 via-yellow-100 to-orange-100 text-gray-800 rounded-lg shadow-lg mb-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="text-2xl font-bold text-green-700">{`Dieta: ${dieta.objetivo}`}</div>
-                            {/* Icono según el objetivo */}
-                            <div className="text-green-700 text-2xl">{getDietaIcon(dieta.objetivo)}</div>
-                        </div>
-                        <p className="mb-6 text-gray-700 font-semibold leading-relaxed">{dietaInfo.descripcion}</p>
+                        {dieta && dietaInfo ? (
+                            <>
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="text-2xl font-bold text-green-700">{`Dieta: ${dieta.objetivo}`}</div>
+                                    {/* Icono según el objetivo */}
+                                    <div className="text-green-700 text-2xl">{getDietaIcon(dieta.objetivo)}</div>
+                                </div>
+                                <p className="mb-6 text-gray-700 font-semibold leading-relaxed">{dietaInfo.descripcion}</p>
 
-                        {/* Desayuno */}
-                        <h3 className="text-xl font-bold mb-4 text-green-600 border-b-2 border-green-200 pb-2">Desayuno:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.desayuno.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Desayuno */}
+                                <h3 className="text-xl font-bold mb-4 text-green-600 border-b-2 border-green-200 pb-2">Desayuno:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.desayuno.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
 
-                        {/* Almuerzo */}
-                        <h3 className="text-xl font-bold mt-6 mb-4 text-yellow-600 border-b-2 border-yellow-200 pb-2">Almuerzo:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.almuerzo.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Almuerzo */}
+                                <h3 className="text-xl font-bold mt-6 mb-4 text-yellow-600 border-b-2 border-yellow-200 pb-2">Almuerzo:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.almuerzo.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
 
-                        {/* Merienda */}
-                        <h3 className="text-xl font-bold mt-6 mb-4 text-orange-600 border-b-2 border-orange-200 pb-2">Merienda:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.merienda.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Merienda */}
+                                <h3 className="text-xl font-bold mt-6 mb-4 text-orange-600 border-b-2 border-orange-200 pb-2">Merienda:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.merienda.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
 
-                        {/* Cena */}
-                        <h3 className="text-xl font-bold mt-6 mb-4 text-red-600 border-b-2 border-red-200 pb-2">Cena:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.cena.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Cena */}
+                                <h3 className="text-xl font-bold mt-6 mb-4 text-red-600 border-b-2 border-red-200 pb-2">Cena:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.cena.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
+                            </>
+                        ) : (
+                            <div className="text-center text-gray-600 font-semibold text-xl">
+                                No tienes ninguna dieta adquirida.
+                            </div>
+                        )}
                     </div>
+
 
                 </div>
             </div>
