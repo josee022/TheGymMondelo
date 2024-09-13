@@ -108,7 +108,7 @@ export default function Suscripciones({ auth }) {
                         {/* Suscripción Semestral */}
                         <div className="relative bg-gradient-to-b from-yellow-100 to-yellow-50 p-8 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-300 hover:scale-110">
                             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white py-2 px-4 rounded-full shadow-md">
-                                🌟 Semestral 🌟
+                                🌟 Semestral
                             </div>
                             <p className="text-center text-lg font-bold text-yellow-700 mt-8">Pago Semestral</p>
                             <div className="text-center mt-2">
