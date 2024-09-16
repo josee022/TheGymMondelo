@@ -13,6 +13,7 @@ class DietaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         return inertia('Dietas/Index');
@@ -30,31 +31,49 @@ class DietaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    // Validar los datos recibidos
-    $request->validate([
-        'objetivo' => 'required|in:Pérdida de peso,Ganancia muscular,Mantenimiento', // Incluimos 'Mejor rendimiento'
-        'descripcion' => 'required|string',
-    ]);
+    {
+        // Validar los datos recibidos
+        $request->validate([
+            'objetivo' => 'required|in:Pérdida de peso,Ganancia muscular,Mantenimiento', // Incluimos 'Mejor rendimiento'
+            'descripcion' => 'required|string',
+        ]);
 
-    // Verificar si el usuario ya tiene una dieta
-    $dietaExistente = Dieta::where('usuario_id', Auth::id())->first();
+        // Verificar si el usuario ya tiene una dieta
+        $dietaExistente = Dieta::where('usuario_id', Auth::id())->first();
 
-    if ($dietaExistente) {
-        // Si ya tiene una dieta, redirigir con un mensaje de error
-        return redirect()->back()->with('error', 'Ya tienes una dieta activa. No puedes adquirir otra.');
+        if ($dietaExistente) {
+            // Si ya tiene una dieta, redirigir con un mensaje de error
+            return redirect()->back()->with('error', 'Ya tienes una dieta activa. No puedes adquirir otra.');
+        }
+
+        // Si no tiene una dieta, proceder a crear una nueva
+        $dieta = new Dieta();
+        $dieta->usuario_id = Auth::id(); // El usuario que está logueado
+        $dieta->objetivo = $request->objetivo; // El objetivo seleccionado
+        $dieta->descripcion = $request->descripcion; // La descripción
+        $dieta->save(); // Guardar en la base de datos
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', '¡Dieta seleccionada con éxito!');
     }
 
-    // Si no tiene una dieta, proceder a crear una nueva
-    $dieta = new Dieta();
-    $dieta->usuario_id = Auth::id(); // El usuario que está logueado
-    $dieta->objetivo = $request->objetivo; // El objetivo seleccionado
-    $dieta->descripcion = $request->descripcion; // La descripción
-    $dieta->save(); // Guardar en la base de datos
+    public function delete($id)
+    {
+        // Obtener la dieta por ID
+        $dieta = Dieta::findOrFail($id);
 
-    // Redirigir con un mensaje de éxito
-    return redirect()->back()->with('success', '¡Dieta seleccionada con éxito!');
-}
+        // Verificar que la dieta pertenece al usuario autenticado
+        if ($dieta->usuario_id !== Auth::id()) {
+            return redirect()->back()->withErrors(['No tienes permiso para eliminar esta dieta.']);
+        }
+
+        // Eliminar la dieta
+        $dieta->delete();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Dieta eliminada exitosamente.');
+    }
+
 
 
 

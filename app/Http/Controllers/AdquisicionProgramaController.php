@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateAdquisicionProgramaRequest;
 use Illuminate\Http\Request;
 use App\Models\AdquisicionPrograma;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdquisicionProgramaController extends Controller
 {
@@ -33,6 +34,28 @@ class AdquisicionProgramaController extends Controller
 
         return response()->json(['message' => 'Inscrito con éxito'], 200);
     }
+
+    public function delete($id)
+    {
+        // Buscar la adquisición de programa por usuario y programa ID
+        $adquisicion = DB::table('adquisiciones_programas')
+            ->where('usuario_id', Auth::id())
+            ->where('programa_id', $id)
+            ->first();
+
+        if (!$adquisicion) {
+            return redirect()->back()->withErrors(['No tienes permiso para eliminar esta adquisición de programa.']);
+        }
+
+        // Eliminar la adquisición de programa
+        DB::table('adquisiciones_programas')
+            ->where('id', $adquisicion->id)
+            ->delete();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Programa eliminado exitosamente.');
+    }
+
 
     /**
      * Display a listing of the resource.
