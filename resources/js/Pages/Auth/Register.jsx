@@ -9,10 +9,10 @@ export default function Register() {
         password: '', // Contraseña
         password_confirmation: '', // Confirmación de contraseña
         fecha_nacimiento: '', // Fecha de nacimiento
-        sexo: '', // Sexo
+        sexo: 'Masculino', // Sexo
         altura: '', // Altura en cm
         peso: '', // Peso en kg
-        nivel_actividad: '' // Nivel de actividad
+        nivel_actividad: 'Sedentario' // Nivel de actividad
     });
 
     // useEffect para limpiar los campos de contraseña cuando el componente se desmonte

@@ -36,7 +36,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'fecha_nacimiento' => 'nullable|date',
-            'sexo' => 'nullable|string',
+            'sexo' => 'required|in:Masculino,Femenino,Otro',
             'altura' => 'nullable|numeric',
             'peso' => 'nullable|numeric',
             'nivel_actividad' => 'nullable|string',

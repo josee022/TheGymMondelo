@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReservaRequest;
 use App\Http\Requests\UpdateReservaRequest;
+use App\Models\Clase;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,14 @@ class ReservaController extends Controller
             'clase_id' => 'required|exists:clases,id',
         ]);
 
+        $clase = Clase::withCount(['reservas' => function ($query) {
+            $query->where('estado', 'Confirmada');
+        }])->findOrFail($request->input('clase_id'));
+
+        if ($clase->capacidad - $clase->reservas_count <= 0) {
+            return back()->with('error', 'No hay plazas disponibles para esta clase.');
+        }
+
         Reserva::create([
             'usuario_id' => Auth::id(),
             'clase_id' => $request->input('clase_id'),
@@ -64,6 +73,7 @@ class ReservaController extends Controller
 
         return Redirect::route('dashboard')->with('success', 'Reserva realizada con éxito.');
     }
+
 
     /**
      * Display the specified resource.

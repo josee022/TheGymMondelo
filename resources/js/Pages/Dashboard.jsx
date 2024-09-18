@@ -231,11 +231,9 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
         }
     };
 
-
-
-
     // Obtener detalles de la dieta según el objetivo del usuario
-    const dietaInfo = getDietaInfo(dieta.objetivo);
+    const dietaInfo = dieta ? getDietaInfo(dieta.objetivo) : null;
+
 
     return (
         <AuthenticatedLayout
@@ -413,7 +411,6 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                 </div>
                 <br />
 
-                {/* Sección de Programas */}
                 <div className="py-16 bg-gradient-to-br from-black via-gray-800 to-green-800 text-white rounded-lg shadow-xl">
                     <h2 className="text-4xl font-extrabold text-center mb-10 text-green-400">
                         🌟 Tu Programa Adquirido 🌟
@@ -435,7 +432,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.7, delay: index * 0.2 }}
-                                    className="bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform"
+                                    className="bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform mb-6"
                                 >
                                     <div className="text-center">
                                         <h3 className="text-3xl font-bold mb-6 text-white flex justify-center items-center">
@@ -456,16 +453,24 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                                             <FiDollarSign className="text-3xl mr-4" />
                                             <p className="text-xl">Precio: {parseFloat(adquisicion.programa.precio).toFixed(2)} €</p>
                                         </div>
-                                        <div className="flex items-center justify-center text-green-400">
-                                            <FaStar className="text-3xl mr-4" />
-                                            <p className="text-xl font-semibold">¡Sigue mejorando, lo estás haciendo genial!</p>
-                                        </div>
+                                    </div>
+
+                                    {/* Botón para eliminar programa */}
+                                    <div className="text-right mt-6">
+                                        <Link
+                                            href={`/programas/${adquisicion.programa.id}/delete`}
+                                            method="POST"
+                                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                        >
+                                            Eliminar Programa
+                                        </Link>
                                     </div>
                                 </motion.div>
                             ))
                         )}
                     </div>
                 </div>
+
             </div>
 
             <div className="w-full px-4 bg-gradient-to-b from-lime-400 via-lime-300 to-slate-200 shadow-lg rounded-xl p-8 overflow-hidden">
@@ -484,47 +489,66 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                     </div>
                     <br />
 
-                    {/* Sección de la dieta del usuario */}
                     <div className="p-8 bg-gradient-to-br from-green-100 via-yellow-100 to-orange-100 text-gray-800 rounded-lg shadow-lg mb-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="text-2xl font-bold text-green-700">{`Dieta: ${dieta.objetivo}`}</div>
-                            {/* Icono según el objetivo */}
-                            <div className="text-green-700 text-2xl">{getDietaIcon(dieta.objetivo)}</div>
-                        </div>
-                        <p className="mb-6 text-gray-700 font-semibold leading-relaxed">{dietaInfo.descripcion}</p>
+                        {dieta && dietaInfo ? (
+                            <>
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="text-2xl font-bold text-green-700">{`Dieta: ${dieta.objetivo}`}</div>
+                                    <div className="text-green-700 text-2xl">{getDietaIcon(dieta.objetivo)}</div>
+                                </div>
+                                <p className="mb-6 text-gray-700 font-semibold leading-relaxed">{dietaInfo.descripcion}</p>
 
-                        {/* Desayuno */}
-                        <h3 className="text-xl font-bold mb-4 text-green-600 border-b-2 border-green-200 pb-2">Desayuno:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.desayuno.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Desayuno */}
+                                <h3 className="text-xl font-bold mb-4 text-green-600 border-b-2 border-green-200 pb-2">Desayuno:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.desayuno.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
 
-                        {/* Almuerzo */}
-                        <h3 className="text-xl font-bold mt-6 mb-4 text-yellow-600 border-b-2 border-yellow-200 pb-2">Almuerzo:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.almuerzo.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Almuerzo */}
+                                <h3 className="text-xl font-bold mt-6 mb-4 text-yellow-600 border-b-2 border-yellow-200 pb-2">Almuerzo:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.almuerzo.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
 
-                        {/* Merienda */}
-                        <h3 className="text-xl font-bold mt-6 mb-4 text-orange-600 border-b-2 border-orange-200 pb-2">Merienda:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.merienda.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Merienda */}
+                                <h3 className="text-xl font-bold mt-6 mb-4 text-orange-600 border-b-2 border-orange-200 pb-2">Merienda:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.merienda.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
 
-                        {/* Cena */}
-                        <h3 className="text-xl font-bold mt-6 mb-4 text-red-600 border-b-2 border-red-200 pb-2">Cena:</h3>
-                        <ul className="list-disc pl-6 space-y-2">
-                            {dietaInfo.comidas.cena.map((comida, index) => (
-                                <li key={index} className="text-gray-700 font-semibold">{comida}</li>
-                            ))}
-                        </ul>
+                                {/* Cena */}
+                                <h3 className="text-xl font-bold mt-6 mb-4 text-red-600 border-b-2 border-red-200 pb-2">Cena:</h3>
+                                <ul className="list-disc pl-6 space-y-2">
+                                    {dietaInfo.comidas.cena.map((comida, index) => (
+                                        <li key={index} className="text-gray-700 font-semibold">{comida}</li>
+                                    ))}
+                                </ul>
+
+                                {/* Botón para eliminar dieta */}
+                                <div className="text-right mt-6">
+                                    <Link
+                                        href={`/dietas/${dieta.id}/delete`}
+                                        method="POST"
+                                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                    >
+                                        Eliminar Dieta
+                                    </Link>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="text-center text-gray-600 font-semibold text-xl">
+                                No tienes ninguna dieta adquirida.
+                            </div>
+                        )}
                     </div>
+
+
 
                 </div>
             </div>

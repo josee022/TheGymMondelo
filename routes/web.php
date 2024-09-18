@@ -81,15 +81,16 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para dietas
     Route::resource('dietas', DietaController::class);
+    Route::post('/dietas/{id}/delete', [DietaController::class, 'delete'])->name('dietas.delete');
 
     // Rutas para programas
     Route::resource('programas', ProgramaController::class);
     Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
+    Route::post('/programas/{id}/delete', [AdquisicionProgramaController::class, 'delete'])->name('programas.delete');
 
     Route::get('/contacto', function () {
         return Inertia::render('Contacto/Index');
     })->name('contacto');
-
 });
 
 require __DIR__ . '/auth.php';

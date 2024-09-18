@@ -262,48 +262,57 @@ export default function CreateForo({ auth, foros }) {
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Foros TheGymMondelo :</h2>}
         >
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
-                <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-                    <div className="text-center mb-6">
-                        <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
+                <div className="w-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8 space-y-8">
+                    {/* Título */}
+                    <div className="text-center">
+                        <h1 className="text-4xl font-extrabold text-gray-800 mb-6 relative">
                             <span className="relative inline-block">
-                                <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-400"></span>
-                                <span className="relative">Crear un nuevo Foro</span>
+                                <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-500 rounded-full"></span>
+                                Crear un nuevo Foro
                             </span>
                         </h1>
+                        <p className="text-gray-500 text-base">Comparte tus ideas, preguntas o recomendaciones con la comunidad del gimnasio</p>
                     </div>
 
+                    {/* Formulario */}
                     <form onSubmit={handleCreateSubmit} className="space-y-6">
+                        {/* Campo del Título */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Título</label>
+                            <label className="block text-gray-700 font-semibold mb-2">Título</label>
                             <input
                                 type="text"
                                 value={createForoData.titulo}
                                 onChange={(e) => setCreateForoData('titulo', e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                placeholder="Ejemplo: Rutinas de entrenamiento para principiantes"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent transition duration-300"
                             />
-                            {errors.titulo && <span className="text-red-500 text-sm">{errors.titulo}</span>}
+                            {errors.titulo && <span className="text-red-500 text-sm mt-1">{errors.titulo}</span>}
                         </div>
 
+                        {/* Campo del Contenido */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Contenido</label>
+                            <label className="block text-gray-700 font-semibold mb-2">Contenido</label>
                             <textarea
                                 value={createForoData.contenido}
                                 onChange={(e) => setCreateForoData('contenido', e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-400 h-32"
+                                placeholder="Escribe aquí tus ideas o preguntas..."
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent h-36 resize-none transition duration-300"
                             />
-                            {errors.contenido && <span className="text-red-500 text-sm">{errors.contenido}</span>}
+                            {errors.contenido && <span className="text-red-500 text-sm mt-1">{errors.contenido}</span>}
                         </div>
 
+                        {/* Botón de Enviar */}
                         <div className="flex justify-end">
                             <button
                                 type="submit"
-                                className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-lime-400 focus:ring-opacity-50"
                             >
-                                Crear
+                                Crear Foro
                             </button>
                         </div>
                     </form>
                 </div>
+
 
                 <div className="w-full max-w-4xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
                     <h2 className="text-2xl font-bold text-gray-800 mb-4 relative">
