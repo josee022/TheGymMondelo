@@ -50,15 +50,21 @@ class ClaseController extends Controller
      */
     public function show($id)
     {
-        // Obtiene la clase especificada por ID, incluyendo información del entrenador asociado
-        $clase = Clase::with('entrenador.usuario')->findOrFail($id);
+        // Obtiene la clase especificada por ID, incluyendo reservas confirmadas y la información del entrenador
+        $clase = Clase::with(['entrenador.usuario', 'reservas' => function ($query) {
+            $query->where('estado', 'Confirmada');
+        }])->findOrFail($id);
 
-        // Renderiza la vista 'Clases/Show' con la información de la clase y del entrenador
+        // Calcula las plazas disponibles restando las reservas confirmadas de la capacidad total
+        $plazasDisponibles = $clase->capacidad - $clase->reservas->count();
+
         return Inertia::render('Clases/Show', [
             'clase' => $clase,
             'entrenador' => $clase->entrenador,
+            'plazasDisponibles' => $plazasDisponibles,
         ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -92,7 +98,8 @@ class ClaseController extends Controller
         // Verifica si ya existe una reserva para esta clase por parte del usuario
         if (Reserva::where('usuario_id', $user->id)
             ->where('clase_id', $clase->id)
-            ->exists()) {
+            ->exists()
+        ) {
             // Redirige de vuelta con un mensaje de error si ya se ha reservado la clase
             return redirect()->back()->with('error', 'Ya has reservado esta clase.');
         }

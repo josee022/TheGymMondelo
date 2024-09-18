@@ -6,7 +6,7 @@ import Footer from '@/Components/Footer';
 import { motion } from 'framer-motion';
 import { FaUserTie, FaCalendarAlt, FaClock, FaUsers, FaStar, FaArrowLeft, FaCheckCircle, FaFire } from 'react-icons/fa';
 
-export default function Show({ auth, clase, entrenador }) {
+export default function Show({ auth, clase, entrenador, plazasDisponibles }) {
 
     const formatFechaClase = (fecha) => {
         const fechaObj = new Date(fecha);
@@ -34,7 +34,6 @@ export default function Show({ auth, clase, entrenador }) {
             <Head title={`Clase: ${clase.nombre}`} />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-16">
-                {/* Contenedor principal ampliado */}
                 <motion.div
                     className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-10"
                     initial={{ opacity: 0, y: 30 }}
@@ -55,6 +54,12 @@ export default function Show({ auth, clase, entrenador }) {
                     <p className="mb-4 text-lg text-gray-700"><FaUsers className="inline mr-2 text-lime-600" /> <strong>Capacidad:</strong> {clase.capacidad} personas</p>
                     <p className="mb-4 text-lg text-gray-700"><FaStar className="inline mr-2 text-lime-600" /> <strong>Descripción:</strong> {clase.descripcion || 'No disponible'}</p>
 
+                    {plazasDisponibles > 0 ? (
+                        <p className="mb-4 text-lg text-gray-700"><FaUsers className="inline mr-2 text-lime-600" /> <strong>Plazas disponibles:</strong> {plazasDisponibles}</p>
+                    ) : (
+                        <p className="mb-4 text-lg text-red-600"><strong>Clase completa</strong></p>
+                    )}
+
                     <div className="mt-10">
                         <h2 className="text-3xl font-semibold mb-4">Conoce a tu Entrenador 🤝</h2>
                         <p className="mb-4 text-lg text-gray-700"><FaUserTie className="inline mr-2 text-lime-600" /> <strong>Nombre:</strong> {entrenador.usuario.name || 'No disponible'}</p>
@@ -63,7 +68,6 @@ export default function Show({ auth, clase, entrenador }) {
                     </div>
 
                     <div className="flex justify-between mt-10">
-                        {/* Botón para volver a la lista de clases */}
                         <Link
                             href="/clases"
                             className="flex items-center bg-red-500 text-white py-3 px-6 rounded shadow-md hover:bg-red-600 transition-all"
@@ -71,19 +75,22 @@ export default function Show({ auth, clase, entrenador }) {
                             <FaArrowLeft className="mr-2" /> Volver
                         </Link>
 
-                        {/* Botón para reservar la clase */}
-                        <motion.button
-                            onClick={handleReserve}
-                            className="flex items-center bg-lime-500 text-white py-3 px-6 rounded shadow-md hover:bg-lime-600 transition-all"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <FaCheckCircle className="mr-2" /> Reservar Clase
-                        </motion.button>
+                        {plazasDisponibles > 0 ? (
+                            <motion.button
+                                onClick={handleReserve}
+                                className="flex items-center bg-lime-500 text-white py-3 px-6 rounded shadow-md hover:bg-lime-600 transition-all"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <FaCheckCircle className="mr-2" /> Reservar Clase
+                            </motion.button>
+                        ) : (
+                            <p className="text-lg text-red-600">Clase completa</p>
+                        )}
                     </div>
                 </motion.div>
 
-                {/* Nuevo contenedor persuasivo para incentivar la reserva */}
+                {/* Contenedor persuasivo */}
                 <motion.div
                     className="w-full max-w-5xl mx-auto bg-gradient-to-r from-lime-500 to-green-400 mt-10 p-10 rounded-lg shadow-lg text-white"
                     initial={{ opacity: 0, y: 50 }}
@@ -101,16 +108,20 @@ export default function Show({ auth, clase, entrenador }) {
                     <p className="text-lg mb-6">Transforma tu cuerpo, fortalece tu mente y alcanza tus metas con {clase.nombre}. Entrena con nuestro entrenador especializado y obtén resultados garantizados.</p>
                     <p className="text-lg mb-6"><FaFire className="inline mr-2 text-yellow-300" /> Esta clase es ideal para todos los niveles, y te ayudará a lograr una versión más fuerte y saludable de ti mismo.</p>
 
-                    <div className="flex justify-center">
-                        <motion.button
-                            onClick={handleReserve}
-                            className="bg-white text-lime-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            ¡Reserva tu lugar ahora! 🚀
-                        </motion.button>
-                    </div>
+                    {plazasDisponibles > 0 ? (
+                        <div className="flex justify-center">
+                            <motion.button
+                                onClick={handleReserve}
+                                className="bg-white text-lime-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                ¡Reserva tu lugar ahora! 🚀
+                            </motion.button>
+                        </div>
+                    ) : (
+                        <p className="text-lg text-red-600 text-center">Clase completa</p>
+                    )}
                 </motion.div>
             </div>
             <Footer />
