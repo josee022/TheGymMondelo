@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
+use Inertia\Inertia;
 
 class ProductoController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $productos = Producto::all(); // Obtiene todos los productos de la base de datos
+        return Inertia::render('Tienda/Index', [
+            'productos' => $productos
+        ]);
     }
 
     /**

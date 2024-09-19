@@ -8,6 +8,8 @@ use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\ReservaController;
@@ -88,9 +90,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
     Route::post('/programas/{id}/delete', [AdquisicionProgramaController::class, 'delete'])->name('programas.delete');
 
+    // Ruta para la vista de contacto
     Route::get('/contacto', function () {
         return Inertia::render('Contacto/Index');
     })->name('contacto');
+
+    // Rutas para la tienda
+    Route::resource('tienda', ProductoController::class);
+    Route::post('/carrito/agregar', [PedidoController::class, 'agregarAlCarrito']);
+    Route::post('/carrito/actualizar', [PedidoController::class, 'actualizarCarrito']);
+    Route::post('/carrito/eliminar', [PedidoController::class, 'eliminarDelCarrito']);
+    Route::post('/carrito/pedido', [PedidoController::class, 'realizarPedido']);
+
 });
 
 require __DIR__ . '/auth.php';
