@@ -388,14 +388,14 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                         </div>
                     ) : (
                         suscripcionesOrdenadas.map((suscripcion) => (
-                            <div key={suscripcion.id} className="bg-gradient-to-r from-green-700 via-gray-800 to-black p-4 rounded-lg shadow-md mb-4">
-                                <h3 className="text-3xl font-semibold mb-2 text-center text-white">Suscripción {suscripcion.tipo}</h3>
+                            <div className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform mb-6">
+                                <h3 className="text-3xl font-semibold mb-6 text-center text-white">Suscripción {suscripcion.tipo}</h3>
                                 <p className="mb-2"><strong className="text-white text-xl">Fecha de inicio: {formatFechaSuscripcion(suscripcion.fecha_inicio)}</strong></p>
                                 <p className="mb-2"><strong className="text-white text-xl">Fecha de fin: {formatFechaSuscripcion(suscripcion.fecha_fin)}</strong></p>
                                 <p className="mb-2"><strong className="text-white text-xl">Estado: {suscripcion.estado}</strong></p>
 
                                 {suscripcion.estado === 'Activa' && (
-                                    <div className="text-right mt-4">
+                                    <div className="text-right mt-6">
                                         <Link
                                             href={`/suscripciones/${suscripcion.id}/disable`}
                                             method="POST"
@@ -406,12 +406,11 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                                     </div>
                                 )}
                             </div>
+
+
                         ))
                     )}
-                </div>
-                <br />
-
-                <div className="py-16 bg-gradient-to-br from-black via-gray-800 to-green-800 text-white rounded-lg shadow-xl">
+                    <br />
                     <h2 className="text-4xl font-extrabold text-center mb-10 text-green-400">
                         🌟 Tu Programa Adquirido 🌟
                     </h2>
@@ -470,6 +469,8 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                         )}
                     </div>
                 </div>
+
+
 
             </div>
 

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePedidoRequest;
 use App\Models\DetallePedido;
 use App\Models\Pedido;
 use App\Models\Producto;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -58,7 +59,7 @@ class PedidoController extends Controller
         $carrito = session()->get('carrito');
 
         if (!$carrito || count($carrito) === 0) {
-            return back()->with('error', 'No hay productos en el carrito');
+            return redirect()->back()->with('error', 'No hay productos en el carrito');
         }
 
         $total = array_sum(array_map(function ($item) {
@@ -81,10 +82,14 @@ class PedidoController extends Controller
             ]);
         }
 
-        session()->forget('carrito'); // Limpiar el carrito
+        // Limpiar el carrito
+        session()->forget('carrito');
 
-        return back()->with('success', 'Pedido realizado con éxito');
+        // Usar Inertia para redirigir
+        return Inertia::redirect('/carrito/confirmacion');
     }
+
+
     /**
      * Display a listing of the resource.
      */

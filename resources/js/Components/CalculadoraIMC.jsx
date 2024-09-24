@@ -47,7 +47,7 @@ const CalculadoraIMC = () => {
 
     return (
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs transform translate-x-4">
-            <h2 className="text-xl font-bold text-center text-lime-400 mb-4 animate-bounce">
+            <h2 className="text-xl font-bold text-center text-lime-400 mb-4 ">
                 Índice de Masa Corporal
             </h2>
             <div className="space-y-3">

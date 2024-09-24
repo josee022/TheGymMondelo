@@ -69,7 +69,7 @@ export default function Suscripciones({ auth }) {
                 <div className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-xl p-10 transition-all duration-300 hover:shadow-2xl hover:scale-105">
                     {/* Título con animación */}
                     <div className="text-center mb-12">
-                        <h1 className="text-5xl font-extrabold text-gray-900 mb-4 animate-bounce">
+                        <h1 className="text-5xl font-extrabold text-gray-900 mb-4 ">
                             <span className="relative inline-block">
                                 <span className="absolute inset-x-0 bottom-0 h-2 bg-green-400"></span>
                                 Planes de Suscripción 💪

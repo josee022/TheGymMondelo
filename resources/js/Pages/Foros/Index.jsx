@@ -307,7 +307,7 @@ export default function CreateForo({ auth, foros }) {
                                 type="submit"
                                 className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-lime-400 focus:ring-opacity-50"
                             >
-                                Crear Foro
+                                Publicar en el foro
                             </button>
                         </div>
                     </form>

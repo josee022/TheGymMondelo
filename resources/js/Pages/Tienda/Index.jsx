@@ -12,7 +12,7 @@ export default function Tienda() {
 
     const [carrito, setCarrito] = useState([]);
 
-    // Función para agregar productos al carrito
+    // Función para agregar productos al carrito con notificación
     const agregarAlCarrito = (productoId) => {
         const producto = productos.find((p) => p.id === productoId);
         const itemEnCarrito = carrito.find((item) => item.id === productoId);
@@ -29,7 +29,19 @@ export default function Tienda() {
             setCarrito([...carrito, { ...producto, cantidad: 1 }]);
         }
 
+        // Mostrar el toast solo aquí
         toast.success("Producto añadido al carrito");
+    };
+
+    // Función para incrementar la cantidad sin notificación
+    const incrementarCantidad = (productoId) => {
+        setCarrito(
+            carrito.map((item) =>
+                item.id === productoId
+                    ? { ...item, cantidad: item.cantidad + 1 }
+                    : item
+            )
+        );
     };
 
     // Función para decrementar la cantidad
@@ -78,7 +90,7 @@ export default function Tienda() {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-black-100 leading-tight">Tienda de Productos</h2>}
+            header={<h2 className="font-semibold text-xl text-black-100 leading-tight">Tienda de Productos :</h2>}
         >
             <ToastContainer />
             <Head title="Tienda de Productos" />
@@ -128,48 +140,48 @@ export default function Tienda() {
             </div>
 
             {/* Carrito de Compras */}
-            <div className="bg-black p-8 text-white">
-                <h2 className="text-3xl font-bold mb-6">🛒 Tu Carrito</h2>
+            <div className="bg-black p-6 text-white">
+                <h2 className="text-2xl font-bold mb-4">🛒 Tu Carrito</h2>
                 {carrito.length > 0 ? (
                     <div>
                         {carrito.map((producto, index) => (
-                            <div key={producto.id} className="bg-gray-800 p-4 mb-4 rounded-lg">
-                                <h3 className="text-xl font-semibold">{producto.nombre}</h3>
-                                <p>Cantidad: {producto.cantidad}</p>
-                                <p>Precio unitario: {parseFloat(producto.precio).toFixed(2)} €</p>
-                                <p>Total: {(parseFloat(producto.precio) * producto.cantidad).toFixed(2)} €</p>
+                            <div key={producto.id} className="bg-gray-800 p-3 mb-2 rounded-md flex items-center justify-between">
+                                <div>
+                                    <h3 className="text-lg font-semibold">{producto.nombre}</h3>
+                                    <p className="text-sm">Cantidad: {producto.cantidad}</p>
+                                    <p className="text-sm">Total: {(parseFloat(producto.precio) * producto.cantidad).toFixed(2)} €</p>
+                                </div>
 
                                 {/* Botones para actualizar el carrito */}
-                                <div className="flex space-x-4 mt-4">
+                                <div className="flex space-x-2">
                                     <button
-                                        className="bg-red-500 py-2 px-4 rounded-lg hover:bg-red-600"
+                                        className="bg-red-500 py-1 px-2 rounded hover:bg-red-600 text-sm"
                                         onClick={() => decrementarCantidad(producto.id)}
                                     >
-                                        Decrementar
+                                        -
                                     </button>
                                     <button
-                                        className="bg-lime-500 py-2 px-4 rounded-lg hover:bg-lime-600"
-                                        onClick={() => agregarAlCarrito(producto.id)}
+                                        className="bg-lime-500 py-1 px-2 rounded hover:bg-lime-600 text-sm"
+                                        onClick={() => incrementarCantidad(producto.id)}
                                     >
-                                        Aumentar
+                                        +
                                     </button>
                                     <button
-                                        className="bg-red-700 py-2 px-4 rounded-lg hover:bg-red-800"
+                                        className="bg-red-700 py-1 px-2 rounded hover:bg-red-800 text-sm"
                                         onClick={() => eliminarDelCarrito(producto.id)}
                                     >
-                                        Eliminar
+                                        🗑️
                                     </button>
                                 </div>
-                                {index < carrito.length - 1 && <hr className="border-white my-4" />}
                             </div>
                         ))}
-                        <hr className="border-white my-6" />
-                        <div className="text-right text-2xl font-bold">
+                        <hr className="border-white my-4" />
+                        <div className="text-right text-xl font-bold">
                             Total en el carrito: {calcularTotal()} €
                         </div>
-                        <div className="mt-6 text-right">
+                        <div className="mt-4 text-right">
                             <button
-                                className="bg-green-500 text-black py-2 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300"
+                                className="bg-lime-500 text-black py-2 px-4 rounded hover:bg-lime-700 transition-colors duration-300"
                                 onClick={realizarPedido}
                             >
                                 Realizar Pedido
