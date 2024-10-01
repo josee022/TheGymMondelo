@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { usePage, Head } from "@inertiajs/react";
+import { usePage, Head, router } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -68,17 +68,29 @@ export default function Tienda() {
             return;
         }
 
-        // Aquí envías los datos del carrito al backend para procesar el pedido
-        Inertia.post('/carrito/pedido', { carrito }, {
+        // Validar que todos los productos tengan un id válido
+        const productosInvalidos = carrito.filter(producto => producto.id === 0);
+        if (productosInvalidos.length > 0) {
+            toast.error("Uno o más productos tienen un ID inválido.");
+            return;
+        }
+
+        // Enviar la solicitud para realizar el pedido
+        router.post('/carrito/pedido', { carrito }, {
             onSuccess: () => {
                 toast.success("Pedido realizado con éxito");
-                setCarrito([]);  // Limpiar el carrito después de realizar el pedido
+                setTimeout(() => {
+                    setCarrito([]);
+                    router.visit('/tienda'); // Redirigir a la tienda después de un breve retraso
+                }, 3000);  // Redirigir después de 3 segundos
             },
             onError: () => {
                 toast.error("Hubo un error al realizar el pedido.");
             }
         });
     };
+
+
 
     // Función para calcular el total del carrito
     const calcularTotal = () => {

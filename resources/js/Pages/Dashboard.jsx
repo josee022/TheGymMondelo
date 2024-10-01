@@ -414,7 +414,7 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                     <h2 className="text-4xl font-extrabold text-center mb-10 text-green-400">
                         🌟 Tu Programa Adquirido 🌟
                     </h2>
-                    <div className="max-w-4xl mx-auto">
+                    <div className="max-w-4xl mx-auto hover:shadow-3xl transition-all duration-500 hover:scale-105 transform">
                         {adquisiciones.length === 0 ? (
                             <motion.div
                                 initial={{ opacity: 0, y: -50 }}

@@ -56,37 +56,49 @@ class PedidoController extends Controller
     // Método para procesar el pedido
     public function realizarPedido(Request $request)
     {
-        $carrito = session()->get('carrito');
+        // Capturar el carrito enviado desde el frontend
+        $carrito = $request->input('carrito');
 
         if (!$carrito || count($carrito) === 0) {
             return redirect()->back()->with('error', 'No hay productos en el carrito');
         }
 
+        // Calcular el total del pedido
         $total = array_sum(array_map(function ($item) {
             return $item['precio'] * $item['cantidad'];
         }, $carrito));
 
-        // Crear el pedido
+        // Crear el pedido en la base de datos
         $pedido = Pedido::create([
-            'user_id' => auth()->user()->id,
-            'total' => $total
+            'usuario_id' => auth()->user()->id,
+            'total' => $total,
+            'estado' => 'Pendiente', // Asegúrate de que siempre haya un valor en 'estado'
         ]);
 
         // Crear los detalles del pedido
-        foreach ($carrito as $producto_id => $detalles) {
+        foreach ($carrito as $detalles) {
+            $producto_id = $detalles['id']; // Obtén el id del producto correctamente
+
+            // Verificar que el producto exista en la base de datos
+            $producto = Producto::find($producto_id);
+            if (!$producto) {
+                return redirect()->back()->with('error', "El producto con ID {$producto_id} no existe.");
+            }
+
+            // Insertar el detalle del pedido
             DetallePedido::create([
                 'pedido_id' => $pedido->id,
                 'producto_id' => $producto_id,
                 'cantidad' => $detalles['cantidad'],
-                'precio_unitario' => $detalles['precio']
+                'precio_unitario' => $detalles['precio'],
             ]);
         }
 
-        // Limpiar el carrito
+        // Limpiar el carrito del frontend
         session()->forget('carrito');
 
-        // Usar Inertia para redirigir
-        return Inertia::redirect('/carrito/confirmacion');
+        // Redirigir a la página de confirmación usando Inertia
+        return Inertia::location('/tienda');
     }
 
 
