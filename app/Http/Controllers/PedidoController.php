@@ -72,12 +72,12 @@ class PedidoController extends Controller
         $pedido = Pedido::create([
             'usuario_id' => auth()->user()->id,
             'total' => $total,
-            'estado' => 'Pendiente', // Asegúrate de que siempre haya un valor en 'estado'
+            'estado' => 'Pendiente',
         ]);
 
         // Crear los detalles del pedido
         foreach ($carrito as $detalles) {
-            $producto_id = $detalles['id']; // Obtén el id del producto correctamente
+            $producto_id = $detalles['id'];
 
             // Verificar que el producto exista en la base de datos
             $producto = Producto::find($producto_id);
@@ -97,9 +97,11 @@ class PedidoController extends Controller
         // Limpiar el carrito del frontend
         session()->forget('carrito');
 
-        // Redirigir a la página de confirmación usando Inertia
-        return Inertia::location('/tienda');
+        // Redirigir a la tienda con mensaje de éxito
+        return redirect('/tienda')->with('success', 'Pedido realizado con éxito');
     }
+
+
 
 
     /**

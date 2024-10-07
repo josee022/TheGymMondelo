@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePage, Head, router } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
@@ -8,11 +7,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "@/Components/Footer";
 
 export default function Tienda() {
-    const { auth, productos } = usePage().props;
-
+    const { auth, productos, flash } = usePage().props;
     const [carrito, setCarrito] = useState([]);
 
-    // Función para agregar productos al carrito con notificación
     const agregarAlCarrito = (productoId) => {
         const producto = productos.find((p) => p.id === productoId);
         const itemEnCarrito = carrito.find((item) => item.id === productoId);
@@ -29,11 +26,9 @@ export default function Tienda() {
             setCarrito([...carrito, { ...producto, cantidad: 1 }]);
         }
 
-        // Mostrar el toast solo aquí
         toast.success("Producto añadido al carrito");
     };
 
-    // Función para incrementar la cantidad sin notificación
     const incrementarCantidad = (productoId) => {
         setCarrito(
             carrito.map((item) =>
@@ -44,7 +39,6 @@ export default function Tienda() {
         );
     };
 
-    // Función para decrementar la cantidad
     const decrementarCantidad = (productoId) => {
         setCarrito(
             carrito.map((item) =>
@@ -55,34 +49,28 @@ export default function Tienda() {
         );
     };
 
-    // Función para eliminar producto del carrito
     const eliminarDelCarrito = (productoId) => {
         setCarrito(carrito.filter((item) => item.id !== productoId));
         toast.error("Producto eliminado del carrito");
     };
 
-    // Función para realizar el pedido
     const realizarPedido = () => {
         if (carrito.length === 0) {
             toast.error("No hay productos en el carrito.");
             return;
         }
 
-        // Validar que todos los productos tengan un id válido
-        const productosInvalidos = carrito.filter(producto => producto.id === 0);
+        const productosInvalidos = carrito.filter((producto) => producto.id === 0);
         if (productosInvalidos.length > 0) {
             toast.error("Uno o más productos tienen un ID inválido.");
             return;
         }
 
-        // Enviar la solicitud para realizar el pedido
-        router.post('/carrito/pedido', { carrito }, {
+        // Enviar la solicitud para realizar el pedido sin recargar la página
+        router.post("/carrito/pedido", { carrito }, {
             onSuccess: () => {
+                setCarrito([]);  // Limpiar el carrito al realizar el pedido
                 toast.success("Pedido realizado con éxito");
-                setTimeout(() => {
-                    setCarrito([]);
-                    router.visit('/tienda'); // Redirigir a la tienda después de un breve retraso
-                }, 3000);  // Redirigir después de 3 segundos
             },
             onError: () => {
                 toast.error("Hubo un error al realizar el pedido.");
@@ -90,9 +78,6 @@ export default function Tienda() {
         });
     };
 
-
-
-    // Función para calcular el total del carrito
     const calcularTotal = () => {
         return carrito.reduce((total, producto) => {
             return total + parseFloat(producto.precio) * producto.cantidad;
@@ -107,7 +92,6 @@ export default function Tienda() {
             <ToastContainer />
             <Head title="Tienda de Productos" />
 
-            {/* Sección de Productos */}
             <div className="py-12 bg-gradient-to-b from-black via-green-800 to-lime-600 text-white">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <motion.div
@@ -120,7 +104,6 @@ export default function Tienda() {
                         <p className="text-xl">Descubre los mejores productos para acompañar tu entrenamiento. ¡Compra hoy mismo! 🚀</p>
                     </motion.div>
 
-                    {/* Sección de Productos */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                         {productos && productos.length > 0 ? (
                             productos.map((producto, index) => (
@@ -151,7 +134,6 @@ export default function Tienda() {
                 </div>
             </div>
 
-            {/* Carrito de Compras */}
             <div className="bg-black p-6 text-white">
                 <h2 className="text-2xl font-bold mb-4">🛒 Tu Carrito</h2>
                 {carrito.length > 0 ? (
@@ -164,7 +146,6 @@ export default function Tienda() {
                                     <p className="text-sm">Total: {(parseFloat(producto.precio) * producto.cantidad).toFixed(2)} €</p>
                                 </div>
 
-                                {/* Botones para actualizar el carrito */}
                                 <div className="flex space-x-2">
                                     <button
                                         className="bg-red-500 py-1 px-2 rounded hover:bg-red-600 text-sm"

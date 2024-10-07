@@ -17,7 +17,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Yoga Matutino',
                 'descripcion' => 'Clase de yoga para principiantes enfocada en la flexibilidad y la relajación.',
-                'fecha' => '2024-10-01',
+                'fecha' => '2024-11-01',
                 'hora_inicio' => '08:00:00',
                 'hora_fin' => '09:00:00',
                 'entrenador_id' => 1,
@@ -26,7 +26,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Entrenamiento Funcional',
                 'descripcion' => 'Clase intensa de entrenamiento funcional para mejorar la fuerza y la resistencia.',
-                'fecha' => '2024-10-02',
+                'fecha' => '2024-11-02',
                 'hora_inicio' => '18:00:00',
                 'hora_fin' => '19:30:00',
                 'entrenador_id' => 1,
@@ -35,7 +35,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Spinning',
                 'descripcion' => 'Clase cardiovascular de alto impacto, ideal para quemar calorías y mejorar la resistencia.',
-                'fecha' => '2024-10-03',
+                'fecha' => '2024-11-03',
                 'hora_inicio' => '07:00:00',
                 'hora_fin' => '08:00:00',
                 'entrenador_id' => 2,
@@ -44,7 +44,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Pilates Avanzado',
                 'descripcion' => 'Clase avanzada de pilates enfocada en el fortalecimiento del core y la tonificación muscular.',
-                'fecha' => '2024-10-04',
+                'fecha' => '2024-11-04',
                 'hora_inicio' => '09:30:00',
                 'hora_fin' => '10:30:00',
                 'entrenador_id' => 3,
@@ -53,7 +53,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'Zumba',
                 'descripcion' => 'Clase divertida de baile con ejercicios aeróbicos, perfecta para mejorar la condición física.',
-                'fecha' => '2024-10-05',
+                'fecha' => '2024-11-05',
                 'hora_inicio' => '17:00:00',
                 'hora_fin' => '18:00:00',
                 'entrenador_id' => 4,
@@ -62,7 +62,7 @@ class ClaseSeeder extends Seeder
             [
                 'nombre' => 'CrossFit',
                 'descripcion' => 'Clase de alta intensidad con ejercicios funcionales para mejorar fuerza y resistencia general.',
-                'fecha' => '2024-10-06',
+                'fecha' => '2024-11-06',
                 'hora_inicio' => '19:00:00',
                 'hora_fin' => '20:30:00',
                 'entrenador_id' => 5,
