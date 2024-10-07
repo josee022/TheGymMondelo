@@ -13,7 +13,7 @@ export default function Pagination({ links }) {
                             <Link
                                 href={link.url}
                                 className={`px-3 py-2 border rounded ${
-                                    link.active ? 'bg-green-500 text-white' : 'bg-white text-green-500 hover:bg-green-200'
+                                    link.active ? 'bg-lime-500 text-white' : 'bg-white text-lime-500 hover:bg-lime-200'
                                 }`}
                                 // Reemplaza el texto 'Previous' y 'Next' con flechas
                                 dangerouslySetInnerHTML={{ __html: link.label.replace('Previous', '&larr;').replace('Next', '&rarr;') }}
@@ -22,7 +22,7 @@ export default function Pagination({ links }) {
                             //Si el enlace no tiene una URL, renderiza un elemento span
                             <span
                                 className={`px-3 py-2 border rounded ${
-                                    link.active ? 'bg-green-500 text-white' : 'bg-white text-green-500'
+                                    link.active ? 'bg-lime-500 text-white' : 'bg-white text-lime-500'
                                 }`}
                                 // Reemplaza el texto 'Previous' y 'Next' con flechas
                                 dangerouslySetInnerHTML={{ __html: link.label.replace('Previous', '&larr;').replace('Next', '&rarr;') }}
