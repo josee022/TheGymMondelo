@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { usePage, Head, router } from "@inertiajs/react";
+import axios from "axios";
+import { usePage, Head } from "@inertiajs/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
@@ -8,74 +9,78 @@ import Footer from "@/Components/Footer";
 
 export default function Tienda() {
     const { auth, productos, flash } = usePage().props;
-    const [carrito, setCarrito] = useState([]);
+    const [carrito, setCarrito] = useState(flash.carrito || []);
 
-    const agregarAlCarrito = (productoId) => {
-        const producto = productos.find((p) => p.id === productoId);
-        const itemEnCarrito = carrito.find((item) => item.id === productoId);
-
-        if (itemEnCarrito) {
-            setCarrito(
-                carrito.map((item) =>
-                    item.id === productoId
-                        ? { ...item, cantidad: item.cantidad + 1 }
-                        : item
-                )
-            );
-        } else {
-            setCarrito([...carrito, { ...producto, cantidad: 1 }]);
+    // Función para agregar producto al carrito
+    const agregarAlCarrito = async (productoId) => {
+        try {
+            const response = await axios.post("/carrito/agregar", { producto_id: productoId });
+            setCarrito(response.data.carrito);
+            toast.success(response.data.message);
+        } catch (error) {
+            toast.error("Error al añadir producto al carrito.");
         }
-
-        toast.success("Producto añadido al carrito");
     };
 
-    const incrementarCantidad = (productoId) => {
-        setCarrito(
-            carrito.map((item) =>
-                item.id === productoId
-                    ? { ...item, cantidad: item.cantidad + 1 }
-                    : item
-            )
-        );
+    // Función para incrementar cantidad en el carrito
+    const incrementarCantidad = async (productoId) => {
+        const itemEnCarrito = carrito.find((item) => item.id === productoId);
+        if (itemEnCarrito) {
+            try {
+                const response = await axios.post("/carrito/actualizar", {
+                    producto_id: productoId,
+                    cantidad: itemEnCarrito.cantidad + 1
+                });
+                setCarrito(response.data.carrito);
+                toast.success(response.data.message);
+            } catch (error) {
+                toast.error("Error al incrementar cantidad.");
+            }
+        }
     };
 
-    const decrementarCantidad = (productoId) => {
-        setCarrito(
-            carrito.map((item) =>
-                item.id === productoId && item.cantidad > 1
-                    ? { ...item, cantidad: item.cantidad - 1 }
-                    : item
-            )
-        );
+    // Función para decrementar cantidad en el carrito
+    const decrementarCantidad = async (productoId) => {
+        const itemEnCarrito = carrito.find((item) => item.id === productoId);
+        if (itemEnCarrito && itemEnCarrito.cantidad > 1) {
+            try {
+                const response = await axios.post("/carrito/actualizar", {
+                    producto_id: productoId,
+                    cantidad: itemEnCarrito.cantidad - 1
+                });
+                setCarrito(response.data.carrito);
+                toast.success(response.data.message);
+            } catch (error) {
+                toast.error("Error al decrementar cantidad.");
+            }
+        }
     };
 
-    const eliminarDelCarrito = (productoId) => {
-        setCarrito(carrito.filter((item) => item.id !== productoId));
-        toast.error("Producto eliminado del carrito");
+    // Función para eliminar producto del carrito
+    const eliminarDelCarrito = async (productoId) => {
+        try {
+            const response = await axios.post("/carrito/eliminar", { producto_id: productoId });
+            setCarrito(response.data.carrito);
+            toast.error(response.data.message);
+        } catch (error) {
+            toast.error("Error al eliminar producto.");
+        }
     };
 
-    const realizarPedido = () => {
+    // Función para realizar el pedido
+    const realizarPedido = async () => {
         if (carrito.length === 0) {
             toast.error("No hay productos en el carrito.");
             return;
         }
 
-        const productosInvalidos = carrito.filter((producto) => producto.id === 0);
-        if (productosInvalidos.length > 0) {
-            toast.error("Uno o más productos tienen un ID inválido.");
-            return;
+        try {
+            const response = await axios.post("/carrito/pedido", { carrito });
+            setCarrito(response.data.carrito);
+            toast.info(response.data.message);
+        } catch (error) {
+            toast.error("Hubo un error al realizar el pedido.");
         }
-
-        // Enviar la solicitud para realizar el pedido sin recargar la página
-        router.post("/carrito/pedido", { carrito }, {
-            onSuccess: () => {
-                setCarrito([]);  // Limpiar el carrito al realizar el pedido
-                toast.success("Pedido realizado con éxito");
-            },
-            onError: () => {
-                toast.error("Hubo un error al realizar el pedido.");
-            }
-        });
     };
 
     const calcularTotal = () => {
@@ -106,13 +111,13 @@ export default function Tienda() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                         {productos && productos.length > 0 ? (
-                            productos.map((producto, index) => (
+                            productos.map((producto) => (
                                 <motion.div
                                     key={producto.id}
                                     className="bg-black bg-opacity-70 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-500 hover:-translate-y-3"
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                                    transition={{ duration: 0.5 }}
                                 >
                                     <h3 className="text-2xl font-bold text-lime-400 mb-4">{producto.nombre}</h3>
                                     <p className="text-gray-400 mb-4">{producto.descripcion}</p>
@@ -138,14 +143,13 @@ export default function Tienda() {
                 <h2 className="text-2xl font-bold mb-4">🛒 Tu Carrito</h2>
                 {carrito.length > 0 ? (
                     <div>
-                        {carrito.map((producto, index) => (
+                        {carrito.map((producto) => (
                             <div key={producto.id} className="bg-gray-800 p-3 mb-2 rounded-md flex items-center justify-between">
                                 <div>
                                     <h3 className="text-lg font-semibold">{producto.nombre}</h3>
                                     <p className="text-sm">Cantidad: {producto.cantidad}</p>
                                     <p className="text-sm">Total: {(parseFloat(producto.precio) * producto.cantidad).toFixed(2)} €</p>
                                 </div>
-
                                 <div className="flex space-x-2">
                                     <button
                                         className="bg-red-500 py-1 px-2 rounded hover:bg-red-600 text-sm"

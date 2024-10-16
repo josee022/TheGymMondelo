@@ -22,6 +22,7 @@ class PedidoController extends Controller
             $carrito[$producto->id]['cantidad']++;
         } else {
             $carrito[$producto->id] = [
+                'id' => $producto->id,
                 'nombre' => $producto->nombre,
                 'precio' => $producto->precio,
                 'cantidad' => 1
@@ -30,76 +31,64 @@ class PedidoController extends Controller
 
         session()->put('carrito', $carrito);
 
-        return back()->with('success', 'Producto añadido al carrito');
+        return response()->json(['carrito' => array_values($carrito), 'message' => 'Producto añadido al carrito']);
     }
 
     // Método para actualizar la cantidad en el carrito
     public function actualizarCarrito(Request $request)
     {
-        $carrito = session()->get('carrito');
-        $carrito[$request->producto_id]['cantidad'] = $request->cantidad;
+        $carrito = session()->get('carrito', []);
+        if (isset($carrito[$request->producto_id])) {
+            $carrito[$request->producto_id]['cantidad'] = $request->cantidad;
+        }
         session()->put('carrito', $carrito);
 
-        return back()->with('success', 'Cantidad actualizada');
+        return response()->json(['carrito' => array_values($carrito), 'message' => 'Cantidad actualizada']);
     }
 
     // Método para eliminar un producto del carrito
     public function eliminarDelCarrito(Request $request)
     {
-        $carrito = session()->get('carrito');
+        $carrito = session()->get('carrito', []);
         unset($carrito[$request->producto_id]);
         session()->put('carrito', $carrito);
 
-        return back()->with('success', 'Producto eliminado del carrito');
+        return response()->json(['carrito' => array_values($carrito), 'message' => 'Producto eliminado del carrito']);
     }
 
     // Método para procesar el pedido
     public function realizarPedido(Request $request)
     {
-        // Capturar el carrito enviado desde el frontend
-        $carrito = $request->input('carrito');
+        $carrito = session()->get('carrito', []);
 
-        if (!$carrito || count($carrito) === 0) {
-            return redirect()->back()->with('error', 'No hay productos en el carrito');
+        if (empty($carrito)) {
+            return response()->json(['error' => 'No hay productos en el carrito']);
         }
 
-        // Calcular el total del pedido
         $total = array_sum(array_map(function ($item) {
             return $item['precio'] * $item['cantidad'];
         }, $carrito));
 
-        // Crear el pedido en la base de datos
         $pedido = Pedido::create([
             'usuario_id' => auth()->user()->id,
             'total' => $total,
             'estado' => 'Pendiente',
         ]);
 
-        // Crear los detalles del pedido
         foreach ($carrito as $detalles) {
-            $producto_id = $detalles['id'];
-
-            // Verificar que el producto exista en la base de datos
-            $producto = Producto::find($producto_id);
-            if (!$producto) {
-                return redirect()->back()->with('error', "El producto con ID {$producto_id} no existe.");
-            }
-
-            // Insertar el detalle del pedido
             DetallePedido::create([
                 'pedido_id' => $pedido->id,
-                'producto_id' => $producto_id,
+                'producto_id' => $detalles['id'],
                 'cantidad' => $detalles['cantidad'],
                 'precio_unitario' => $detalles['precio'],
             ]);
         }
 
-        // Limpiar el carrito del frontend
         session()->forget('carrito');
 
-        // Redirigir a la tienda con mensaje de éxito
-        return redirect('/tienda')->with('success', 'Pedido realizado con éxito');
+        return response()->json(['message' => 'Pedido realizado con éxito', 'carrito' => []]);
     }
+
 
 
 
