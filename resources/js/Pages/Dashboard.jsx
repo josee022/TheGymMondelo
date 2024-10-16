@@ -1,67 +1,59 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'; // Importa el layout que envuelve la página
-import { Head, Link } from '@inertiajs/react'; // Importa componentes de InertiaJS para manejo de estado y enlaces
-import Pagination from '@/Components/Pagination'; // Importa el componente de paginación
-import Footer from '@/Components/Footer'; // Importa el componente de pie de página
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
+import Pagination from '@/Components/Pagination';
+import Footer from '@/Components/Footer';
 import { FiClock, FiTrendingUp, FiDollarSign, FiSmile } from 'react-icons/fi';
-import { FaWeight, FaDumbbell, FaHeartbeat, FaCrown, FaStar } from 'react-icons/fa'; // Iconos representativos
+import { FaWeight, FaDumbbell, FaHeartbeat, FaCrown, FaStar } from 'react-icons/fa';
 
-export default function Dashboard({ auth, isEntrenador, reservas, suscripciones, dieta, adquisiciones }) {
-    const user = auth.user; // Extrae el usuario autenticado del objeto auth
+export default function Dashboard({ auth, isEntrenador, reservas, suscripciones, dieta, adquisiciones, pedidos = [] }) {
+    const user = auth.user;
 
-    // Función para determinar el color de fondo de la reserva según su estado
     const getReservaBackgroundColor = (estado) => {
         switch (estado) {
             case 'Confirmada':
-                return 'bg-lime-200'; // Verde claro para reservas confirmadas
+                return 'bg-lime-200';
             case 'Cancelada':
-                return 'bg-red-300'; // Rojo claro para reservas canceladas
+                return 'bg-red-300';
             default:
-                return 'bg-gray-100'; // Gris claro para otros estados
+                return 'bg-gray-100';
         }
     };
 
-    // Función para formatear la fecha y hora de la reserva
     const formatFechaReserva = (timestamp) => {
-        const fecha = new Date(timestamp); // Convierte el timestamp en un objeto Date
+        const fecha = new Date(timestamp);
         const fechaFormateada = fecha.toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-        }); // Formatea la fecha como dd-mm-yyyy
-        const horaFormateada = fecha.toLocaleTimeString('es-ES', { hour12: false }); // Formatea la hora en formato HH:mm:ss
-        return `La reserva se creó el ${fechaFormateada} a las ${horaFormateada}`; // Devuelve la fecha y hora en un formato legible
+        });
+        const horaFormateada = fecha.toLocaleTimeString('es-ES', { hour12: false });
+        return `La reserva se creó el ${fechaFormateada} a las ${horaFormateada}`;
     };
 
-    // Función para formatear la fecha de la clase
     const formatFechaClase = (fecha) => {
-        const fechaObj = new Date(fecha); // Convierte la fecha en un objeto Date
+        const fechaObj = new Date(fecha);
         return fechaObj.toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-        }); // Formatea la fecha como dd-mm-yyyy
+        });
     };
 
-    // Ordena las reservas de la más reciente a la más antigua
     const reservasOrdenadas = reservas.data.sort((a, b) => new Date(b.fecha_reserva) - new Date(a.fecha_reserva));
 
-
-    // Función para formatear la fecha de la suscripción
     const formatFechaSuscripcion = (fecha) => {
-        const fechaObj = new Date(fecha); // Convierte la fecha en un objeto Date
+        const fechaObj = new Date(fecha);
         return fechaObj.toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-        }); // Formatea la fecha como dd-mm-yyyy
+        });
     };
 
-    // Ordena las suscripciones de la más reciente a la más antigua
     const suscripcionesOrdenadas = suscripciones.data.sort((a, b) => new Date(b.fecha_inicio) - new Date(a.fecha_inicio));
 
-    // Función para obtener icono según el objetivo de la dieta
     const getDietaIcon = (objetivo) => {
         switch (objetivo) {
             case 'Pérdida de peso':
@@ -222,6 +214,8 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
 
     // Obtener detalles de la dieta según el objetivo del usuario
     const dietaInfo = dieta ? getDietaInfo(dieta.objetivo) : null;
+
+
 
 
     return (
@@ -531,10 +525,52 @@ export default function Dashboard({ auth, isEntrenador, reservas, suscripciones,
                             </div>
                         )}
                     </div>
-
-
-
                 </div>
+                <br /><br /><br />
+
+                {/* Sección de Facturas */}
+                <div className="w-full px-4 bg-gradient-to-b from-gray-200 via-gray-300 to-gray-400 shadow-lg rounded-xl p-8 mt-10">
+                    <div className="w-4/5 max-w-7xl mx-auto bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 shadow-lg rounded-lg p-8">
+                        <div className="text-center mb-6">
+                            <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
+                                <span className="relative inline-block">
+                                    <span className="absolute inset-x-0 bottom-0 h-1" style={{ backgroundColor: '#a3e635' }}></span>
+                                    <span className="relative">Facturas de Pedidos</span>
+                                </span>
+                            </h1>
+                        </div>
+
+                        {/* Contenedor de Facturas en formato de 2x2 */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {pedidos.data.length === 0 ? (
+                                <p className="text-gray-600 text-center">No tienes facturas generadas.</p>
+                            ) : (
+                                pedidos.data.map((pedido) => (
+                                    <div key={pedido.id} className="max-w-md bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-2xl font-semibold text-gray-700">Factura #{pedido.id}</h3>
+                                            <span className={`text-lg font-bold ${pedido.estado === 'Pendiente' ? 'text-yellow-500' :
+                                                pedido.estado === 'Enviado' ? 'text-blue-500' :
+                                                    pedido.estado === 'Entregado' ? 'text-green-500' :
+                                                        'text-red-500'}`}>
+                                                {pedido.estado}
+                                            </span>
+                                        </div>
+                                        <p className="text-gray-600"><strong>Fecha:</strong> {pedido.fecha_pedido}</p>
+                                        <p className="text-gray-600"><strong>Total:</strong> {parseFloat(pedido.total).toFixed(2)} €</p>
+                                        <div className="text-right mt-4">
+                                            <Link href={`/pedidos/${pedido.id}/show`} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                                Ver Detalles
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                        <Pagination links={pedidos.links} /> {/* Componente de paginación para las reservas */}
+                    </div>
+                </div>
+
             </div>
 
             <Footer /> {/* Pie de página */}

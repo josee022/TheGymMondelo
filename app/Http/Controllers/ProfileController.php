@@ -21,40 +21,46 @@ class ProfileController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function show()
+    public function show(Request $request)
     {
-        // Obtener el usuario autenticado
         $user = Auth::user();
 
-        // Obtener solo las suscripciones activas del usuario
+        // Obtener las suscripciones activas del usuario
         $suscripciones = $user->suscripciones()
-            ->where('estado', 'Activa') // Filtrar solo las suscripciones activas
+            ->where('estado', 'Activa')
             ->orderBy('fecha_inicio', 'desc')
-            ->paginate(1);
+            ->paginate(1);  // Usar get() en lugar de paginate() para tener todos los datos de suscripciones siempre disponibles
 
-        // Obtener las reservas del usuario, incluyendo los detalles de la clase asociada,
-        // ordenadas por fecha de reserva de manera descendente y paginadas de 2 en 2
+        // Obtener reservas paginadas
         $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2);
 
-        // Obtener la dieta del usuario (asumiendo que hay una relación entre el usuario y la dieta)
-        $dieta = $user->dietas()->first(); // Obtener la primera dieta asociada al usuario
+        // Obtener la dieta
+        $dieta = $user->dietas()->first();
 
-        // Obtener las adquisiciones de los programas del usuario, incluyendo los detalles del programa
+        // Obtener adquisiciones
         $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
 
-        // Renderizar la vista 'Dashboard' utilizando Inertia, pasando el usuario autenticado,
-        // si el usuario es entrenador, las reservas, las suscripciones, la dieta y las adquisiciones como arrays
+        // Obtener pedidos con paginación de 4
+        $pedidos = $user->pedidos()
+            ->with('detalles.producto')
+            ->orderBy('fecha_pedido', 'desc')
+            ->paginate(4);
+
         return Inertia::render('Dashboard', [
             'auth' => [
                 'user' => $user
             ],
-            'isEntrenador' => $user->isEntrenador(), // Determina si el usuario es entrenador
-            'reservas' => $reservas->toArray(), // Convertir a array para manipulación en el frontend
-            'suscripciones' => $suscripciones->toArray(), // Convertir a array para manipulación en el frontend
-            'dieta' => $dieta ? $dieta->toArray() : null, // Pasar la dieta si existe
-            'adquisiciones' => $adquisiciones->toArray(), // Pasar las adquisiciones de los programas
+            'isEntrenador' => $user->isEntrenador(),
+            'reservas' => $reservas->toArray(),
+            'suscripciones' => $suscripciones->toArray(), // Siempre enviar suscripciones completas
+            'dieta' => $dieta ? $dieta->toArray() : null,
+            'adquisiciones' => $adquisiciones->toArray(),
+            'pedidos' => $pedidos,
         ]);
     }
+
+
+
 
 
 
