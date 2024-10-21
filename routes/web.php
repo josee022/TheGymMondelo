@@ -101,6 +101,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/carrito/actualizar', [PedidoController::class, 'actualizarCarrito']);
     Route::post('/carrito/eliminar', [PedidoController::class, 'eliminarDelCarrito']);
     Route::post('/carrito/pedido', [PedidoController::class, 'realizarPedido']);
+
+    // Ruta para pedidos
+    Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
+
 });
 
 require __DIR__ . '/auth.php';

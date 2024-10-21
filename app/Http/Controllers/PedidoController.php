@@ -89,10 +89,6 @@ class PedidoController extends Controller
         return response()->json(['message' => 'Pedido realizado con éxito', 'carrito' => []]);
     }
 
-
-
-
-
     /**
      * Display a listing of the resource.
      */
@@ -120,10 +116,16 @@ class PedidoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pedido $pedido)
+    public function show($id)
     {
-        //
+        // Obtener el pedido por ID, incluyendo la relación con el usuario
+        $pedido = Pedido::with(['usuario', 'detalles.producto'])->findOrFail($id);
+
+        return Inertia::render('Pedidos/Show', [
+            'pedido' => $pedido->toArray(),
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -23,41 +23,49 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
 
-        // Obtener las suscripciones activas del usuario
-        $suscripciones = $user->suscripciones()
-            ->where('estado', 'Activa')
-            ->orderBy('fecha_inicio', 'desc')
-            ->paginate(1);  // Usar get() en lugar de paginate() para tener todos los datos de suscripciones siempre disponibles
+            // Obtener todas las suscripciones activas del usuario
+            $suscripciones = $user->suscripciones()
+                ->where('estado', 'Activa')
+                ->orderBy('fecha_inicio', 'desc')
+                ->get();  // Obtener todas las suscripciones
 
-        // Obtener reservas paginadas
-        $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2);
+            // Obtener reservas paginadas con un parámetro único de paginación
+            $reservas = $user->reservas()
+                ->with('clase')
+                ->orderBy('fecha_reserva', 'desc')
+                ->paginate(2, ['*'], 'reservasPage'); // Parámetro único para reservas
 
-        // Obtener la dieta
-        $dieta = $user->dietas()->first();
+            // Obtener la dieta
+            $dieta = $user->dietas()->first();
 
-        // Obtener adquisiciones
-        $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
+            // Obtener adquisiciones de programas
+            $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
 
-        // Obtener pedidos con paginación de 4
-        $pedidos = $user->pedidos()
-            ->with('detalles.producto')
-            ->orderBy('fecha_pedido', 'desc')
-            ->paginate(4);
+            // Obtener pedidos paginados con un parámetro único de paginación
+            $pedidos = $user->pedidos()
+                ->with('detalles.producto')
+                ->orderBy('fecha_pedido', 'desc')
+                ->paginate(4, ['*'], 'pedidosPage'); // Parámetro único para pedidos
 
-        return Inertia::render('Dashboard', [
-            'auth' => [
-                'user' => $user
-            ],
-            'isEntrenador' => $user->isEntrenador(),
-            'reservas' => $reservas->toArray(),
-            'suscripciones' => $suscripciones->toArray(), // Siempre enviar suscripciones completas
-            'dieta' => $dieta ? $dieta->toArray() : null,
-            'adquisiciones' => $adquisiciones->toArray(),
-            'pedidos' => $pedidos,
-        ]);
+            return Inertia::render('Dashboard', [
+                'auth' => [
+                    'user' => $user,
+                ],
+                'isEntrenador' => $user->isEntrenador(),
+                'reservas' => $reservas->toArray(),
+                'suscripciones' => $suscripciones ? $suscripciones->toArray() : ['data' => []],  // Siempre enviamos un array
+                'dieta' => $dieta ? $dieta->toArray() : null,
+                'adquisiciones' => $adquisiciones->toArray(),
+                'pedidos' => $pedidos->toArray(),
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage()); // Imprimir el mensaje de error para diagnosticar
+        }
     }
+
 
 
 
