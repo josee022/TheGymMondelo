@@ -21,8 +21,8 @@ class AdquisicionProgramaController extends Controller
         $inscripcionExistente = AdquisicionPrograma::where('usuario_id', $usuario_id)->first();
 
         if ($inscripcionExistente) {
-            // Si el usuario ya está inscrito, retornar error
-            return response()->json(['message' => 'Ya tienes una inscripción en uno de nuestros programas'], 400);
+            // Si el usuario ya está inscrito, redireccionar con un mensaje de error flash
+            return redirect()->back()->with('error', 'Ya tienes una inscripción en uno de nuestros programas');
         }
 
         // Crear una nueva inscripción
@@ -32,8 +32,10 @@ class AdquisicionProgramaController extends Controller
             'fecha_adquisicion' => now(),
         ]);
 
-        return response()->json(['message' => 'Inscrito con éxito'], 200);
+        // Redireccionar con un mensaje de éxito flash
+        return redirect()->back()->with('success', 'Inscrito con éxito en el programa');
     }
+
 
     public function delete($id)
     {

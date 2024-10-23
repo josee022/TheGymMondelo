@@ -21,40 +21,54 @@ class ProfileController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function show()
+    public function show(Request $request)
     {
-        // Obtener el usuario autenticado
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
 
-        // Obtener solo las suscripciones activas del usuario
-        $suscripciones = $user->suscripciones()
-            ->where('estado', 'Activa') // Filtrar solo las suscripciones activas
-            ->orderBy('fecha_inicio', 'desc')
-            ->paginate(1);
+            // Obtener todas las suscripciones activas del usuario
+            $suscripciones = $user->suscripciones()
+                ->where('estado', 'Activa')
+                ->orderBy('fecha_inicio', 'desc')
+                ->get();  // Obtener todas las suscripciones
 
-        // Obtener las reservas del usuario, incluyendo los detalles de la clase asociada,
-        // ordenadas por fecha de reserva de manera descendente y paginadas de 2 en 2
-        $reservas = $user->reservas()->with('clase')->orderBy('fecha_reserva', 'desc')->paginate(2);
+            // Obtener reservas paginadas con un parámetro único de paginación
+            $reservas = $user->reservas()
+                ->with('clase')
+                ->orderBy('fecha_reserva', 'desc')
+                ->paginate(2, ['*'], 'reservasPage'); // Parámetro único para reservas
 
-        // Obtener la dieta del usuario (asumiendo que hay una relación entre el usuario y la dieta)
-        $dieta = $user->dietas()->first(); // Obtener la primera dieta asociada al usuario
+            // Obtener la dieta
+            $dieta = $user->dietas()->first();
 
-        // Obtener las adquisiciones de los programas del usuario, incluyendo los detalles del programa
-        $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
+            // Obtener adquisiciones de programas
+            $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
 
-        // Renderizar la vista 'Dashboard' utilizando Inertia, pasando el usuario autenticado,
-        // si el usuario es entrenador, las reservas, las suscripciones, la dieta y las adquisiciones como arrays
-        return Inertia::render('Dashboard', [
-            'auth' => [
-                'user' => $user
-            ],
-            'isEntrenador' => $user->isEntrenador(), // Determina si el usuario es entrenador
-            'reservas' => $reservas->toArray(), // Convertir a array para manipulación en el frontend
-            'suscripciones' => $suscripciones->toArray(), // Convertir a array para manipulación en el frontend
-            'dieta' => $dieta ? $dieta->toArray() : null, // Pasar la dieta si existe
-            'adquisiciones' => $adquisiciones->toArray(), // Pasar las adquisiciones de los programas
-        ]);
+            // Obtener pedidos paginados con un parámetro único de paginación
+            $pedidos = $user->pedidos()
+                ->with('detalles.producto')
+                ->orderBy('fecha_pedido', 'desc')
+                ->paginate(4, ['*'], 'pedidosPage'); // Parámetro único para pedidos
+
+            return Inertia::render('Dashboard', [
+                'auth' => [
+                    'user' => $user,
+                ],
+                'isEntrenador' => $user->isEntrenador(),
+                'reservas' => $reservas->toArray(),
+                'suscripciones' => $suscripciones ? $suscripciones->toArray() : ['data' => []],  // Siempre enviamos un array
+                'dieta' => $dieta ? $dieta->toArray() : null,
+                'adquisiciones' => $adquisiciones->toArray(),
+                'pedidos' => $pedidos->toArray(),
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage()); // Imprimir el mensaje de error para diagnosticar
+        }
     }
+
+
+
+
 
 
 
