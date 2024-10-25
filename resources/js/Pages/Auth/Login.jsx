@@ -2,24 +2,33 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function GrayBackgroundPage() {
-    // Hook de Inertia.js para manejar el estado del formulario
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '', // Campo para el email
-        password: '', // Campo para la contraseña
-        remember: false, // Campo para el checkbox "Recordarme"
+        email: '',
+        password: '',
+        remember: false,
     });
 
-    // Función para manejar el envío del formulario
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    const [generalError, setGeneralError] = useState(''); // Estado para mensaje de error general
 
-        // Enviar los datos del formulario utilizando la función 'post' de Inertia.js
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Validaciones básicas en el frontend
+        if (!data.email || !data.password) {
+            setGeneralError("Por favor, completa todos los campos.");
+            return;
+        }
+
+        // Reiniciar el mensaje de error general antes de enviar
+        setGeneralError('');
+
         post('/login', {
             onSuccess: () => {
                 // Aquí puedes manejar lo que sucede después de un inicio de sesión exitoso
+                reset(); // Resetear el formulario después de éxito
             },
             onError: (error) => {
-                // Aquí puedes manejar los errores en caso de que el inicio de sesión falle
+                // Manejar el error general en caso de fallo en el inicio de sesión
                 console.error('Error:', error);
             },
         });
@@ -27,14 +36,10 @@ export default function GrayBackgroundPage() {
 
     return (
         <>
-            {/* Establecer el título de la página */}
             <Head title="Página con Fondo Gris Oscuro" />
 
-            {/* Contenedor principal que ocupa toda la pantalla */}
             <div className="relative min-h-screen flex">
-                {/* Imagen de fondo en la mitad izquierda */}
                 <div className="relative w-1/2 h-screen">
-                    {/* Logo de la flecha en la parte superior izquierda */}
                     <div className="absolute top-4 left-4">
                         <Link href="/" className="block">
                             <svg
@@ -53,7 +58,6 @@ export default function GrayBackgroundPage() {
                             </svg>
                         </Link>
                     </div>
-                    {/* Imagen que cubre toda la mitad izquierda */}
                     <img
                         src="/imagenes/login_register/2-loginRegister.jpg"
                         alt="Background"
@@ -61,9 +65,7 @@ export default function GrayBackgroundPage() {
                     />
                 </div>
 
-                {/* Contenedor a la derecha con fondo gris oscuro */}
                 <div className="w-1/2 h-screen bg-gray-700 flex flex-col items-center justify-center relative">
-                    {/* Logo en la esquina superior derecha */}
                     <div className="absolute top-0 right-0 p-4">
                         <img
                             src="/imagenes/logo/1-logoWeb.png"
@@ -72,17 +74,17 @@ export default function GrayBackgroundPage() {
                         />
                     </div>
 
-                    {/* Mensaje centrado vertical y horizontalmente */}
                     <div className="text-center text-white flex flex-col items-center justify-center h-full px-8">
                         <h1 className="text-4xl font-bold mb-4 relative">
                             <span className="relative inline-block">
-                                {/* Línea verde debajo del texto */}
                                 <span className="absolute inset-x-0 bottom-0 h-1" style={{ backgroundColor: '#a3e635' }}></span>
                                 <span className="relative">BIENVENIDO DE NUEVO</span>
                             </span>
                         </h1>
 
-                        {/* Formulario de inicio de sesión */}
+                        {/* Mostrar mensaje de error general si existe */}
+                        {generalError && <p className="text-red-500 text-sm mb-4">{generalError}</p>}
+
                         <form className="w-full max-w-md mt-8" onSubmit={handleSubmit}>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block text-white text-lg mb-2">Correo electrónico</label>
@@ -92,10 +94,10 @@ export default function GrayBackgroundPage() {
                                     type="email"
                                     placeholder="Ingrese su correo"
                                     value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)} // Actualizar el estado del campo 'email'
+                                    onChange={(e) => setData('email', e.target.value)}
                                     className={`w-full px-4 py-2 border rounded-md bg-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a3e635] ${errors.email ? 'border-red-500' : ''}`}
                                 />
-                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>} {/* Mostrar error si lo hay */}
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             </div>
 
                             <div className="mb-4">
@@ -106,49 +108,45 @@ export default function GrayBackgroundPage() {
                                     type="password"
                                     placeholder="Ingrese su contraseña"
                                     value={data.password}
-                                    onChange={(e) => setData('password', e.target.value)} // Actualizar el estado del campo 'password'
+                                    onChange={(e) => setData('password', e.target.value)}
                                     className={`w-full px-4 py-2 border rounded-md bg-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a3e635] ${errors.password ? 'border-red-500' : ''}`}
                                 />
-                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>} {/* Mostrar error si lo hay */}
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             </div>
 
-                            {/* Checkbox "Recordarme" */}
                             <div className="mb-4 flex items-center">
                                 <input
                                     id="remember"
                                     name="remember"
                                     type="checkbox"
                                     checked={data.remember}
-                                    onChange={(e) => setData('remember', e.target.checked)} // Actualizar el estado del checkbox
+                                    onChange={(e) => setData('remember', e.target.checked)}
                                     className="mr-2 h-4 w-4"
                                 />
                                 <label htmlFor="remember" className="text-white text-sm">Recordarme</label>
                             </div>
 
-                            {/* Enlace para recuperar contraseña */}
                             <div className="text-sm text-gray-200 mb-4">
                                 <Link
-                                    href={route('password.request')} // Ruta para la recuperación de contraseña
+                                    href={route('password.request')}
                                     className="underline hover:text-[#a3e635]"
                                 >
                                     ¿Has olvidado tu contraseña? Recupérala
                                 </Link>
                             </div>
 
-                            {/* Botón de inicio de sesión */}
                             <button
                                 type="submit"
-                                disabled={processing} // Desactivar el botón si el proceso está en curso
+                                disabled={processing}
                                 className="w-full bg-[#a3e635] text-black py-2 px-4 rounded-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-[#a3e635]"
                             >
-                                {processing ? 'Iniciando sesión...' : 'Iniciar sesión'} {/* Cambia el texto mientras se procesa */}
+                                {processing ? 'Iniciando sesión...' : 'Iniciar sesión'}
                             </button>
 
-                            {/* Enlace para registro */}
                             <div className="text-sm text-gray-200 mt-4">
                                 <p>No tienes cuenta?
                                     <Link
-                                        href={route('register')} // Ruta para registrarse
+                                        href={route('register')}
                                         className="underline hover:text-[#a3e635] ms-1"
                                     >
                                         Regístrate
@@ -162,4 +160,3 @@ export default function GrayBackgroundPage() {
         </>
     );
 }
-
