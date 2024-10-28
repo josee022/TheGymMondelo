@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
@@ -107,14 +108,15 @@ Route::middleware(['auth', 'client'])->group(function () {
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
 });
 
+
 // Grupo de rutas de administración
 Route::middleware(['auth', 'admin'])->group(function () {
-    
+
+    // Ruta panel de control admin
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+    // Ruta control de usuarios por el admin
+    Route::get('/admin/usuarios', [AdminUserController::class, 'index'])->name('admin.usuarios');
 });
-
-
-
 
 require __DIR__ . '/auth.php';
