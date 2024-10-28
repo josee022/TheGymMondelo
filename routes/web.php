@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
@@ -39,8 +40,8 @@ Route::get('/', function () {
 });
 
 
-
-Route::middleware(['auth'])->group(function () {
+// Grupo de rutas de clientes
+Route::middleware(['auth', 'client'])->group(function () {
 
     Route::get('/dashboard', [ProfileController::class, 'show'])->name('dashboard');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -104,7 +105,16 @@ Route::middleware(['auth'])->group(function () {
 
     // Ruta para pedidos
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
+});
+
+// Grupo de rutas de administración
+Route::middleware(['auth', 'admin'])->group(function () {
+    
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 });
+
+
+
 
 require __DIR__ . '/auth.php';

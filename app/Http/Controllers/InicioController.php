@@ -10,13 +10,20 @@ class InicioController extends Controller
 {
     public function index()
     {
-        // Obtiene todos los blogs junto con sus autores
+        $user = auth()->user();
+
+        // Redirige al panel de administración si el usuario tiene rol 'admin'
+        if ($user && $user->rol === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        // Obtiene todos los blogs junto con sus autores para los clientes
         $blogs = Blog::with('autor')->get();
 
-        // Renderiza la vista 'Inicio' usando InertiaJS y pasa los datos necesarios
+        // Renderiza la vista de inicio para clientes
         return Inertia::render('Inicio/Inicio', [
-            'auth' => auth()->user(), // Pasa el usuario autenticado a la vista
-            'blogs' => $blogs // Pasa la lista de blogs a la vista
+            'auth' => $user,
+            'blogs' => $blogs,
         ]);
     }
 }
