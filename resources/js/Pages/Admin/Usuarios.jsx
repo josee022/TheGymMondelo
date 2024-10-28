@@ -1,71 +1,68 @@
 import React from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
+import { Link } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 
 export default function Usuarios({ usuarios }) {
     return (
         <AdminLayout>
-            <h1 className="text-4xl font-bold mb-8">Gestión de Usuarios</h1>
+            <h1 className="text-3xl font-bold mb-6">Gestión de Usuarios</h1>
 
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white rounded-lg shadow-lg">
-                    <thead>
-                        <tr>
-                            <th className="py-4 px-6 bg-gray-200 text-gray-700 font-semibold uppercase text-lg">
-                                Nombre
-                            </th>
-                            <th className="py-4 px-6 bg-gray-200 text-gray-700 font-semibold uppercase text-lg">
-                                Email
-                            </th>
-                            <th className="py-4 px-6 bg-gray-200 text-gray-700 font-semibold uppercase text-lg">
-                                Fecha de Registro
-                            </th>
-                            <th className="py-4 px-6 bg-gray-200 text-gray-700 font-semibold uppercase text-lg">
-                                Rol
-                            </th>
-                            <th className="py-4 px-6 bg-gray-200 text-gray-700 font-semibold uppercase text-lg">
-                                Acciones
-                            </th>
+            <table className="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr className="bg-gray-200">
+                        {" "}
+                        {/* Fondo gris para el encabezado */}
+                        <th className="py-3 px-4 text-left">ID</th>
+                        <th className="py-3 px-4 text-left">Nombre</th>
+                        <th className="py-3 px-4 text-left">Email</th>
+                        <th className="py-3 px-4 text-left">
+                            Fecha de Registro
+                        </th>
+                        <th className="py-3 px-4 text-left">Rol</th>
+                        <th className="py-3 px-4 text-left">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {usuarios.data.map((usuario) => (
+                        <tr
+                            key={usuario.id}
+                            className="border-b hover:bg-gray-100 transition duration-150" // Efecto de fondo gris claro al pasar el cursor
+                        >
+                            <td className="py-3 px-4">{usuario.id}</td>
+                            <td className="py-3 px-4">{usuario.name}</td>
+                            <td className="py-3 px-4">{usuario.email}</td>
+                            <td className="py-3 px-4">
+                                {new Date(
+                                    usuario.created_at
+                                ).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4">{usuario.rol}</td>
+                            <td className="py-3 px-4 flex space-x-2">
+                                <Link
+                                    href={`/admin/usuarios/${usuario.id}`}
+                                    className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+                                >
+                                    Ver Perfil
+                                </Link>
+                                <Link
+                                    href={`/admin/usuarios/${usuario.id}/edit`}
+                                    className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-700"
+                                >
+                                    Editar
+                                </Link>
+                                <button
+                                    onClick={() => handleSuspend(usuario.id)}
+                                    className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"
+                                >
+                                    Suspender
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {usuarios.data.map((user) => (
-                            <tr
-                                key={user.id}
-                                className="border-b border-gray-200 hover:bg-gray-100 transition duration-200"
-                            >
-                                <td className="py-4 px-6 text-gray-800 text-lg">
-                                    {user.name}
-                                </td>
-                                <td className="py-4 px-6 text-gray-800 text-lg">
-                                    {user.email}
-                                </td>
-                                <td className="py-4 px-6 text-gray-800 text-lg">
-                                    {new Date(
-                                        user.created_at
-                                    ).toLocaleDateString()}
-                                </td>
-                                <td className="py-4 px-6 text-gray-800 text-lg capitalize">
-                                    {user.rol}
-                                </td>
-                                <td className="py-4 px-6">
-                                    <button className="text-blue-600 hover:text-blue-800 font-semibold mr-4">
-                                        Ver
-                                    </button>
-                                    <button className="text-green-600 hover:text-green-800 font-semibold mr-4">
-                                        Editar
-                                    </button>
-                                    <button className="text-red-600 hover:text-red-800 font-semibold">
-                                        Eliminar
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                    ))}
+                </tbody>
+            </table>
 
-            {/* Componente de paginación */}
             <div className="mt-6">
                 <Pagination links={usuarios.links} />
             </div>

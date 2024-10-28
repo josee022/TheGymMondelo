@@ -117,6 +117,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Ruta control de usuarios por el admin
     Route::get('/admin/usuarios', [AdminUserController::class, 'index'])->name('admin.usuarios');
+    Route::get('/admin/usuarios/{id}', [AdminUserController::class, 'show'])->name('admin.usuarios.show');
+    Route::get('/admin/usuarios/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.usuarios.edit');
+    Route::put('/admin/usuarios/{id}', [AdminUserController::class, 'update'])->name('admin.usuarios.update');
 });
 
 require __DIR__ . '/auth.php';
