@@ -28,7 +28,8 @@
         "framer-motion": "^11.5.4",
         "react-chartjs-2": "^5.2.0",
         "react-icons": "^5.3.0",
-        "react-toastify": "^10.0.5"
+        "react-toastify": "^10.0.5",
+        "sweetalert2": "^11.14.4"
     },
     "resolutions": {
         "axios": "^0.27.3"
