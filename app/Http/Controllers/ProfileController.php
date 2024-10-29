@@ -66,11 +66,10 @@ class ProfileController extends Controller
         }
     }
 
-
-
-
-
-
+    public function showSuspended()
+    {
+        return Inertia::render('UsuarioSuspendido');
+    }
 
 
     /**

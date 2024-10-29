@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Link, router } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 import Swal from "sweetalert2";
 
 export default function Usuarios({ usuarios }) {
+    const [usuariosList, setUsuariosList] = useState([]);
+
+    // Cargar el listado de usuarios al inicio
+    useEffect(() => {
+        setUsuariosList(usuarios.data);
+    }, [usuarios]);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -25,8 +31,50 @@ export default function Usuarios({ usuarios }) {
                             "El usuario ha sido eliminado correctamente.",
                             "success"
                         );
+                        setUsuariosList((prev) =>
+                            prev.filter((user) => user.id !== id)
+                        );
                     },
                 });
+            }
+        });
+    };
+
+    const handleSuspend = (id, suspendido) => {
+        Swal.fire({
+            title: suspendido ? "¿Reactivar Usuario?" : "¿Suspender Usuario?",
+            text: suspendido
+                ? "El usuario podrá volver a acceder al sistema."
+                : "El usuario no podrá acceder al sistema.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: suspendido ? "#4CAF50" : "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: suspendido ? "Sí, reactivar" : "Sí, suspender",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.post(
+                    route("admin.usuarios.suspend", id),
+                    {},
+                    {
+                        onSuccess: () => {
+                            Swal.fire(
+                                suspendido ? "Reactivado" : "Suspendido",
+                                `El usuario ha sido ${
+                                    suspendido ? "reactivado" : "suspendido"
+                                } correctamente.`,
+                                "success"
+                            );
+                            setUsuariosList((prev) =>
+                                prev.map((user) =>
+                                    user.id === id
+                                        ? { ...user, suspendido: !suspendido }
+                                        : user
+                                )
+                            );
+                        },
+                    }
+                );
             }
         });
     };
@@ -34,20 +82,21 @@ export default function Usuarios({ usuarios }) {
     return (
         <AdminLayout>
             <h1 className="text-3xl font-bold mb-6">Gestión de Usuarios</h1>
-
             <table className="min-w-full bg-white rounded-lg shadow-md">
                 <thead>
                     <tr className="bg-gray-200">
                         <th className="py-3 px-4 text-left">ID</th>
                         <th className="py-3 px-4 text-left">Nombre</th>
                         <th className="py-3 px-4 text-left">Email</th>
-                        <th className="py-3 px-4 text-left">Fecha de Registro</th>
+                        <th className="py-3 px-4 text-left">
+                            Fecha de Registro
+                        </th>
                         <th className="py-3 px-4 text-left">Rol</th>
                         <th className="py-3 px-4 text-left">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {usuarios.data.map((usuario) => (
+                    {usuariosList.map((usuario) => (
                         <tr
                             key={usuario.id}
                             className="border-b hover:bg-gray-100 transition duration-150"
@@ -56,7 +105,9 @@ export default function Usuarios({ usuarios }) {
                             <td className="py-3 px-4">{usuario.name}</td>
                             <td className="py-3 px-4">{usuario.email}</td>
                             <td className="py-3 px-4">
-                                {new Date(usuario.created_at).toLocaleDateString()}
+                                {new Date(
+                                    usuario.created_at
+                                ).toLocaleDateString()}
                             </td>
                             <td className="py-3 px-4">{usuario.rol}</td>
                             <td className="py-3 px-4 flex space-x-2">
@@ -73,10 +124,21 @@ export default function Usuarios({ usuarios }) {
                                     Editar
                                 </Link>
                                 <button
-                                    onClick={() => handleSuspend(usuario.id)}
-                                    className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-700"
+                                    onClick={() =>
+                                        handleSuspend(
+                                            usuario.id,
+                                            usuario.suspendido
+                                        )
+                                    }
+                                    className={`${
+                                        usuario.suspendido
+                                            ? "bg-violet-500 hover:bg-violet-700"
+                                            : "bg-yellow-500 hover:bg-yellow-700"
+                                    } text-white py-1 px-3 rounded`}
                                 >
-                                    Suspender
+                                    {usuario.suspendido
+                                        ? "Reactivar"
+                                        : "Suspender"}
                                 </button>
                                 <button
                                     onClick={() => handleDelete(usuario.id)}
@@ -89,7 +151,6 @@ export default function Usuarios({ usuarios }) {
                     ))}
                 </tbody>
             </table>
-
             <div className="mt-6">
                 <Pagination links={usuarios.links} />
             </div>

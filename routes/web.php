@@ -24,11 +24,6 @@ use Inertia\Inertia;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/', function () {
@@ -40,9 +35,8 @@ Route::get('/', function () {
     ]);
 });
 
-
 // Grupo de rutas de clientes
-Route::middleware(['auth', 'client'])->group(function () {
+Route::middleware(['auth', 'client', 'suspension'])->group(function () {
 
     Route::get('/dashboard', [ProfileController::class, 'show'])->name('dashboard');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -79,8 +73,6 @@ Route::middleware(['auth', 'client'])->group(function () {
 
     // Rutas para suscripciones
     Route::resource('suscripciones', SuscripcionController::class);
-
-    // Ruta para deshabilitar suscripciones
     Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
 
     // Rutas para dietas
@@ -108,7 +100,6 @@ Route::middleware(['auth', 'client'])->group(function () {
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
 });
 
-
 // Grupo de rutas de administración
 Route::middleware(['auth', 'admin'])->group(function () {
 
@@ -121,7 +112,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/usuarios/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.usuarios.edit');
     Route::put('/admin/usuarios/{id}', [AdminUserController::class, 'update'])->name('admin.usuarios.update');
     Route::delete('/admin/usuarios/{id}', [AdminUserController::class, 'destroy'])->name('admin.usuarios.destroy');
-
+    Route::post('/admin/usuarios/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.usuarios.suspend');
 });
+
+// Ruta para usuarios suspendidos
+Route::get('/suspendido', [ProfileController::class, 'showSuspended'])->name('usuario.suspendido');
 
 require __DIR__ . '/auth.php';

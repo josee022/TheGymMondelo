@@ -12,7 +12,7 @@ class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
-        $usuarios = User::select('id', 'name', 'email', 'created_at', 'rol')
+        $usuarios = User::select('id', 'name', 'email', 'created_at', 'rol', 'suspendido')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -20,6 +20,7 @@ class AdminUserController extends Controller
             'usuarios' => $usuarios,
         ]);
     }
+
 
     // Nueva función para mostrar detalles de un usuario específico
     public function show($id)
@@ -78,5 +79,14 @@ class AdminUserController extends Controller
         $usuario->delete();
 
         return redirect()->route('admin.usuarios')->with('success', 'Usuario eliminado correctamente.');
+    }
+
+    public function suspend($id)
+    {
+        $usuario = User::findOrFail($id);
+        $usuario->suspendido = !$usuario->suspendido; // Cambia el estado
+        $usuario->save();
+
+        return redirect()->route('admin.usuarios')->with('success', 'Estado de usuario actualizado correctamente.');
     }
 }
