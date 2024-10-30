@@ -3,7 +3,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import IngresosChart from "@/Components/Admin/IngresosChart";
 import PedidosRecientes from "@/Components/Admin/PedidosRecientes";
 
-export default function ReportesAnalisis({ pedidos }) {
+export default function ReportesAnalisis({ pedidos, estados, filtroEstado }) {
     return (
         <AdminLayout>
             <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
@@ -16,7 +16,7 @@ export default function ReportesAnalisis({ pedidos }) {
                     </span>
                 </h1>
             </div>
-            <PedidosRecientes pedidos={pedidos} />
+            <PedidosRecientes pedidos={pedidos} estados={estados} filtroEstado={filtroEstado} />
             <IngresosChart />
         </AdminLayout>
     );

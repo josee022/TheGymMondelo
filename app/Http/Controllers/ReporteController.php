@@ -10,16 +10,28 @@ use Inertia\Inertia;
 class ReporteController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $pedidos = Pedido::with('usuario')
-            ->orderBy('fecha_pedido', 'desc')
-            ->paginate(4, ['*'], 'pedidosPage');
+        $estado = $request->query('estado');
+
+        $pedidosQuery = Pedido::with('usuario')
+            ->orderBy('fecha_pedido', 'desc');
+
+        if ($estado) {
+            $pedidosQuery->where('estado', $estado);
+        }
+
+        // Agregar el estado al paginador para que lo mantenga en cada enlace
+        $pedidos = $pedidosQuery->paginate(4)->appends(['estado' => $estado]);
 
         return Inertia::render('Admin/ReportesAnalisis', [
             'pedidos' => $pedidos,
+            'estados' => ['Pendiente', 'Enviado', 'Entregado', 'Cancelado'],
+            'filtroEstado' => $estado,
         ]);
     }
+
+
 
     public function ingresosMensuales()
     {
