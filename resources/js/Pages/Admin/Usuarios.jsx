@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 export default function Usuarios({ usuarios }) {
     const [usuariosList, setUsuariosList] = useState([]);
 
-    // Cargar el listado de usuarios al inicio
     useEffect(() => {
         setUsuariosList(usuarios.data);
     }, [usuarios]);

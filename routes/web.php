@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminProductoController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
@@ -113,6 +114,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/usuarios/{id}', [AdminUserController::class, 'update'])->name('admin.usuarios.update');
     Route::delete('/admin/usuarios/{id}', [AdminUserController::class, 'destroy'])->name('admin.usuarios.destroy');
     Route::post('/admin/usuarios/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.usuarios.suspend');
+
+    // Rutas de gestión de productos (admin)
+    Route::get('/admin/productos', [AdminProductoController::class, 'index'])->name('admin.productos');
+    Route::get('/admin/productos/create', [AdminProductoController::class, 'create'])->name('admin.productos.create');
+    Route::post('/admin/productos', [AdminProductoController::class, 'store'])->name('admin.productos.store');
+    Route::get('/admin/productos/{producto}/edit', [AdminProductoController::class, 'edit'])->name('admin.productos.edit');
+    Route::put('/admin/productos/{producto}', [AdminProductoController::class, 'update'])->name('admin.productos.update');
+    Route::delete('/admin/productos/{producto}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
 });
 
 // Ruta para usuarios suspendidos

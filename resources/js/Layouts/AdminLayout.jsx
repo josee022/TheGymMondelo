@@ -40,28 +40,16 @@ export default function AdminLayout({ children }) {
                             Gestión de Usuarios
                         </Link>
                         <Link
-                            href="/admin/contenidos"
-                            className="block text-xl hover:text-blue-400"
-                        >
-                            Gestión de Contenidos
-                        </Link>
-                        <Link
                             href="/admin/productos"
                             className="block text-xl hover:text-blue-400"
                         >
-                            Productos
+                            Gestión de Productos
                         </Link>
                         <Link
                             href="/admin/reportes"
                             className="block text-xl hover:text-blue-400"
                         >
                             Reportes y Análisis
-                        </Link>
-                        <Link
-                            href="/admin/configuracion"
-                            className="block text-xl hover:text-blue-400"
-                        >
-                            Configuración del Sistema
                         </Link>
                     </nav>
                 </div>
