@@ -1,4 +1,3 @@
-// resources/js/Components/Admin/UserTrendChart.jsx
 import React from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -12,7 +11,15 @@ import {
     Chart,
 } from "chart.js";
 
-Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+Chart.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 export default function UserTrendChart({ usuariosPorMes }) {
     const chartData = {
@@ -30,8 +37,16 @@ export default function UserTrendChart({ usuariosPorMes }) {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Tendencia de Usuarios (Últimos 6 Meses)</h2>
-            <div style={{ maxHeight: "400px", maxWidth: "900px", margin: "0 auto" }}>
+            <h2 className="text-2xl font-semibold mb-4">
+                Tendencia de Usuarios (Últimos 6 Meses)
+            </h2>
+            <div
+                style={{
+                    maxHeight: "400px",
+                    maxWidth: "900px",
+                    margin: "0 auto",
+                }}
+            >
                 <Line
                     data={chartData}
                     options={{

@@ -15,6 +15,7 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramaController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SuscripcionController;
 use Illuminate\Foundation\Application;
@@ -115,13 +116,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/usuarios/{id}', [AdminUserController::class, 'destroy'])->name('admin.usuarios.destroy');
     Route::post('/admin/usuarios/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.usuarios.suspend');
 
-    // Rutas de gestión de productos (admin)
+    // Rutas de gestión de productos por el admin
     Route::get('/admin/productos', [AdminProductoController::class, 'index'])->name('admin.productos');
     Route::get('/admin/productos/create', [AdminProductoController::class, 'create'])->name('admin.productos.create');
     Route::post('/admin/productos', [AdminProductoController::class, 'store'])->name('admin.productos.store');
     Route::get('/admin/productos/{producto}/edit', [AdminProductoController::class, 'edit'])->name('admin.productos.edit');
     Route::put('/admin/productos/{producto}', [AdminProductoController::class, 'update'])->name('admin.productos.update');
     Route::delete('/admin/productos/{producto}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
+
+    // Rutas de gestión de reportes y análisis por el admin
+    Route::get('/admin/reportes', [ReporteController::class, 'index'])->name('admin.reportes');
+    Route::get('/admin/reportes/ingresos-mensuales', [ReporteController::class, 'ingresosMensuales'])->name('admin.reportes.ingresosMensuales');
+    Route::get('/admin/pedidos/{id}/gestionar', [ReporteController::class, 'showPedido'])->name('admin.pedidos.show');
+    Route::post('/admin/pedidos/{id}/actualizar-estado', [ReporteController::class, 'actualizarEstadoPedido'])->name('admin.pedidos.actualizarEstado');
 });
 
 // Ruta para usuarios suspendidos

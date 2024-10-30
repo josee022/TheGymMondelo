@@ -13,7 +13,7 @@ export default function SummaryCards({ totalUsuarios, totalProductos, ingresosMe
                 <p className="text-4xl font-bold">{totalProductos}</p>
             </div>
             <div className="bg-yellow-500 text-white p-6 rounded-lg shadow">
-                <h2 className="text-2xl font-semibold">Ingresos (mensual)</h2>
+                <h2 className="text-2xl font-semibold">Ingresos Actuales (mensual)</h2>
                 <p className="text-4xl font-bold">{ingresosMensuales} €</p>
             </div>
         </div>

@@ -730,80 +730,91 @@ export default function Dashboard({
                 <br />
 
                 {/* Sección de Facturas */}
-<div className="w-full px-4 bg-gradient-to-b from-gray-200 via-gray-300 to-gray-400 shadow-lg rounded-xl p-8 mt-10">
-    <div className="w-4/5 max-w-7xl mx-auto bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 shadow-lg rounded-lg p-8">
-        <div className="text-center mb-6">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
-                <span className="relative inline-block">
-                    <span
-                        className="absolute inset-x-0 bottom-0 h-1"
-                        style={{ backgroundColor: "#a3e635" }}
-                    ></span>
-                    <span className="relative">
-                        Facturas de Pedidos
-                    </span>
-                </span>
-            </h1>
-        </div>
-        {/* Contenedor de Facturas en formato de 2x2 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-between">
-            {pedidos.data.length === 0 ? (
-                <div className="w-full flex justify-center items-center text-center p-6 bg-gray-200 rounded-lg shadow-md mt-8">
-                    <p className="text-2xl font-semibold text-gray-600">
-                        No tienes facturas generadas. Visita nuestra tienda para poder adquirir nuestro material de más alta calidad, que te ayudará a seguir progresando en ti.
-                    </p>
-                </div>
-            ) : (
-                pedidos.data.map((pedido) => (
-                    <div
-                        key={pedido.id}
-                        className="max-w-xl bg-white p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
-                    >
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-3xl font-bold text-gray-700">
-                                Factura #{pedido.id}
-                            </h3>
-                            <span
-                                className={`text-xl font-bold ${
-                                    pedido.estado === "Pendiente"
-                                        ? "text-yellow-500"
-                                        : pedido.estado === "Enviado"
-                                        ? "text-blue-500"
-                                        : pedido.estado === "Entregado"
-                                        ? "text-green-500"
-                                        : "text-red-500"
-                                }`}
-                            >
-                                {pedido.estado}
-                            </span>
+                <div className="w-full px-4 bg-gradient-to-b from-gray-200 via-gray-300 to-gray-400 shadow-lg rounded-xl p-8 mt-10">
+                    <div className="w-4/5 max-w-7xl mx-auto bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 shadow-lg rounded-lg p-8">
+                        <div className="text-center mb-6">
+                            <h1 className="text-4xl font-bold text-gray-800 mb-2 relative">
+                                <span className="relative inline-block">
+                                    <span
+                                        className="absolute inset-x-0 bottom-0 h-1"
+                                        style={{ backgroundColor: "#a3e635" }}
+                                    ></span>
+                                    <span className="relative">
+                                        Facturas de Pedidos
+                                    </span>
+                                </span>
+                            </h1>
                         </div>
-                        <p className="text-xl text-gray-600 mb-4">
-                            <strong>Fecha:</strong> {pedido.fecha_pedido}
-                        </p>
-                        <p className="text-xl text-gray-600 mb-4">
-                            <strong>Total:</strong> {parseFloat(pedido.total).toFixed(2)} €
-                        </p>
-                        <div className="text-right mt-6">
-                            <a
-                                href={`/pedidos/${pedido.id}/show`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-700"
-                            >
-                                Ver Detalles
-                            </a>
+                        {/* Contenedor de Facturas en formato de 2x2 */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-between">
+                            {pedidos.data.length === 0 ? (
+                                <div className="w-full flex justify-center items-center text-center p-6 bg-gray-200 rounded-lg shadow-md mt-8">
+                                    <p className="text-2xl font-semibold text-gray-600">
+                                        No tienes facturas generadas. Visita
+                                        nuestra tienda para poder adquirir
+                                        nuestro material de más alta calidad,
+                                        que te ayudará a seguir progresando en
+                                        ti.
+                                    </p>
+                                </div>
+                            ) : (
+                                pedidos.data.map((pedido) => (
+                                    <div
+                                        key={pedido.id}
+                                        className="max-w-xl bg-white p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
+                                    >
+                                        <div className="flex justify-between items-center mb-6">
+                                            <h3 className="text-3xl font-bold text-gray-700">
+                                                Factura #{pedido.id}
+                                            </h3>
+                                            <span
+                                                className={`text-xl font-bold ${
+                                                    pedido.estado ===
+                                                    "Pendiente"
+                                                        ? "text-yellow-500"
+                                                        : pedido.estado ===
+                                                          "Enviado"
+                                                        ? "text-blue-500"
+                                                        : pedido.estado ===
+                                                          "Entregado"
+                                                        ? "text-green-500"
+                                                        : "text-red-500"
+                                                }`}
+                                            >
+                                                {pedido.estado}
+                                            </span>
+                                        </div>
+                                        <p className="text-xl text-gray-600 mb-4">
+                                            <strong>Fecha:</strong>{" "}
+                                            {pedido.fecha_pedido}
+                                        </p>
+                                        <p className="text-xl text-gray-600 mb-4">
+                                            <strong>Total:</strong>{" "}
+                                            {parseFloat(pedido.total).toFixed(
+                                                2
+                                            )}{" "}
+                                            €
+                                        </p>
+                                        <div className="text-right mt-6">
+                                            <a
+                                                href={`/pedidos/${pedido.id}/show`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-700"
+                                            >
+                                                Ver Detalles
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
+
+                        {pedidos.data.length > 0 && (
+                            <Pagination links={pedidos.links} />
+                        )}
                     </div>
-                ))
-            )}
-        </div>
-
-        {pedidos.data.length > 0 && (
-            <Pagination links={pedidos.links} />
-        )}
-    </div>
-</div>
-
+                </div>
             </div>
             <Footer /> {/* Pie de página */}
         </AuthenticatedLayout>
