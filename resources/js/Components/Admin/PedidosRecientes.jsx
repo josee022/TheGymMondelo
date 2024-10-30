@@ -78,7 +78,7 @@ export default function PedidosRecientes({
                             <div className="text-right mt-5">
                                 <a
                                     href={`/admin/pedidos/${pedido.id}/gestionar`}
-                                    className="inline-block bg-blue-500 text-white font-semibold px-5 py-2 rounded-md hover:bg-blue-600 transition shadow-sm hover:shadow-md"
+                                    className="inline-block bg-blue-400 text-white font-semibold px-5 py-2 rounded-md hover:bg-blue-700 transition shadow-sm hover:shadow-md"
                                 >
                                     Gestionar
                                 </a>

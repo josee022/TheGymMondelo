@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pedido;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -66,5 +67,14 @@ class ReporteController extends Controller
         $pedido->save();
 
         return redirect()->route('admin.pedidos.show', $id)->with('success', 'Estado actualizado con éxito.');
+    }
+
+    public function generarPdf(PDF $pdf)
+    {
+        $pedidos = Pedido::all();  // Obtén los datos necesarios para el PDF
+
+        // Usa la instancia de $pdf para cargar la vista
+        $pdf = $pdf->loadView('reportes.pedidos_pdf', compact('pedidos'));
+        return $pdf->download('Reporte De Pedidos.pdf');  // Descarga directa del PDF
     }
 }

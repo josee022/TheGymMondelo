@@ -57,18 +57,28 @@ export default function IngresosChart() {
     return (
         <div
             className="bg-white p-6 rounded-lg shadow mb-8"
-            style={{ maxWidth: "800px", margin: "0 auto" }}
+            style={{ maxWidth: "1000px", margin: "0 auto" }} // Ancho máximo aumentado
         >
             <h2 className="text-2xl font-semibold mb-4">
                 Historial de Ingresos (Mensual)
             </h2>
-            <div style={{ maxHeight: "400px" }}>
+            <div style={{ maxHeight: "500px", minHeight: "400px" }}>
+                {" "}
+                {/* Altura aumentada */}
                 <Line
                     data={chartData}
                     options={{
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
+                        },
+                        scales: {
+                            x: {
+                                ticks: { maxRotation: 0, minRotation: 0 },
+                            },
+                            y: {
+                                beginAtZero: true, // Para comenzar el eje Y en 0
+                            },
                         },
                     }}
                 />

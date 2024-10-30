@@ -129,6 +129,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/reportes/ingresos-mensuales', [ReporteController::class, 'ingresosMensuales'])->name('admin.reportes.ingresosMensuales');
     Route::get('/admin/pedidos/{id}/gestionar', [ReporteController::class, 'showPedido'])->name('admin.pedidos.show');
     Route::post('/admin/pedidos/{id}/actualizar-estado', [ReporteController::class, 'actualizarEstadoPedido'])->name('admin.pedidos.actualizarEstado');
+    Route::get('/admin/reportes/pdf', [ReporteController::class, 'generarPdf'])->name('reportes.pdf');
 });
 
 // Ruta para usuarios suspendidos
