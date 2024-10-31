@@ -46,6 +46,12 @@ export default function AdminLayout({ children }) {
                             Gestión de Entrenadores
                         </Link>
                         <Link
+                            href="/admin/clases"
+                            className="block text-xl hover:text-blue-400"
+                        >
+                            Gestión de Clases
+                        </Link>
+                        <Link
                             href="/admin/productos"
                             className="block text-xl hover:text-blue-400"
                         >
@@ -55,7 +61,7 @@ export default function AdminLayout({ children }) {
                             href="/admin/reportes"
                             className="block text-xl hover:text-blue-400"
                         >
-                            Reportes y Análisis
+                            Reportes y Análisis de Facturación
                         </Link>
                         <Link
                             href="/admin/graficas"

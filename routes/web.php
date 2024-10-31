@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
+use App\Http\Controllers\ClasesAdminController;
 use App\Http\Controllers\ComentarioForoController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
@@ -145,6 +146,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/mister/convertir-a-entrenador/{id}', [TrainerController::class, 'convertirEnEntrenador'])->name('admin.mister.convertir');
     Route::delete('/admin/mister/deshabilitar-entrenador/{id}', [TrainerController::class, 'deshabilitarEntrenador'])->name('admin.mister.deshabilitar');
     Route::post('/admin/mister/editar-entrenador/{id}', [TrainerController::class, 'editarEntrenador'])->name('admin.mister.editar');
+
+    // Rutas para gestionar clases
+    Route::get('/admin/clases', [ClasesAdminController::class, 'index'])->name('admin.clases');
+    Route::post('/admin/clases', [ClasesAdminController::class, 'store'])->name('admin.clases.store');
+    Route::put('/admin/clases/{id}', [ClasesAdminController::class, 'update'])->name('admin.clases.update');
+    Route::delete('/admin/clases/{id}', [ClasesAdminController::class, 'destroy'])->name('admin.clases.destroy');
 });
 
 // Ruta para usuarios suspendidos
