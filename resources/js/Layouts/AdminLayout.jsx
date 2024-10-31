@@ -51,6 +51,12 @@ export default function AdminLayout({ children }) {
                         >
                             Reportes y Análisis
                         </Link>
+                        <Link
+                            href="/admin/graficas"
+                            className="block text-xl hover:text-blue-400"
+                        >
+                            Gráficas Informativas y Seguimiento
+                        </Link>
                     </nav>
                 </div>
 

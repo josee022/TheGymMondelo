@@ -10,6 +10,7 @@ use App\Http\Controllers\ComentarioForoController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\ForoController;
+use App\Http\Controllers\GraficaController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
@@ -130,6 +131,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/pedidos/{id}/gestionar', [ReporteController::class, 'showPedido'])->name('admin.pedidos.show');
     Route::post('/admin/pedidos/{id}/actualizar-estado', [ReporteController::class, 'actualizarEstadoPedido'])->name('admin.pedidos.actualizarEstado');
     Route::get('/admin/reportes/pdf', [ReporteController::class, 'generarPdf'])->name('reportes.pdf');
+
+    // Rutas de gráficas informativas y seguimiento
+    Route::get('/admin/graficas', [GraficaController::class, 'index'])->name('admin.graficas');
+    Route::get('/admin/graficas/clases-mas-adquiridas', [GraficaController::class, 'clasesMasAdquiridas'])->name('admin.graficas.clasesMasAdquiridas');
+    Route::get('/admin/graficas/productos-mas-adquiridos', [GraficaController::class, 'productosMasAdquiridos'])->name('admin.graficas.productosMasAdquiridos');
+    Route::get('/admin/graficas/programas-mas-adquiridos', [GraficaController::class, 'programasMasAdquiridos'])->name('admin.graficas.programasMasAdquiridos');
+    Route::get('/admin/graficas/suscripciones-mas-adquiridas', [GraficaController::class, 'suscripcionesMasAdquiridas'])->name('admin.graficas.suscripcionesMasAdquiridas');
 });
 
 // Ruta para usuarios suspendidos
