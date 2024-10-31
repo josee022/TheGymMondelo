@@ -23,7 +23,7 @@ export default function GestionarPedido({ pedido, estados }) {
                         "El estado ha sido actualizado correctamente.",
                         "success"
                     );
-                    router.get('/admin/reportes');
+                    router.get("/admin/reportes");
                 },
                 preserveScroll: true,
             }
@@ -41,9 +41,16 @@ export default function GestionarPedido({ pedido, estados }) {
     return (
         <AdminLayout>
             <div className="bg-white p-8 rounded-xl shadow-lg max-w-5xl mx-auto mt-10">
-                <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
-                    Factura #{pedido.id}
-                </h1>
+                <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
+                    <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide relative text-center">
+                        <span className="relative inline-block">
+                            <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-500 rounded-lg"></span>
+                            <span className="relative text-shadow-lg">
+                                Factura #{pedido.id}
+                            </span>
+                        </span>
+                    </h1>
+                </div>
                 <div className="bg-gray-100 p-6 rounded-lg mb-8">
                     <p className="text-xl font-semibold text-gray-700">
                         <strong>Total:</strong> {pedido.total} €

@@ -26,7 +26,16 @@ export default function ProductoEditar({ producto }) {
 
     return (
         <AdminLayout>
-            <h1 className="text-3xl font-bold mb-6">Editar Producto</h1>
+            <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
+                <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide relative text-center">
+                    <span className="relative inline-block">
+                        <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-500 rounded-lg"></span>
+                        <span className="relative text-shadow-lg">
+                            Editar producto
+                        </span>
+                    </span>
+                </h1>
+            </div>{" "}
             <div className="bg-white p-8 rounded-lg shadow-md max-w-lg mx-auto">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>

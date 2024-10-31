@@ -32,7 +32,16 @@ export default function Productos({ productos }) {
 
     return (
         <AdminLayout>
-            <h1 className="text-3xl font-bold mb-6">Gestión de Productos</h1>
+            <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
+                <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide relative text-center">
+                    <span className="relative inline-block">
+                        <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-500 rounded-lg"></span>
+                        <span className="relative text-shadow-lg">
+                            Gestión De Productos
+                        </span>
+                    </span>
+                </h1>
+            </div>
 
             <Link
                 href={route("admin.productos.create")}
@@ -54,15 +63,23 @@ export default function Productos({ productos }) {
                 </thead>
                 <tbody>
                     {productos.data.map((producto) => (
-                        <tr key={producto.id} className="border-b hover:bg-gray-100">
+                        <tr
+                            key={producto.id}
+                            className="border-b hover:bg-gray-100"
+                        >
                             <td className="py-3 px-4">{producto.id}</td>
                             <td className="py-3 px-4">{producto.nombre}</td>
-                            <td className="py-3 px-4">{producto.descripcion}</td>
+                            <td className="py-3 px-4">
+                                {producto.descripcion}
+                            </td>
                             <td className="py-3 px-4">{producto.precio} €</td>
                             <td className="py-3 px-4">{producto.stock} ud</td>
                             <td className="py-3 px-4 flex space-x-2">
                                 <Link
-                                    href={route("admin.productos.edit", producto.id)}
+                                    href={route(
+                                        "admin.productos.edit",
+                                        producto.id
+                                    )}
                                     className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-700"
                                 >
                                     Editar

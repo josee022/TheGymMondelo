@@ -19,6 +19,7 @@ use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SuscripcionController;
+use App\Http\Controllers\TrainerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -138,6 +139,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/graficas/productos-mas-adquiridos', [GraficaController::class, 'productosMasAdquiridos'])->name('admin.graficas.productosMasAdquiridos');
     Route::get('/admin/graficas/programas-mas-adquiridos', [GraficaController::class, 'programasMasAdquiridos'])->name('admin.graficas.programasMasAdquiridos');
     Route::get('/admin/graficas/suscripciones-mas-adquiridas', [GraficaController::class, 'suscripcionesMasAdquiridas'])->name('admin.graficas.suscripcionesMasAdquiridas');
+
+    // Rutas de gestion de entrenadores por el admin
+    Route::get('/admin/mister', [TrainerController::class, 'index'])->name('admin.mister');
+    Route::post('/admin/mister/convertir-a-entrenador/{id}', [TrainerController::class, 'convertirEnEntrenador'])->name('admin.mister.convertir');
+    Route::delete('/admin/mister/deshabilitar-entrenador/{id}', [TrainerController::class, 'deshabilitarEntrenador'])->name('admin.mister.deshabilitar');
+    Route::post('/admin/mister/editar-entrenador/{id}', [TrainerController::class, 'editarEntrenador'])->name('admin.mister.editar');
 });
 
 // Ruta para usuarios suspendidos
