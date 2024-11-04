@@ -52,6 +52,12 @@ export default function AdminLayout({ children }) {
                             Gestión de Clases
                         </Link>
                         <Link
+                            href="/admin/programas"
+                            className="block text-xl hover:text-blue-400"
+                        >
+                            Gestión de Programas
+                        </Link>
+                        <Link
                             href="/admin/productos"
                             className="block text-xl hover:text-blue-400"
                         >

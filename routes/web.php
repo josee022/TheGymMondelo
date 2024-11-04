@@ -17,6 +17,7 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramaController;
+use App\Http\Controllers\ProgramasAdminController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SuscripcionController;
@@ -147,11 +148,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/mister/deshabilitar-entrenador/{id}', [TrainerController::class, 'deshabilitarEntrenador'])->name('admin.mister.deshabilitar');
     Route::post('/admin/mister/editar-entrenador/{id}', [TrainerController::class, 'editarEntrenador'])->name('admin.mister.editar');
 
-    // Rutas para gestionar clases
+    // Rutas para gestionar clases por el admin
     Route::get('/admin/clases', [ClasesAdminController::class, 'index'])->name('admin.clases');
     Route::post('/admin/clases', [ClasesAdminController::class, 'store'])->name('admin.clases.store');
     Route::put('/admin/clases/{id}', [ClasesAdminController::class, 'update'])->name('admin.clases.update');
     Route::delete('/admin/clases/{id}', [ClasesAdminController::class, 'destroy'])->name('admin.clases.destroy');
+
+    // Rutas para gestionar programas por el admin
+    Route::get('/admin/programas', [ProgramasAdminController::class, 'index'])->name('admin.programas');
+    Route::post('/admin/programas', [ProgramasAdminController::class, 'store'])->name('admin.programas.store');
+    Route::put('/admin/programas/{id}', [ProgramasAdminController::class, 'update'])->name('admin.programas.update');
+    Route::delete('/admin/programas/{id}', [ProgramasAdminController::class, 'destroy'])->name('admin.programas.destroy');
 });
 
 // Ruta para usuarios suspendidos
