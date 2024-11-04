@@ -92,6 +92,17 @@ export default function Authenticated({ user = {}, header, children }) {
                             />
                         </NavLink>
                         <NavLink
+                            href={route('diario.index')}
+                            active={route().current('diario.index')}
+                            className="text-white text-xl relative group"
+                        >
+                            Diario
+                            <span
+                                className={`absolute inset-x-0 bottom-0 h-1 transition-transform transform ${route().current('diario.index') ? 'scale-x-100' : 'scale-x-0'}`}
+                                style={{ transformOrigin: 'left' }}
+                            />
+                        </NavLink>
+                        <NavLink
                             href={route('blogs.create')}
                             active={route().current('blogs.create')}
                             className="text-white text-xl relative group"
@@ -194,6 +205,9 @@ export default function Authenticated({ user = {}, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('suscripciones.index')} active={route().current('suscripciones.index')}>
                             Suscripciones
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('diario.index')} active={route().current('diario.index')}>
+                            Diario
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('blogs.create')} active={route().current('blogs.create')}>
                             Blog

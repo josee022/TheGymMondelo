@@ -8,6 +8,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ClasesAdminController;
 use App\Http\Controllers\ComentarioForoController;
+use App\Http\Controllers\DiarioController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
 use App\Http\Controllers\ForoController;
@@ -104,6 +105,13 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
 
     // Ruta para pedidos
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
+
+    // Ruta para diario
+    Route::get('/diario', [DiarioController::class, 'index'])->name('diario.index');
+    Route::post('/diario', [DiarioController::class, 'store'])->name('diario.store');
+    Route::get('/historial-ejercicios', [DiarioController::class, 'historial'])->name('diario.historial');
+    Route::put('/diario/{diario}', [DiarioController::class, 'update'])->name('diario.update');
+    Route::delete('/diario/{diario}', [DiarioController::class, 'destroy'])->name('diario.destroy');
 });
 
 // Grupo de rutas de administración
