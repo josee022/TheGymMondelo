@@ -34,10 +34,15 @@ class ClasesAdminController extends Controller
             'capacidad' => 'required|integer|min:1',
         ]);
 
-        Clase::create($request->all());
+        $clase = Clase::create($request->all());
 
-        return redirect()->back()->with('success', 'Clase creada exitosamente.');
+        return redirect()->route('admin.clases')->with([
+            'success' => 'Clase creada exitosamente.',
+            'newClase' => $clase, 
+        ]);
     }
+
+
 
     // Método para editar una clase existente
     public function update(Request $request, $id)
@@ -56,7 +61,7 @@ class ClasesAdminController extends Controller
 
         $clase->update($request->all());
 
-        return redirect()->back()->with('success', 'Clase actualizada exitosamente.');
+        return redirect()->route('admin.clases')->with('success', 'Clase actualizada exitosamente.');
     }
 
     // Método para eliminar una clase
@@ -65,6 +70,6 @@ class ClasesAdminController extends Controller
         $clase = Clase::findOrFail($id);
         $clase->delete();
 
-        return response()->json(['message' => 'Clase eliminada correctamente']);
+        return redirect()->route('admin.clases')->with('success', 'Clase eliminada correctamente.');
     }
 }

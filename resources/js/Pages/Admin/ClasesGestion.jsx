@@ -11,6 +11,55 @@ const ClasesGestion = ({ clases, entrenadores }) => {
 
     const handleEdit = (clase) => setSelectedClase(clase);
 
+    const handleSubmit = (form) => {
+        if (selectedClase && selectedClase.id) {
+            // Actualizar clase existente
+            router.put(route("admin.clases.update", selectedClase.id), form, {
+                onSuccess: () => {
+                    Swal.fire(
+                        "Actualizado!",
+                        "La clase ha sido actualizada.",
+                        "success"
+                    );
+                    setClasesList((prevClases) =>
+                        prevClases.map((c) =>
+                            c.id === selectedClase.id ? { ...c, ...form } : c
+                        )
+                    );
+                    setSelectedClase(null); // Limpiar la clase seleccionada después de editar
+                },
+                onError: () => {
+                    Swal.fire(
+                        "Error!",
+                        "Hubo un problema al actualizar la clase.",
+                        "error"
+                    );
+                },
+            });
+        } else {
+            // Crear una nueva clase
+            router.post(route("admin.clases.store"), form, {
+                onSuccess: (page) => {
+                    Swal.fire(
+                        "Creado!",
+                        "La clase ha sido creada exitosamente.",
+                        "success"
+                    );
+                    // Agregar la nueva clase al estado clasesList
+                    const newClase = page.props.newClase || form; // Usa los datos de la clase nueva
+                    setClasesList((prevClases) => [...prevClases, newClase]);
+                },
+                onError: () => {
+                    Swal.fire(
+                        "Error!",
+                        "Hubo un problema al crear la clase.",
+                        "error"
+                    );
+                },
+            });
+        }
+    };
+
     const handleDelete = (id) => {
         Swal.fire({
             title: "¿Estás seguro?",
@@ -29,11 +78,10 @@ const ClasesGestion = ({ clases, entrenadores }) => {
                             "Eliminada!",
                             "La clase ha sido eliminada exitosamente.",
                             "success"
-                        ).then(() => {
-                            setClasesList(
-                                clasesList.filter((clase) => clase.id !== id)
-                            );
-                        });
+                        );
+                        setClasesList((prevClases) =>
+                            prevClases.filter((clase) => clase.id !== id)
+                        );
                     },
                     onError: () => {
                         Swal.fire(
@@ -63,6 +111,7 @@ const ClasesGestion = ({ clases, entrenadores }) => {
                 <CrearClase
                     entrenadores={entrenadores}
                     selectedClase={selectedClase}
+                    onSubmit={handleSubmit}
                 />
                 <ClasesList
                     clases={clasesList}

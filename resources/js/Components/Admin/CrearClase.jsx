@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
-const CrearClase = ({ entrenadores, selectedClase }) => {
+const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
     const [form, setForm] = useState({
         nombre: "",
         descripcion: "",
@@ -14,6 +15,16 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
     useEffect(() => {
         if (selectedClase) {
             setForm(selectedClase);
+        } else {
+            setForm({
+                nombre: "",
+                descripcion: "",
+                fecha: "",
+                hora_inicio: "",
+                hora_fin: "",
+                entrenador_id: "",
+                capacidad: "",
+            });
         }
     }, [selectedClase]);
 
@@ -22,12 +33,85 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
         setForm((prevForm) => ({ ...prevForm, [name]: value }));
     };
 
+    const validateForm = () => {
+        const {
+            nombre,
+            descripcion,
+            fecha,
+            hora_inicio,
+            hora_fin,
+            entrenador_id,
+            capacidad,
+        } = form;
+
+        // Si estamos creando una nueva clase, verificar que todos los campos estén completos
+        if (!selectedClase) {
+            if (
+                !nombre ||
+                !descripcion ||
+                !fecha ||
+                !hora_inicio ||
+                !hora_fin ||
+                !entrenador_id ||
+                !capacidad
+            ) {
+                Swal.fire(
+                    "Error",
+                    "Todos los campos deben estar completos para crear una clase.",
+                    "error"
+                );
+                return false;
+            }
+
+            // Validar que la fecha sea futura
+            const selectedDate = new Date(fecha);
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+
+            if (selectedDate <= currentDate) {
+                Swal.fire(
+                    "Error",
+                    "La fecha debe ser una fecha futura.",
+                    "error"
+                );
+                return false;
+            }
+        } else {
+            // Para editar, solo verificar la fecha si se ha cambiado y es futura
+            if (fecha) {
+                const selectedDate = new Date(fecha);
+                const currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
+
+                if (selectedDate <= currentDate) {
+                    Swal.fire(
+                        "Error",
+                        "La fecha debe ser una fecha futura.",
+                        "error"
+                    );
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Validar el formulario antes de enviar
+        if (validateForm()) {
+            onSubmit(form);
+        }
+    };
+
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-6">
-            <h2 className="text-2xl font-semibold text-center text-blue-600 mb-4">
+        <div className="bg-gradient-to-br from-lime-50 to-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-6">
+            <h2 className="text-2xl font-semibold text-center text-lime-600 mb-4">
                 {selectedClase ? "Editar Clase" : "Crear Nueva Clase"}
             </h2>
-            <form className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">
                         Nombre de la Clase
@@ -38,8 +122,7 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                         value={form.nombre}
                         onChange={handleChange}
                         placeholder="Nombre de la Clase"
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        required
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                     />
                 </div>
                 <div>
@@ -51,7 +134,7 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                         value={form.descripcion}
                         onChange={handleChange}
                         placeholder="Descripción de la Clase"
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                         rows="2"
                     />
                 </div>
@@ -65,8 +148,7 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                             name="fecha"
                             value={form.fecha}
                             onChange={handleChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                         />
                     </div>
                     <div>
@@ -78,8 +160,7 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                             name="hora_inicio"
                             value={form.hora_inicio}
                             onChange={handleChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                         />
                     </div>
                     <div>
@@ -91,8 +172,7 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                             name="hora_fin"
                             value={form.hora_fin}
                             onChange={handleChange}
-                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                         />
                     </div>
                 </div>
@@ -104,8 +184,7 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                         name="entrenador_id"
                         value={form.entrenador_id}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        required
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                     >
                         <option value="">Selecciona un Entrenador</option>
                         {entrenadores.map((entrenador) => (
@@ -125,14 +204,13 @@ const CrearClase = ({ entrenadores, selectedClase }) => {
                         value={form.capacidad}
                         onChange={handleChange}
                         placeholder="Capacidad"
-                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                         min="1"
-                        required
                     />
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="w-full bg-lime-500 hover:bg-lime-600 text-white font-semibold py-2 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-lime-300"
                 >
                     {selectedClase ? "Actualizar Clase" : "Crear Clase"}
                 </button>

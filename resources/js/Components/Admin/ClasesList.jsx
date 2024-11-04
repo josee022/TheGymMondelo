@@ -1,11 +1,19 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 const ClasesList = ({ clases, onEdit, handleDelete }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const filteredClases = clases.filter((clase) =>
-        clase.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        clase?.nombre
+            ? clase.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+            : false
     );
+
+    // Función para formatear hora a HH:mm:ss
+    const formatTimeWithSeconds = (time) => {
+        return time.length === 5 ? `${time}:00` : time; // Añade ":00" si no tiene segundos
+    };
 
     return (
         <div
@@ -32,8 +40,9 @@ const ClasesList = ({ clases, onEdit, handleDelete }) => {
                                 📅 {clase.nombre}
                             </p>
                             <p className="text-xs text-gray-500">
-                                {clase.fecha} | {clase.hora_inicio} -{" "}
-                                {clase.hora_fin}
+                                {clase.fecha} |{" "}
+                                {formatTimeWithSeconds(clase.hora_inicio)} -{" "}
+                                {formatTimeWithSeconds(clase.hora_fin)}
                             </p>
                         </div>
                         <div className="flex gap-1">
@@ -46,9 +55,20 @@ const ClasesList = ({ clases, onEdit, handleDelete }) => {
                             <button
                                 className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm"
                                 onClick={() => {
-                                    if (confirm("¿Eliminar esta clase?")) {
-                                        handleDelete(clase.id);
-                                    }
+                                    Swal.fire({
+                                        title: "¿Estás seguro?",
+                                        text: "Esta acción eliminará la clase.",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Sí, eliminar",
+                                        cancelButtonText: "Cancelar",
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            handleDelete(clase.id);
+                                        }
+                                    });
                                 }}
                             >
                                 🗑️ Eliminar
