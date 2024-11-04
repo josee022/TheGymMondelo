@@ -16,6 +16,7 @@ use App\Policies\ForoPolicy;
 use App\Policies\ReservaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -24,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
 
-     // Definición de politicas
+    // Definición de politicas
     protected $policies = [
         Entrenador::class => EntrenadorPolicy::class,
         Reserva::class => ReservaPolicy::class,

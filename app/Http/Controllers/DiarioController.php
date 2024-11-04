@@ -2,65 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDiarioRequest;
-use App\Http\Requests\UpdateDiarioRequest;
+use Illuminate\Http\Request;
 use App\Models\Diario;
 
 class DiarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return inertia('Diario/Index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'fecha' => 'required|date',
+            'ejercicio' => 'required|string|max:255',
+            'series' => 'required|integer|min:1',
+            'repeticiones' => 'required|integer|min:1',
+            'peso' => 'nullable|numeric',
+            'notas' => 'nullable|string',
+        ]);
+
+        Diario::create([
+            'usuario_id' => auth()->id(),
+            'fecha' => $request->fecha,
+            'ejercicio' => $request->ejercicio,
+            'series' => $request->series,
+            'repeticiones' => $request->repeticiones,
+            'peso' => $request->peso,
+            'notas' => $request->notas,
+        ]);
+
+        return redirect()->route('diario.index')->with('success', 'Ejercicio registrado exitosamente.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDiarioRequest $request)
+    public function historial()
     {
-        //
+        $ejercicios = Diario::where('usuario_id', auth()->id())
+            ->orderBy('fecha', 'desc')
+            ->get();
+
+        return inertia('Diario/Historial', [
+            'ejercicios' => $ejercicios
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Diario $diario)
+    public function update(Request $request, Diario $diario)
     {
-        //
+        $request->validate([
+            'fecha' => 'required|date',
+            'ejercicio' => 'required|string|max:255',
+            'series' => 'required|integer|min:1',
+            'repeticiones' => 'required|integer|min:1',
+            'peso' => 'nullable|numeric',
+            'notas' => 'nullable|string',
+        ]);
+
+        $diario->update($request->all());
+
+        return redirect()->route('diario.historial')->with('success', 'Ejercicio actualizado exitosamente.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Diario $diario)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDiarioRequest $request, Diario $diario)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Diario $diario)
     {
-        //
+        $diario->delete();
+
+        return redirect()->route('diario.historial')->with('success', 'Ejercicio eliminado exitosamente.');
     }
 }

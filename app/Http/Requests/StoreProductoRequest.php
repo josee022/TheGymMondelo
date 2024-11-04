@@ -11,7 +11,8 @@ class StoreProductoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Permite acceso solo a administradores
+        return auth()->user() && auth()->user()->rol === 'admin';
     }
 
     /**
@@ -22,7 +23,10 @@ class StoreProductoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric|min:0|max:999999.99',
+            'stock' => 'required|integer|min:0',
         ];
     }
 }

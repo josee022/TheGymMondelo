@@ -250,7 +250,7 @@ export default function Dashboard({
             <div className="flex flex-col lg:flex-row lg:space-x-0 gap-0">
                 {/* Primer contenedor (Información del perfil) */}
                 <div className="w-full lg:w-1/2">
-                    <div className="w-full bg-gradient-to-r from-gray-400 to-lime-500 shadow-lg rounded-xl p-8">
+                    <div className="w-full bg-gradient-to-r from-gray-400 to-lime-500 shadow-lg rounded-xl p-8 h-full">
                         {/* Encabezado de la sección */}
                         <div className="text-center mb-8">
                             <h1 className="text-5xl font-extrabold text-gray-800 mb-3 relative">
@@ -440,10 +440,19 @@ export default function Dashboard({
                                 </div>
                             ))
                         ) : (
-                            <p>No tienes reservas.</p>
+                            <div className="text-center p-6 bg-gradient-to-r from-gray-700 via-gray-800 to-black rounded-lg shadow-lg">
+                                <h2 className="text-3xl font-bold text-white mb-4">
+                                    No tienes reservas
+                                </h2>
+                                <p className="text-gray-300">
+                                    Todavía no has adquirido ninguna reserva.
+                                    Cuando reserves una clase, aparecerá aquí.
+                                </p>
+                            </div>
                         )}
-                        <Pagination links={reservas.links} />{" "}
-                        {/* Componente de paginación para las reservas */}
+                        {reservasOrdenadas.length > 0 && (
+                            <Pagination links={reservas.links} />
+                        )}
                     </div>
                 </div>
             </div>
@@ -452,24 +461,25 @@ export default function Dashboard({
                 <div className="text-center mb-6">
                     <h1 className="text-4xl font-bold text-green-400 mb-2 relative">
                         <span className="relative inline-block">
-                            <span
-                                className="absolute inset-x-0 bottom-0 h-1"
-                                style={{ backgroundColor: "#a3e635" }}
-                            ></span>
                             <span className="relative">
-                                Mi Suscripción En TheGymMondelo
+                                🌟 Mi Suscripción En TheGymMondelo 🌟
                             </span>
                         </span>
                     </h1>
                 </div>
 
                 {suscripcionesOrdenadas.length === 0 ? (
-                    <div className="text-center p-6 rounded-md bg-gradient-to-r from-gray-700 via-gray-800 to-black shadow-lg animate-pulse">
-                        <p className="text-2xl font-semibold text-white">
+                    <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7 }}
+                        className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform mb-6"
+                    >
+                        <p className="text-2xl font-semibold text-white text-center">
                             No tienes ninguna suscripción activa en estos
                             momentos.
                         </p>
-                    </div>
+                    </motion.div>
                 ) : (
                     suscripcionesOrdenadas.map((suscripcion) => (
                         <div
@@ -516,20 +526,22 @@ export default function Dashboard({
                     ))
                 )}
                 <br />
+                <br />
+                <br />
                 <h2 className="text-4xl font-extrabold text-center mb-10 text-green-400">
                     🌟 Tu Programa Adquirido 🌟
                 </h2>
-                <div className="max-w-4xl mx-auto hover:shadow-3xl transition-all duration-500 hover:scale-105 transform">
+                <div className="max-w-4xl mx-auto hover:shadow-3xl transition-all duration-500  transform">
                     {adquisiciones.length === 0 ? (
                         <motion.div
                             initial={{ opacity: 0, y: -50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7 }}
-                            className="text-center text-2xl bg-gray-900 p-6 rounded-lg shadow-md"
+                            className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform mb-6"
                         >
-                            <p className="text-white">
-                                No tienes ningún programa adquirido aún.
-                                ¡Empieza ahora y alcanza tus metas! 💪
+                            <p className="text-2xl font-semibold text-white text-center">
+                                No tienes ningún programa adquirido aún. <br />
+                                ¡Empieza ahora y alcanza tus metas!
                             </p>
                         </motion.div>
                     ) : (
@@ -734,23 +746,29 @@ export default function Dashboard({
                             </h1>
                         </div>
                         {/* Contenedor de Facturas en formato de 2x2 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-between">
                             {pedidos.data.length === 0 ? (
-                                <p className="text-gray-600 text-center">
-                                    No tienes facturas generadas.
-                                </p>
+                                <div className="w-full flex justify-center items-center text-center p-6 bg-gray-200 rounded-lg shadow-md mt-8">
+                                    <p className="text-2xl font-semibold text-gray-600">
+                                        No tienes facturas generadas. Visita
+                                        nuestra tienda para poder adquirir
+                                        nuestro material de más alta calidad,
+                                        que te ayudará a seguir progresando en
+                                        ti.
+                                    </p>
+                                </div>
                             ) : (
                                 pedidos.data.map((pedido) => (
                                     <div
                                         key={pedido.id}
-                                        className="max-w-md bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+                                        className="max-w-xl bg-white p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
                                     >
-                                        <div className="flex justify-between items-center mb-4">
-                                            <h3 className="text-2xl font-semibold text-gray-700">
+                                        <div className="flex justify-between items-center mb-6">
+                                            <h3 className="text-3xl font-bold text-gray-700">
                                                 Factura #{pedido.id}
                                             </h3>
                                             <span
-                                                className={`text-lg font-bold ${
+                                                className={`text-xl font-bold ${
                                                     pedido.estado ===
                                                     "Pendiente"
                                                         ? "text-yellow-500"
@@ -766,24 +784,23 @@ export default function Dashboard({
                                                 {pedido.estado}
                                             </span>
                                         </div>
-                                        <p className="text-gray-600">
+                                        <p className="text-xl text-gray-600 mb-4">
                                             <strong>Fecha:</strong>{" "}
                                             {pedido.fecha_pedido}
                                         </p>
-                                        <p className="text-gray-600">
+                                        <p className="text-xl text-gray-600 mb-4">
                                             <strong>Total:</strong>{" "}
                                             {parseFloat(pedido.total).toFixed(
                                                 2
                                             )}{" "}
                                             €
                                         </p>
-                                        <div className="text-right mt-4">
-                                            {/* Usamos <a> en vez de <Link> porque con Link no podemos abrir una nueva pestaña por defecto */}
+                                        <div className="text-right mt-6">
                                             <a
                                                 href={`/pedidos/${pedido.id}/show`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                                                className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-700"
                                             >
                                                 Ver Detalles
                                             </a>
@@ -792,8 +809,10 @@ export default function Dashboard({
                                 ))
                             )}
                         </div>
-                        <Pagination links={pedidos.links} />{" "}
-                        {/* Componente de paginación para las reservas */}
+
+                        {pedidos.data.length > 0 && (
+                            <Pagination links={pedidos.links} />
+                        )}
                     </div>
                 </div>
             </div>
