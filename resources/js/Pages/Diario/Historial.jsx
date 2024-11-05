@@ -11,6 +11,7 @@ import TarjetaEjercicio from "@/Components/Diario/TarjetaEjercicio";
 import FiltroEjercicio from "@/Components/Diario/FiltroEjercicio";
 import ContenedorGrafica from "@/Components/Diario/ContenedorGrafica";
 import BotonesExportar from "@/Components/Diario/BotonesExportar";
+import NotificacionMotivacion from "@/Components/Diario/NotificacionMotivacion";
 
 const MySwal = withReactContent(Swal);
 
@@ -20,6 +21,19 @@ export default function Historial({ ejercicios, auth }) {
     const [filtroFecha, setFiltroFecha] = useState(fechaActual);
     const [filtroEjercicio, setFiltroEjercicio] = useState("");
     const [datosGrafico, setDatosGrafico] = useState(null);
+    const [mensajeMotivacional, setMensajeMotivacional] = useState("");
+
+    useEffect(() => {
+        fetch("/diario/mensaje-motivacional")
+            .then((response) => response.json())
+            .then((data) => setMensajeMotivacional(data.mensaje))
+            .catch((error) =>
+                console.error(
+                    "Error al obtener el mensaje motivacional:",
+                    error
+                )
+            );
+    }, []);
 
     useEffect(() => {
         aplicarFiltros();
@@ -154,6 +168,9 @@ export default function Historial({ ejercicios, auth }) {
 
             <div className="min-h-screen bg-gradient-to-b from-lime-100 via-green-100 to-green-200 py-10">
                 <div className="max-w-7xl mx-auto px-6">
+                    {/* Muestra el mensaje motivacional */}
+                    <NotificacionMotivacion mensaje={mensajeMotivacional} />
+
                     <FiltroFecha
                         filtroFecha={filtroFecha}
                         setFiltroFecha={setFiltroFecha}
@@ -202,7 +219,7 @@ export default function Historial({ ejercicios, auth }) {
                         <ContenedorGrafica datosGrafico={datosGrafico} />
                     )}
                     {/* Botones de exportación */}
-                    <BotonesExportar filtroFecha={filtroFecha} />{" "}
+                    <BotonesExportar filtroFecha={filtroFecha} />
                 </div>
             </div>
 

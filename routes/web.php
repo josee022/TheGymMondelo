@@ -114,6 +114,7 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::delete('/diario/{diario}', [DiarioController::class, 'destroy'])->name('diario.destroy');
     Route::get('/diario/export/pdf', [DiarioController::class, 'exportarPDF'])->name('diario.export.pdf');
     Route::get('/diario/export/csv', [DiarioController::class, 'exportarCSV'])->name('diario.export.csv');
+    Route::get('/diario/mensaje-motivacional', [DiarioController::class, 'obtenerMensajeMotivacional'])->name('diario.mensaje.motivacional');
 });
 
 // Grupo de rutas de administración
