@@ -10,6 +10,7 @@ import FiltroFecha from "@/Components/Diario/FiltroFecha";
 import TarjetaEjercicio from "@/Components/Diario/TarjetaEjercicio";
 import FiltroEjercicio from "@/Components/Diario/FiltroEjercicio";
 import ContenedorGrafica from "@/Components/Diario/ContenedorGrafica";
+import BotonesExportar from "@/Components/Diario/BotonesExportar";
 
 const MySwal = withReactContent(Swal);
 
@@ -158,7 +159,6 @@ export default function Historial({ ejercicios, auth }) {
                         setFiltroFecha={setFiltroFecha}
                         aplicarFiltros={aplicarFiltros}
                     />
-
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {filteredEjercicios.length > 0 ? (
                             filteredEjercicios.map((ejercicio) => (
@@ -187,7 +187,6 @@ export default function Historial({ ejercicios, auth }) {
                             </div>
                         )}
                     </div>
-
                     {/* Filtro de Ejercicio y Gráfica */}
                     <FiltroEjercicio
                         filtroEjercicio={filtroEjercicio}
@@ -198,11 +197,12 @@ export default function Historial({ ejercicios, auth }) {
                             new Set(filteredEjercicios.map((e) => e.ejercicio))
                         )}
                     />
-
                     {/* Gráfica de Progreso */}
                     {datosGrafico && (
                         <ContenedorGrafica datosGrafico={datosGrafico} />
                     )}
+                    {/* Botones de exportación */}
+                    <BotonesExportar filtroFecha={filtroFecha} />{" "}
                 </div>
             </div>
 
