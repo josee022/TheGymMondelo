@@ -14,6 +14,7 @@ class ReporteController extends Controller
     public function index(Request $request)
     {
         $estado = $request->query('estado');
+        $usuarioId = $request->query('usuario_id');
 
         $pedidosQuery = Pedido::with('usuario')
             ->orderBy('fecha_pedido', 'desc');
@@ -22,15 +23,23 @@ class ReporteController extends Controller
             $pedidosQuery->where('estado', $estado);
         }
 
-        // Agregar el estado al paginador para que lo mantenga en cada enlace
-        $pedidos = $pedidosQuery->paginate(4)->appends(['estado' => $estado]);
+        if ($usuarioId) {
+            $pedidosQuery->where('usuario_id', $usuarioId);
+        }
+
+        $pedidos = $pedidosQuery->paginate(4)->appends(['estado' => $estado, 'usuario_id' => $usuarioId]);
+
+        $usuarios = \App\Models\User::select('id', 'name')->get();
 
         return Inertia::render('Admin/ReportesAnalisis', [
             'pedidos' => $pedidos,
             'estados' => ['Pendiente', 'Enviado', 'Entregado', 'Cancelado'],
             'filtroEstado' => $estado,
+            'usuarios' => $usuarios,
+            'filtroUsuario' => $usuarioId,
         ]);
     }
+
 
 
 
