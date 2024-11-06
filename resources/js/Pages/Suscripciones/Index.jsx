@@ -37,8 +37,8 @@ export default function Suscripciones({ auth }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Nuestras Suscripciones :
+                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
+                    Nuestras Suscripciones 📋
                 </h2>
             }
         >

@@ -95,14 +95,7 @@ export default function Tienda() {
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-black-100 leading-tight">
-                    Tienda de Productos :
-                </h2>
-            }
-        >
+        <AuthenticatedLayout user={auth.user}>
             <ToastContainer />
             <Head title="Tienda de Productos" />
 

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Footer from '@/Components/Footer';
-import FormBlog from '@/Components/Blogs/FormBlog';
-import ListaBlog from '@/Components/Blogs/ListaBlog';
-import Pagination from '@/Components/Pagination';
-import '../../../css/create-blog.css';
+import React, { useState } from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import Footer from "@/Components/Footer";
+import FormBlog from "@/Components/Blogs/FormBlog";
+import ListaBlog from "@/Components/Blogs/ListaBlog";
+import Pagination from "@/Components/Pagination";
+import "../../../css/create-blog.css";
 
 export default function CreateBlog({ auth, isEntrenador, blogs }) {
     const [editingBlogId, setEditingBlogId] = useState(null);
@@ -21,14 +21,24 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
     // Formatea la fecha
     const formatFechaBlog = (timestamp) => {
         const fecha = new Date(timestamp);
-        const opciones = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return `Creado el ${fecha.toLocaleDateString('es-ES', opciones)}`;
+        const opciones = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
+        return `Creado el ${fecha.toLocaleDateString("es-ES", opciones)}`;
     };
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Blogs TheGymMondelo :</h2>}
+            header={
+                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
+                    Blogs TheGymMondelo 📝
+                </h2>
+            }
         >
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
@@ -37,10 +47,14 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                         <FormBlog />
                     ) : (
                         <div className="text-center bg-red-100 text-red-600 font-bold p-4 rounded-lg shadow-lg">
-                            <h2 className="text-2xl font-semibold">No eres entrenador 😕</h2>
+                            <h2 className="text-2xl font-semibold">
+                                No eres entrenador 😕
+                            </h2>
                             <p className="text-gray-600 text-base mt-2">
-                                Lo sentimos, solo los entrenadores pueden crear blogs. Pero puedes explorar los blogs de nuestros profesionales
-                                para obtener inspiración y consejos útiles, ánimo, el cambio es HOY.
+                                Lo sentimos, solo los entrenadores pueden crear
+                                blogs. Pero puedes explorar los blogs de
+                                nuestros profesionales para obtener inspiración
+                                y consejos útiles, ánimo, el cambio es HOY.
                             </p>
                         </div>
                     )}
