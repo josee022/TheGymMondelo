@@ -112,6 +112,9 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::get('/historial-ejercicios', [DiarioController::class, 'historial'])->name('diario.historial');
     Route::put('/diario/{diario}', [DiarioController::class, 'update'])->name('diario.update');
     Route::delete('/diario/{diario}', [DiarioController::class, 'destroy'])->name('diario.destroy');
+    Route::get('/diario/export/pdf', [DiarioController::class, 'exportarPDF'])->name('diario.export.pdf');
+    Route::get('/diario/export/csv', [DiarioController::class, 'exportarCSV'])->name('diario.export.csv');
+    Route::get('/diario/mensaje-motivacional', [DiarioController::class, 'obtenerMensajeMotivacional'])->name('diario.mensaje.motivacional');
 });
 
 // Grupo de rutas de administración
