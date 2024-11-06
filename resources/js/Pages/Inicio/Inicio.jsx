@@ -15,7 +15,9 @@ export default function Inicio({ auth }) {
     const { blogs } = usePage().props;
 
     // Ordena los blogs de más reciente a más antiguo
-    const sortedBlogs = [...blogs].sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
+    const sortedBlogs = [...blogs].sort(
+        (a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
+    );
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -245,25 +247,28 @@ export default function Inicio({ auth }) {
 
             {/* Contenedor blanco con los posts */}
             <div className="contenedor-blanco">
-                <h1 className="masGrande">⭐ ⭐ ⭐ ⭐ ⭐</h1> <br />
-                <h1 className="masGrande2">
-                    {" "}
-                    <strong> OPINIONES DE NUESTROS CLIENTES </strong>{" "}
-                </h1>{" "}
+            <h1 className="masGrande">💡  💡  💡  💡  💡  💡</h1> <br />
+            <h1 className="masGrande2">
+                    <strong>
+                        {" "}
+                        NOTICIAS Y CONSEJOS DE NUESTROS ENTRENADORES{" "}
+                    </strong>
+                </h1>
                 <br />
                 <h2 className="masGrande">
                     <strong>
-                        {" "}
-                        Únete a miles de personas de nuestra comunidad para
-                        ayudarnos
+                        Descubre las últimas publicaciones de nuestros
+                        entrenadores,
                         <br />
-                        todos poco a poco a mejorar, es importante la relación,
+                        con recomendaciones, consejos prácticos y
+                        actualizaciones.
                         <br />
-                        el buen ambiente, y sobre todo ver consejos y resultados
+                        Nuestro equipo comparte sus conocimientos para ayudarte
                         <br />
-                        de otros clientes ayuda a motivarse y querer conseguir
+                        a mejorar tu rendimiento, cuidar tu salud y alcanzar tus
+                        metas.
                         <br />
-                        ese cuerpo tan soñado y mejorar la salud.{" "}
+                        Únete a nuestra comunidad y mantente informado.
                     </strong>
                 </h2>
                 <ContenedorPost
