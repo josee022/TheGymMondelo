@@ -20,7 +20,6 @@ export default function Index({ auth, entrenadores }) {
             <Head title="Servicios" />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-br from-green-100 to-lime-400 py-8 overflow-hidden">
-                {/* Segundo contenedor */}
                 <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105">
                     {/* Título */}
                     <div className="text-center mb-8">
