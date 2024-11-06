@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import ClasesList from "@/Components/Admin/ClasesList";
 import CrearClase from "@/Components/Admin/CrearClase";
 import Swal from "sweetalert2";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 
 const ClasesGestion = ({ clases, entrenadores }) => {
     const [selectedClase, setSelectedClase] = useState(null);
     const [clasesList, setClasesList] = useState(clases);
+
+    // Accede a los mensajes de flash desde la sesión
+    const { flash } = usePage().props;
+
+    // Muestra un alert con los mensajes de éxito o error si existen en la sesión
+    useEffect(() => {
+        if (flash.error) {
+            Swal.fire("Error", flash.error, "error");
+        }
+        if (flash.success) {
+            Swal.fire("Éxito", flash.success, "success");
+        }
+    }, [flash]);
 
     const handleEdit = (clase) => setSelectedClase(clase);
 
@@ -28,12 +41,16 @@ const ClasesGestion = ({ clases, entrenadores }) => {
                     );
                     setSelectedClase(null); // Limpiar la clase seleccionada después de editar
                 },
-                onError: () => {
-                    Swal.fire(
-                        "Error!",
-                        "Hubo un problema al actualizar la clase.",
-                        "error"
-                    );
+                onError: (errors) => {
+                    if (errors.error) {
+                        Swal.fire("Error", errors.error, "error");
+                    } else {
+                        Swal.fire(
+                            "Error",
+                            "Hubo un problema al procesar la solicitud.",
+                            "error"
+                        );
+                    }
                 },
             });
         } else {
@@ -45,16 +62,19 @@ const ClasesGestion = ({ clases, entrenadores }) => {
                         "La clase ha sido creada exitosamente.",
                         "success"
                     );
-                    // Agregar la nueva clase al estado clasesList
                     const newClase = page.props.newClase || form; // Usa los datos de la clase nueva
                     setClasesList((prevClases) => [...prevClases, newClase]);
                 },
-                onError: () => {
-                    Swal.fire(
-                        "Error!",
-                        "Hubo un problema al crear la clase.",
-                        "error"
-                    );
+                onError: (errors) => {
+                    if (errors.error) {
+                        Swal.fire("Error", errors.error, "error");
+                    } else {
+                        Swal.fire(
+                            "Error",
+                            "Hubo un problema al procesar la solicitud.",
+                            "error"
+                        );
+                    }
                 },
             });
         }

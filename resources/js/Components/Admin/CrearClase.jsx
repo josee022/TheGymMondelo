@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
-    const [form, setForm] = useState({
+    const initialFormState = {
         nombre: "",
         descripcion: "",
         fecha: "",
@@ -10,21 +10,15 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
         hora_fin: "",
         entrenador_id: "",
         capacidad: "",
-    });
+    };
+
+    const [form, setForm] = useState(initialFormState);
 
     useEffect(() => {
         if (selectedClase) {
             setForm(selectedClase);
         } else {
-            setForm({
-                nombre: "",
-                descripcion: "",
-                fecha: "",
-                hora_inicio: "",
-                hora_fin: "",
-                entrenador_id: "",
-                capacidad: "",
-            });
+            setForm(initialFormState);
         }
     }, [selectedClase]);
 
@@ -44,54 +38,31 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
             capacidad,
         } = form;
 
-        // Si estamos creando una nueva clase, verificar que todos los campos estén completos
-        if (!selectedClase) {
-            if (
-                !nombre ||
-                !descripcion ||
-                !fecha ||
-                !hora_inicio ||
-                !hora_fin ||
-                !entrenador_id ||
-                !capacidad
-            ) {
-                Swal.fire(
-                    "Error",
-                    "Todos los campos deben estar completos para crear una clase.",
-                    "error"
-                );
-                return false;
-            }
+        if (
+            !nombre ||
+            !descripcion ||
+            !fecha ||
+            !hora_inicio ||
+            !hora_fin ||
+            !entrenador_id ||
+            !capacidad
+        ) {
+            Swal.fire(
+                "Error",
+                "Todos los campos deben estar completos para crear una clase.",
+                "error"
+            );
+            return false;
+        }
 
-            // Validar que la fecha sea futura
-            const selectedDate = new Date(fecha);
-            const currentDate = new Date();
-            currentDate.setHours(0, 0, 0, 0);
+        // Validar que la fecha sea futura
+        const selectedDate = new Date(fecha);
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
 
-            if (selectedDate <= currentDate) {
-                Swal.fire(
-                    "Error",
-                    "La fecha debe ser una fecha futura.",
-                    "error"
-                );
-                return false;
-            }
-        } else {
-            // Para editar, solo verificar la fecha si se ha cambiado y es futura
-            if (fecha) {
-                const selectedDate = new Date(fecha);
-                const currentDate = new Date();
-                currentDate.setHours(0, 0, 0, 0);
-
-                if (selectedDate <= currentDate) {
-                    Swal.fire(
-                        "Error",
-                        "La fecha debe ser una fecha futura.",
-                        "error"
-                    );
-                    return false;
-                }
-            }
+        if (selectedDate <= currentDate) {
+            Swal.fire("Error", "La fecha debe ser una fecha futura.", "error");
+            return false;
         }
 
         return true;
@@ -100,10 +71,13 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Validar el formulario antes de enviar
         if (validateForm()) {
             onSubmit(form);
         }
+    };
+
+    const resetForm = () => {
+        setForm(initialFormState);
     };
 
     return (
@@ -208,12 +182,21 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
                         min="1"
                     />
                 </div>
-                <button
-                    type="submit"
-                    className="w-full bg-lime-500 hover:bg-lime-600 text-white font-semibold py-2 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-lime-300"
-                >
-                    {selectedClase ? "Actualizar Clase" : "Crear Clase"}
-                </button>
+                <div className="flex justify-between gap-3">
+                    <button
+                        type="submit"
+                        className="w-full bg-lime-500 hover:bg-lime-600 text-white font-semibold py-2 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-lime-300"
+                    >
+                        {selectedClase ? "Actualizar Clase" : "Crear Clase"}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={resetForm}
+                        className="w-full bg-red-400 hover:bg-red-500 text-white font-semibold py-2 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    >
+                        Vaciar
+                    </button>
+                </div>
             </form>
         </div>
     );
