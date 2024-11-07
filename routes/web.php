@@ -8,6 +8,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ClasesAdminController;
 use App\Http\Controllers\ComentarioForoController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiarioController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
@@ -95,6 +96,7 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::get('/contacto', function () {
         return Inertia::render('Contacto/Index');
     })->name('contacto');
+    Route::post('/api/contacto', [ContactoController::class, 'store']);
 
     // Rutas para la tienda
     Route::resource('tienda', ProductoController::class);
