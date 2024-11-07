@@ -1,18 +1,21 @@
-import React from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import Footer from '@/Components/Footer';
-import ListaClases from '@/Components/Clases/ListaClases';
-import Beneficios from '@/Components/Clases/Beneficios';
-import Testimonios from '@/Components/Clases/Testimonios';
-import MensajeFinal from '@/Components/Clases/MensajeFinal';
+import React from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import Footer from "@/Components/Footer";
+import ListaClases from "@/Components/Clases/ListaClases";
+import Beneficios from "@/Components/Clases/Beneficios";
+import Testimonios from "@/Components/Clases/Testimonios";
+import MensajeFinal from "@/Components/Clases/MensajeFinal";
 
 export default function Index({ clases, user }) {
-
     return (
         <AuthenticatedLayout
             user={user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Nuestras Distintas Clases 🏋️‍♂️:</h2>}
+            header={
+                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
+                    Nuestras Distintas Clases 🏋️‍♂️
+                </h2>
+            }
         >
             <Head title="Clases Disponibles" />
 

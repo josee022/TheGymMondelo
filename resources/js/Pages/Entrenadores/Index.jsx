@@ -13,20 +13,40 @@ export default function Index({ auth, entrenadores }) {
             user={auth.user}
             header={
                 <h2 className="text-3xl font-extrabold text-center text-green-600 mt-4">
-                    🛠️ Nuestros Servicios 🛠️
+                    🛠️ Nuestros Entrenadores 🛠️
                 </h2>
             }
         >
-            <Head title="Servicios" />
+            <Head title="Entrenadores" />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-br from-green-100 to-lime-400 py-8 overflow-hidden">
-                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105">
-                    {/* Título */}
+                {/* Contenedor principal de tarjetas de entrenadores */}
+                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105 mt-6">
+                    <div className="text-center mb-6">
+                        <h1 className="text-5xl font-extrabold text-gray-900 tracking-widest relative">
+                            <span className="relative inline-block">
+                                <span className="absolute inset-x-0 bottom-0 h-2 bg-lime-400"></span>
+                                <span className="relative">
+                                    Entrenadores Personalizados para Ti
+                                </span>
+                            </span>
+                        </h1>
+                    </div>
+
+                    {/* Sección de entrenadores */}
+                    <SeccionTarjetas entrenadores={entrenadores} />
+
+                    {/* Sección de contacto */}
+                    <SeccionContacto />
+                </div>
+
+                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105 mt-10">
+                    {/* Título de las secciones adicionales */}
                     <div className="text-center mb-8">
                         <h1 className="text-5xl font-extrabold text-gray-900 mb-4 animate-bounce">
                             <span className="relative inline-block">
                                 <span className="absolute inset-x-0 bottom-0 h-2 bg-green-400"></span>
-                                Descubre Nuestros Servicios 🏆
+                                Descubre Nuestros Servicios Adicionales 🏆
                             </span>
                         </h1>
                         <p className="text-xl text-gray-600 font-semibold">
@@ -64,32 +84,13 @@ export default function Index({ auth, entrenadores }) {
                         />
                     </div>
 
-                    {/* Contenedor suscripcion */}
+                    {/* Contenedor suscripción */}
                     <SeccionSuscripcion />
                 </div>
 
+                {/* Efectos de fondo */}
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-lime-300 to-transparent opacity-50 pointer-events-none animate-pulse"></div>
                 <div className="absolute bottom-0 right-0 w-full h-full bg-gradient-to-r from-transparent via-lime-300 to-transparent opacity-50 pointer-events-none animate-bounce"></div>
-
-                {/* Contenedor principal */}
-                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105 mt-6">
-                    <div className="text-center mb-6">
-                        <h1 className="text-5xl font-extrabold text-gray-900 tracking-widest relative">
-                            <span className="relative inline-block">
-                                <span className="absolute inset-x-0 bottom-0 h-2 bg-lime-400"></span>
-                                <span className="relative">
-                                    Servicios Personalizados para Ti
-                                </span>
-                            </span>
-                        </h1>
-                    </div>
-
-                    {/* Sección de entrenadores */}
-                    <SeccionTarjetas entrenadores={entrenadores} />
-
-                    {/* Sección de contacto */}
-                    <SeccionContacto />
-                </div>
             </div>
 
             <Footer />
