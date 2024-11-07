@@ -20,9 +20,13 @@ class Contacto extends Model
         'mensaje',
     ];
 
-    // Relación con el modelo User
     public function usuario()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function respuestas()
+    {
+        return $this->hasMany(RespuestaContacto::class);
     }
 }

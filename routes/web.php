@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminContactoController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminProductoController;
+use App\Http\Controllers\AdminRespuestaContactoController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
@@ -176,6 +177,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Rutas para gestionar mensajes de contacto por el admin
     Route::get('/admin/contactos', [AdminContactoController::class, 'index'])->name('admin.contactos.index');
+    Route::get('/admin/contactos/{contacto}/responder', [AdminRespuestaContactoController::class, 'create'])->name('admin.respuestas.create');
+    Route::post('/admin/contactos/{contacto}/responder', [AdminRespuestaContactoController::class, 'store'])->name('admin.respuestas.store');
 });
 
 // Ruta para usuarios suspendidos

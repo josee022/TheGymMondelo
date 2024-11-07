@@ -1,7 +1,6 @@
-// resources/js/Components/Contactos/TablaContactos.jsx
+// resources/js/Components/Admin/TablaContactos.jsx
 
 import React from "react";
-import FilaContacto from "./FilaContacto";
 
 export default function TablaContactos({ contactos }) {
     return (
@@ -9,31 +8,44 @@ export default function TablaContactos({ contactos }) {
             <table className="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
                 <thead className="bg-gradient-to-r from-lime-400 to-green-500 text-white">
                     <tr>
-                        <th className="px-6 py-3 font-semibold text-center">
-                            ID
+                        <th className="px-6 py-3 font-semibold text-left w-1/3">
+                            Email
                         </th>
-                        <th className="px-6 py-3 font-semibold">Nombre</th>
-                        <th className="px-6 py-3 font-semibold">Email</th>
-                        <th className="px-6 py-3 font-semibold">Asunto</th>
-                        <th className="px-6 py-3 font-semibold">Teléfono</th>
-                        <th className="px-6 py-3 font-semibold">Mensaje</th>
-                        <th className="px-6 py-3 font-semibold text-center">
-                            Fecha
+                        <th className="px-6 py-3 font-semibold text-left w-1/3">
+                            Asunto
+                        </th>
+                        <th className="px-6 py-3 font-semibold text-center w-1/3">
+                            Acciones
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     {contactos.data.length > 0 ? (
                         contactos.data.map((contacto) => (
-                            <FilaContacto
+                            <tr
                                 key={contacto.id}
-                                contacto={contacto}
-                            />
+                                className="hover:bg-gray-100 transition-colors"
+                            >
+                                <td className="px-4 py-3 border-b text-gray-600 text-left">
+                                    {contacto.email}
+                                </td>
+                                <td className="px-4 py-3 border-b text-gray-800 text-left">
+                                    {contacto.asunto || "N/A"}
+                                </td>
+                                <td className="px-4 py-3 border-b text-center">
+                                    <a
+                                        href={`/admin/contactos/${contacto.id}/responder`}
+                                        className="text-blue-500 hover:text-blue-700 font-semibold"
+                                    >
+                                        Responder
+                                    </a>
+                                </td>
+                            </tr>
                         ))
                     ) : (
                         <tr>
                             <td
-                                colSpan="7"
+                                colSpan="3"
                                 className="text-center px-4 py-6 text-gray-600"
                             >
                                 No hay contactos registrados.

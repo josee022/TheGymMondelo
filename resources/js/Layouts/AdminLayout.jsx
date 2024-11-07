@@ -66,7 +66,7 @@ export default function AdminLayout({ children }) {
                             href="/admin/contactos"
                             className="block text-xl hover:text-blue-400"
                         >
-                            Gestión de Contactos
+                            Mensajes de Contactos
                         </Link>
                         <Link
                             href="/admin/reportes"
