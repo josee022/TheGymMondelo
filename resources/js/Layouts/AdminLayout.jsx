@@ -14,7 +14,6 @@ export default function AdminLayout({ children }) {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            {" "}
             <aside className="w-1/5 bg-gray-900 text-white p-6 flex flex-col justify-between">
                 <div>
                     <div className="flex flex-col items-center mb-8">
@@ -64,6 +63,12 @@ export default function AdminLayout({ children }) {
                             Gestión de Productos
                         </Link>
                         <Link
+                            href="/admin/contactos"
+                            className="block text-xl hover:text-blue-400"
+                        >
+                            Gestión de Contactos
+                        </Link>
+                        <Link
                             href="/admin/reportes"
                             className="block text-xl hover:text-blue-400"
                         >
@@ -85,7 +90,6 @@ export default function AdminLayout({ children }) {
                     Cerrar sesión
                 </button>
             </aside>
-            {/* Contenedor Principal ajustado para ocupar toda la pantalla */}
             <div className="flex-1 p-6 bg-white rounded-lg shadow-md mx-6 my-4 h-[calc(100vh-3rem)] overflow-auto">
                 {children}
             </div>

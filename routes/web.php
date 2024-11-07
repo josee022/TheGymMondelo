@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminContactoController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminProductoController;
 use App\Http\Controllers\AdminUserController;
@@ -172,6 +173,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/programas', [ProgramasAdminController::class, 'store'])->name('admin.programas.store');
     Route::put('/admin/programas/{id}', [ProgramasAdminController::class, 'update'])->name('admin.programas.update');
     Route::delete('/admin/programas/{id}', [ProgramasAdminController::class, 'destroy'])->name('admin.programas.destroy');
+
+    // Rutas para gestionar mensajes de contacto por el admin
+    Route::get('/admin/contactos', [AdminContactoController::class, 'index'])->name('admin.contactos.index');
 });
 
 // Ruta para usuarios suspendidos
