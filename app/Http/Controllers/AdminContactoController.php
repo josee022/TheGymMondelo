@@ -9,11 +9,10 @@ use Inertia\Inertia;
 
 class AdminContactoController extends Controller
 {
-
     public function index()
     {
-        $contactosNoContestados = Contacto::where('estado', 'NoContestado')->paginate(3);
-        $contactosContestados = Contacto::where('estado', 'Contestado')->paginate(3);
+        $contactosNoContestados = Contacto::where('estado', 'NoContestado')->paginate(3, ['*'], 'noContestadosPage');
+        $contactosContestados = Contacto::where('estado', 'Contestado')->paginate(3, ['*'], 'contestadosPage');
 
         return Inertia::render('Admin/ContactosIndex', [
             'contactosNoContestados' => $contactosNoContestados,
@@ -30,5 +29,17 @@ class AdminContactoController extends Controller
             'contacto' => $contacto,
             'respuesta' => $respuesta,
         ]);
+    }
+
+    public function getNoContestados(Request $request)
+    {
+        $contactosNoContestados = Contacto::where('estado', 'NoContestado')->paginate(3, ['*'], 'noContestadosPage');
+        return response()->json($contactosNoContestados);
+    }
+
+    public function getContestados(Request $request)
+    {
+        $contactosContestados = Contacto::where('estado', 'Contestado')->paginate(3, ['*'], 'contestadosPage');
+        return response()->json($contactosContestados);
     }
 }

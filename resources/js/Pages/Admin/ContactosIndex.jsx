@@ -1,15 +1,29 @@
-// resources/js/Pages/Admin/ContactosIndex.jsx
-
-import React from "react";
+import React, { useEffect } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import Pagination from "@/Components/Pagination";
 import TablaContactosNoContestados from "@/Components/Admin/TablaContactosNoContestados";
 import TablaContactosContestados from "@/Components/Admin/TablaContactosContestados";
+import { usePage } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 export default function ContactosIndex({
     contactosNoContestados,
     contactosContestados,
 }) {
+    const { flash } = usePage().props; // Accede a los mensajes flash
+
+    // Mostrar SweetAlert si hay un mensaje de éxito
+    useEffect(() => {
+        if (flash.success) {
+            Swal.fire({
+                icon: "success",
+                title: "Éxito",
+                text: flash.success,
+                confirmButtonColor: "#3085d6",
+            });
+        }
+    }, [flash.success]);
+
     return (
         <AdminLayout>
             <div className="max-w-7xl mx-auto p-4 bg-gray-50 rounded-lg shadow-md">
@@ -25,24 +39,32 @@ export default function ContactosIndex({
                 </div>
 
                 {/* Tabla de Mensajes No Contestados */}
-                <TablaContactosNoContestados
-                    contactos={contactosNoContestados}
-                />
-                {/* Paginación para No Contestados */}
-                <div className="mt-6">
-                    <Pagination links={contactosNoContestados.links} />
-                </div>
+                {contactosNoContestados && contactosNoContestados.data && (
+                    <>
+                        <TablaContactosNoContestados
+                            contactos={contactosNoContestados}
+                        />
+                        <div className="mt-6">
+                            <Pagination links={contactosNoContestados.links} />
+                        </div>
+                    </>
+                )}
 
                 <br />
                 <br />
                 <br />
 
                 {/* Tabla de Mensajes Contestados */}
-                <TablaContactosContestados contactos={contactosContestados} />
-                {/* Paginación para Contestados */}
-                <div className="mt-6">
-                    <Pagination links={contactosContestados.links} />
-                </div>
+                {contactosContestados && contactosContestados.data && (
+                    <>
+                        <TablaContactosContestados
+                            contactos={contactosContestados}
+                        />
+                        <div className="mt-6">
+                            <Pagination links={contactosContestados.links} />
+                        </div>
+                    </>
+                )}
             </div>
         </AdminLayout>
     );

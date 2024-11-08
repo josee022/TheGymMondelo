@@ -21,7 +21,9 @@ export default function TablaContactosNoContestados({ contactos }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {contactos.data.length > 0 ? (
+                    {contactos &&
+                    contactos.data &&
+                    contactos.data.length > 0 ? (
                         contactos.data.map((contacto) => (
                             <tr
                                 key={contacto.id}

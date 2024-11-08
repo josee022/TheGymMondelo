@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RespuestaContactoMailable;
 use App\Models\Contacto;
 use App\Models\RespuestaContacto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AdminRespuestaContactoController extends Controller
 {
@@ -20,8 +22,8 @@ class AdminRespuestaContactoController extends Controller
             'respuesta' => 'required|string|max:1000',
         ]);
 
-        // Crear respuesta
-        RespuestaContacto::create([
+        // Crear respuesta en la base de datos
+        $respuesta = RespuestaContacto::create([
             'contacto_id' => $id,
             'respuesta' => $request->input('respuesta'),
         ]);
@@ -31,6 +33,10 @@ class AdminRespuestaContactoController extends Controller
         $contacto->estado = 'Contestado';
         $contacto->save();
 
-        return redirect()->route('admin.contactos.index')->with('success', 'Respuesta enviada correctamente.');
+        // Enviar el correo
+        Mail::to($contacto->email)->send(new RespuestaContactoMailable($contacto, $respuesta));
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('admin.contactos.index')->with('success', 'Respuesta enviada correctamente y correo enviado al usuario.');
     }
 }

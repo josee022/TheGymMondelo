@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
 export default function ResponderContacto({ contacto }) {
+    const { flash } = usePage().props; // Captura los mensajes flash
     const { data, setData, post, processing, reset } = useForm({
         respuesta: "",
     });
@@ -13,12 +14,6 @@ export default function ResponderContacto({ contacto }) {
         post(route("admin.respuestas.store", contacto.id), {
             onSuccess: () => {
                 reset("respuesta");
-                Swal.fire({
-                    icon: "success",
-                    title: "Respuesta enviada",
-                    text: "El mensaje ha sido respondido exitosamente.",
-                    confirmButtonColor: "#3085d6",
-                });
             },
         });
     };
@@ -26,6 +21,20 @@ export default function ResponderContacto({ contacto }) {
     const handleBack = () => {
         window.history.back();
     };
+
+    // Mostrar SweetAlert si hay un mensaje de éxito
+    useEffect(() => {
+        if (flash.success) {
+            Swal.fire({
+                icon: "success",
+                title: "Respuesta enviada",
+                text: flash.success,
+                confirmButtonColor: "#3085d6",
+            }).then(() => {
+                window.location.href = route("admin.contactos.index"); // Redirige después de cerrar el SweetAlert
+            });
+        }
+    }, [flash.success]);
 
     return (
         <AdminLayout>
