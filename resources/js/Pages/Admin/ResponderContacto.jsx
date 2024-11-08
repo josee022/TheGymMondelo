@@ -36,15 +36,20 @@ export default function ResponderContacto({ contacto }) {
 
                 {/* Contenedor del mensaje original */}
                 <div className="bg-gradient-to-br from-gray-100 to-gray-50 p-6 rounded-lg mb-8 shadow-md border-l-4 border-lime-400">
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-4">Detalles del Contacto</h3>
+                    <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                        Detalles del Contacto
+                    </h3>
                     <p className="text-lg text-gray-700 mb-2">
-                        <strong className="text-gray-800">Nombre:</strong> {contacto.nombre}
+                        <strong className="text-gray-800">Nombre:</strong>{" "}
+                        {contacto.nombre}
                     </p>
                     <p className="text-lg text-gray-700 mb-2">
-                        <strong className="text-gray-800">Email:</strong> {contacto.email}
+                        <strong className="text-gray-800">Email:</strong>{" "}
+                        {contacto.email}
                     </p>
                     <p className="text-lg text-gray-700 mb-2">
-                        <strong className="text-gray-800">Asunto:</strong> {contacto.asunto || "Sin asunto"}
+                        <strong className="text-gray-800">Asunto:</strong>{" "}
+                        {contacto.asunto || "Sin asunto"}
                     </p>
                     <div className="text-lg text-gray-700 mt-4 whitespace-pre-wrap break-words leading-relaxed max-w-full">
                         <strong className="text-gray-800">Mensaje:</strong>
@@ -63,7 +68,9 @@ export default function ResponderContacto({ contacto }) {
                         <textarea
                             name="respuesta"
                             value={data.respuesta}
-                            onChange={(e) => setData("respuesta", e.target.value)}
+                            onChange={(e) =>
+                                setData("respuesta", e.target.value)
+                            }
                             rows="5"
                             className="w-full border-2 border-lime-400 rounded-lg p-4 text-gray-700 shadow-sm focus:ring-2 focus:ring-lime-500 focus:outline-none resize-none"
                             required

@@ -1,20 +1,21 @@
-// resources/js/Components/Admin/TablaContactos.jsx
-
 import React from "react";
 
-export default function TablaContactos({ contactos }) {
+export default function TablaContactosNoContestados({ contactos }) {
     return (
-        <div className="overflow-x-auto shadow-lg rounded-lg">
+        <div className="overflow-x-auto shadow-lg rounded-lg mb-10">
+            <h2 className="text-2xl font-semibold text-center text-lime-500 mb-4">
+                Mensajes No Contestados
+            </h2>
             <table className="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
                 <thead className="bg-gradient-to-r from-lime-400 to-green-500 text-white">
                     <tr>
-                        <th className="px-6 py-3 font-semibold text-left w-1/3">
+                        <th className="px-6 py-3 font-semibold text-left">
                             Email
                         </th>
-                        <th className="px-6 py-3 font-semibold text-left w-1/3">
+                        <th className="px-6 py-3 font-semibold text-left">
                             Asunto
                         </th>
-                        <th className="px-6 py-3 font-semibold text-center w-1/3">
+                        <th className="px-6 py-3 font-semibold text-center">
                             Acciones
                         </th>
                     </tr>

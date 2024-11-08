@@ -1,9 +1,15 @@
+// resources/js/Pages/Admin/ContactosIndex.jsx
+
 import React from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import Pagination from "@/Components/Pagination";
-import TablaContactos from "@/Components/Admin/TablaContactos";
+import TablaContactosNoContestados from "@/Components/Admin/TablaContactosNoContestados";
+import TablaContactosContestados from "@/Components/Admin/TablaContactosContestados";
 
-export default function ContactosIndex({ contactos }) {
+export default function ContactosIndex({
+    contactosNoContestados,
+    contactosContestados,
+}) {
     return (
         <AdminLayout>
             <div className="max-w-7xl mx-auto p-4 bg-gray-50 rounded-lg shadow-md">
@@ -16,10 +22,26 @@ export default function ContactosIndex({ contactos }) {
                             </span>
                         </span>
                     </h1>
-                </div>{" "}
-                <TablaContactos contactos={contactos} />
+                </div>
+
+                {/* Tabla de Mensajes No Contestados */}
+                <TablaContactosNoContestados
+                    contactos={contactosNoContestados}
+                />
+                {/* Paginación para No Contestados */}
                 <div className="mt-6">
-                    <Pagination links={contactos.links} />
+                    <Pagination links={contactosNoContestados.links} />
+                </div>
+
+                <br />
+                <br />
+                <br />
+
+                {/* Tabla de Mensajes Contestados */}
+                <TablaContactosContestados contactos={contactosContestados} />
+                {/* Paginación para Contestados */}
+                <div className="mt-6">
+                    <Pagination links={contactosContestados.links} />
                 </div>
             </div>
         </AdminLayout>

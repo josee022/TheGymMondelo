@@ -179,6 +179,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/contactos', [AdminContactoController::class, 'index'])->name('admin.contactos.index');
     Route::get('/admin/contactos/{contacto}/responder', [AdminRespuestaContactoController::class, 'create'])->name('admin.respuestas.create');
     Route::post('/admin/contactos/{contacto}/responder', [AdminRespuestaContactoController::class, 'store'])->name('admin.respuestas.store');
+    Route::get('/admin/contactos/{id}/ver-respuesta', [AdminContactoController::class, 'verRespuesta'])->name('admin.contactos.ver-respuesta');
 });
 
 // Ruta para usuarios suspendidos
