@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage } from '@inertiajs/react';
-import Footer from '@/Components/Footer';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import ProgHeader from '@/Components/Programas/ProgHeader';
-import ProgTips from '@/Components/Programas/ProgTips';
-import ProgLista from '@/Components/Programas/ProgLista';
-import ProgIconos from '@/Components/Programas/ProgIconos';
-import ProgBeneficios from '@/Components/Programas/ProgBeneficios';
+import React, { useEffect } from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, usePage } from "@inertiajs/react";
+import Footer from "@/Components/Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ProgHeader from "@/Components/Programas/ProgHeader";
+import ProgTips from "@/Components/Programas/ProgTips";
+import ProgLista from "@/Components/Programas/ProgLista";
+import ProgIconos from "@/Components/Programas/ProgIconos";
+import ProgBeneficios from "@/Components/Programas/ProgBeneficios";
 
 export default function Programas({ auth, programas }) {
     const { flash } = usePage().props; // Acceder a los mensajes flash desde el backend
@@ -24,14 +24,13 @@ export default function Programas({ auth, programas }) {
     }, [flash]);
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-black-100 leading-tight">Programas de Entrenamiento :</h2>}>
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Programas de Entrenamiento" />
 
             <ToastContainer />
 
             <div className="py-12 bg-gradient-to-b from-black via-green-800 to-lime-600 text-white">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
                     {/* Encabezado de Programas */}
                     <ProgHeader />
 
@@ -46,7 +45,6 @@ export default function Programas({ auth, programas }) {
 
                     {/* Beneficios y Exclusividades */}
                     <ProgBeneficios />
-
                 </div>
             </div>
 

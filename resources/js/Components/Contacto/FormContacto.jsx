@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 export default function FormularioContacto() {
     const [formData, setFormData] = useState({
         nombre: "",
         email: "",
+        asunto: "",
+        telefono: "",
         mensaje: "",
     });
 
@@ -17,13 +21,53 @@ export default function FormularioContacto() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            toast.success(
-                "Mensaje enviado correctamente. Nos pondremos en contacto contigo pronto."
+
+        // Validaciones
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Para verificar el formato del email
+        const telefonoRegex = /^\d{9}$/; // Para verificar 9 dígitos exactos en el número de teléfono
+
+        if (!formData.nombre) {
+            return toast.error("El campo 'Nombre' es obligatorio.");
+        }
+
+        if (!emailRegex.test(formData.email)) {
+            return toast.error(
+                "Por favor, introduce un email válido (ej: jose@jose.com)."
             );
+        }
+
+        if (!formData.asunto) {
+            return toast.error("El campo 'Asunto' es obligatorio.");
+        }
+
+        if (formData.mensaje.length > 200) {
+            return toast.error(
+                "El mensaje no puede exceder los 200 caracteres."
+            );
+        }
+
+        if (!telefonoRegex.test(formData.telefono)) {
+            return toast.error(
+                "El número de teléfono debe contener exactamente 9 dígitos."
+            );
+        }
+
+        try {
+            await axios.post("/api/contacto", formData); // Enviar los datos a la API
+
+            toast.success(
+                "Mensaje enviado con éxito. ¡Gracias por contactarnos!"
+            );
+            setFormData({
+                nombre: "",
+                email: "",
+                asunto: "",
+                telefono: "",
+                mensaje: "",
+            });
         } catch (error) {
             toast.error(
-                "Hubo un problema al enviar tu mensaje. Inténtalo de nuevo más tarde."
+                "Hubo un problema al enviar tu mensaje. Inténtalo de nuevo."
             );
         }
     };
@@ -66,6 +110,36 @@ export default function FormularioContacto() {
 
                 <div>
                     <label className="block text-sm font-medium text-white">
+                        Asunto
+                    </label>
+                    <input
+                        type="text"
+                        name="asunto"
+                        placeholder="Asunto del mensaje"
+                        value={formData.asunto}
+                        onChange={handleChange}
+                        className="mt-1 p-3 block w-full rounded-lg bg-gray-700 text-white shadow-sm focus:ring-lime-500 focus:border-lime-500"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-white">
+                        Teléfono
+                    </label>
+                    <input
+                        type="text"
+                        name="telefono"
+                        placeholder="Número de Teléfono"
+                        value={formData.telefono}
+                        onChange={handleChange}
+                        className="mt-1 p-3 block w-full rounded-lg bg-gray-700 text-white shadow-sm focus:ring-lime-500 focus:border-lime-500"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-white">
                         Mensaje
                     </label>
                     <textarea
@@ -75,6 +149,7 @@ export default function FormularioContacto() {
                         onChange={handleChange}
                         className="mt-1 p-3 block w-full rounded-lg bg-gray-700 text-white shadow-sm focus:ring-lime-500 focus:border-lime-500"
                         rows="5"
+                        maxLength="200" // Limita a 200 caracteres
                         required
                     ></textarea>
                 </div>
@@ -88,6 +163,9 @@ export default function FormularioContacto() {
                     </button>
                 </div>
             </form>
+
+            {/* Contenedor de Toast */}
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 }

@@ -121,15 +121,9 @@ export default function Usuarios({ usuarios }) {
                             <td className="py-3 px-4 flex space-x-2">
                                 <Link
                                     href={`/admin/usuarios/${usuario.id}`}
-                                    className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700"
+                                    className="bg-lime-500 text-white py-1 px-3 rounded hover:bg-lime-700"
                                 >
                                     Ver Perfil
-                                </Link>
-                                <Link
-                                    href={`/admin/usuarios/${usuario.id}/edit`}
-                                    className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-700"
-                                >
-                                    Editar
                                 </Link>
                                 <button
                                     onClick={() =>

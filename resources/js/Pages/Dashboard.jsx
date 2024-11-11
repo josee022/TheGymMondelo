@@ -239,10 +239,10 @@ export default function Dashboard({
         <AuthenticatedLayout
             user={user} // Pasa el usuario al layout autenticado
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Panel de control del usuario :
+                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
+                    Panel de Control del Usuario 🔒
                 </h2>
-            } // Encabezado del panel de control
+            }
         >
             <Head title="Panel de control" />{" "}
             {/* Establece el título de la página */}

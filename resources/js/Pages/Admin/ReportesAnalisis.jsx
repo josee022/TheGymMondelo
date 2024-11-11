@@ -3,7 +3,13 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import IngresosChart from "@/Components/Admin/IngresosChart";
 import PedidosRecientes from "@/Components/Admin/PedidosRecientes";
 
-export default function ReportesAnalisis({ pedidos, estados, filtroEstado }) {
+export default function ReportesAnalisis({
+    pedidos,
+    estados,
+    filtroEstado,
+    usuarios,
+    filtroUsuario,
+}) {
     return (
         <AdminLayout>
             <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
@@ -29,10 +35,14 @@ export default function ReportesAnalisis({ pedidos, estados, filtroEstado }) {
             <PedidosRecientes
                 pedidos={pedidos}
                 estados={estados}
+                usuarios={usuarios} 
                 filtroEstado={filtroEstado}
+                filtroUsuario={filtroUsuario}
             />
 
-            <br /><br /><br />
+            <br />
+            <br />
+            <br />
 
             <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
                 <h2 className="text-4xl font-extrabold text-gray-800 tracking-wide relative text-center">

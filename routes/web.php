@@ -1,13 +1,16 @@
 <?php
 
+use App\Http\Controllers\AdminContactoController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminProductoController;
+use App\Http\Controllers\AdminRespuestaContactoController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ClasesAdminController;
 use App\Http\Controllers\ComentarioForoController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiarioController;
 use App\Http\Controllers\DietaController;
 use App\Http\Controllers\EntrenadorController;
@@ -95,6 +98,7 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::get('/contacto', function () {
         return Inertia::render('Contacto/Index');
     })->name('contacto');
+    Route::post('/api/contacto', [ContactoController::class, 'store']);
 
     // Rutas para la tienda
     Route::resource('tienda', ProductoController::class);
@@ -170,6 +174,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/programas', [ProgramasAdminController::class, 'store'])->name('admin.programas.store');
     Route::put('/admin/programas/{id}', [ProgramasAdminController::class, 'update'])->name('admin.programas.update');
     Route::delete('/admin/programas/{id}', [ProgramasAdminController::class, 'destroy'])->name('admin.programas.destroy');
+
+    // Rutas para gestionar mensajes de contacto por el admin
+    Route::get('/admin/contactos', [AdminContactoController::class, 'index'])->name('admin.contactos.index');
+    Route::get('/admin/contactos/{contacto}/responder', [AdminRespuestaContactoController::class, 'create'])->name('admin.respuestas.create');
+    Route::post('/admin/contactos/{contacto}/responder', [AdminRespuestaContactoController::class, 'store'])->name('admin.respuestas.store');
+    Route::get('/admin/contactos/{id}/ver-respuesta', [AdminContactoController::class, 'verRespuesta'])->name('admin.contactos.ver-respuesta');
+    Route::get('/admin/contactos/no-contestados', [AdminContactoController::class, 'getNoContestados'])->name('admin.contactos.no-contestados');
+    Route::get('/admin/contactos/contestados', [AdminContactoController::class, 'getContestados'])->name('admin.contactos.contestados');
 });
 
 // Ruta para usuarios suspendidos

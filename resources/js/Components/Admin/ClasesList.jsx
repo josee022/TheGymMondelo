@@ -30,52 +30,54 @@ const ClasesList = ({ clases, onEdit, handleDelete }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <ul className="space-y-2">
-                {filteredClases.map((clase) => (
-                    <li
-                        key={clase.id}
-                        className="flex items-center justify-between bg-gray-100 rounded-lg p-2 shadow-sm"
-                    >
-                        <div>
-                            <p className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                📅 {clase.nombre}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                                {clase.fecha} |{" "}
-                                {formatTimeWithSeconds(clase.hora_inicio)} -{" "}
-                                {formatTimeWithSeconds(clase.hora_fin)}
-                            </p>
-                        </div>
-                        <div className="flex gap-1">
-                            <button
-                                className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition text-sm"
-                                onClick={() => onEdit(clase)}
-                            >
-                                ✏️ Editar
-                            </button>
-                            <button
-                                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm"
-                                onClick={() => {
-                                    Swal.fire({
-                                        title: "¿Estás seguro?",
-                                        text: "Esta acción eliminará la clase.",
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#3085d6",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "Sí, eliminar",
-                                        cancelButtonText: "Cancelar",
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            handleDelete(clase.id);
-                                        }
-                                    });
-                                }}
-                            >
-                                🗑️ Eliminar
-                            </button>
-                        </div>
-                    </li>
-                ))}
+                {filteredClases.map((clase) =>
+                    clase.id ? (
+                        <li
+                            key={clase.id}
+                            className="flex items-center justify-between bg-gray-100 rounded-lg p-2 shadow-sm"
+                        >
+                            <div>
+                                <p className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                    📅 {clase.nombre}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                    {clase.fecha} |{" "}
+                                    {formatTimeWithSeconds(clase.hora_inicio)} -{" "}
+                                    {formatTimeWithSeconds(clase.hora_fin)}
+                                </p>
+                            </div>
+                            <div className="flex gap-1">
+                                <button
+                                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition text-sm"
+                                    onClick={() => onEdit(clase)}
+                                >
+                                    ✏️ Editar
+                                </button>
+                                <button
+                                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm"
+                                    onClick={() => {
+                                        Swal.fire({
+                                            title: "¿Estás seguro?",
+                                            text: "Esta acción eliminará la clase.",
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#3085d6",
+                                            cancelButtonColor: "#d33",
+                                            confirmButtonText: "Sí, eliminar",
+                                            cancelButtonText: "Cancelar",
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                handleDelete(clase.id);
+                                            }
+                                        });
+                                    }}
+                                >
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        </li>
+                    ) : null
+                )}
             </ul>
         </div>
     );

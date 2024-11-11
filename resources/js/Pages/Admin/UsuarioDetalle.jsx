@@ -97,6 +97,12 @@ export default function UsuarioDetalle({ usuario }) {
                     </p>
                 </div>
             </div>
+            <Link
+                href={`/admin/usuarios/${usuario.id}/edit`}
+                className="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-700 text-lg w-full"
+            >
+                Editar
+            </Link>
         </AdminLayout>
     );
 }

@@ -10,12 +10,11 @@ import { Head } from "@inertiajs/react";
 
 export default function Contacto({ auth }) {
     return (
-
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-black-100 leading-tight">
-                    Contacto cliente/empresa :
+                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
+                    Contacto Cliente/Empresa 📞
                 </h2>
             }
         >
