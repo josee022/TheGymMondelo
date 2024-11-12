@@ -21,7 +21,7 @@ class ClaseController extends Controller
         // Obtiene las clases futuras, ordenadas por fecha
         $clases = Clase::where('fecha', '>', now()->toDateString())
             ->orderBy('fecha')
-            ->get();
+            ->paginate(6);
 
         // Renderiza la vista 'Clases/Index' con las clases futuras y el usuario autenticado
         return Inertia::render('Clases/Index', [
