@@ -39,15 +39,21 @@ export default function Contacto({ auth }) {
                 <div className="w-full max-w-6xl mb-12 flex flex-col items-center">
                     <Mapa />
                     <motion.div
-                        className="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-4xl mb-8"
+                        className="bg-gray-800 p-8 rounded-lg shadow-xl w-full mt-8"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
                     >
                         <Acordeon />
                     </motion.div>
-                    <br />
-                    <Chatbot />
+                    <motion.div
+                        className="bg-gray-800 p-8 rounded-lg shadow-xl w-full mt-8"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Chatbot />
+                    </motion.div>
                 </div>
             </motion.div>
 

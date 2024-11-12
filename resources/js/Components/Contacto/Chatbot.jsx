@@ -35,9 +35,9 @@ const Chatbot = () => {
     const clearChat = () => setMessages([]); // Función para limpiar el chat
 
     return (
-        <div className="bg-gradient-to-br from-lime-500 to-green-700 p-6 rounded-xl shadow-2xl w-full max-w-lg mt-8 space-y-4">
+        <div className="bg-gradient-to-br from-lime-500 to-green-700 p-6 rounded-xl shadow-2xl w-full mt-8 space-y-4">
             <h2 className="text-2xl font-bold text-center text-white mb-4">
-                Chatbot 🤖
+                Chatbot 🤖 ( Tu asistente personal 24/h)
             </h2>
             <div className="chat-box bg-white p-4 rounded-lg h-64 overflow-y-auto shadow-inner space-y-2">
                 {messages.map((msg, index) => (

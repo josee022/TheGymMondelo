@@ -477,17 +477,155 @@ class ChatbotController extends Controller
             'estiramiento de pierna mariposa' => "La postura de mariposa ayuda a abrir las caderas y mejorar la flexibilidad en los aductores.",
             'estiramiento de glúteos' => "Estirar los glúteos alivia la tensión y mejora la movilidad de caderas y espalda baja.",
 
+            // Datos generales de clientes y roles
+            'masculino' => "Seleccionado el género masculino. Puedes actualizar esta información en tu perfil.",
+            'femenino' => "Seleccionado el género femenino. Si necesitas hacer cambios, visita tu perfil.",
+            'otro género' => "Seleccionaste otro género. Asegúrate de que toda la información en tu perfil esté correcta.",
+            'sedentario' => "Tu nivel de actividad es sedentario. Considera incluir caminatas o estiramientos básicos para empezar a moverte más.",
+            'ligero' => "Nivel de actividad ligero. Esto es ideal para quienes están comenzando; ¡recuerda aumentar gradualmente la intensidad!",
+            'moderado' => "Un nivel de actividad moderado es excelente. Mantén el equilibrio entre tus sesiones de ejercicio y descanso.",
+            'activo' => "Tu actividad es activa. Un nivel adecuado para quienes buscan mantenerse en forma de manera constante.",
+            'muy activo' => "¡Estás muy activo! Este nivel requiere una dieta adecuada para la energía y suficiente descanso.",
+
+            // Especialidades de entrenadores
+            'entrenador personal' => "Nuestros entrenadores personales crean planes individualizados basados en tus metas específicas.",
+            'fisioterapia' => "Contamos con fisioterapeutas para ayudarte en la recuperación de lesiones y mejorar tu movilidad.",
+            'nutricionista' => "Nuestros nutricionistas elaboran dietas personalizadas adaptadas a tus necesidades y objetivos.",
+            'preparación física' => "Los preparadores físicos te guían en el desarrollo de fuerza, velocidad y resistencia.",
+            'yoga' => "Instructores de yoga para mejorar tu flexibilidad, equilibrio y reducir el estrés.",
+            'pilates' => "Entrenadores especializados en pilates, ideal para fortalecer el core y mejorar la postura.",
+            'halterofilia' => "Especialistas en halterofilia para ayudarte a perfeccionar tus técnicas de levantamiento de peso.",
+            'boxeo' => "Clases de boxeo para mejorar la resistencia, la velocidad y la coordinación.",
+            'crossfit' => "Entrenadores certificados en CrossFit, combinando fuerza, cardio y agilidad en una sesión intensa.",
+            'zumba' => "Instructores de zumba para una sesión divertida y energética mientras quemas calorías.",
+
+            // Tipos de clases disponibles
+            'spinning' => "Las clases de spinning son excelentes para mejorar la resistencia cardiovascular en sesiones de alta intensidad.",
+            'body pump' => "Body Pump es una clase de fuerza con pesas y ejercicios repetitivos que ayuda a tonificar el cuerpo.",
+            'step' => "El step es una clase divertida que combina cardio y coordinación sobre una plataforma elevada.",
+            'kickboxing' => "El kickboxing mejora la fuerza y coordinación, combinando técnicas de boxeo y artes marciales.",
+            'body combat' => "Body Combat es un ejercicio de alta energía inspirado en las artes marciales, ideal para tonificar y mejorar la resistencia.",
+            'tai chi' => "El tai chi combina movimientos suaves y controlados, ideal para reducir el estrés y mejorar la flexibilidad.",
+            'stretching' => "Stretching o estiramiento te ayuda a mejorar la flexibilidad y prevenir lesiones.",
+            'ballet fitness' => "Ballet fitness combina técnicas de ballet con ejercicios funcionales, ayudando a tonificar y mejorar la postura.",
+            'calistenia' => "Las clases de calistenia utilizan el peso corporal para ganar fuerza y flexibilidad.",
+            'cardio dance' => "Cardio Dance es una clase divertida de baile que quema calorías y mejora la coordinación.",
+
+            // Estados de reservas y suscripciones
+            'pendiente' => "Tu reserva está pendiente de confirmación. Pronto recibirás un mensaje con el estado actualizado.",
+            'confirmada' => "¡Tu reserva ha sido confirmada! Prepárate para tu sesión de entrenamiento.",
+            'cancelada' => "La reserva ha sido cancelada. Si deseas reprogramarla, puedes hacerlo desde tu perfil.",
+            'mensual' => "Tu suscripción es mensual. Se renueva automáticamente al final de cada ciclo.",
+            'semestral' => "Estás suscrito por seis meses. Este plan te ofrece flexibilidad y constancia a largo plazo.",
+            'anual' => "Tu suscripción anual te da acceso a todas las instalaciones y clases durante un año completo.",
+
+            // Niveles de entrenamiento
+            'principiante' => "Nivel principiante: este es un excelente punto de partida para construir tu resistencia y técnica.",
+            'intermedio' => "Nivel intermedio: tus sesiones ahora incluirán mayor intensidad y ejercicios variados.",
+            'avanzado' => "Nivel avanzado: enfocado en rutinas intensas y técnicas avanzadas para maximizar tu rendimiento.",
+
+            // Blog y foro
+            'foro' => "El foro es un espacio donde puedes compartir experiencias y resolver dudas con otros usuarios.",
+            'foros' => "En los foros de nuestra comunidad encontrarás temas diversos sobre entrenamiento y nutrición.",
+            'blog' => "Consulta el blog para obtener consejos de nuestros entrenadores sobre ejercicio, nutrición y bienestar.",
+            'blogs' => "Nuestros blogs están llenos de contenido útil para ayudarte en tu viaje de fitness y bienestar.",
+
+            // Estado de productos
+            'productos' => "Encuentra todo tipo de productos en nuestra tienda, desde suplementos hasta equipos de entrenamiento.",
+            'pendiente envío' => "El producto está pendiente de envío. Recibirás una notificación cuando esté en camino.",
+            'enviado' => "¡Tu producto ha sido enviado! Recibirás un número de seguimiento en breve.",
+            'entregado' => "El producto ha sido entregado. Gracias por tu compra y disfrútalo.",
+            'cancelado' => "El pedido fue cancelado. Si necesitas ayuda, contacta a nuestro equipo de soporte.",
+
+            // Objetivos de entrenamiento
+            'pérdida de peso' => "Para perder peso, combina ejercicio cardiovascular con una dieta balanceada y en déficit calórico.",
+            'ganancia muscular' => "Para ganar masa muscular, enfócate en ejercicios de fuerza y mantén una ingesta calórica adecuada.",
+            'mantenimiento' => "Para mantenimiento, sigue una dieta equilibrada y una rutina que incluya tanto fuerza como cardio.",
+
+            // Detalles de entrenamiento
+            'series' => "Las series ayudan a estructurar tus entrenamientos y progresar en fuerza y resistencia.",
+            'repeticiones' => "Las repeticiones determinan la cantidad de veces que realizarás cada ejercicio en una serie.",
+            'kilos' => "Ajusta los kilos según tu nivel de experiencia y tus metas. Escucha siempre a tu cuerpo.",
+            'peso' => "Tu peso puede ser una referencia para ajustar tu dieta y tus entrenamientos de manera personalizada.",
+
+            // Estado y roles de usuarios
+            'rol' => "Tu rol define el acceso a ciertas áreas de la plataforma, como entrenamiento o administración.",
+            'activo' => "Tu estado es activo. Tienes acceso completo a todos los servicios del gimnasio.",
+            'suspendido' => "Tu cuenta está suspendida. Contacta al soporte para obtener más información y resolver el estado.",
+
+            // Información de contacto
+            'contacto' => "Para contactarnos, utiliza el formulario en nuestra página de contacto o llama a nuestro teléfono.",
+            'no contestado' => "El mensaje no ha sido contestado aún. Nuestro equipo se pondrá en contacto pronto.",
+            'contestado' => "El mensaje ha sido respondido. Revisa tus mensajes para ver la respuesta.",
+            'teléfono' => "Nuestro número de teléfono es 555-0123. No dudes en llamarnos para más información.",
+            'correo' => "Puedes escribirnos a info@thegymmondelo.com y te responderemos lo antes posible.",
+            'dirección' => "Nos encontramos en el centro de la ciudad, cerca de la plaza principal.",
+            'email' => "Nuestro email para consultas es contacto@thegymmondelo.com. Escríbenos si tienes dudas.",
+
+            // Otros términos y temas generales
+            'sedentario' => "Sedentario: un nivel bajo de actividad. Te animamos a empezar con ejercicios ligeros y caminar.",
+            'ligero' => "Ligero: con algo de actividad física semanal. Es un buen punto de partida para progresar.",
+            'moderado' => "Moderado: actividad física regular. Mantén el equilibrio y cuida tu descanso.",
+            'activo' => "Activo: haces ejercicio de forma habitual, sigue con tu disciplina.",
+            'muy activo' => "Muy activo: haces ejercicio intenso o trabajo físico exigente. Asegúrate de cuidar tu alimentación y descanso.",
+            'serie' => "Una serie es un grupo de repeticiones que realizas antes de tomar un descanso.",
+            'repetición' => "Las repeticiones son el número de veces que ejecutas un ejercicio en una serie.",
+
+            // Estado de órdenes y pedidos
+            'pendiente' => "El pedido está pendiente de confirmación. Se te notificará sobre cualquier actualización.",
+            'confirmada' => "¡Pedido confirmado! Se procederá con el envío.",
+            'cancelada' => "El pedido ha sido cancelado. Contacta a soporte si tienes alguna duda.",
+            'entregado' => "El pedido ha sido entregado. ¡Gracias por confiar en nosotros!",
+
+            // Estados de actividad física
+            'niveles de actividad' => "Los niveles de actividad disponibles son: sedentario, ligero, moderado, activo y muy activo. Selecciona el que más se ajuste a tu estilo de vida.",
+
+            // Tipos de suscripción
+            'tipos de suscripción' => "Ofrecemos suscripciones mensual, semestral y anual, cada una con beneficios y precios diferentes.",
+
+            // Estados de la cuenta
+            'estados de cuenta' => "Los estados de cuenta pueden ser: activo y suspendido. Asegúrate de que tu cuenta esté activa para disfrutar de nuestros servicios.",
+
+            // Roles de usuario
+            'roles de usuario' => "Los roles de usuario en nuestra plataforma incluyen cliente, entrenador, administrador y personal de soporte.",
+
+            // Objetivos de entrenamiento
+            'objetivos de entrenamiento' => "Nuestros programas de entrenamiento están diseñados para los siguientes objetivos: pérdida de peso, ganancia muscular y mantenimiento físico.",
+
+            // Tipos de clase
+            'clases disponibles' => "Las clases que ofrecemos incluyen: spinning, body pump, zumba, pilates, yoga, kickboxing y mucho más. Consulta el horario para encontrar la que más te interese.",
+
+            // Estados de pedidos y reservas
+            'estados de pedidos' => "Los estados de los pedidos pueden ser: pendiente, enviado, entregado y cancelado.",
+            'estados de reservas' => "Las reservas pueden tener los siguientes estados: pendiente, confirmada y cancelada. Asegúrate de revisar el estado antes de tu visita.",
+
+            // Especialidades de entrenadores
+            'especialidades de entrenadores' => "Nuestros entrenadores están especializados en diferentes áreas, como: nutrición, fisioterapia, preparación física, yoga, pilates, halterofilia y crossfit. Consulta sus perfiles para más detalles.",
+
+            // Niveles de entrenamiento
+            'niveles de entrenamiento' => "Los niveles de entrenamiento se dividen en principiante, intermedio y avanzado. Cada nivel está diseñado para adaptarse a tus necesidades y capacidades.",
+
+            // Estados de productos (podrías editar "pendiente", "enviado", "entregado" y "cancelado" para hacerlos más globales)
+            'estados de productos' => "Los estados de los productos pueden ser: pendiente de envío, enviado, entregado o cancelado.",
+
+            // Estados de contacto (podrías editar "contacto", "no contestado", y "contestado")
+            'estados de contacto' => "Los estados de los mensajes de contacto son: no contestado y contestado. Responderemos en breve.",
+
+            // Blog y foro (ya tienes "foro", "foros", "blog" y "blogs", podrías unificarlos)
+            'blog y foros' => "Accede al blog para leer contenido exclusivo de nuestros entrenadores y a los foros para compartir experiencias con otros usuarios.",
+
+            // Suscripciones (podrías editar "mensual", "semestral", y "anual")
+            'planes de suscripción' => "Los planes de suscripción disponibles son mensual, semestral y anual, con beneficios según el tiempo de suscripción.",
+
             // Respuesta por defecto
             'default' => "Lo siento, no entendí tu pregunta. ¿Puedes intentarlo de otra forma?",
         ];
-
 
         foreach ($responses as $keyword => $response) {
             if (strpos($question, $keyword) !== false) {
                 return response($response);
             }
         }
-
         // Respuesta por defecto
         return response($responses['default']);
     }
