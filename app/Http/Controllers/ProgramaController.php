@@ -17,13 +17,10 @@ class ProgramaController extends Controller
      */
     public function index()
     {
-        $programas = Programa::all();
-        return Inertia::render(
-            'Programas/Index',
-            [
-                'programas' => $programas
-            ]
-        );
+        $programas = Programa::paginate(9); 
+        return Inertia::render('Programas/Index', [
+            'programas' => $programas,
+        ]);
     }
 
     /**

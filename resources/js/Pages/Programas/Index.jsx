@@ -9,6 +9,7 @@ import ProgTips from "@/Components/Programas/ProgTips";
 import ProgLista from "@/Components/Programas/ProgLista";
 import ProgIconos from "@/Components/Programas/ProgIconos";
 import ProgBeneficios from "@/Components/Programas/ProgBeneficios";
+import Pagination from "@/Components/Pagination";
 
 export default function Programas({ auth, programas }) {
     const { flash } = usePage().props; // Acceder a los mensajes flash desde el backend
@@ -26,7 +27,6 @@ export default function Programas({ auth, programas }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Programas de Entrenamiento" />
-
             <ToastContainer />
 
             <div className="py-12 bg-gradient-to-b from-black via-green-800 to-lime-600 text-white">
@@ -38,7 +38,10 @@ export default function Programas({ auth, programas }) {
                     <ProgTips />
 
                     {/* Lista de Programas */}
-                    <ProgLista programas={programas} />
+                    <ProgLista programas={programas.data} />
+
+                    {/* Paginación */}
+                    <Pagination className="mt-6" links={programas.links} />
 
                     {/* Iconos de Motivación */}
                     <ProgIconos />
