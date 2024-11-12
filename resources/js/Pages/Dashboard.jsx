@@ -18,8 +18,6 @@ export default function Dashboard({
 }) {
     const user = auth.user;
 
-    console.log("Suscripciones:", suscripciones);
-
     const getReservaBackgroundColor = (estado) => {
         switch (estado) {
             case "Confirmada":
@@ -53,11 +51,6 @@ export default function Dashboard({
         });
     };
 
-    const reservasOrdenadas = Array.isArray(reservas.data)
-        ? reservas.data.sort(
-              (a, b) => new Date(b.fecha_reserva) - new Date(a.fecha_reserva)
-          )
-        : [];
     const suscripcionesOrdenadas = Array.isArray(suscripciones)
         ? suscripciones.sort(
               (a, b) => new Date(b.fecha_inicio) - new Date(a.fecha_inicio)
@@ -380,8 +373,8 @@ export default function Dashboard({
                                 </span>
                             </h1>
                         </div>
-                        {reservasOrdenadas.length > 0 ? (
-                            reservasOrdenadas.map((reserva) => (
+                        {reservas.data.length > 0 ? (
+                            reservas.data.map((reserva) => (
                                 <div
                                     key={reserva.id}
                                     className={`${getReservaBackgroundColor(
@@ -450,7 +443,7 @@ export default function Dashboard({
                                 </p>
                             </div>
                         )}
-                        {reservasOrdenadas.length > 0 && (
+                        {reservas.data.length > 0 && (
                             <Pagination links={reservas.links} />
                         )}
                     </div>
