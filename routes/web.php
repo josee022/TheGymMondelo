@@ -189,4 +189,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // Ruta para usuarios suspendidos
 Route::get('/suspendido', [ProfileController::class, 'showSuspended'])->name('usuario.suspendido');
 
+// Ruta de la ayuda en el Footer
+Route::get('/ayuda', function () {
+    return Inertia::render('Ayuda/Ayuda');
+})->name('ayuda');
+
 require __DIR__ . '/auth.php';
