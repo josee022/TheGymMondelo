@@ -29,7 +29,7 @@ export default function Show({ auth, clase, entrenador, plazasDisponibles }) {
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-16">
                 <motion.div
-                    className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-10"
+                    className="w-full max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-12"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}

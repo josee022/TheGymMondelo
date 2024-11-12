@@ -4,40 +4,48 @@ import { FaHeartbeat, FaDumbbell, FaRunning } from 'react-icons/fa';
 
 export default function Beneficios() {
     return (
-        <div className="mt-16 p-8 bg-gradient-to-r from-green-500 via-gray-400 to-gray-300 rounded-lg shadow-lg w-full max-w-4xl">
-            <h3 className="text-4xl font-bold text-center text-gray-800 mb-6">Beneficios de Entrenar con Nosotros 💪</h3>
-            <div className="flex justify-around">
+        <div className="w-full max-w-7xl mx-auto mt-20 p-12 bg-gradient-to-r from-green-400 via-lime-500 to-green-600 rounded-3xl shadow-2xl text-white">
+            <motion.h3
+                className="text-5xl font-extrabold text-center mb-12"
+                initial={{ opacity: 0, y: -30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
+                Beneficios de Entrenar con Nosotros 💪
+            </motion.h3>
+
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
                 <motion.div
-                    className="w-1/4 text-center p-6"
+                    className="w-full md:w-1/3 text-center bg-white bg-opacity-20 backdrop-blur-xl p-8 rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.6 }}
                 >
-                    <FaHeartbeat className="text-green-500 text-5xl mx-auto mb-4" />
-                    <h4 className="text-2xl font-semibold text-gray-800 mb-2">Mejora la Salud 💚</h4>
-                    <p className="text-gray-600">Entrenamientos diseñados para fortalecer tu corazón y cuerpo.</p>
+                    <FaHeartbeat className="text-lime-300 text-6xl mx-auto mb-4" />
+                    <h4 className="text-3xl font-semibold mb-4">Mejora la <br /> Salud 💚</h4>
+                    <p className="text-lg">Entrenamientos diseñados para fortalecer tu corazón y cuerpo de manera integral.</p>
                 </motion.div>
 
                 <motion.div
-                    className="w-1/4 text-center p-6"
+                    className="w-full md:w-1/3 text-center bg-white bg-opacity-20 backdrop-blur-xl p-8 rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.7 }}
                 >
-                    <FaDumbbell className="text-green-500 text-5xl mx-auto mb-4" />
-                    <h4 className="text-2xl font-semibold text-gray-800 mb-2">Fuerza y Resistencia 🏋️‍♀️</h4>
-                    <p className="text-gray-600">Programas para mejorar tu fuerza muscular y resistencia física.</p>
+                    <FaDumbbell className="text-lime-300 text-6xl mx-auto mb-4" />
+                    <h4 className="text-3xl font-semibold mb-4">Fuerza y <br /> Resistencia🏋️‍♀️</h4>
+                    <p className="text-lg">Mejora tu fuerza muscular y resistencia con programas avanzados y efectivos.</p>
                 </motion.div>
 
                 <motion.div
-                    className="w-1/4 text-center p-6"
+                    className="w-full md:w-1/3 text-center bg-white bg-opacity-20 backdrop-blur-xl p-8 rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.8 }}
                 >
-                    <FaRunning className="text-green-500 text-5xl mx-auto mb-4" />
-                    <h4 className="text-2xl font-semibold text-gray-800 mb-2">Rendimiento Deportivo 🏃‍♂️</h4>
-                    <p className="text-gray-600">Optimiza tu rendimiento con nuestros planes especializados.</p>
+                    <FaRunning className="text-lime-300 text-6xl mx-auto mb-4" />
+                    <h4 className="text-3xl font-semibold mb-4">Rendimiento Deportivo 🏃‍♂️</h4>
+                    <p className="text-lg">Optimiza tu rendimiento y alcanza nuevos niveles con nuestros planes especializados.</p>
                 </motion.div>
             </div>
         </div>
