@@ -27,7 +27,7 @@ export default function Index({ auth, entrenadores }) {
                             <span className="relative inline-block">
                                 <span className="absolute inset-x-0 bottom-0 h-2 bg-lime-400"></span>
                                 <span className="relative">
-                                    Entrenadores Personalizados para Ti
+                                    Entrenadores Personalizados Para Ti
                                 </span>
                             </span>
                         </h1>
