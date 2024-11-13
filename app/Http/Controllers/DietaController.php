@@ -16,8 +16,15 @@ class DietaController extends Controller
 
     public function index()
     {
-        return inertia('Dietas/Index');
+        // Verificar si el usuario tiene una dieta activa
+        $usuarioTieneDieta = Dieta::where('usuario_id', Auth::id())->exists();
+
+        return inertia('Dietas/Index', [
+            'usuarioTieneDieta' => $usuarioTieneDieta, // Pasamos la variable a la vista
+        ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

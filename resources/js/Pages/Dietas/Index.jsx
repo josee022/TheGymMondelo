@@ -10,7 +10,7 @@ import PlanesDieta from '@/Components/Dietas/PlanesDieta';
 import CalculadorasDieta from '@/Components/Dietas/CalculadorasDieta';
 import { router } from '@inertiajs/react';
 
-export default function Dietas({ auth }) {
+export default function Dietas({ auth, usuarioTieneDieta }) {
     const { flash } = usePage().props;
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function Dietas({ auth }) {
             <ResumenInformativo />
 
             {/* Sección de planes de dieta */}
-            <PlanesDieta handleDieta={handleDieta} />
+            <PlanesDieta handleDieta={handleDieta} usuarioTieneDieta={usuarioTieneDieta} />
 
             {/* Sección de calculadoras */}
             <CalculadorasDieta />
