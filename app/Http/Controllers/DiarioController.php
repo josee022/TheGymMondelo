@@ -13,8 +13,16 @@ class DiarioController extends Controller
 {
     public function index()
     {
-        return inertia('Diario/Index');
+        $ejerciciosPrevios = Diario::where('usuario_id', auth()->id())
+            ->select('ejercicio')
+            ->distinct()
+            ->pluck('ejercicio'); // Obtiene una lista única de ejercicios
+
+        return inertia('Diario/Index', [
+            'ejerciciosPrevios' => $ejerciciosPrevios,
+        ]);
     }
+
 
     public function store(Request $request)
     {
