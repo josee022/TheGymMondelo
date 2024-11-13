@@ -15,11 +15,20 @@ class ProgramaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $programas = Programa::paginate(9); 
+        $search = $request->input('search');
+
+        $programas = Programa::when($search, function ($query, $search) {
+            $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
+        })
+            ->orderBy('nombre', 'asc')
+            ->paginate(9)
+            ->appends(['search' => $search]); // Asegura que el término de búsqueda persista en la paginación
+
         return Inertia::render('Programas/Index', [
             'programas' => $programas,
+            'search' => $search,
         ]);
     }
 

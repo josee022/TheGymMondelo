@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, usePage, router } from "@inertiajs/react";
 import Footer from "@/Components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,8 +11,10 @@ import ProgIconos from "@/Components/Programas/ProgIconos";
 import ProgBeneficios from "@/Components/Programas/ProgBeneficios";
 import Pagination from "@/Components/Pagination";
 
-export default function Programas({ auth, programas }) {
+export default function Programas({ auth, programas, search }) {
     const { flash } = usePage().props; // Acceder a los mensajes flash desde el backend
+    const [searchTerm, setSearchTerm] = useState(search || "");
+    const searchInputRef = useRef(null);
 
     useEffect(() => {
         if (flash?.success) {
@@ -24,6 +26,26 @@ export default function Programas({ auth, programas }) {
         }
     }, [flash]);
 
+    useEffect(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.focus(); // Mantener el foco en el campo de búsqueda
+        }
+    }, [programas]);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        router.get(
+            route("programas.index"),
+            { search: value },
+            {
+                replace: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Programas de Entrenamiento" />
@@ -33,6 +55,16 @@ export default function Programas({ auth, programas }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {/* Encabezado de Programas */}
                     <ProgHeader />
+
+                    {/* Barra de búsqueda */}
+                    <input
+                        type="text"
+                        placeholder="Buscar programas..."
+                        className="w-full p-3 mb-6 rounded-lg border border-gray-300 text-black"
+                        value={searchTerm}
+                        ref={searchInputRef}
+                        onChange={handleSearchChange}
+                    />
 
                     {/* Consejos previos al inicio de los programas */}
                     <ProgTips />
