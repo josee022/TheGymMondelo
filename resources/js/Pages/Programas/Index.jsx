@@ -11,24 +11,28 @@ import ProgIconos from "@/Components/Programas/ProgIconos";
 import ProgBeneficios from "@/Components/Programas/ProgBeneficios";
 import Pagination from "@/Components/Pagination";
 
-export default function Programas({ auth, programas, search }) {
-    const { flash } = usePage().props; // Acceder a los mensajes flash desde el backend
+export default function Programas({
+    auth,
+    programas,
+    search,
+    usuarioTienePrograma,
+}) {
+    const { flash } = usePage().props;
     const [searchTerm, setSearchTerm] = useState(search || "");
     const searchInputRef = useRef(null);
 
     useEffect(() => {
         if (flash?.success) {
-            toast.success(flash.success); // Mostrar mensaje de éxito
+            toast.success(flash.success);
         }
-
         if (flash?.error) {
-            toast.error(flash.error); // Mostrar mensaje de error
+            toast.error(flash.error);
         }
     }, [flash]);
 
     useEffect(() => {
         if (searchInputRef.current) {
-            searchInputRef.current.focus(); // Mantener el foco en el campo de búsqueda
+            searchInputRef.current.focus();
         }
     }, [programas]);
 
@@ -53,10 +57,8 @@ export default function Programas({ auth, programas, search }) {
 
             <div className="py-12 bg-gradient-to-b from-black via-green-800 to-lime-600 text-white">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    {/* Encabezado de Programas */}
                     <ProgHeader />
 
-                    {/* Barra de búsqueda */}
                     <input
                         type="text"
                         placeholder="Buscar programas..."
@@ -66,19 +68,29 @@ export default function Programas({ auth, programas, search }) {
                         onChange={handleSearchChange}
                     />
 
-                    {/* Consejos previos al inicio de los programas */}
                     <ProgTips />
 
-                    {/* Lista de Programas */}
-                    <ProgLista programas={programas.data} />
+                    {usuarioTienePrograma ? (
+                        <div className="p-4 mb-6 bg-lime-300 bg-opacity-90 text-lime-900 rounded-lg border-l-4 border-lime-700 shadow-lg text-center font-semibold">
+                            <span className="block text-lg">
+                                ⚠️ Ya tienes un programa en curso.
+                            </span>
+                            <span className="block">
+                                No puedes adquirir otro en este momento.
+                            </span>
+                        </div>
+                    ) : null}
 
-                    {/* Paginación */}
+                    {/* Lista de Programas */}
+                    <ProgLista
+                        programas={programas.data}
+                        usuarioTienePrograma={usuarioTienePrograma}
+                    />
+
                     <Pagination className="mt-6" links={programas.links} />
 
-                    {/* Iconos de Motivación */}
                     <ProgIconos />
 
-                    {/* Beneficios y Exclusividades */}
                     <ProgBeneficios />
                 </div>
             </div>
