@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { usePage, router } from "@inertiajs/react";
 import { motion } from "framer-motion";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
@@ -227,6 +228,33 @@ export default function Dashboard({
 
     // Obtener detalles de la dieta según el objetivo del usuario
     const dietaInfo = dieta ? getDietaInfo(dieta.objetivo) : null;
+
+    const { searchDate } = usePage().props;
+    const [selectedDate, setSelectedDate] = useState(searchDate || "");
+
+    const handleDateChange = (e) => {
+        setSelectedDate(e.target.value);
+        router.get(
+            route("dashboard"),
+            { fecha: e.target.value },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
+    const resetDateFilter = () => {
+        setSelectedDate("");
+        router.get(
+            route("dashboard"),
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
 
     return (
         <AuthenticatedLayout
@@ -738,6 +766,23 @@ export default function Dashboard({
                                 </span>
                             </h1>
                         </div>
+
+                        {/* Barra de búsqueda por fecha */}
+                        <div className="flex justify-between items-center mb-6">
+                            <input
+                                type="date"
+                                value={selectedDate}
+                                onChange={handleDateChange}
+                                className="p-2 rounded border border-gray-300"
+                            />
+                            <button
+                                onClick={resetDateFilter}
+                                className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                            >
+                                Mostrar Todas
+                            </button>
+                        </div>
+
                         {/* Contenedor de Facturas en formato de 2x2 */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-between">
                             {pedidos.data.length === 0 ? (

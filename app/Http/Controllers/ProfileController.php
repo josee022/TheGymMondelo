@@ -26,17 +26,20 @@ class ProfileController extends Controller
         try {
             $user = Auth::user();
 
-            // Obtener todas las suscripciones activas del usuario
+            // Obtener la fecha de filtro, si existe
+            $fecha = $request->input('fecha');
+
+            // Obtener las suscripciones activas
             $suscripciones = $user->suscripciones()
                 ->where('estado', 'Activa')
                 ->orderBy('fecha_inicio', 'desc')
-                ->get();  // Obtener todas las suscripciones
+                ->get();
 
-            // Obtener reservas paginadas con un parámetro único de paginación
+            // Obtener reservas
             $reservas = $user->reservas()
                 ->with('clase')
                 ->orderBy('fecha_reserva', 'desc')
-                ->paginate(2, ['*'], 'reservasPage'); // Parámetro único para reservas
+                ->paginate(2, ['*'], 'reservasPage');
 
             // Obtener la dieta
             $dieta = $user->dietas()->first();
@@ -44,11 +47,14 @@ class ProfileController extends Controller
             // Obtener adquisiciones de programas
             $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
 
-            // Obtener pedidos paginados con un parámetro único de paginación
+            // Obtener pedidos (facturas), filtrando por fecha si se proporciona
             $pedidos = $user->pedidos()
                 ->with('detalles.producto')
+                ->when($fecha, function ($query, $fecha) {
+                    return $query->whereDate('fecha_pedido', $fecha);
+                })
                 ->orderBy('fecha_pedido', 'desc')
-                ->paginate(4, ['*'], 'pedidosPage'); // Parámetro único para pedidos
+                ->paginate(4, ['*'], 'pedidosPage');
 
             return Inertia::render('Dashboard', [
                 'auth' => [
@@ -56,15 +62,17 @@ class ProfileController extends Controller
                 ],
                 'isEntrenador' => $user->isEntrenador(),
                 'reservas' => $reservas->toArray(),
-                'suscripciones' => $suscripciones ? $suscripciones->toArray() : ['data' => []],  // Siempre enviamos un array
+                'suscripciones' => $suscripciones ? $suscripciones->toArray() : ['data' => []],
                 'dieta' => $dieta ? $dieta->toArray() : null,
                 'adquisiciones' => $adquisiciones->toArray(),
                 'pedidos' => $pedidos->toArray(),
+                'searchDate' => $fecha, // Pasamos la fecha de búsqueda a la vista
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage()); // Imprimir el mensaje de error para diagnosticar
+            dd($e->getMessage());
         }
     }
+
 
     public function showSuspended()
     {
