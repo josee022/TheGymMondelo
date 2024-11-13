@@ -26,18 +26,22 @@ class ProfileController extends Controller
         try {
             $user = Auth::user();
 
-            // Obtener la fecha de filtro, si existe
-            $fecha = $request->input('fecha');
+            // Fechas de filtro para reservas y facturas
+            $fechaReservas = $request->input('fecha_reservas');
+            $fechaFacturas = $request->input('fecha_facturas');
 
-            // Obtener las suscripciones activas
+            // Obtener suscripciones activas
             $suscripciones = $user->suscripciones()
                 ->where('estado', 'Activa')
                 ->orderBy('fecha_inicio', 'desc')
                 ->get();
 
-            // Obtener reservas
+            // Obtener reservas y aplicar filtro de fecha si existe
             $reservas = $user->reservas()
                 ->with('clase')
+                ->when($fechaReservas, function ($query, $fechaReservas) {
+                    return $query->whereDate('fecha_reserva', $fechaReservas);
+                })
                 ->orderBy('fecha_reserva', 'desc')
                 ->paginate(2, ['*'], 'reservasPage');
 
@@ -47,11 +51,11 @@ class ProfileController extends Controller
             // Obtener adquisiciones de programas
             $adquisiciones = $user->programasAdquiridos()->with('programa')->get();
 
-            // Obtener pedidos (facturas), filtrando por fecha si se proporciona
+            // Obtener pedidos (facturas) y aplicar filtro de fecha si existe
             $pedidos = $user->pedidos()
                 ->with('detalles.producto')
-                ->when($fecha, function ($query, $fecha) {
-                    return $query->whereDate('fecha_pedido', $fecha);
+                ->when($fechaFacturas, function ($query, $fechaFacturas) {
+                    return $query->whereDate('fecha_pedido', $fechaFacturas);
                 })
                 ->orderBy('fecha_pedido', 'desc')
                 ->paginate(4, ['*'], 'pedidosPage');
@@ -66,13 +70,13 @@ class ProfileController extends Controller
                 'dieta' => $dieta ? $dieta->toArray() : null,
                 'adquisiciones' => $adquisiciones->toArray(),
                 'pedidos' => $pedidos->toArray(),
-                'searchDate' => $fecha, // Pasamos la fecha de búsqueda a la vista
+                'searchDateReservas' => $fechaReservas,
+                'searchDateFacturas' => $fechaFacturas,
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
     }
-
 
     public function showSuspended()
     {

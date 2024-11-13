@@ -229,14 +229,19 @@ export default function Dashboard({
     // Obtener detalles de la dieta según el objetivo del usuario
     const dietaInfo = dieta ? getDietaInfo(dieta.objetivo) : null;
 
-    const { searchDate } = usePage().props;
-    const [selectedDate, setSelectedDate] = useState(searchDate || "");
+    const { searchDateReservas, searchDateFacturas } = usePage().props;
+    const [selectedDateReservas, setSelectedDateReservas] = useState(
+        searchDateReservas || ""
+    );
+    const [selectedDateFacturas, setSelectedDateFacturas] = useState(
+        searchDateFacturas || ""
+    );
 
-    const handleDateChange = (e) => {
-        setSelectedDate(e.target.value);
+    const handleDateChangeReservas = (e) => {
+        setSelectedDateReservas(e.target.value);
         router.get(
             route("dashboard"),
-            { fecha: e.target.value },
+            { fecha_reservas: e.target.value },
             {
                 preserveState: true,
                 preserveScroll: true,
@@ -244,11 +249,36 @@ export default function Dashboard({
         );
     };
 
-    const resetDateFilter = () => {
-        setSelectedDate("");
+    const handleDateChangeFacturas = (e) => {
+        setSelectedDateFacturas(e.target.value);
         router.get(
             route("dashboard"),
-            {},
+            { fecha_facturas: e.target.value },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
+    // Funciones de reinicio de filtros de fecha
+    const resetDateFilterReservas = () => {
+        setSelectedDateReservas("");
+        router.get(
+            route("dashboard"),
+            { fecha_reservas: "" },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
+    const resetDateFilterFacturas = () => {
+        setSelectedDateFacturas("");
+        router.get(
+            route("dashboard"),
+            { fecha_facturas: "" },
             {
                 preserveState: true,
                 preserveScroll: true,
@@ -401,6 +431,22 @@ export default function Dashboard({
                                 </span>
                             </h1>
                         </div>
+
+                        <div className="flex justify-between items-center mb-6">
+                            <input
+                                type="date"
+                                value={selectedDateReservas}
+                                onChange={handleDateChangeReservas}
+                                className="p-2 rounded border border-gray-300"
+                            />
+                            <button
+                                onClick={resetDateFilterReservas}
+                                className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                            >
+                                Mostrar Todas
+                            </button>
+                        </div>
+
                         {reservas.data.length > 0 ? (
                             reservas.data.map((reserva) => (
                                 <div
@@ -767,16 +813,15 @@ export default function Dashboard({
                             </h1>
                         </div>
 
-                        {/* Barra de búsqueda por fecha */}
                         <div className="flex justify-between items-center mb-6">
                             <input
                                 type="date"
-                                value={selectedDate}
-                                onChange={handleDateChange}
+                                value={selectedDateFacturas}
+                                onChange={handleDateChangeFacturas}
                                 className="p-2 rounded border border-gray-300"
                             />
                             <button
-                                onClick={resetDateFilter}
+                                onClick={resetDateFilterFacturas}
                                 className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                             >
                                 Mostrar Todas
