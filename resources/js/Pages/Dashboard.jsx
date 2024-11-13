@@ -540,7 +540,7 @@ export default function Dashboard({
                         initial={{ opacity: 0, y: -50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7 }}
-                        className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform mb-6"
+                        className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl"
                     >
                         <p className="text-2xl font-semibold text-white text-center">
                             No tienes ninguna suscripción activa en estos
@@ -551,7 +551,7 @@ export default function Dashboard({
                     suscripcionesOrdenadas.map((suscripcion) => (
                         <div
                             key={suscripcion.id}
-                            className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 transform mb-6"
+                            className="max-w-4xl mx-auto bg-gradient-to-r from-green-700 via-gray-900 to-black p-8 rounded-xl"
                         >
                             <h3 className="text-3xl font-semibold mb-6 text-center text-white">
                                 Suscripción {suscripcion.tipo}
@@ -595,6 +595,7 @@ export default function Dashboard({
                 <br />
                 <br />
                 <br />
+
                 <h2 className="text-4xl font-extrabold text-center mb-10 text-green-400">
                     🌟 Tu Programa Adquirido 🌟
                 </h2>
