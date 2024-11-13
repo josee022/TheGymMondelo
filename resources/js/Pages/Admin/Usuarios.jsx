@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, router } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 import Swal from "sweetalert2";
+import { router } from "@inertiajs/react";
 
-export default function Usuarios({ usuarios }) {
-    const [usuariosList, setUsuariosList] = useState([]);
+export default function Usuarios({ usuarios, search }) {
+    const [searchTerm, setSearchTerm] = useState(search || "");
 
-    useEffect(() => {
-        setUsuariosList(usuarios.data);
-    }, [usuarios]);
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        router.get(
+            route("admin.usuarios"),
+            { search: e.target.value },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -29,9 +38,6 @@ export default function Usuarios({ usuarios }) {
                             "¡Eliminado!",
                             "El usuario ha sido eliminado correctamente.",
                             "success"
-                        );
-                        setUsuariosList((prev) =>
-                            prev.filter((user) => user.id !== id)
                         );
                     },
                 });
@@ -64,13 +70,6 @@ export default function Usuarios({ usuarios }) {
                                 } correctamente.`,
                                 "success"
                             );
-                            setUsuariosList((prev) =>
-                                prev.map((user) =>
-                                    user.id === id
-                                        ? { ...user, suspendido: !suspendido }
-                                        : user
-                                )
-                            );
                         },
                     }
                 );
@@ -89,7 +88,14 @@ export default function Usuarios({ usuarios }) {
                         </span>
                     </span>
                 </h1>
-            </div>{" "}
+            </div>
+            <input
+                type="text"
+                placeholder="Buscar usuario..."
+                className="w-full p-2 mb-4 border border-gray-300 rounded"
+                value={searchTerm}
+                onChange={handleSearchChange}
+            />
             <table className="min-w-full bg-white rounded-lg shadow-md">
                 <thead>
                     <tr className="bg-gray-200">
@@ -104,7 +110,7 @@ export default function Usuarios({ usuarios }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {usuariosList.map((usuario) => (
+                    {usuarios.data.map((usuario) => (
                         <tr
                             key={usuario.id}
                             className="border-b hover:bg-gray-100 transition duration-150"
