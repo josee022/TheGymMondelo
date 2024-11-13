@@ -7,6 +7,7 @@ export default function PlanesSuscripcion({
     pagoSemestral,
     precioAnual,
     pagoAnual,
+    usuarioTieneSuscripcion, // Recibimos la variable aquí
 }) {
     const handleSubscription = (tipo) => {
         router.post(route("suscripciones.store"), { tipo });
@@ -14,8 +15,17 @@ export default function PlanesSuscripcion({
 
     return (
         <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-blue-100 to-lime-400 py-12">
+            {/* Mensaje en la esquina superior derecha */}
+            {usuarioTieneSuscripcion && (
+                <div className="absolute top-0 right-0 mt-4 mr-6 p-4 w-56 h-24 bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-lg shadow-md flex items-center justify-center text-center font-medium">
+                    <span className="text-sm">
+                        ⚠️ Suscripción activa. <br />
+                        Cancélala en tu perfil <br />
+                        para adquirir otra.
+                    </span>
+                </div>
+            )}
             <div className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-xl p-10 transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                {/* Título con animación */}
                 <div className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
                         <span className="relative inline-block">
@@ -29,15 +39,14 @@ export default function PlanesSuscripcion({
                     </p>
                 </div>
 
-                {/* Planes */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 text-gray-900">
-                    {/* Plan Mensual */}
                     <PlanCard
                         tipo="Mensual"
                         precio={`€${precioMensual}/mes`}
                         pago={`€${precioMensual} al mes`}
                         regalo="🎁 5 DÍAS GRATIS 🎁"
                         handleSubscription={handleSubscription}
+                        usuarioTieneSuscripcion={usuarioTieneSuscripcion} // Pasamos la variable aquí
                         beneficios={[
                             "✅ Acceso ilimitado al gimnasio 🏋️‍♂️",
                             "✅ 1 sesión con entrenador al mes 👨‍🏫",
@@ -47,7 +56,7 @@ export default function PlanesSuscripcion({
                         ]}
                     />
 
-                    {/* Plan Semestral */}
+                    {/* Otros planes (Semestral y Anual) configurados de manera similar */}
                     <PlanCard
                         tipo="Semestral"
                         precio={`€${precioSemestral}/mes`}
@@ -56,6 +65,7 @@ export default function PlanesSuscripcion({
                         regalo="🎁 5 DÍAS GRATIS 🎁"
                         precioTachado="€25/mes"
                         handleSubscription={handleSubscription}
+                        usuarioTieneSuscripcion={usuarioTieneSuscripcion} // Pasamos la variable aquí
                         beneficios={[
                             "✅ Acceso ilimitado al gimnasio 🏋️‍♂️",
                             "✅ 2 sesiones con entrenador al mes 👨‍🏫",
@@ -65,7 +75,6 @@ export default function PlanesSuscripcion({
                         ]}
                     />
 
-                    {/* Plan Anual */}
                     <PlanCard
                         tipo="Anual"
                         precio={`€${precioAnual}/mes`}
@@ -74,6 +83,7 @@ export default function PlanesSuscripcion({
                         regalo="🎁 5 DÍAS GRATIS 🎁"
                         precioTachado="€25/mes"
                         handleSubscription={handleSubscription}
+                        usuarioTieneSuscripcion={usuarioTieneSuscripcion} // Pasamos la variable aquí
                         beneficios={[
                             "✅ Acceso ilimitado al gimnasio 🏋️‍♂️",
                             "✅ 4 sesiones con entrenador al mes 👨‍🏫",
@@ -98,6 +108,7 @@ function PlanCard({
     precioTachado,
     handleSubscription,
     beneficios,
+    usuarioTieneSuscripcion,
 }) {
     return (
         <div
@@ -157,18 +168,21 @@ function PlanCard({
             <p className="text-center text-sm text-gray-600 mb-6">
                 [Pago de {pago}]
             </p>
-            <button
-                onClick={() => handleSubscription(tipo)}
-                className={`relative w-full bg-gradient-to-r ${
-                    tipo === "Mensual"
-                        ? "from-green-400 to-lime-500"
-                        : tipo === "Semestral"
-                        ? "from-yellow-400 to-orange-500"
-                        : "from-blue-400 to-indigo-500"
-                } text-white py-3 px-6 rounded-lg hover:bg-green-500 transition-all duration-300 font-bold tracking-wide animate-glow`}
-            >
-                ¡Suscribirme! ✨
-            </button>
+            {/* Condición para mostrar el botón */}
+            {!usuarioTieneSuscripcion && (
+                <button
+                    onClick={() => handleSubscription(tipo)}
+                    className={`relative w-full bg-gradient-to-r ${
+                        tipo === "Mensual"
+                            ? "from-green-400 to-lime-500"
+                            : tipo === "Semestral"
+                            ? "from-yellow-400 to-orange-500"
+                            : "from-blue-400 to-indigo-500"
+                    } text-white py-3 px-6 rounded-lg hover:bg-green-500 transition-all duration-300 font-bold tracking-wide animate-glow`}
+                >
+                    ¡Suscribirme! ✨
+                </button>
+            )}
             <ul className="mt-8 text-gray-800 text-md space-y-3">
                 {beneficios.map((beneficio, index) => (
                     <li key={index} className="border-b border-gray-200 pb-3">

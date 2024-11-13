@@ -16,8 +16,17 @@ class SuscripcionController extends Controller
      */
     public function index()
     {
-        return inertia('Suscripciones/Index');
+        // Verificar si el usuario tiene una suscripción activa
+        $usuarioTieneSuscripcion = Suscripcion::where('usuario_id', Auth::id())
+            ->where('estado', 'Activa')
+            ->exists();
+
+        return inertia('Suscripciones/Index', [
+            'usuarioTieneSuscripcion' => $usuarioTieneSuscripcion,
+        ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
