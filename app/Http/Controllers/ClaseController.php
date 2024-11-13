@@ -16,19 +16,27 @@ class ClaseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtiene las clases futuras, ordenadas por fecha
-        $clases = Clase::where('fecha', '>', now()->toDateString())
-            ->orderBy('fecha')
-            ->paginate(6);
+        $search = $request->input('search');
 
-        // Renderiza la vista 'Clases/Index' con las clases futuras y el usuario autenticado
+        $clases = Clase::query()
+            ->where('fecha', '>', now()->toDateString())
+            ->when($search, function ($query, $search) {
+                $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
+            })
+            ->orderBy('fecha')
+            ->paginate(6)
+            ->appends(['search' => $search]);
+
         return Inertia::render('Clases/Index', [
             'clases' => $clases,
+            'search' => $search,
             'user' => auth()->user(),
         ]);
     }
+
+
     /**
      * Show the form for creating a new resource.
      */
