@@ -50,7 +50,7 @@ const CrearPrograma = ({
             onSubmit={onSubmit}
             className="space-y-5 bg-gradient-to-br from-lime-50 to-lime-100 p-8 rounded-3xl shadow-xl"
         >
-            <h2 className="text-3xl font-bold text-center text-lime-600 mb-4">
+            <h2 className="text-3xl font-bold text-center text-black-600 mb-4">
                 {selectedPrograma
                     ? "📝 Editar Programa"
                     : "Crear Nuevo Programa"}

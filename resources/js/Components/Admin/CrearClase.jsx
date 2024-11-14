@@ -81,8 +81,8 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
     };
 
     return (
-        <div className="bg-gradient-to-br from-lime-50 to-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-6">
-            <h2 className="text-2xl font-semibold text-center text-lime-600 mb-4">
+        <div className="bg-gradient-to-br from-lime-300 to-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-6">
+            <h2 className="text-2xl font-semibold text-center text-black-600 mb-4">
                 {selectedClase ? "Editar Clase" : "Crear Nueva Clase"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-3">

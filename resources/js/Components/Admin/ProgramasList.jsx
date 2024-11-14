@@ -15,7 +15,7 @@ const ProgramasList = ({ programas, onEdit, handleDelete }) => {
             className="bg-white p-8 rounded-3xl shadow-lg overflow-y-auto"
             style={{ maxHeight: "70vh" }}
         >
-            <h2 className="text-3xl font-bold text-pink-500 mb-6 text-center">
+            <h2 className="text-3xl font-bold text-black-500 mb-6 text-center">
                 📜 Lista de Programas
             </h2>
             <input
@@ -32,7 +32,7 @@ const ProgramasList = ({ programas, onEdit, handleDelete }) => {
                         className="p-5 bg-gradient-to-r from-yellow-200 to-orange-200 rounded-xl shadow-xl hover:shadow-2xl"
                     >
                         <div>
-                            <h3 className="text-xl font-extrabold text-blue-800 flex items-center gap-2">
+                            <h3 className="text-xl font-extrabold text-black-800 flex items-center gap-2">
                                 {programa.nombre} 🎓
                             </h3>
                             <p className="text-gray-700 mt-2">
