@@ -25,11 +25,10 @@ export default function PlanesSuscripcion({
                     </span>
                 </div>
             )}
-            <div className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-xl p-10 transition-all duration-300 hover:shadow-2xl hover:scale-105">
+            <div className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-xl p-10">
                 <div className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
                         <span className="relative inline-block">
-                            <span className="absolute inset-x-0 bottom-0 h-2 bg-green-400"></span>
                             Planes de Suscripción 💪
                         </span>
                     </h1>
@@ -118,7 +117,7 @@ function PlanCard({
                     : tipo === "Semestral"
                     ? "from-yellow-100 to-yellow-50"
                     : "from-blue-100 to-blue-50"
-            } p-8 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-300 hover:scale-110`}
+            } p-8 rounded-lg shadow-lg`}
         >
             <div
                 className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${

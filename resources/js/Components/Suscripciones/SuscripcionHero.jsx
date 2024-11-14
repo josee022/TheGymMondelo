@@ -13,10 +13,10 @@ export default function SuscripcionHero() {
                 <span className="text-yellow-400"> 🌟</span>
             </p>
 
-            <div className="relative animate-bounce">
+            <div className="relative">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-green-400 animate-glow"
+                    className="h-8 w-8 text-green-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -28,7 +28,7 @@ export default function SuscripcionHero() {
                         d="M19 9l-7 7-7-7"
                     />
                 </svg>
-                <div className="absolute inset-0 bg-green-400 opacity-50 blur-xl rounded-full animate-ping"></div>
+                <div className="absolute inset-0 bg-green-400 opacity-50 blur-xl rounded-full"></div>
             </div>
         </>
     );
