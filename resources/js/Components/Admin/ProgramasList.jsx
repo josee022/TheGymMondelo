@@ -43,7 +43,7 @@ const ProgramasList = ({ programas, onEdit, handleDelete }) => {
                                 {programa.duracion} semanas
                             </p>
                             <p className="text-gray-600 mt-1">
-                                Precio: €{programa.precio}
+                                Precio: {programa.precio} €
                             </p>
                         </div>
                         <div className="flex justify-end space-x-4 mt-4">
