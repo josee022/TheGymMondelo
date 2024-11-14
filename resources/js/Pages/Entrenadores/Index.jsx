@@ -21,11 +21,10 @@ export default function Index({ auth, entrenadores }) {
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-br from-green-100 to-lime-400 py-8 overflow-hidden">
                 {/* Contenedor principal de tarjetas de entrenadores */}
-                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105 mt-6">
+                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 mt-6">
                     <div className="text-center mb-6">
                         <h1 className="text-5xl font-extrabold text-gray-900 tracking-widest relative">
                             <span className="relative inline-block">
-                                <span className="absolute inset-x-0 bottom-0 h-2 bg-lime-400"></span>
                                 <span className="relative">
                                     Entrenadores Personalizados Para Ti
                                 </span>
@@ -40,12 +39,11 @@ export default function Index({ auth, entrenadores }) {
                     <SeccionContacto />
                 </div>
 
-                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 transition-all duration-500 transform hover:scale-105 mt-10">
+                <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 mt-10">
                     {/* Título de las secciones adicionales */}
                     <div className="text-center mb-8">
-                        <h1 className="text-5xl font-extrabold text-gray-900 mb-4 animate-bounce">
+                        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
                             <span className="relative inline-block">
-                                <span className="absolute inset-x-0 bottom-0 h-2 bg-green-400"></span>
                                 Descubre Nuestros Servicios Adicionales 🏆
                             </span>
                         </h1>
