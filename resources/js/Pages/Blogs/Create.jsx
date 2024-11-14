@@ -40,7 +40,9 @@ export default function CreateBlog({ auth, isEntrenador, blogs }) {
                 </h2>
             }
         >
-            <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
+            <div
+                className="relative min-h-screen flex flex-col items-center bg-gradient-to-b from-black via-green-800 to-lime-600 py-12"
+            >
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
                     {/* Formulario de creación de blogs (solo visible para entrenadores) */}
                     {isEntrenador ? (
