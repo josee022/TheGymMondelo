@@ -1,56 +1,63 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FiCheckCircle, FiActivity, FiHeart, FiTrendingUp } from 'react-icons/fi';
+import React from "react";
+import { motion } from "framer-motion";
+import {
+    FiCheckCircle,
+    FiActivity,
+    FiHeart,
+    FiTrendingUp,
+} from "react-icons/fi";
 
-export default function PlanesDieta({ handleDieta }) {
+export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
     const plans = [
         {
-            title: 'Pérdida de Peso',
+            title: "Pérdida de Peso",
             icon: <FiHeart className="text-green-500" size={32} />,
-            description: 'Plan diseñado para perder peso de forma saludable, sin comprometer tu salud.',
+            description:
+                "Plan diseñado para perder peso de forma saludable, sin comprometer tu salud.",
             details: [
-                'Proporción óptima de macronutrientes.',
-                'Comidas deliciosas y balanceadas.',
-                'Plan de ejercicio complementario.',
-                'Asesoría personalizada semanal.',
+                "Proporción óptima de macronutrientes.",
+                "Comidas deliciosas y balanceadas.",
+                "Plan de ejercicio complementario.",
+                "Asesoría personalizada semanal.",
             ],
-            color: 'green-500', // Color principal
-            bgColor: 'bg-green-50', // Color de fondo
-            objetivo: 'Pérdida de peso',
+            color: "green-500",
+            bgColor: "bg-green-50",
+            objetivo: "Pérdida de peso",
         },
         {
-            title: 'Ganancia Muscular',
+            title: "Ganancia Muscular",
             icon: <FiActivity className="text-blue-500" size={32} />,
-            description: 'Plan ideal para ganar masa muscular y mejorar la fuerza.',
+            description:
+                "Plan ideal para ganar masa muscular y mejorar la fuerza.",
             details: [
-                'Alto contenido proteico.',
-                'Carbohidratos de absorción lenta.',
-                'Planes de comidas post-entrenamiento.',
-                'Asesoría en suplementos.',
+                "Alto contenido proteico.",
+                "Carbohidratos de absorción lenta.",
+                "Planes de comidas post-entrenamiento.",
+                "Asesoría en suplementos.",
             ],
-            color: 'blue-500',
-            bgColor: 'bg-blue-50',
-            objetivo: 'Ganancia muscular',
+            color: "blue-500",
+            bgColor: "bg-blue-50",
+            objetivo: "Ganancia muscular",
         },
         {
-            title: 'Mejor Rendimiento',
+            title: "Mejor Rendimiento",
             icon: <FiTrendingUp className="text-red-500" size={32} />,
-            description: 'Plan diseñado para maximizar el rendimiento deportivo y la resistencia física.',
+            description:
+                "Plan diseñado para maximizar el rendimiento deportivo y la resistencia física.",
             details: [
-                'Plan alimenticio para deportes de alta intensidad.',
-                'Mejora en resistencia y recuperación.',
-                'Vitaminas y minerales esenciales.',
-                'Diseñado para atletas.',
+                "Plan alimenticio para deportes de alta intensidad.",
+                "Mejora en resistencia y recuperación.",
+                "Vitaminas y minerales esenciales.",
+                "Diseñado para atletas.",
             ],
-            color: 'red-500',
-            bgColor: 'bg-red-50',
-            objetivo: 'Mantenimiento',
+            color: "red-500",
+            bgColor: "bg-red-50",
+            objetivo: "Mantenimiento",
         },
     ];
 
-
     return (
-        <div className="py-16 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300">
+        <div className="py-16 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 relative">
             <div className="container mx-auto px-6">
                 <motion.h2
                     className="text-5xl font-bold text-center text-gray-800 mb-12 underline underline-offset-8 decoration-slate-400"
@@ -60,9 +67,25 @@ export default function PlanesDieta({ handleDieta }) {
                 >
                     Nuestros Planes De Dietas Personalizados
                 </motion.h2>
+
+                {usuarioTieneDieta && (
+                    <div className="absolute top-0 right-0 mt-4 mr-6 p-4 w-56 h-24 bg-gradient-to-r from-purple-700 to-purple-500 text-white rounded-lg shadow-md flex items-center justify-center text-center font-medium">
+                        <span className="text-sm">
+                        🔒 Dieta en curso. <br />
+                            Deshabilítala en tu perfil <br />
+                            para adquirir una nueva.
+                        </span>
+                    </div>
+                )}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {plans.map((plan, index) => (
-                        <PlanCard key={index} plan={plan} handleDieta={handleDieta} />
+                        <PlanCard
+                            key={index}
+                            plan={plan}
+                            handleDieta={handleDieta}
+                            usuarioTieneDieta={usuarioTieneDieta}
+                        />
                     ))}
                 </div>
             </div>
@@ -70,11 +93,17 @@ export default function PlanesDieta({ handleDieta }) {
     );
 }
 
-function PlanCard({ plan, handleDieta }) {
+function PlanCard({ plan, handleDieta, usuarioTieneDieta }) {
     return (
-        <motion.div className={`p-8 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-500 ${plan.bgColor}`}>
-            <div className="flex items-center justify-center mb-4">{plan.icon}</div>
-            <h3 className="text-3xl font-semibold text-center text-gray-800 mb-2">{plan.title}</h3>
+        <motion.div
+            className={`p-8 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-500 ${plan.bgColor}`}
+        >
+            <div className="flex items-center justify-center mb-4">
+                {plan.icon}
+            </div>
+            <h3 className="text-3xl font-semibold text-center text-gray-800 mb-2">
+                {plan.title}
+            </h3>
             <p className="text-gray-600 text-center mb-4">{plan.description}</p>
             <ul className="text-gray-500 mb-6">
                 {plan.details.map((detail, i) => (
@@ -85,12 +114,17 @@ function PlanCard({ plan, handleDieta }) {
                 ))}
             </ul>
             <div className="text-center">
-                <button
-                    onClick={() => handleDieta(plan.objetivo, plan.description)}
-                    className={`py-3 px-6 rounded-full text-white bg-${plan.color}`}
-                >
-                    ¡Adquiere Aquí!
-                </button>
+                {/* Mostrar el botón de adquisición solo si el usuario no tiene una dieta */}
+                {!usuarioTieneDieta && (
+                    <button
+                        onClick={() =>
+                            handleDieta(plan.objetivo, plan.description)
+                        }
+                        className={`py-3 px-6 rounded-full text-white bg-${plan.color} hover:bg-opacity-80 transition duration-300`}
+                    >
+                        ¡Adquiere Aquí!
+                    </button>
+                )}
             </div>
         </motion.div>
     );

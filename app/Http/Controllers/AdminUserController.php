@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -12,17 +11,26 @@ class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
-        $usuarios = User::select('id', 'name', 'email', 'created_at', 'rol', 'suspendido')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $search = $request->input('search'); // Obtenemos el término de búsqueda si existe en la solicitud
 
+        $usuarios = User::select('id', 'name', 'email', 'created_at', 'rol', 'suspendido')
+            ->when($search, function ($query, $search) {
+                // Si $search tiene un valor, filtramos los usuarios cuyo nombre coincida con el término de búsqueda.
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // LIKE Y % para buscar la letra entera en el array no solo la primera del nombre
+            })
+            ->orderBy('created_at', 'desc') // Ordenamos los resultados por fecha de creación en orden descendente
+            ->paginate(10); // Paginamos los resultados, mostrando 10 usuarios por página
+
+        // Retornamos la vista con los datos de los usuarios y el término de búsqueda actual
         return Inertia::render('Admin/Usuarios', [
             'usuarios' => $usuarios,
+            'search' => $search
         ]);
     }
 
 
-    // Nueva función para mostrar detalles de un usuario específico
+
+
     public function show($id)
     {
         $usuario = User::findOrFail($id);
@@ -45,7 +53,6 @@ class AdminUserController extends Controller
     {
         $usuario = User::findOrFail($id);
 
-        // Validar todos los campos
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $usuario->id,
@@ -57,13 +64,11 @@ class AdminUserController extends Controller
             'peso' => 'nullable|numeric',
             'nivel_actividad' => 'nullable|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
             'puntos' => 'nullable|integer|min:0',
-            'password' => 'nullable|confirmed|min:6', // Validar si la contraseña se incluye
+            'password' => 'nullable|confirmed|min:6',
         ]);
 
-        // Actualizar los campos del usuario excepto la contraseña
         $usuario->fill($request->except('password', 'password_confirmation'));
 
-        // Solo actualizar la contraseña si se ha introducido una nueva
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request->password);
         }
@@ -84,7 +89,7 @@ class AdminUserController extends Controller
     public function suspend($id)
     {
         $usuario = User::findOrFail($id);
-        $usuario->suspendido = !$usuario->suspendido; // Cambia el estado
+        $usuario->suspendido = !$usuario->suspendido;
         $usuario->save();
 
         return redirect()->route('admin.usuarios')->with('success', 'Estado de usuario actualizado correctamente.');

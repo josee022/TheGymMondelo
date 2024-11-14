@@ -6,6 +6,7 @@ import Acordeon from "@/Components/Acordeon";
 import InfoContacto from "@/Components/Contacto/InfoContacto";
 import FormContacto from "@/Components/Contacto/FormContacto";
 import Mapa from "@/Components/Contacto/Mapa";
+import Chatbot from "@/Components/Contacto/Chatbot";
 import { Head } from "@inertiajs/react";
 
 export default function Contacto({ auth }) {
@@ -38,12 +39,20 @@ export default function Contacto({ auth }) {
                 <div className="w-full max-w-6xl mb-12 flex flex-col items-center">
                     <Mapa />
                     <motion.div
-                        className="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-4xl"
+                        className="bg-gray-800 p-8 rounded-lg shadow-xl w-full mt-8"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
                     >
                         <Acordeon />
+                    </motion.div>
+                    <motion.div
+                        className="bg-gray-800 p-8 rounded-lg shadow-xl w-full mt-8"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Chatbot />
                     </motion.div>
                 </div>
             </motion.div>

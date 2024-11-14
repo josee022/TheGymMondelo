@@ -1,17 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { usePage, Head } from "@inertiajs/react";
+import { usePage, Head, router } from "@inertiajs/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { motion } from "framer-motion";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "@/Components/Footer";
 import ListaProductos from "@/Components/Tienda/ListaProductos";
+import Pagination from "@/Components/Pagination";
 import Carrito from "@/Components/Tienda/Carrito";
 
 export default function Tienda() {
-    const { auth, productos, flash } = usePage().props;
-    const [carrito, setCarrito] = useState(flash.carrito || []);
+    const { auth, productos, search } = usePage().props; // recibe los productos paginados y el usuario autenticado
+    const [carrito, setCarrito] = useState([]);
+    const [searchTerm, setSearchTerm] = useState(search || "");
+    const searchInputRef = useRef(null); // Referencia para el input de búsqueda
+
+    // Recuperar el carrito desde localStorage cuando el componente se monta
+    useEffect(() => {
+        const carritoGuardado =
+            JSON.parse(localStorage.getItem("carrito")) || [];
+        setCarrito(carritoGuardado);
+    }, []);
+
+    // Actualizar el carrito en localStorage cada vez que cambie el carrito
+    useEffect(() => {
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+    }, [carrito]);
+
+    useEffect(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.focus(); // Establecemos el foco en el campo de búsqueda
+        }
+    }, [productos]); // Cada vez que cambian los productos, el foco vuelve al input
 
     const agregarAlCarrito = async (productoId) => {
         try {
@@ -77,8 +97,9 @@ export default function Tienda() {
 
         try {
             const response = await axios.post("/carrito/pedido", { carrito });
-            setCarrito(response.data.carrito);
+            setCarrito([]); // Limpiar carrito después de realizar el pedido
             toast.info(response.data.message);
+            localStorage.removeItem("carrito"); // Limpiar carrito en localStorage
         } catch (error) {
             toast.error("Hubo un error al realizar el pedido.");
         }
@@ -94,6 +115,20 @@ export default function Tienda() {
             .toFixed(2);
     };
 
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        router.get(
+            route("tienda.index"),
+            { search: value },
+            {
+                replace: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <ToastContainer />
@@ -101,12 +136,7 @@ export default function Tienda() {
 
             <div className="py-12 bg-gradient-to-b from-black via-green-800 to-lime-600 text-white">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: -50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1 }}
-                        className="text-center mb-10"
-                    >
+                    <div className="text-center mb-10">
                         <h1 className="text-6xl font-extrabold mb-4">
                             🛒 Nuestra Tienda 🛒
                         </h1>
@@ -114,15 +144,30 @@ export default function Tienda() {
                             Descubre los mejores productos para acompañar tu
                             entrenamiento. ¡Compra hoy mismo! 🚀
                         </p>
-                    </motion.div>
+                    </div>
 
+                    {/* Barra de búsqueda */}
+                    <input
+                        type="text"
+                        placeholder="Buscar productos..."
+                        className="w-full p-3 mb-6 rounded-lg border border-gray-300 text-black"
+                        value={searchTerm}
+                        ref={searchInputRef} // Añade la referencia para el foco
+                        onChange={handleSearchChange}
+                    />
+
+                    {/* Lista de productos */}
                     <ListaProductos
-                        productos={productos}
+                        productos={productos.data}
                         agregarAlCarrito={agregarAlCarrito}
                     />
+
+                    {/* Componente de paginación */}
+                    <Pagination className="mt-6" links={productos.links} />
                 </div>
             </div>
 
+            {/* Carrito de compras */}
             <Carrito
                 carrito={carrito}
                 incrementarCantidad={incrementarCantidad}

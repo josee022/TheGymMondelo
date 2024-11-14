@@ -15,16 +15,27 @@ class ProgramaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $programas = Programa::all();
-        return Inertia::render(
-            'Programas/Index',
-            [
-                'programas' => $programas
-            ]
-        );
+        $search = $request->input('search');
+
+        $programas = Programa::when($search, function ($query, $search) {
+            $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
+        })
+            ->orderBy('nombre', 'asc')
+            ->paginate(9)
+            ->appends(['search' => $search]);
+
+        // Verificar si el usuario tiene un programa adquirido
+        $usuarioTienePrograma = AdquisicionPrograma::where('usuario_id', Auth::id())->exists();
+
+        return Inertia::render('Programas/Index', [
+            'programas' => $programas,
+            'search' => $search,
+            'usuarioTienePrograma' => $usuarioTienePrograma, // Pasamos la variable a la vista
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

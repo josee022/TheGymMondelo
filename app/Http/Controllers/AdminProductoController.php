@@ -5,15 +5,29 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AdminProductoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::orderBy('created_at', 'desc')->paginate(10);
+        // Capturar el término de búsqueda si está presente en la solicitud
+        $search = $request->input('search');
+
+        // Obtener los productos, aplicando el filtro de búsqueda y luego paginando
+        $productos = Producto::select('id', 'nombre', 'descripcion', 'precio', 'stock', 'created_at')
+            ->when($search, function ($query, $search) {
+                // Convertimos a minúsculas para una búsqueda insensible a mayúsculas
+                $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Devolver los productos filtrados y el término de búsqueda a la vista
         return Inertia::render('Admin/Productos', [
-            'productos' => $productos
+            'productos' => $productos,
+            'search' => $search
         ]);
     }
 

@@ -20,7 +20,7 @@ const handleInscribir = async (programaId) => {
     await router.post("/inscribir-programa", { programa_id: programaId });
 };
 
-export default function ProgLista({ programas }) {
+export default function ProgLista({ programas, usuarioTienePrograma }) {
     const [sortedProgramas, setSortedProgramas] = useState(programas);
     const [sortType, setSortType] = useState(null);
 
@@ -47,7 +47,6 @@ export default function ProgLista({ programas }) {
 
     return (
         <div>
-            {/* Controles de ordenación */}
             <div className="flex justify-end mb-6 space-x-4">
                 <button
                     className={`py-2 px-4 rounded-lg font-semibold transition duration-300 ${
@@ -84,7 +83,6 @@ export default function ProgLista({ programas }) {
                 </button>
             </div>
 
-            {/* Lista de Programas */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {sortedProgramas.map((programa, index) => (
                     <motion.div
@@ -102,30 +100,27 @@ export default function ProgLista({ programas }) {
                         </p>
                         <div className="text-lime-400 flex items-center mb-2">
                             <FiClock className="mr-2" />
-                            <p>Duración : {programa.duracion} semanas</p>
+                            <p>Duración: {programa.duracion} semanas</p>
                         </div>
                         <div className="text-lime-400 flex items-center mb-2">
                             <FiTrendingUp className="mr-2" />
-                            <p>Nivel : {programa.nivel}</p>
+                            <p>Nivel: {programa.nivel}</p>
                         </div>
                         <div className="text-lime-400 flex items-center mb-4">
                             <FiDollarSign className="mr-2" />
                             <p>
-                                Precio :{" "}
-                                {typeof programa.precio === "number"
-                                    ? programa.precio.toFixed(2)
-                                    : parseFloat(programa.precio).toFixed(
-                                          2
-                                      )}{" "}
+                                Precio: {parseFloat(programa.precio).toFixed(2)}{" "}
                                 €
                             </p>
                         </div>
-                        <button
-                            className="bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600 transition-colors duration-300"
-                            onClick={() => handleInscribir(programa.id)}
-                        >
-                            Inscribirse 💪
-                        </button>
+                        {!usuarioTienePrograma && (
+                            <button
+                                className="bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600 transition-colors duration-300"
+                                onClick={() => handleInscribir(programa.id)}
+                            >
+                                Inscribirse 💪
+                            </button>
+                        )}
                     </motion.div>
                 ))}
             </div>

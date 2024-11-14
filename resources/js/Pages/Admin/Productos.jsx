@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Link, router } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 import Swal from "sweetalert2";
 
-export default function Productos({ productos }) {
+export default function Productos({ productos, search }) {
+    const [searchTerm, setSearchTerm] = useState(search || "");
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        router.get(
+            route("admin.productos"),
+            { search: e.target.value },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
     const handleDelete = (id) => {
         Swal.fire({
             title: "¿Estás seguro?",
@@ -42,6 +56,15 @@ export default function Productos({ productos }) {
                     </span>
                 </h1>
             </div>
+
+            {/* Campo de búsqueda */}
+            <input
+                type="text"
+                placeholder="Buscar producto..."
+                className="w-full p-2 mb-4 border border-gray-300 rounded"
+                value={searchTerm}
+                onChange={handleSearchChange}
+            />
 
             <Link
                 href={route("admin.productos.create")}

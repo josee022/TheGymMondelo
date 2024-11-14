@@ -82,3 +82,15 @@
     height: auto; /* Altura automática para mantener la proporción */
     border-radius: 10px; /* Bordes redondeados */
 }
+
+.footer-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit; /* Puedes personalizar el color */
+    gap: 8px;
+}
+
+.social-icon {
+    font-size: 1.2rem;
+}

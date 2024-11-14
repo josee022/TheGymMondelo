@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SuscripcionHero from "@/Components/Suscripciones/SuscripcionHero";
 import PlanesSuscripcion from "@/Components/Suscripciones/PlanesSuscripcion";
 
-export default function Suscripciones({ auth }) {
+export default function Suscripciones({ auth, usuarioTieneSuscripcion }) {
     const { flash } = usePage().props;
 
     useEffect(() => {
@@ -19,17 +19,13 @@ export default function Suscripciones({ auth }) {
         }
     }, [flash]);
 
-    // Precios base y descuentos
     const precioMensual = 25;
-    const descuentoSemestral = 0.15; // 15% de descuento
-    const descuentoAnual = 0.4; // 40% de descuento
-
-    // Cálculos de precios con descuentos aplicados
+    const descuentoSemestral = 0.15;
+    const descuentoAnual = 0.4;
     const precioSemestral = (precioMensual * (1 - descuentoSemestral)).toFixed(
         2
     );
     const pagoSemestral = (precioSemestral * 6).toFixed(2);
-
     const precioAnual = (precioMensual * (1 - descuentoAnual)).toFixed(2);
     const pagoAnual = (precioAnual * 12).toFixed(2);
 
@@ -54,6 +50,7 @@ export default function Suscripciones({ auth }) {
                 pagoSemestral={pagoSemestral}
                 precioAnual={precioAnual}
                 pagoAnual={pagoAnual}
+                usuarioTieneSuscripcion={usuarioTieneSuscripcion} // Pasamos la variable aquí
             />
 
             <Footer />

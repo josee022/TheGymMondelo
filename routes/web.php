@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminRespuestaContactoController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ClasesAdminController;
 use App\Http\Controllers\ComentarioForoController;
@@ -99,6 +100,7 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
         return Inertia::render('Contacto/Index');
     })->name('contacto');
     Route::post('/api/contacto', [ContactoController::class, 'store']);
+    Route::post('/chatbot', [ChatbotController::class, 'getResponse']);
 
     // Rutas para la tienda
     Route::resource('tienda', ProductoController::class);
@@ -186,5 +188,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 // Ruta para usuarios suspendidos
 Route::get('/suspendido', [ProfileController::class, 'showSuspended'])->name('usuario.suspendido');
+
+// Ruta de la ayuda en el Footer
+Route::get('/ayuda', function () {
+    return Inertia::render('Ayuda/Ayuda');
+})->name('ayuda');
 
 require __DIR__ . '/auth.php';

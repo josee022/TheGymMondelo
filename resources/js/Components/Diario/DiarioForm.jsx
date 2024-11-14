@@ -1,11 +1,11 @@
-// DiarioForm.jsx
 import React, { useEffect } from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function DiarioForm() {
+    const { ejerciciosPrevios } = usePage().props; // Recibimos los ejercicios previos desde el backend
     const { data, setData, post, processing, errors, reset } = useForm({
         fecha: "",
         ejercicio: "",
@@ -87,6 +87,18 @@ export default function DiarioForm() {
                     <label className="block text-lg font-semibold mb-2">
                         🏋️ Ejercicio
                     </label>
+                    <select
+                        className="w-full px-4 py-2 rounded-full border border-gray-300 mb-2 focus:border-lime-500 focus:ring focus:ring-lime-200 transition duration-300 ease-in-out"
+                        onChange={(e) => setData("ejercicio", e.target.value)}
+                        value={data.ejercicio}
+                    >
+                        <option value="">Selecciona un ejercicio...</option>
+                        {ejerciciosPrevios.map((ejercicio, index) => (
+                            <option key={index} value={ejercicio}>
+                                {ejercicio}
+                            </option>
+                        ))}
+                    </select>
                     <input
                         type="text"
                         className="w-full px-4 py-2 rounded-full border border-gray-300 focus:border-lime-500 focus:ring focus:ring-lime-200 transition duration-300 ease-in-out"
@@ -97,6 +109,7 @@ export default function DiarioForm() {
                 </div>
             </div>
 
+            {/* Campos de series, repeticiones, peso y notas (sin cambios) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div>
                     <label className="block text-lg font-semibold mb-2">
@@ -137,6 +150,7 @@ export default function DiarioForm() {
                 </div>
             </div>
 
+            {/* Campo de notas (sin cambios) */}
             <div>
                 <label className="block text-lg font-semibold mb-2">
                     📝 Notas
