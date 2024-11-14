@@ -38,47 +38,53 @@ export default function PedidosRecientes({
 
     return (
         <div>
-            {/* Filtro de estado */}
-            <div className="mb-6 flex items-center gap-2">
-                <label htmlFor="estado" className="font-semibold text-gray-700">
-                    Filtrar por estado:
-                </label>
-                <select
-                    id="estado"
-                    value={estadoSeleccionado}
-                    onChange={handleFilterChange}
-                    className="border border-gray-300 rounded-md px-3 py-2 text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                >
-                    <option value="">Todos</option>
-                    {estados.map((estado) => (
-                        <option key={estado} value={estado}>
-                            {estado}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            {/* Contenedor para alinear los filtros horizontalmente */}
+            <div className="mb-6 flex flex-wrap gap-4 items-center">
+                {/* Filtro de estado */}
+                <div className="flex items-center gap-2">
+                    <label
+                        htmlFor="estado"
+                        className="font-semibold text-gray-700"
+                    >
+                        Filtrar por estado:
+                    </label>
+                    <select
+                        id="estado"
+                        value={estadoSeleccionado}
+                        onChange={handleFilterChange}
+                        className="border border-gray-300 rounded-md px-3 py-2 text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                    >
+                        <option value="">Todos</option>
+                        {estados.map((estado) => (
+                            <option key={estado} value={estado}>
+                                {estado}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            {/* Filtro de usuario */}
-            <div className="mb-6 flex items-center gap-2">
-                <label
-                    htmlFor="usuario"
-                    className="font-semibold text-gray-700"
-                >
-                    Filtrar por usuario:
-                </label>
-                <select
-                    id="usuario"
-                    value={usuarioSeleccionado}
-                    onChange={handleUsuarioChange}
-                    className="border border-gray-300 rounded-md px-3 py-2 text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                >
-                    <option value="">Todos</option>
-                    {usuarios.map((usuario) => (
-                        <option key={usuario.id} value={usuario.id}>
-                            {usuario.name}
-                        </option>
-                    ))}
-                </select>
+                {/* Filtro de usuario */}
+                <div className="flex items-center gap-2">
+                    <label
+                        htmlFor="usuario"
+                        className="font-semibold text-gray-700"
+                    >
+                        Filtrar por usuario:
+                    </label>
+                    <select
+                        id="usuario"
+                        value={usuarioSeleccionado}
+                        onChange={handleUsuarioChange}
+                        className="border border-gray-300 rounded-md px-3 py-2 text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                    >
+                        <option value="">Todos</option>
+                        {usuarios.map((usuario) => (
+                            <option key={usuario.id} value={usuario.id}>
+                                {usuario.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             {/* Listado de pedidos */}
