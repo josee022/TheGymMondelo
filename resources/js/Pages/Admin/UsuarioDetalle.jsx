@@ -10,23 +10,17 @@ export default function UsuarioDetalle({ usuario }) {
 
     return (
         <AdminLayout>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-4xl font-bold text-gray-800">
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-3xl font-bold text-gray-800">
                     Detalles del Usuario
                 </h1>
-                <Link
-                    href={route("admin.usuarios")}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md shadow transition duration-200"
-                >
-                    Volver a Usuarios
-                </Link>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-5xl mx-auto space-y-6">
-                <h2 className="text-3xl font-semibold text-gray-600 border-b pb-3">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto space-y-6">
+                <h2 className="text-2xl font-bold text-black bg-gray-200 rounded-md py-2 px-4">
                     Información General
                 </h2>
-                <div className="text-gray-700 space-y-4 pl-6 text-2xl">
+                <div className="text-gray-700 space-y-2 pl-4 text-lg">
                     <p>
                         <strong className="text-gray-800">Nombre:</strong>{" "}
                         {usuario.name}
@@ -51,10 +45,10 @@ export default function UsuarioDetalle({ usuario }) {
                     </p>
                 </div>
 
-                <h2 className="text-3xl font-semibold text-gray-600 border-b pb-3">
+                <h2 className="text-2xl font-bold text-black bg-gray-200 rounded-md py-2 px-4">
                     Información Personal
                 </h2>
-                <div className="text-gray-700 space-y-4 pl-6 text-2xl">
+                <div className="text-gray-700 space-y-2 pl-4 text-lg">
                     <p>
                         <strong className="text-gray-800">
                             Fecha de Nacimiento:
@@ -87,22 +81,31 @@ export default function UsuarioDetalle({ usuario }) {
                     </p>
                 </div>
 
-                <h2 className="text-3xl font-semibold text-gray-600 border-b pb-3">
+                <h2 className="text-2xl font-bold text-black bg-gray-200 rounded-md py-2 px-4">
                     Estadísticas
                 </h2>
-                <div className="text-gray-700 space-y-4 pl-6 text-2xl">
+                <div className="text-gray-700 space-y-2 pl-4 text-lg">
                     <p>
                         <strong className="text-gray-800">Puntos:</strong>{" "}
                         {usuario.puntos}
                     </p>
                 </div>
+
+                <div className="flex justify-end space-x-4 mt-4">
+                    <Link
+                        href={`/admin/usuarios/${usuario.id}/edit`}
+                        className="bg-green-500 text-white py-2 px-5 rounded hover:bg-green-600 text-base"
+                    >
+                        Editar
+                    </Link>
+                    <Link
+                        href={route("admin.usuarios")}
+                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-5 rounded text-base"
+                    >
+                        Volver a Usuarios
+                    </Link>
+                </div>
             </div>
-            <Link
-                href={`/admin/usuarios/${usuario.id}/edit`}
-                className="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-700 text-lg w-full"
-            >
-                Editar
-            </Link>
         </AdminLayout>
     );
 }

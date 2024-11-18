@@ -36,7 +36,7 @@ export default function ListaBlog({ blogs, isEntrenador, auth, editingBlogId, ha
             {blogs.map((blog) => (
                 <div
                     key={blog.id}
-                    className="relative bg-[#d9f99d] p-4 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
+                    className="relative bg-[#d9f99d] p-4 rounded-lg shadow-md"
                 >
                     {editingBlogId === blog.id ? (
                         <form onSubmit={handleEditSubmit} className="space-y-6">
@@ -100,7 +100,7 @@ export default function ListaBlog({ blogs, isEntrenador, auth, editingBlogId, ha
                                     <div className="flex justify-end space-x-2 mt-4">
                                         <button
                                             onClick={() => handleEditClick(blog)}  // Al hacer clic, carga los datos en el formulario
-                                            className="bg-lime-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                            className="bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                         >
                                             Editar
                                         </button>

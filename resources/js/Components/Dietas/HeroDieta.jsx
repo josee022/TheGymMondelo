@@ -15,10 +15,10 @@ export default function HeroDieta() {
             Descubre planes dietéticos que se adaptan a tu estilo de vida y a tus objetivos de rendimiento. Logra resultados rápidos con nuestras dietas y entrenamientos personalizados.
             </p>
             <div className="flex gap-6 mt-4">
-                <motion.div className="animate-bounce" whileHover={{ scale: 1.2 }}>
+                <motion.div >
                     <FiHeart className="h-10 w-10 text-green-200" />
                 </motion.div>
-                <motion.div className="animate-bounce" whileHover={{ scale: 1.2 }}>
+                <motion.div >
                     <FiTarget className="h-10 w-10 text-green-200" />
                 </motion.div>
             </div>

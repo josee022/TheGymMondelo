@@ -41,7 +41,18 @@ const CrearPrograma = ({
             duracion: "",
             nivel: "Principiante",
             precio: "",
-        }); // Limpiar el formulario después de crear o editar
+        });
+        setSelectedPrograma(null);
+    };
+
+    const onClear = () => {
+        setForm({
+            nombre: "",
+            descripcion: "",
+            duracion: "",
+            nivel: "Principiante",
+            precio: "",
+        });
         setSelectedPrograma(null);
     };
 
@@ -50,7 +61,7 @@ const CrearPrograma = ({
             onSubmit={onSubmit}
             className="space-y-5 bg-gradient-to-br from-lime-50 to-lime-100 p-8 rounded-3xl shadow-xl"
         >
-            <h2 className="text-3xl font-bold text-center text-lime-600 mb-4">
+            <h2 className="text-3xl font-bold text-center text-black-600 mb-4">
                 {selectedPrograma
                     ? "📝 Editar Programa"
                     : "Crear Nuevo Programa"}
@@ -103,6 +114,13 @@ const CrearPrograma = ({
                 className="w-full bg-lime-500 hover:bg-lime-600 text-white font-semibold py-3 rounded-lg"
             >
                 {selectedPrograma ? "Actualizar Programa" : "Crear Programa"}
+            </button>
+            <button
+                type="button"
+                onClick={onClear}
+                className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-lg"
+            >
+                Vaciar
             </button>
         </form>
     );

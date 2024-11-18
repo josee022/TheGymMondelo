@@ -16,7 +16,7 @@ export default function CalculadorasDieta() {
 
 function CalculadoraCard({ title, icon, component }) {
     return (
-        <div className="bg-gradient-to-br from-lime-50 via-lime-100 to-lime-300 shadow-lg rounded-lg p-8 transition-transform transform hover:scale-105 hover:shadow-xl flex flex-col justify-center items-center">
+        <div className="bg-gradient-to-br from-lime-50 via-lime-100 to-lime-300 shadow-lg rounded-lg p-8  flex flex-col justify-center items-center">
             <div className="flex items-center justify-center mb-4">{icon}</div>
             <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">{title}</h2>
             {component}

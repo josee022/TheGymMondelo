@@ -35,7 +35,7 @@ export default function ReportesAnalisis({
             <PedidosRecientes
                 pedidos={pedidos}
                 estados={estados}
-                usuarios={usuarios} 
+                usuarios={usuarios}
                 filtroEstado={filtroEstado}
                 filtroUsuario={filtroUsuario}
             />
