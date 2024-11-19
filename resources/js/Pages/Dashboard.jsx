@@ -87,6 +87,7 @@ export default function Dashboard({
                 </h2>
             }
         >
+
             {/* Información del Perfil y Reservas */}
             <div className="flex flex-col lg:flex-row gap-0">
                 <InfoPerfil user={user} isEntrenador={isEntrenador} />
