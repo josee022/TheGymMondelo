@@ -112,8 +112,8 @@ class ProfileController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $request->user()->id,
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|in:Masculino,Femenino,Otro',
             'altura' => 'nullable|numeric',
