@@ -120,19 +120,23 @@ class ProfileController extends Controller
             'peso' => 'nullable|numeric',
             'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
             'biografia' => 'nullable|string|max:255',
-            'foto_perfil' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
         $user = $request->user();
 
+        // Manejar la foto de perfil
         if ($request->hasFile('foto_perfil')) {
-            $path = $request->file('foto_perfil')->store('perfil', 'public');
+            $fotoPerfil = $request->file('foto_perfil');
+            $filename = time() . '_' . $fotoPerfil->getClientOriginalName();
+            $fotoPerfil->move(public_path('fotos_perfil'), $filename);
 
-            if ($user->foto_perfil) {
-                Storage::disk('public')->delete($user->foto_perfil);
+            // Eliminar la foto anterior si existe
+            if ($user->foto_perfil && file_exists(public_path('fotos_perfil/' . $user->foto_perfil))) {
+                unlink(public_path('fotos_perfil/' . $user->foto_perfil));
             }
 
-            $user->foto_perfil = $path;
+            $user->foto_perfil = $filename;
         }
 
         $user->fill($request->only([
@@ -154,9 +158,6 @@ class ProfileController extends Controller
 
         return Redirect::route('dashboard')->with('success', 'Perfil actualizado correctamente.');
     }
-
-
-
 
     /**
      * Elimina la cuenta del usuario.

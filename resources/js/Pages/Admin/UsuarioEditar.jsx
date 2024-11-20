@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, useForm } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 export default function UsuarioEditar({ usuario }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const [formData, setFormData] = useState({
         name: usuario.name || "",
         email: usuario.email || "",
         rol: usuario.rol || "cliente",
@@ -16,206 +17,165 @@ export default function UsuarioEditar({ usuario }) {
         puntos: usuario.puntos || 0,
         password: "",
         password_confirmation: "",
-        foto_perfil: null, // Para la foto de perfil
+        foto_perfil: null,
     });
 
-    const [validationError, setValidationError] = useState("");
+    const [preview, setPreview] = useState(
+        usuario.foto_perfil ? `/fotos_perfil/${usuario.foto_perfil}` : null
+    );
 
-    const handleSubmit = (e) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+            setFormData({ ...formData, foto_perfil: file });
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        post(route("admin.usuarios.update", usuario.id), {
-            data: {
-                ...data,
-                _method: "PUT", // Esto simula el método PUT
-            },
-            forceFormData: true, // Necesario para manejar archivos
-        });
+        const form = new FormData();
+        form.append("name", formData.name);
+        form.append("email", formData.email);
+        form.append("rol", formData.rol);
+        form.append("biografia", formData.biografia);
+        form.append("fecha_nacimiento", formData.fecha_nacimiento);
+        form.append("sexo", formData.sexo);
+        form.append("altura", formData.altura);
+        form.append("peso", formData.peso);
+        form.append("nivel_actividad", formData.nivel_actividad);
+        form.append("puntos", formData.puntos);
+        if (formData.password) {
+            form.append("password", formData.password);
+            form.append(
+                "password_confirmation",
+                formData.password_confirmation
+            );
+        }
+        if (formData.foto_perfil) {
+            form.append("foto_perfil", formData.foto_perfil);
+        }
+
+        // Incluye el método PUT explícitamente
+        form.append("_method", "PUT");
+
+        try {
+            const response = await fetch(
+                route("admin.usuarios.update", usuario.id),
+                {
+                    method: "POST",
+                    body: form,
+                    headers: {
+                        "X-CSRF-TOKEN": document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute("content"),
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Error al actualizar el usuario.");
+            }
+
+            Swal.fire({
+                title: "Usuario Actualizado",
+                text: "El usuario ha sido actualizado exitosamente.",
+                icon: "success",
+                confirmButtonText: "Aceptar",
+            }).then(() => {
+                router.visit(route("admin.usuarios"));
+            });
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: "Error",
+                text: "Hubo un problema al actualizar el usuario. Por favor, inténtalo de nuevo.",
+                icon: "error",
+                confirmButtonText: "Aceptar",
+            });
+        }
     };
 
     return (
         <AdminLayout>
+            <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
+                <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide text-center">
+                    Editar Usuario
+                </h1>
+            </div>
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto space-y-4"
+                className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto"
                 encType="multipart/form-data"
             >
-                {/* Foto de perfil */}
-                <div>
-                    <label className="block text-md font-medium text-gray-700">
+                <div className="mb-4">
+                    <label className="block text-gray-700 font-semibold mb-2">
                         Foto de Perfil
                     </label>
                     <input
                         type="file"
-                        onChange={(e) =>
-                            setData("foto_perfil", e.target.files[0])
-                        }
-                        className="w-full border-gray-300 rounded-md shadow-sm"
+                        name="foto_perfil"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
                     />
-                    {errors.foto_perfil && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.foto_perfil}
-                        </p>
+                    {preview && (
+                        <img
+                            src={preview}
+                            alt="Vista previa"
+                            className="mt-4 w-32 h-32 rounded-full object-cover"
+                        />
                     )}
                 </div>
 
-                <div>
-                    <label className="block text-md font-medium text-gray-700">
+                <div className="mb-4">
+                    <label className="block text-gray-700 font-semibold mb-2">
                         Nombre
                     </label>
                     <input
                         type="text"
-                        value={data.name}
-                        onChange={(e) => setData("name", e.target.value)}
-                        className="w-full border-gray-300 rounded-md shadow-sm"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        required
                     />
-                    {errors.name && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.name}
-                        </p>
-                    )}
                 </div>
 
-                <div>
-                    <label className="block text-md font-medium text-gray-700">
+                <div className="mb-4">
+                    <label className="block text-gray-700 font-semibold mb-2">
                         Email
                     </label>
                     <input
                         type="email"
-                        value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                        className="w-full border-gray-300 rounded-md shadow-sm"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        required
                     />
-                    {errors.email && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.email}
-                        </p>
-                    )}
                 </div>
 
-                <div className="text-xl font-bold text-black bg-gray-200 rounded-md py-1 px-3 mb-2">
-                    Seguridad
-                </div>
-
-                <div>
-                    <label className="block text-md font-medium text-gray-700">
-                        Nueva Contraseña
-                    </label>
-                    <input
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => setData("password", e.target.value)}
-                        className="w-full border-gray-300 rounded-md shadow-sm"
-                        placeholder="Introduce una nueva contraseña si deseas cambiarla"
-                    />
-                    {errors.password && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.password}
-                        </p>
-                    )}
-                </div>
-
-                <div>
-                    <label className="block text-md font-medium text-gray-700">
-                        Confirmar Nueva Contraseña
-                    </label>
-                    <input
-                        type="password"
-                        value={data.password_confirmation}
-                        onChange={(e) =>
-                            setData("password_confirmation", e.target.value)
-                        }
-                        className="w-full border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.password_confirmation && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.password_confirmation}
-                        </p>
-                    )}
-                </div>
-
-                {validationError && (
-                    <p className="text-red-500 text-sm">{validationError}</p>
-                )}
-
-                <div className="text-xl font-bold text-black bg-gray-200 rounded-md py-1 px-3 mb-2">
-                    Información Personal
-                </div>
-
-                <div>
-                    <label className="block text-md font-medium text-gray-700">
-                        Rol
-                    </label>
-                    <select
-                        value={data.rol}
-                        onChange={(e) => setData("rol", e.target.value)}
-                        className="w-full border-gray-300 rounded-md shadow-sm"
-                    >
-                        <option value="cliente">Cliente</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                    {errors.rol && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.rol}
-                        </p>
-                    )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-md font-medium text-gray-700">
-                            Fecha de Nacimiento
-                        </label>
-                        <input
-                            type="date"
-                            value={data.fecha_nacimiento}
-                            onChange={(e) =>
-                                setData("fecha_nacimiento", e.target.value)
-                            }
-                            className="w-full border-gray-300 rounded-md shadow-sm"
-                        />
-                        {errors.fecha_nacimiento && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.fecha_nacimiento}
-                            </p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label className="block text-md font-medium text-gray-700">
-                            Sexo
-                        </label>
-                        <select
-                            value={data.sexo}
-                            onChange={(e) => setData("sexo", e.target.value)}
-                            className="w-full border-gray-300 rounded-md shadow-sm"
-                        >
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                        {errors.sexo && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.sexo}
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                <div className="flex justify-end space-x-4 mt-4">
+                <div className="flex justify-between mt-6">
                     <button
                         type="submit"
-                        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md shadow font-semibold"
-                        disabled={processing}
+                        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
                     >
                         Guardar Cambios
                     </button>
-                    <Link
-                        href={route("admin.usuarios")}
-                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow"
+                    <button
+                        type="button"
+                        onClick={() => history.back()}
+                        className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition"
                     >
-                        Volver a Usuarios
-                    </Link>
+                        Cancelar
+                    </button>
                 </div>
             </form>
         </AdminLayout>

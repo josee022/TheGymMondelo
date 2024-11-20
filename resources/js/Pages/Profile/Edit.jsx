@@ -21,10 +21,10 @@ export default function Edit({ user }) {
     });
 
     const [preview, setPreview] = useState(
-        user.foto_perfil ? `/storage/${user.foto_perfil}` : null
+        user.foto_perfil ? `/fotos_perfil/${user.foto_perfil}` : null
     );
 
-    const [isProcessing, setIsProcessing] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false); // Declaramos el estado isProcessing
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -35,8 +35,9 @@ export default function Edit({ user }) {
         }
     };
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+        setIsProcessing(true); // Activar el estado de procesamiento
 
         const formData = new FormData();
         formData.append("name", data.name);
@@ -52,9 +53,13 @@ export default function Edit({ user }) {
             formData.append("foto_perfil", data.foto_perfil);
         }
 
-        router.post(route("profile.update"), formData, {
-            forceFormData: true,
-        });
+        try {
+            await router.post(route("profile.update"), formData, {
+                forceFormData: true,
+            });
+        } catch (error) {
+            console.error("Error al actualizar el perfil:", error);
+        }
     };
 
     return (
@@ -62,50 +67,40 @@ export default function Edit({ user }) {
             user={user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Edición del perfil de usuario:
+                    Editar Perfil
                 </h2>
             }
         >
             <Head title="Editar perfil" />
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
-                    <div className="flex items-center gap-6 mb-8">
-                        {/* Imagen de perfil */}
-                        <div>
-                            <label
-                                htmlFor="foto_perfil"
-                                className="cursor-pointer"
-                            >
-                                <img
-                                    src={
-                                        preview || "/images/default-profile.png"
-                                    }
-                                    alt="Previsualización"
-                                    className="w-32 h-32 rounded-full border-4 border-gray-300 shadow-md hover:opacity-80 transition-opacity"
-                                />
-                            </label>
-                            <input
-                                type="file"
-                                id="foto_perfil"
-                                name="foto_perfil"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={handleImageChange}
-                            />
-                        </div>
-
-                        {/* Título */}
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                                Editar Perfil
-                            </h1>
-                        </div>
-                    </div>
                     <form
                         onSubmit={submit}
                         encType="multipart/form-data"
                         className="space-y-6"
                     >
+                        {/* Imagen de perfil */}
+                        <div className="flex items-center gap-6 mb-4">
+                            <div>
+                                <img
+                                    src={
+                                        preview || "/images/default-avatar.png"
+                                    }
+                                    alt="Vista previa"
+                                    className="w-24 h-24 rounded-full border-4 border-gray-700 shadow-md"
+                                />
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="block w-full text-gray-700"
+                            />
+                            <InputError
+                                message={errors.foto_perfil}
+                                className="mt-2"
+                            />
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <InputLabel htmlFor="name" value="Nombre" />
