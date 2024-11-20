@@ -3,7 +3,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Link, useForm } from "@inertiajs/react";
 
 export default function UsuarioEditar({ usuario }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         name: usuario.name || "",
         email: usuario.email || "",
         rol: usuario.rol || "cliente",
@@ -16,34 +16,47 @@ export default function UsuarioEditar({ usuario }) {
         puntos: usuario.puntos || 0,
         password: "",
         password_confirmation: "",
+        foto_perfil: null, // Para la foto de perfil
     });
 
     const [validationError, setValidationError] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setValidationError("");
 
-        if (data.password && data.password !== data.password_confirmation) {
-            setValidationError("Las nuevas contraseñas no coinciden.");
-            return;
-        }
-
-        put(route("admin.usuarios.update", usuario.id));
+        post(route("admin.usuarios.update", usuario.id), {
+            data: {
+                ...data,
+                _method: "PUT", // Esto simula el método PUT
+            },
+            forceFormData: true, // Necesario para manejar archivos
+        });
     };
 
     return (
         <AdminLayout>
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">Editar Usuario</h1>
-            </div>
-
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto space-y-4"
+                encType="multipart/form-data"
             >
-                <div className="text-xl font-bold text-black bg-gray-200 rounded-md py-1 px-3 mb-2">
-                    Información General
+                {/* Foto de perfil */}
+                <div>
+                    <label className="block text-md font-medium text-gray-700">
+                        Foto de Perfil
+                    </label>
+                    <input
+                        type="file"
+                        onChange={(e) =>
+                            setData("foto_perfil", e.target.files[0])
+                        }
+                        className="w-full border-gray-300 rounded-md shadow-sm"
+                    />
+                    {errors.foto_perfil && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.foto_perfil}
+                        </p>
+                    )}
                 </div>
 
                 <div>

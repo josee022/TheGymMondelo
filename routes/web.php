@@ -133,7 +133,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/usuarios', [AdminUserController::class, 'index'])->name('admin.usuarios');
     Route::get('/admin/usuarios/{id}', [AdminUserController::class, 'show'])->name('admin.usuarios.show');
     Route::get('/admin/usuarios/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.usuarios.edit');
-    Route::put('/admin/usuarios/{id}', [AdminUserController::class, 'update'])->name('admin.usuarios.update');
+    Route::post('/admin/usuarios/{id}', [AdminUserController::class, 'update'])->name('admin.usuarios.update');
     Route::delete('/admin/usuarios/{id}', [AdminUserController::class, 'destroy'])->name('admin.usuarios.destroy');
     Route::post('/admin/usuarios/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.usuarios.suspend');
 
