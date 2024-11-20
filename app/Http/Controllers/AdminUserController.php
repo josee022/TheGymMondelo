@@ -65,41 +65,36 @@ class AdminUserController extends Controller
             'nivel_actividad' => 'nullable|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
             'puntos' => 'nullable|integer|min:0',
             'password' => 'nullable|confirmed|min:6',
-            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de imagen
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Actualizar campos básicos
         $usuario->fill($request->except(['password', 'password_confirmation', 'foto_perfil']));
 
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request->password);
         }
 
-        // Manejo del archivo subido directamente en la carpeta `public/fotos_perfil`
+        // Manejo de la imagen
         if ($request->hasFile('foto_perfil')) {
-            $file = $request->file('foto_perfil');
-            $filename = time() . '_' . $file->getClientOriginalName(); // Nombre único
-            $destinationPath = public_path('fotos_perfil');
-
-            // Crear la carpeta si no existe
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            // Mover el archivo a la carpeta
-            $file->move($destinationPath, $filename);
-
-            // Eliminar la foto anterior si existe
+            // Eliminar la imagen anterior si existe
             if ($usuario->foto_perfil && file_exists(public_path('fotos_perfil/' . $usuario->foto_perfil))) {
                 unlink(public_path('fotos_perfil/' . $usuario->foto_perfil));
             }
 
-            // Guardar el nuevo nombre en la base de datos
-            $usuario->foto_perfil = $filename;
+            // Guardar la nueva imagen
+            $imagen = $request->file('foto_perfil');
+            $imagenPath = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('fotos_perfil'), $imagenPath);
+
+            $usuario->foto_perfil = $imagenPath;
         }
 
         $usuario->save();
 
-        return redirect()->route('admin.usuarios')->with('success', 'Usuario actualizado correctamente');
+        return redirect()
+            ->route('admin.usuarios')
+            ->with('success', 'Usuario actualizado con éxito.');
     }
 
 
