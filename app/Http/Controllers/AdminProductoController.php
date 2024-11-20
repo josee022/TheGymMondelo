@@ -48,10 +48,6 @@ class AdminProductoController extends Controller
             $imagen->move(public_path('images'), $imagenPath);
         }
 
-        if (auth()->user()->rol !== 'admin') {
-            abort(403, 'No tienes autorización para realizar esta acción.');
-        }
-
         Producto::create([
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
@@ -62,6 +58,7 @@ class AdminProductoController extends Controller
 
         return redirect()->route('admin.productos')->with('success', 'Producto creado con éxito.');
     }
+
 
     public function edit(Producto $producto)
     {
@@ -78,14 +75,11 @@ class AdminProductoController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Manejar la imagen
         if ($request->hasFile('imagen')) {
-            // Eliminar la imagen anterior si existe
             if ($producto->imagen && file_exists(public_path('images/' . $producto->imagen))) {
                 unlink(public_path('images/' . $producto->imagen));
             }
 
-            // Guardar la nueva imagen
             $imagen = $request->file('imagen');
             $imagenPath = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('images'), $imagenPath);
@@ -93,11 +87,12 @@ class AdminProductoController extends Controller
             $producto->imagen = $imagenPath;
         }
 
-        // Actualizar los demás campos
         $producto->update($request->only(['nombre', 'descripcion', 'precio', 'stock']));
 
         return redirect()->route('admin.productos')->with('success', 'Producto actualizado con éxito.');
     }
+
+
 
     public function destroy(Producto $producto)
     {

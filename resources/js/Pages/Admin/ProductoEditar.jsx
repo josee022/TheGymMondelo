@@ -12,6 +12,10 @@ export default function ProductoEditar({ producto }) {
         imagen: null,
     });
 
+    const [preview, setPreview] = useState(
+        producto.imagen ? `/images/${producto.imagen}` : null
+    );
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -21,6 +25,7 @@ export default function ProductoEditar({ producto }) {
         const file = e.target.files[0];
         if (file) {
             setFormData({ ...formData, imagen: file });
+            setPreview(URL.createObjectURL(file));
         }
     };
 
@@ -93,6 +98,15 @@ export default function ProductoEditar({ producto }) {
                     <label className="block text-gray-700 font-semibold mb-2">
                         Foto
                     </label>
+                    <div className="mb-4">
+                        {preview && (
+                            <img
+                                src={preview}
+                                alt="Vista previa"
+                                className="w-full h-48 object-cover rounded-lg shadow-md"
+                            />
+                        )}
+                    </div>
                     <input
                         type="file"
                         name="imagen"
