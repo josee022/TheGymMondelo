@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { router } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 export default function ProductoCrear() {
     const [formData, setFormData] = useState({
@@ -8,34 +9,145 @@ export default function ProductoCrear() {
         descripcion: "",
         precio: "",
         stock: "",
+        imagen: null,
     });
+
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (!file.type.startsWith("image/")) {
+                setErrors({
+                    ...errors,
+                    imagen: "El archivo debe ser una imagen válida.",
+                });
+                return;
+            }
+            setFormData({ ...formData, imagen: file });
+            setErrors({ ...errors, imagen: null });
+        }
+    };
+
+    const validateForm = () => {
+        const { nombre, descripcion, precio, stock } = formData;
+        const newErrors = {};
+
+        if (!nombre.trim()) {
+            newErrors.nombre = "El nombre del producto es obligatorio.";
+        } else if (nombre.length < 3) {
+            newErrors.nombre = "El nombre debe tener al menos 3 caracteres.";
+        }
+
+        if (!descripcion.trim()) {
+            newErrors.descripcion =
+                "La descripción del producto es obligatoria.";
+        } else if (descripcion.length < 10) {
+            newErrors.descripcion =
+                "La descripción debe tener al menos 10 caracteres.";
+        }
+
+        if (!precio || isNaN(precio) || precio < 0) {
+            newErrors.precio =
+                "El precio debe ser un número mayor o igual a 0.";
+        }
+
+        if (!stock || isNaN(stock) || stock < 0) {
+            newErrors.stock =
+                "El stock debe ser un número entero mayor o igual a 0.";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        router.post(route("admin.productos.store"), formData);
+
+        if (!validateForm()) return;
+
+        const form = new FormData();
+        form.append("nombre", formData.nombre);
+        form.append("descripcion", formData.descripcion);
+        form.append("precio", formData.precio);
+        form.append("stock", formData.stock);
+
+        if (formData.imagen) {
+            form.append("imagen", formData.imagen);
+        }
+
+        try {
+            const response = await fetch(route("admin.productos.store"), {
+                method: "POST",
+                body: form,
+                headers: {
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        ?.getAttribute("content"),
+                },
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                setErrors(data.errors || {});
+                throw new Error("Error al guardar el producto.");
+            }
+
+            Swal.fire({
+                title: "Producto Creado",
+                text: "El producto ha sido creado exitosamente.",
+                icon: "success",
+                confirmButtonText: "Aceptar",
+            }).then(() => {
+                router.visit(route("admin.productos"));
+            });
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: "Error",
+                text: "Hubo un problema al crear el producto. Por favor, inténtalo de nuevo.",
+                icon: "error",
+                confirmButtonText: "Aceptar",
+            });
+        }
     };
 
     return (
         <AdminLayout>
             <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
-                <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide relative text-center">
-                    <span className="relative inline-block">
-                        <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-500 rounded-lg"></span>
-                        <span className="relative text-shadow-lg">
-                            Crear nuevo producto
-                        </span>
-                    </span>
+                <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide text-center">
+                    Crear Nuevo Producto
                 </h1>
             </div>
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto"
+                encType="multipart/form-data"
             >
+                <div className="mb-4">
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Foto
+                    </label>
+                    <input
+                        type="file"
+                        name="imagen"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                    />
+                    {errors.imagen && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.imagen}
+                        </p>
+                    )}
+                </div>
+
                 <div className="mb-4">
                     <label className="block text-gray-700 font-semibold mb-2">
                         Nombre
@@ -48,6 +160,11 @@ export default function ProductoCrear() {
                         className="w-full border border-gray-300 rounded px-3 py-2"
                         required
                     />
+                    {errors.nombre && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.nombre}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -60,6 +177,11 @@ export default function ProductoCrear() {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded px-3 py-2"
                     />
+                    {errors.descripcion && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.descripcion}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -74,6 +196,11 @@ export default function ProductoCrear() {
                         className="w-full border border-gray-300 rounded px-3 py-2"
                         required
                     />
+                    {errors.precio && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.precio}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -88,6 +215,11 @@ export default function ProductoCrear() {
                         className="w-full border border-gray-300 rounded px-3 py-2"
                         required
                     />
+                    {errors.stock && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.stock}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex justify-between mt-6">

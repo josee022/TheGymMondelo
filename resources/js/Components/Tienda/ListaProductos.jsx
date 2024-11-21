@@ -76,16 +76,32 @@ export default function ListaProductos({ productos, agregarAlCarrito }) {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
                         >
+                            {/* Imagen del producto */}
+                            <div className="mb-4">
+                                <img
+                                    src={
+                                        producto.imagen
+                                            ? `/images/${producto.imagen}`
+                                            : "/images/default-product.png"
+                                    }
+                                    alt={producto.nombre}
+                                    className="w-full h-48 object-cover rounded-md"
+                                />
+                            </div>
+                            {/* Nombre del producto */}
                             <h3 className="text-2xl font-bold text-lime-400 mb-4">
                                 {producto.nombre}
                             </h3>
+                            {/* Descripción del producto */}
                             <p className="text-gray-400 mb-4">
                                 {producto.descripcion}
                             </p>
+                            {/* Precio del producto */}
                             <p className="text-lime-400 mb-4">
                                 Precio: {parseFloat(producto.precio).toFixed(2)}{" "}
                                 €
                             </p>
+                            {/* Botón para añadir al carrito */}
                             <button
                                 className="bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600 transition-colors duration-300"
                                 onClick={() => agregarAlCarrito(producto.id)}

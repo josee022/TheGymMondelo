@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -107,24 +108,37 @@ class ProfileController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
+
     public function update(Request $request): RedirectResponse
     {
-        // Validar los datos del formulario
         $request->validate([
-            'name' => 'required|string|max:255', // El nombre es obligatorio, debe ser una cadena de texto y no superar los 255 caracteres
-            'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id, // El email es obligatorio, debe ser único (excepto el actual del usuario)
-            'fecha_nacimiento' => 'nullable|date', // La fecha de nacimiento es opcional, debe ser una fecha válida
-            'sexo' => 'nullable|string|in:Masculino,Femenino,Otro', // El sexo es opcional, debe ser una de las opciones permitidas
-            'altura' => 'nullable|numeric', // La altura es opcional, debe ser un valor numérico
-            'peso' => 'nullable|numeric', // El peso es opcional, debe ser un valor numérico
-            'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo', // El nivel de actividad es opcional, debe ser una de las opciones permitidas
-            'biografia' => 'nullable|string|max:255', // La biografía es opcional, debe ser una cadena de texto y no superar los 255 caracteres
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $request->user()->id,
+            'fecha_nacimiento' => 'nullable|date',
+            'sexo' => 'nullable|string|in:Masculino,Femenino,Otro',
+            'altura' => 'nullable|numeric',
+            'peso' => 'nullable|numeric',
+            'nivel_actividad' => 'nullable|string|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
+            'biografia' => 'nullable|string|max:255',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        // Obtener el usuario autenticado
         $user = $request->user();
 
-        // Rellenar los datos del usuario con la información recibida del formulario
+        // Manejar la foto de perfil
+        if ($request->hasFile('foto_perfil')) {
+            $fotoPerfil = $request->file('foto_perfil');
+            $filename = time() . '_' . $fotoPerfil->getClientOriginalName();
+            $fotoPerfil->move(public_path('fotos_perfil'), $filename);
+
+            // Eliminar la foto anterior si existe
+            if ($user->foto_perfil && file_exists(public_path('fotos_perfil/' . $user->foto_perfil))) {
+                unlink(public_path('fotos_perfil/' . $user->foto_perfil));
+            }
+
+            $user->foto_perfil = $filename;
+        }
+
         $user->fill($request->only([
             'name',
             'email',
@@ -136,16 +150,13 @@ class ProfileController extends Controller
             'biografia',
         ]));
 
-        // Si el email ha sido modificado, anula la verificación del email
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // Guardar los cambios en la base de datos
         $user->save();
 
-        // Redireccionar al usuario al dashboard después de actualizar el perfil
-        return Redirect::route('dashboard');
+        return Redirect::route('dashboard')->with('success', 'Perfil actualizado correctamente.');
     }
 
     /**

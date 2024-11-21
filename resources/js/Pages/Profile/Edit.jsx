@@ -1,182 +1,305 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'; // Importa el layout para usuarios autenticados
-import { Head, useForm } from '@inertiajs/react'; // Importa los componentes necesarios de InertiaJS
-import InputLabel from '@/Components/InputLabel'; // Importa el componente para las etiquetas de entrada
-import TextInput from '@/Components/TextInput'; // Importa el componente para los campos de texto
-import PrimaryButton from '@/Components/PrimaryButton'; // Importa el componente para el botón primario
-import InputError from '@/Components/InputError'; // Importa el componente para mostrar errores de entrada
-import Footer from '@/Components/Footer'; // Importa el componente para el pie de página
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router, useForm } from "@inertiajs/react";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import PrimaryButton from "@/Components/PrimaryButton";
+import InputError from "@/Components/InputError";
+import Footer from "@/Components/Footer";
+import React, { useState } from "react";
 
 export default function Edit({ user }) {
-    // Inicializa el formulario con los datos del usuario
-    const { data, setData, patch, processing, errors } = useForm({
-        name: user.name || '', // Nombre del usuario
-        email: user.email || '', // Correo electrónico del usuario
-        biografia: user.biografia || '', // Biografía del usuario
-        fecha_nacimiento: user.fecha_nacimiento || '', // Fecha de nacimiento del usuario
-        sexo: user.sexo || '', // Sexo del usuario
-        altura: user.altura || '', // Altura del usuario
-        peso: user.peso || '', // Peso del usuario
-        nivel_actividad: user.nivel_actividad || '', // Nivel de actividad del usuario
+    const { data, setData, errors } = useForm({
+        name: user.name || "",
+        email: user.email || "",
+        biografia: user.biografia || "",
+        fecha_nacimiento: user.fecha_nacimiento || "",
+        sexo: user.sexo || "",
+        altura: user.altura || "",
+        peso: user.peso || "",
+        nivel_actividad: user.nivel_actividad || "",
+        foto_perfil: null,
     });
 
-    // Función para manejar el envío del formulario
-    const submit = (e) => {
-        e.preventDefault(); // Previene la acción por defecto del formulario
-        patch(route('profile.update')); // Envía los datos del formulario al servidor usando el método PATCH
+    const [preview, setPreview] = useState(
+        user.foto_perfil ? `/fotos_perfil/${user.foto_perfil}` : null
+    );
+
+    const [isProcessing, setIsProcessing] = useState(false); // Declaramos el estado isProcessing
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setData("foto_perfil", file);
+
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const submit = async (e) => {
+        e.preventDefault();
+        setIsProcessing(true); // Activar el estado de procesamiento
+
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("email", data.email);
+        formData.append("biografia", data.biografia);
+        formData.append("fecha_nacimiento", data.fecha_nacimiento);
+        formData.append("sexo", data.sexo);
+        formData.append("altura", data.altura);
+        formData.append("peso", data.peso);
+        formData.append("nivel_actividad", data.nivel_actividad);
+
+        if (data.foto_perfil) {
+            formData.append("foto_perfil", data.foto_perfil);
+        }
+
+        try {
+            await router.post(route("profile.update"), formData, {
+                forceFormData: true,
+            });
+        } catch (error) {
+            console.error("Error al actualizar el perfil:", error);
+        }
     };
 
     return (
         <AuthenticatedLayout
-            user={user} // Pasa el objeto de usuario al layout autenticado
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edición del perfil de usuario : </h2>} // Encabezado del panel de edición
+            user={user}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Editar Perfil
+                </h2>
+            }
         >
             <Head title="Editar perfil" />
-
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
-                {/* Contenedor principal */}
-                <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-                    {/* Encabezado del formulario */}
-                    <div className="text-center mb-6">
-                        <h1 className="text-3xl font-bold text-gray-800 mb-2 relative">
-                            <span className="relative inline-block">
-                                <span className="absolute inset-x-0 bottom-0 h-1 bg-[#a3e635]"></span>
-                                <span className="relative">Editar Perfil</span>
-                            </span>
-                        </h1>
-                    </div>
-
-                    {/* Formulario de edición */}
-                    <form onSubmit={submit}> {/* Ejecuta la función `submit` cuando se envíe el formulario */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Información Básica */}
+                <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
+                    <form
+                        onSubmit={submit}
+                        encType="multipart/form-data"
+                        className="space-y-6"
+                    >
+                        {/* Imagen de perfil */}
+                        <div className="flex items-center gap-6 mb-4">
                             <div>
-                                <InputLabel htmlFor="name" value="Nombre" /> {/* Etiqueta para el campo de nombre */}
+                                <img
+                                    src={
+                                        preview || "/images/default-avatar.png"
+                                    }
+                                    alt="Vista previa"
+                                    className="w-24 h-24 rounded-full border-4 border-gray-700 shadow-md"
+                                />
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="block w-full text-gray-700"
+                            />
+                            <InputError
+                                message={errors.foto_perfil}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <InputLabel htmlFor="name" value="Nombre" />
                                 <TextInput
                                     id="name"
                                     name="name"
-                                    value={data.name} // Valor del campo de nombre
+                                    value={data.name}
                                     className="mt-1 block w-full"
                                     autoComplete="name"
-                                    onChange={(e) => setData('name', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData("name", e.target.value)
+                                    }
                                     required
                                 />
-                                <InputError message={errors.name} className="mt-2" /> {/* Muestra errores de validación para el campo de nombre */}
+                                <InputError
+                                    message={errors.name}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="email" value="Correo electrónico" /> {/* Etiqueta para el campo de correo electrónico */}
+                                <InputLabel
+                                    htmlFor="email"
+                                    value="Correo electrónico"
+                                />
                                 <TextInput
                                     id="email"
                                     type="email"
                                     name="email"
-                                    value={data.email} // Valor del campo de correo electrónico
+                                    value={data.email}
                                     className="mt-1 block w-full bg-gray-200"
                                     autoComplete="email"
-                                    readOnly // Campo de correo electrónico solo de lectura
+                                    readOnly
                                 />
-                                <InputError message={errors.email} className="mt-2" /> {/* Muestra errores de validación para el campo de correo electrónico */}
+                                <InputError
+                                    message={errors.email}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div className="col-span-2">
-                                <InputLabel htmlFor="biografia" value="Biografía" /> {/* Etiqueta para el campo de biografía */}
+                                <InputLabel
+                                    htmlFor="biografia"
+                                    value="Biografía"
+                                />
                                 <TextInput
                                     id="biografia"
                                     name="biografia"
-                                    value={data.biografia} // Valor del campo de biografía
+                                    value={data.biografia}
                                     className="mt-1 block w-full"
                                     autoComplete="biografia"
-                                    onChange={(e) => setData('biografia', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData("biografia", e.target.value)
+                                    }
                                 />
-                                <InputError message={errors.biografia} className="mt-2" /> {/* Muestra errores de validación para el campo de biografía */}
+                                <InputError
+                                    message={errors.biografia}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="fecha_nacimiento" value="Fecha de nacimiento" /> {/* Etiqueta para el campo de fecha de nacimiento */}
+                                <InputLabel
+                                    htmlFor="fecha_nacimiento"
+                                    value="Fecha de nacimiento"
+                                />
                                 <TextInput
                                     id="fecha_nacimiento"
                                     type="date"
                                     name="fecha_nacimiento"
-                                    value={data.fecha_nacimiento} // Valor del campo de fecha de nacimiento
+                                    value={data.fecha_nacimiento}
                                     className="mt-1 block w-full"
-                                    onChange={(e) => setData('fecha_nacimiento', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData(
+                                            "fecha_nacimiento",
+                                            e.target.value
+                                        )
+                                    }
                                 />
-                                <InputError message={errors.fecha_nacimiento} className="mt-2" /> {/* Muestra errores de validación para el campo de fecha de nacimiento */}
+                                <InputError
+                                    message={errors.fecha_nacimiento}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="sexo" value="Sexo" /> {/* Etiqueta para el campo de sexo */}
+                                <InputLabel htmlFor="sexo" value="Sexo" />
                                 <select
                                     id="sexo"
                                     name="sexo"
-                                    value={data.sexo} // Valor del campo de sexo
+                                    value={data.sexo}
                                     className="mt-1 block w-full px-3 py-2 border rounded-md bg-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a3e635]"
-                                    onChange={(e) => setData('sexo', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData("sexo", e.target.value)
+                                    }
                                 >
                                     <option value="Masculino">Masculino</option>
                                     <option value="Femenino">Femenino</option>
                                     <option value="Otro">Otro</option>
                                 </select>
-                                <InputError message={errors.sexo} className="mt-2" /> {/* Muestra errores de validación para el campo de sexo */}
+                                <InputError
+                                    message={errors.sexo}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="altura" value="Altura (cm)" /> {/* Etiqueta para el campo de altura */}
+                                <InputLabel
+                                    htmlFor="altura"
+                                    value="Altura (cm)"
+                                />
                                 <TextInput
                                     id="altura"
                                     type="number"
                                     name="altura"
-                                    value={data.altura} // Valor del campo de altura
+                                    value={data.altura}
                                     className="mt-1 block w-full"
-                                    onChange={(e) => setData('altura', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData("altura", e.target.value)
+                                    }
                                 />
-                                <InputError message={errors.altura} className="mt-2" /> {/* Muestra errores de validación para el campo de altura */}
+                                <InputError
+                                    message={errors.altura}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="peso" value="Peso (kg)" /> {/* Etiqueta para el campo de peso */}
+                                <InputLabel htmlFor="peso" value="Peso (kg)" />
                                 <TextInput
                                     id="peso"
                                     type="number"
                                     name="peso"
-                                    value={data.peso} // Valor del campo de peso
+                                    value={data.peso}
                                     className="mt-1 block w-full"
-                                    onChange={(e) => setData('peso', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData("peso", e.target.value)
+                                    }
                                 />
-                                <InputError message={errors.peso} className="mt-2" /> {/* Muestra errores de validación para el campo de peso */}
+                                <InputError
+                                    message={errors.peso}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <div className="col-span-2">
-                                <InputLabel htmlFor="nivel_actividad" value="Nivel de actividad" /> {/* Etiqueta para el campo de nivel de actividad */}
+                                <InputLabel
+                                    htmlFor="nivel_actividad"
+                                    value="Nivel de actividad"
+                                />
                                 <select
                                     id="nivel_actividad"
                                     name="nivel_actividad"
-                                    value={data.nivel_actividad} // Valor del campo de nivel de actividad
+                                    value={data.nivel_actividad}
                                     className="mt-1 block w-full px-3 py-2 border rounded-md bg-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a3e635]"
-                                    onChange={(e) => setData('nivel_actividad', e.target.value)} // Actualiza el valor en el estado
+                                    onChange={(e) =>
+                                        setData(
+                                            "nivel_actividad",
+                                            e.target.value
+                                        )
+                                    }
                                 >
-                                    <option value="Sedentario">Sedentario</option>
+                                    <option value="Sedentario">
+                                        Sedentario
+                                    </option>
                                     <option value="Ligero">Ligero</option>
                                     <option value="Moderado">Moderado</option>
                                     <option value="Activo">Activo</option>
-                                    <option value="Muy Activo">Muy Activo</option>
+                                    <option value="Muy Activo">
+                                        Muy Activo
+                                    </option>
                                 </select>
-                                <InputError message={errors.nivel_actividad} className="mt-2" /> {/* Muestra errores de validación para el campo de nivel de actividad */}
+                                <InputError
+                                    message={errors.nivel_actividad}
+                                    className="mt-2"
+                                />
                             </div>
                         </div>
 
-                        {/* Botones de acción */}
                         <div className="flex items-center justify-end mt-6 gap-4">
-                            <a href="/dashboard" className="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-[#a3e635]">
+                            <a
+                                href="/dashboard"
+                                className="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-[#a3e635]"
+                            >
                                 Volver
                             </a>
-                            <PrimaryButton className="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-[#a3e635]" disabled={processing}>
-                                Guardar cambios
+                            <PrimaryButton
+                                className="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-[#a3e635]"
+                                disabled={isProcessing}
+                            >
+                                {isProcessing
+                                    ? "Guardando..."
+                                    : "Guardar cambios"}
                             </PrimaryButton>
                         </div>
                     </form>
                 </div>
             </div>
-            <Footer /> {/* Añade el pie de página */}
+            <Footer />
         </AuthenticatedLayout>
     );
 }

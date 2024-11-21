@@ -65,18 +65,38 @@ class AdminUserController extends Controller
             'nivel_actividad' => 'nullable|in:Sedentario,Ligero,Moderado,Activo,Muy Activo',
             'puntos' => 'nullable|integer|min:0',
             'password' => 'nullable|confirmed|min:6',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $usuario->fill($request->except('password', 'password_confirmation'));
+        // Actualizar campos básicos
+        $usuario->fill($request->except(['password', 'password_confirmation', 'foto_perfil']));
 
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request->password);
         }
 
+        // Manejo de la imagen
+        if ($request->hasFile('foto_perfil')) {
+            // Eliminar la imagen anterior si existe
+            if ($usuario->foto_perfil && file_exists(public_path('fotos_perfil/' . $usuario->foto_perfil))) {
+                unlink(public_path('fotos_perfil/' . $usuario->foto_perfil));
+            }
+
+            // Guardar la nueva imagen
+            $imagen = $request->file('foto_perfil');
+            $imagenPath = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('fotos_perfil'), $imagenPath);
+
+            $usuario->foto_perfil = $imagenPath;
+        }
+
         $usuario->save();
 
-        return redirect()->route('admin.usuarios')->with('success', 'Usuario actualizado correctamente');
+        return redirect()
+            ->route('admin.usuarios')
+            ->with('success', 'Usuario actualizado con éxito.');
     }
+
 
     public function destroy($id)
     {

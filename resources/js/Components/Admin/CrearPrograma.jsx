@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 const CrearPrograma = ({
     selectedPrograma,
@@ -32,17 +33,78 @@ const CrearPrograma = ({
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+    const validateForm = () => {
+        const { nombre, descripcion, duracion, nivel, precio } = form;
+
+        if (!nombre.trim()) {
+            Swal.fire(
+                "Error",
+                "El nombre del programa es obligatorio.",
+                "error"
+            );
+            return false;
+        }
+        if (nombre.trim().length < 3) {
+            Swal.fire(
+                "Error",
+                "El nombre debe tener al menos 3 caracteres.",
+                "error"
+            );
+            return false;
+        }
+
+        if (!descripcion.trim()) {
+            Swal.fire("Error", "La descripción es obligatoria.", "error");
+            return false;
+        }
+        if (descripcion.trim().length < 10) {
+            Swal.fire(
+                "Error",
+                "La descripción debe tener al menos 10 caracteres.",
+                "error"
+            );
+            return false;
+        }
+
+        if (!duracion || isNaN(duracion) || duracion < 1) {
+            Swal.fire(
+                "Error",
+                "La duración debe ser un número mayor o igual a 1 (en semanas).",
+                "error"
+            );
+            return false;
+        }
+
+        if (!["Principiante", "Intermedio", "Avanzado"].includes(nivel)) {
+            Swal.fire("Error", "El nivel seleccionado no es válido.", "error");
+            return false;
+        }
+
+        if (!precio || isNaN(precio) || precio < 0) {
+            Swal.fire(
+                "Error",
+                "El precio debe ser un número mayor o igual a 0.",
+                "error"
+            );
+            return false;
+        }
+
+        return true;
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
-        handleSubmit(form, !!selectedPrograma);
-        setForm({
-            nombre: "",
-            descripcion: "",
-            duracion: "",
-            nivel: "Principiante",
-            precio: "",
-        });
-        setSelectedPrograma(null);
+        if (validateForm()) {
+            handleSubmit(form, !!selectedPrograma);
+            setForm({
+                nombre: "",
+                descripcion: "",
+                duracion: "",
+                nivel: "Principiante",
+                precio: "",
+            });
+            setSelectedPrograma(null);
+        }
     };
 
     const onClear = () => {

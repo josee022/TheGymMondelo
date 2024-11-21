@@ -21,6 +21,15 @@ export default function UsuarioDetalle({ usuario }) {
                     Información General
                 </h2>
                 <div className="text-gray-700 space-y-2 pl-4 text-lg">
+                    <img
+                        src={
+                            usuario.foto_perfil
+                                ? `/fotos_perfil/${usuario.foto_perfil}`
+                                : "/images/default-avatar.png"
+                        }
+                        alt="Foto de perfil"
+                        className="w-20 h-20 rounded-full"
+                    />
                     <p>
                         <strong className="text-gray-800">Nombre:</strong>{" "}
                         {usuario.name}
