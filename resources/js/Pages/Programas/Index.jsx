@@ -10,6 +10,13 @@ import ProgLista from "@/Components/Programas/ProgLista";
 import ProgIconos from "@/Components/Programas/ProgIconos";
 import ProgBeneficios from "@/Components/Programas/ProgBeneficios";
 import Pagination from "@/Components/Pagination";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Inicializa Stripe con la clave pública
+const stripePromise = loadStripe(
+    "pk_test_51QNXpKEJzO4kuy9zOXZXYML8FDTkpqKxXWbBlj4ep3yqQow14nzLCtbdc6X3Pk78zkGMWIMQvKYQKUTQaM1bL6EK00A6v5vnA9"
+);
 
 export default function Programas({
     auth,
@@ -81,11 +88,12 @@ export default function Programas({
                         </div>
                     ) : null}
 
-                    {/* Lista de Programas */}
-                    <ProgLista
-                        programas={programas.data}
-                        usuarioTienePrograma={usuarioTienePrograma}
-                    />
+                    <Elements stripe={stripePromise}>
+                        <ProgLista
+                            programas={programas.data}
+                            usuarioTienePrograma={usuarioTienePrograma}
+                        />
+                    </Elements>
 
                     <Pagination className="mt-6" links={programas.links} />
 

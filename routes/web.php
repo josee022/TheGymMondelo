@@ -96,6 +96,9 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
     Route::post('/programas/{id}/delete', [AdquisicionProgramaController::class, 'delete'])->name('programas.delete');
 
+    // Ruta para pago programas
+    Route::post('/crear-intento-pago-programa', [StripeController::class, 'crearIntentoPagoPrograma'])->middleware('auth');
+
     // Ruta para la vista de contacto
     Route::get('/contacto', function () {
         return Inertia::render('Contacto/Index');
@@ -115,7 +118,7 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
 
     // Ruta para verificar pagos
     Route::post('/crear-intento-pago', [StripeController::class, 'crearIntentoPago'])->middleware('auth');
-    
+
     // Ruta para diario
     Route::get('/diario', [DiarioController::class, 'index'])->name('diario.index');
     Route::post('/diario', [DiarioController::class, 'store'])->name('diario.store');
