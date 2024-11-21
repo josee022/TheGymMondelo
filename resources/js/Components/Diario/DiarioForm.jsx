@@ -15,19 +15,41 @@ export default function DiarioForm() {
         notas: "",
     });
 
-    useEffect(() => {
-        if (errors) {
-            Object.keys(errors).forEach((key) => {
-                toast.error(errors[key], {
-                    icon: "🚫",
-                    style: { backgroundColor: "#ff6161", color: "white" },
-                });
-            });
+    const validateFields = () => {
+        let isValid = true;
+        if (!data.fecha) {
+            toast.error("La fecha es obligatoria. 📅");
+            isValid = false;
         }
-    }, [errors]);
+        if (!data.ejercicio) {
+            toast.error("El ejercicio es obligatorio. 🏋️");
+            isValid = false;
+        }
+        if (!data.series || data.series <= 0) {
+            toast.error("Las series deben ser un número mayor a 0. 🔄");
+            isValid = false;
+        }
+        if (!data.repeticiones || data.repeticiones <= 0) {
+            toast.error("Las repeticiones deben ser un número mayor a 0. 🔢");
+            isValid = false;
+        }
+        if (data.peso && data.peso < 0) {
+            toast.error("El peso no puede ser un número negativo. ⚖️");
+            isValid = false;
+        }
+        if (data.notas && data.notas.length > 200) {
+            toast.error("Las notas no pueden tener más de 200 caracteres. 📝");
+            isValid = false;
+        }
+        return isValid;
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!validateFields()) {
+            return;
+        }
+
         post(route("diario.store"), {
             onSuccess: () => {
                 reset();
@@ -109,7 +131,6 @@ export default function DiarioForm() {
                 </div>
             </div>
 
-            {/* Campos de series, repeticiones, peso y notas (sin cambios) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 <div>
                     <label className="block text-lg font-semibold mb-2">
@@ -150,7 +171,6 @@ export default function DiarioForm() {
                 </div>
             </div>
 
-            {/* Campo de notas (sin cambios) */}
             <div>
                 <label className="block text-lg font-semibold mb-2">
                     📝 Notas

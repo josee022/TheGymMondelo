@@ -38,20 +38,37 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
             capacidad,
         } = form;
 
-        if (
-            !nombre ||
-            !descripcion ||
-            !fecha ||
-            !hora_inicio ||
-            !hora_fin ||
-            !entrenador_id ||
-            !capacidad
-        ) {
+        // Validar campos vacíos
+        if (!nombre.trim()) {
             Swal.fire(
                 "Error",
-                "Todos los campos deben estar completos para crear una clase.",
+                "El nombre de la clase es obligatorio.",
                 "error"
             );
+            return false;
+        }
+        if (nombre.length < 3) {
+            Swal.fire(
+                "Error",
+                "El nombre debe tener al menos 3 caracteres.",
+                "error"
+            );
+            return false;
+        }
+        if (!descripcion.trim()) {
+            Swal.fire("Error", "La descripción es obligatoria.", "error");
+            return false;
+        }
+        if (descripcion.length < 10) {
+            Swal.fire(
+                "Error",
+                "La descripción debe tener al menos 10 caracteres.",
+                "error"
+            );
+            return false;
+        }
+        if (!fecha) {
+            Swal.fire("Error", "La fecha es obligatoria.", "error");
             return false;
         }
 
@@ -59,9 +76,41 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
         const selectedDate = new Date(fecha);
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
-
         if (selectedDate <= currentDate) {
             Swal.fire("Error", "La fecha debe ser una fecha futura.", "error");
+            return false;
+        }
+
+        if (!hora_inicio) {
+            Swal.fire("Error", "La hora de inicio es obligatoria.", "error");
+            return false;
+        }
+        if (!hora_fin) {
+            Swal.fire("Error", "La hora de fin es obligatoria.", "error");
+            return false;
+        }
+
+        // Validar que la hora de fin sea posterior a la hora de inicio
+        if (hora_inicio >= hora_fin) {
+            Swal.fire(
+                "Error",
+                "La hora de fin debe ser posterior a la hora de inicio.",
+                "error"
+            );
+            return false;
+        }
+
+        if (!entrenador_id) {
+            Swal.fire("Error", "Debes seleccionar un entrenador.", "error");
+            return false;
+        }
+
+        if (!capacidad || capacidad <= 0) {
+            Swal.fire(
+                "Error",
+                "La capacidad debe ser un número mayor o igual a 1.",
+                "error"
+            );
             return false;
         }
 

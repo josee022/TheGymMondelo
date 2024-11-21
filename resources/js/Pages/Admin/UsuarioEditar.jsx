@@ -37,8 +37,52 @@ export default function UsuarioEditar({ usuario }) {
         }
     };
 
+    const validateFields = () => {
+        if (!formData.name.trim()) {
+            Swal.fire("Error", "El nombre es obligatorio.", "error");
+            return false;
+        }
+        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+            Swal.fire("Error", "El email no es válido.", "error");
+            return false;
+        }
+        if (formData.password && formData.password.length < 6) {
+            Swal.fire(
+                "Error",
+                "La contraseña debe tener al menos 6 caracteres.",
+                "error"
+            );
+            return false;
+        }
+        if (
+            formData.password &&
+            formData.password !== formData.password_confirmation
+        ) {
+            Swal.fire("Error", "Las contraseñas no coinciden.", "error");
+            return false;
+        }
+        if (
+            formData.altura &&
+            (formData.altura <= 0 || formData.altura > 250)
+        ) {
+            Swal.fire(
+                "Error",
+                "La altura debe estar entre 1 y 250 cm.",
+                "error"
+            );
+            return false;
+        }
+        if (formData.peso && (formData.peso <= 0 || formData.peso > 300)) {
+            Swal.fire("Error", "El peso debe estar entre 1 y 300 kg.", "error");
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateFields()) return;
 
         const form = new FormData();
         form.append("name", formData.name);
@@ -62,7 +106,6 @@ export default function UsuarioEditar({ usuario }) {
             form.append("foto_perfil", formData.foto_perfil);
         }
 
-        // Incluye el método PUT explícitamente
         form.append("_method", "PUT");
 
         try {
@@ -104,18 +147,19 @@ export default function UsuarioEditar({ usuario }) {
 
     return (
         <AdminLayout>
-            <div className="bg-gray-100 shadow-lg rounded-lg p-6 mb-8">
-                <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide text-center">
+            <div className="bg-gray-100 shadow-lg rounded-lg p-4 mb-4">
+                <h1 className="text-2xl font-extrabold text-gray-800 text-center">
                     Editar Usuario
                 </h1>
             </div>
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto"
+                className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto grid grid-cols-2 gap-4"
                 encType="multipart/form-data"
             >
-                <div className="mb-4">
-                    <label className="block text-gray-700 font-semibold mb-2">
+                {/* Foto de Perfil */}
+                <div className="col-span-2 flex flex-col items-center">
+                    <label className="text-gray-700 font-semibold mb-2">
                         Foto de Perfil
                     </label>
                     <input
@@ -123,7 +167,7 @@ export default function UsuarioEditar({ usuario }) {
                         name="foto_perfil"
                         accept="image/*"
                         onChange={handleImageChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        className="border border-gray-300 rounded px-3 py-2"
                     />
                     {preview && (
                         <img
@@ -134,7 +178,8 @@ export default function UsuarioEditar({ usuario }) {
                     )}
                 </div>
 
-                <div className="mb-4">
+                {/* Campos Básicos */}
+                <div>
                     <label className="block text-gray-700 font-semibold mb-2">
                         Nombre
                     </label>
@@ -147,8 +192,7 @@ export default function UsuarioEditar({ usuario }) {
                         required
                     />
                 </div>
-
-                <div className="mb-4">
+                <div>
                     <label className="block text-gray-700 font-semibold mb-2">
                         Email
                     </label>
@@ -162,7 +206,105 @@ export default function UsuarioEditar({ usuario }) {
                     />
                 </div>
 
-                <div className="flex justify-between mt-6">
+                {/* Información Adicional */}
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Fecha de Nacimiento
+                    </label>
+                    <input
+                        type="date"
+                        name="fecha_nacimiento"
+                        value={formData.fecha_nacimiento}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Sexo
+                    </label>
+                    <select
+                        name="sexo"
+                        value={formData.sexo}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                    >
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Altura (cm)
+                    </label>
+                    <input
+                        type="number"
+                        name="altura"
+                        value={formData.altura}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        step="0.01"
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Peso (kg)
+                    </label>
+                    <input
+                        type="number"
+                        name="peso"
+                        value={formData.peso}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        step="0.01"
+                    />
+                </div>
+
+                <div className="col-span-2">
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Biografía
+                    </label>
+                    <textarea
+                        name="biografia"
+                        value={formData.biografia}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        placeholder="Escribe algo sobre ti"
+                    />
+                </div>
+
+                {/* Contraseña */}
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Contraseña
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        placeholder="Dejar en blanco si no deseas cambiarla"
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                        Confirmar Contraseña
+                    </label>
+                    <input
+                        type="password"
+                        name="password_confirmation"
+                        value={formData.password_confirmation}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        placeholder="Dejar en blanco si no deseas cambiarla"
+                    />
+                </div>
+
+                {/* Botones */}
+                <div className="col-span-2 flex justify-between mt-4">
                     <button
                         type="submit"
                         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition"

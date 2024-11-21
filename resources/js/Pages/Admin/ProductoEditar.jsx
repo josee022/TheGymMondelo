@@ -16,6 +16,8 @@ export default function ProductoEditar({ producto }) {
         producto.imagen ? `/images/${producto.imagen}` : null
     );
 
+    const [errors, setErrors] = useState({});
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -24,13 +26,56 @@ export default function ProductoEditar({ producto }) {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (!file.type.startsWith("image/")) {
+                setErrors({
+                    ...errors,
+                    imagen: "El archivo debe ser una imagen válida.",
+                });
+                return;
+            }
             setFormData({ ...formData, imagen: file });
             setPreview(URL.createObjectURL(file));
+            setErrors({ ...errors, imagen: null });
         }
+    };
+
+    const validateForm = () => {
+        const { nombre, descripcion, precio, stock } = formData;
+        const newErrors = {};
+
+        if (!nombre.trim()) {
+            newErrors.nombre = "El nombre del producto es obligatorio.";
+        } else if (nombre.length < 3) {
+            newErrors.nombre = "El nombre debe tener al menos 3 caracteres.";
+        }
+
+        if (!descripcion.trim()) {
+            newErrors.descripcion =
+                "La descripción del producto es obligatoria.";
+        } else if (descripcion.length < 10) {
+            newErrors.descripcion =
+                "La descripción debe tener al menos 10 caracteres.";
+        }
+
+        if (!precio || isNaN(precio) || precio < 0) {
+            newErrors.precio =
+                "El precio debe ser un número mayor o igual a 0.";
+        }
+
+        if (!stock || isNaN(stock) || stock < 0) {
+            newErrors.stock =
+                "El stock debe ser un número entero mayor o igual a 0.";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) return;
 
         const form = new FormData();
         form.append("nombre", formData.nombre);
@@ -49,7 +94,7 @@ export default function ProductoEditar({ producto }) {
             const response = await fetch(
                 route("admin.productos.update", producto.id),
                 {
-                    method: "POST", // Laravel convertirá esto a PUT gracias a `_method`
+                    method: "POST",
                     body: form,
                     headers: {
                         "X-CSRF-TOKEN": document
@@ -114,6 +159,11 @@ export default function ProductoEditar({ producto }) {
                         onChange={handleImageChange}
                         className="w-full border border-gray-300 rounded px-3 py-2"
                     />
+                    {errors.imagen && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.imagen}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -128,6 +178,11 @@ export default function ProductoEditar({ producto }) {
                         className="w-full border border-gray-300 rounded px-3 py-2"
                         required
                     />
+                    {errors.nombre && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.nombre}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -140,6 +195,11 @@ export default function ProductoEditar({ producto }) {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded px-3 py-2"
                     />
+                    {errors.descripcion && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.descripcion}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -154,6 +214,11 @@ export default function ProductoEditar({ producto }) {
                         className="w-full border border-gray-300 rounded px-3 py-2"
                         required
                     />
+                    {errors.precio && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.precio}
+                        </p>
+                    )}
                 </div>
 
                 <div className="mb-4">
@@ -168,6 +233,11 @@ export default function ProductoEditar({ producto }) {
                         className="w-full border border-gray-300 rounded px-3 py-2"
                         required
                     />
+                    {errors.stock && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.stock}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex justify-between mt-6">

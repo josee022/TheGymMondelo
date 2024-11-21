@@ -22,12 +22,56 @@ export default function ProductoCrear() {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (!file.type.startsWith("image/")) {
+                setErrors({
+                    ...errors,
+                    imagen: "El archivo debe ser una imagen válida.",
+                });
+                return;
+            }
             setFormData({ ...formData, imagen: file });
+            setErrors({ ...errors, imagen: null });
         }
+    };
+
+    const validateForm = () => {
+        const { nombre, descripcion, precio, stock } = formData;
+        const newErrors = {};
+
+        if (!nombre.trim()) {
+            newErrors.nombre = "El nombre del producto es obligatorio.";
+        } else if (nombre.length < 3) {
+            newErrors.nombre = "El nombre debe tener al menos 3 caracteres.";
+        }
+
+        if (!descripcion.trim()) {
+            newErrors.descripcion =
+                "La descripción del producto es obligatoria.";
+        } else if (descripcion.length < 10) {
+            newErrors.descripcion =
+                "La descripción debe tener al menos 10 caracteres.";
+        }
+
+        if (!precio || isNaN(precio) || precio < 0) {
+            newErrors.precio =
+                "El precio debe ser un número mayor o igual a 0.";
+        }
+
+        if (!stock || isNaN(stock) || stock < 0) {
+            newErrors.stock =
+                "El stock debe ser un número entero mayor o igual a 0.";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) return;
+
         const form = new FormData();
         form.append("nombre", formData.nombre);
         form.append("descripcion", formData.descripcion);
