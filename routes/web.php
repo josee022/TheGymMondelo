@@ -25,6 +25,7 @@ use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\ProgramasAdminController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TrainerController;
 use Illuminate\Foundation\Application;
@@ -112,6 +113,9 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     // Ruta para pedidos
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
 
+    // Ruta para verificar pagos
+    Route::post('/crear-intento-pago', [StripeController::class, 'crearIntentoPago'])->middleware('auth');
+    
     // Ruta para diario
     Route::get('/diario', [DiarioController::class, 'index'])->name('diario.index');
     Route::post('/diario', [DiarioController::class, 'store'])->name('diario.store');
@@ -121,6 +125,7 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::get('/diario/export/pdf', [DiarioController::class, 'exportarPDF'])->name('diario.export.pdf');
     Route::get('/diario/export/csv', [DiarioController::class, 'exportarCSV'])->name('diario.export.csv');
     Route::get('/diario/mensaje-motivacional', [DiarioController::class, 'obtenerMensajeMotivacional'])->name('diario.mensaje.motivacional');
+
 });
 
 // Grupo de rutas de administración
