@@ -84,44 +84,72 @@ class DiarioController extends Controller
 
     public function exportarPDF(Request $request, PDF $pdf)
     {
-        // Obtén el valor de la fecha desde el parámetro de consulta
-        $fechaFiltro = $request->query('fecha');
+        $fechaInicio = $request->query('fecha_inicio');
+        $fechaFin = $request->query('fecha_fin');
 
-        // Si hay un filtro de fecha, aplica la condición de fecha
-        $ejercicios = Diario::where('usuario_id', auth()->id())
-            ->when($fechaFiltro, function ($query, $fechaFiltro) {
-                $query->where('fecha', $fechaFiltro);
-            })
-            ->get();
+        // Si no se selecciona un rango, usar la fecha actual
+        if (!$fechaInicio && !$fechaFin) {
+            $fechaInicio = $fechaFin = now()->format('Y-m-d');
+        }
 
-        // Pasa $fechaFiltro a la vista
-        $pdf = $pdf->loadView('exports.diario', compact('ejercicios', 'fechaFiltro'));
+        // Si se selecciona "Exportar todo", ignorar las fechas
+        if ($request->query('exportar_todo')) {
+            $ejercicios = Diario::where('usuario_id', auth()->id())
+                ->orderBy('fecha', 'asc')
+                ->get()
+                ->groupBy('fecha');
+        } else {
+            $ejercicios = Diario::where('usuario_id', auth()->id())
+                ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+                ->orderBy('fecha', 'asc')
+                ->get()
+                ->groupBy('fecha'); // Agrupa los ejercicios por fecha
+        }
+
+        $pdf = $pdf->loadView('exports.diario', compact('ejercicios', 'fechaInicio', 'fechaFin'));
         return $pdf->download('Diario_Ejercicio.pdf');
     }
 
-
     public function exportarCSV(Request $request)
     {
-        $fechaFiltro = $request->query('fecha');
+        $fechaInicio = $request->query('fecha_inicio');
+        $fechaFin = $request->query('fecha_fin');
 
-        $ejercicios = Diario::where('usuario_id', auth()->id())
-            ->when($fechaFiltro, function ($query, $fechaFiltro) {
-                return $query->where('fecha', $fechaFiltro);
-            })
-            ->get();
+        // Si no se selecciona un rango, usar la fecha actual
+        if (!$fechaInicio && !$fechaFin) {
+            $fechaInicio = $fechaFin = now()->format('Y-m-d');
+        }
+
+        // Si se selecciona "Exportar todo", ignorar las fechas
+        if ($request->query('exportar_todo')) {
+            $ejercicios = Diario::where('usuario_id', auth()->id())
+                ->orderBy('fecha', 'asc')
+                ->get()
+                ->groupBy('fecha');
+        } else {
+            $ejercicios = Diario::where('usuario_id', auth()->id())
+                ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+                ->orderBy('fecha', 'asc')
+                ->get()
+                ->groupBy('fecha'); // Agrupa los ejercicios por fecha
+        }
 
         $csv = Writer::createFromFileObject(new SplTempFileObject());
         $csv->insertOne(['Fecha', 'Ejercicio', 'Series', 'Repeticiones', 'Peso', 'Notas']);
 
-        foreach ($ejercicios as $ejercicio) {
-            $csv->insertOne([
-                $ejercicio->fecha,
-                $ejercicio->ejercicio,
-                $ejercicio->series,
-                $ejercicio->repeticiones,
-                $ejercicio->peso ?? '-',
-                $ejercicio->notas ?? '-',
-            ]);
+        foreach ($ejercicios as $fecha => $diaEjercicios) {
+            // Agrega una fila para la fecha
+            $csv->insertOne(["Fecha: $fecha", '', '', '', '', '']);
+            foreach ($diaEjercicios as $ejercicio) {
+                $csv->insertOne([
+                    $ejercicio->fecha,
+                    $ejercicio->ejercicio,
+                    $ejercicio->series,
+                    $ejercicio->repeticiones,
+                    $ejercicio->peso ?? '-',
+                    $ejercicio->notas ?? '-',
+                ]);
+            }
         }
 
         return Response::make($csv->toString(), 200, [
@@ -129,6 +157,8 @@ class DiarioController extends Controller
             'Content-Disposition' => 'attachment; filename="Diario_Ejercicio.csv"',
         ]);
     }
+
+
 
     public function obtenerMensajeMotivacional()
     {
