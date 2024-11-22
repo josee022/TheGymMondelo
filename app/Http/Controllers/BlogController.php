@@ -27,19 +27,29 @@ class BlogController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $user = auth()->user(); // Obtiene el usuario actualmente autenticado.
-        $isEntrenador = $user->entrenador()->exists(); // Verifica si el usuario es un entrenador.
-        $blogs = Blog::with('autor')->orderBy('fecha_publicacion', 'desc')->paginate(2); // Obtiene los blogs paginados, ordenados por fecha de publicación.
+        $user = auth()->user();
+        $isEntrenador = $user->entrenador()->exists();
 
-        // Retorna la vista de creación de blogs con la información del usuario y los blogs.
+        $search = $request->input('search'); // Capturar el término de búsqueda
+
+        $blogs = Blog::with('autor')
+            ->when($search, function ($query, $search) {
+                $query->where('titulo', 'like', '%' . $search . '%'); // Filtrar por título
+            })
+            ->orderBy('fecha_publicacion', 'desc')
+            ->paginate(2); // Asegurarse de que la paginación funcione correctamente
+
         return Inertia::render('Blogs/Create', [
             'auth' => ['user' => $user],
             'isEntrenador' => $isEntrenador,
             'blogs' => $blogs,
+            'search' => $search, // Enviar el término de búsqueda actual a la vista
         ]);
     }
+
+
 
     /**
      * Store a newly created resource in storage.
