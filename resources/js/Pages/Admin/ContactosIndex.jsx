@@ -9,12 +9,17 @@ import Swal from "sweetalert2";
 export default function ContactosIndex({
     contactosNoContestados,
     contactosContestados,
-    search,
+    emailsDistintos,
+    searchAsunto,
+    searchEmail,
 }) {
-    const { flash } = usePage().props; // Accede a los mensajes flash
-    const [searchTerm, setSearchTerm] = useState(search || "");
+    const { flash } = usePage().props;
+    const [searchTermAsunto, setSearchTermAsunto] = useState(
+        searchAsunto || ""
+    );
+    const [selectedEmail, setSelectedEmail] = useState(searchEmail || "");
 
-    // Mostrar SweetAlert si hay un mensaje de éxito
+    // Mostrar mensaje flash de éxito
     useEffect(() => {
         if (flash.success) {
             Swal.fire({
@@ -26,12 +31,25 @@ export default function ContactosIndex({
         }
     }, [flash.success]);
 
-    // Manejar cambios en el campo de búsqueda
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
+    // Manejar búsqueda por asunto
+    const handleSearchAsuntoChange = (e) => {
+        setSearchTermAsunto(e.target.value);
         router.get(
             route("admin.contactos.index"),
-            { search: e.target.value },
+            { search_asunto: e.target.value, search_email: selectedEmail },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
+    // Manejar selección de correo
+    const handleEmailChange = (e) => {
+        setSelectedEmail(e.target.value);
+        router.get(
+            route("admin.contactos.index"),
+            { search_asunto: searchTermAsunto, search_email: e.target.value },
             {
                 preserveState: true,
                 preserveScroll: true,
@@ -53,14 +71,28 @@ export default function ContactosIndex({
                     </h1>
                 </div>
 
-                {/* Campo de búsqueda */}
+                {/* Campo de búsqueda por asunto */}
                 <input
                     type="text"
                     placeholder="Buscar por asunto..."
                     className="w-full p-2 mb-4 border border-gray-300 rounded"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
+                    value={searchTermAsunto}
+                    onChange={handleSearchAsuntoChange}
                 />
+
+                {/* Menú desplegable para seleccionar correos */}
+                <select
+                    className="w-full p-2 mb-4 border border-gray-300 rounded"
+                    value={selectedEmail}
+                    onChange={handleEmailChange}
+                >
+                    <option value="">Filtrar por correo...</option>
+                    {emailsDistintos.map((emailObj, index) => (
+                        <option key={index} value={emailObj.email}>
+                            {emailObj.email}
+                        </option>
+                    ))}
+                </select>
 
                 {/* Tabla de Mensajes No Contestados */}
                 {contactosNoContestados && contactosNoContestados.data && (
@@ -71,16 +103,15 @@ export default function ContactosIndex({
                         <div className="mt-6">
                             <Pagination
                                 links={contactosNoContestados.links}
-                                params={{ search: searchTerm }}
+                                params={{
+                                    search_asunto: searchTermAsunto,
+                                    search_email: selectedEmail,
+                                }}
                             />
                         </div>
                     </>
                 )}
-
                 <br />
-                <br />
-                <br />
-
                 {/* Tabla de Mensajes Contestados */}
                 {contactosContestados && contactosContestados.data && (
                     <>
@@ -90,7 +121,10 @@ export default function ContactosIndex({
                         <div className="mt-6">
                             <Pagination
                                 links={contactosContestados.links}
-                                params={{ search: searchTerm }}
+                                params={{
+                                    search_asunto: searchTermAsunto,
+                                    search_email: selectedEmail,
+                                }}
                             />
                         </div>
                     </>
