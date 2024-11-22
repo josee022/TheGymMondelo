@@ -1,13 +1,26 @@
 import React, { useState } from "react";
+import { router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "@/Components/Footer";
 import FormForo from "@/Components/Foros/FormForo";
 import ListaForo from "@/Components/Foros/ListaForo";
 import Pagination from "@/Components/Pagination";
 
-export default function CrearForo({ auth, foros }) {
+export default function CrearForo({ auth, foros, search }) {
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Estado para el término de búsqueda
     const [editingForoId, setEditingForoId] = useState(null);
-    const [editingCommentId, setEditingCommentId] = useState(null);
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Actualizar el término de búsqueda
+        router.get(
+            route("foros.index"),
+            { search: e.target.value },
+            {
+                preserveState: true, // Mantener estado de paginación
+                preserveScroll: true, // Evitar que el scroll suba al filtrar
+            }
+        );
+    };
 
     const handleEdit = (foro) => {
         setEditingForoId(foro.id);
@@ -45,6 +58,17 @@ export default function CrearForo({ auth, foros }) {
                 </div>
 
                 <div className="w-full max-w-4xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
+                    {/* Campo de búsqueda */}
+                    <div className="mb-6">
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            placeholder="Buscar foros por título..."
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-lime-500"
+                        />
+                    </div>
+
                     <h2 className="text-2xl font-bold text-gray-800 mb-4 relative">
                         <span className="relative inline-block">
                             <span className="absolute inset-x-0 bottom-0 h-1 bg-lime-400"></span>
@@ -57,7 +81,6 @@ export default function CrearForo({ auth, foros }) {
                         foros={foros.data}
                         auth={auth}
                         editingForoId={editingForoId}
-                        editingCommentId={editingCommentId}
                         handleEdit={handleEdit}
                         handleCancelEdit={handleCancelEdit}
                         formatFechaForo={formatFechaForo}
