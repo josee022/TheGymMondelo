@@ -89,15 +89,16 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::resource('suscripciones', SuscripcionController::class)->only(['index', 'store', 'destroy']);
     Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
 
+    // Rutas para pagos de Dietas
+    Route::post('/stripe/crear-intento-pago-dieta', [StripeController::class, 'crearIntentoPagoDieta']);
     // Rutas para dietas
-    Route::resource('dietas', DietaController::class);
+    Route::resource('dietas', DietaController::class)->only(['index', 'store', 'destroy']);
     Route::post('/dietas/{id}/delete', [DietaController::class, 'delete'])->name('dietas.delete');
 
     // Rutas para programas
     Route::resource('programas', ProgramaController::class);
     Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
     Route::post('/programas/{id}/delete', [AdquisicionProgramaController::class, 'delete'])->name('programas.delete');
-
     // Ruta para pago programas
     Route::post('/crear-intento-pago-programa', [StripeController::class, 'crearIntentoPagoPrograma'])->middleware('auth');
 
@@ -114,10 +115,8 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::post('/carrito/actualizar', [PedidoController::class, 'actualizarCarrito']);
     Route::post('/carrito/eliminar', [PedidoController::class, 'eliminarDelCarrito']);
     Route::post('/carrito/pedido', [PedidoController::class, 'realizarPedido']);
-
     // Ruta para pedidos
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
-
     // Ruta para verificar pagos
     Route::post('/crear-intento-pago', [StripeController::class, 'crearIntentoPago'])->middleware('auth');
 
