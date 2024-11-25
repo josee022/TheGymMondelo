@@ -83,9 +83,13 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::patch('comentarios/{comentarioForo}', [ComentarioForoController::class, 'update'])->name('comentarios.update');
     Route::delete('comentarios/{comentarioForo}', [ComentarioForoController::class, 'destroy'])->name('comentarios.destroy');
 
+    // Rutas para Stripe
+    Route::post('/stripe/crear-intento-pago-suscripcion', [StripeController::class, 'crearIntentoPagoSuscripcion']);
     // Rutas para suscripciones
-    Route::resource('suscripciones', SuscripcionController::class);
-    Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
+    Route::resource('suscripciones', SuscripcionController::class)
+        ->only(['index', 'store', 'destroy']);
+    Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])
+        ->name('suscripciones.disable');
 
     // Rutas para dietas
     Route::resource('dietas', DietaController::class);
@@ -128,7 +132,6 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::get('/diario/export/pdf', [DiarioController::class, 'exportarPDF'])->name('diario.export.pdf');
     Route::get('/diario/export/csv', [DiarioController::class, 'exportarCSV'])->name('diario.export.csv');
     Route::get('/diario/mensaje-motivacional', [DiarioController::class, 'obtenerMensajeMotivacional'])->name('diario.mensaje.motivacional');
-
 });
 
 // Grupo de rutas de administración
