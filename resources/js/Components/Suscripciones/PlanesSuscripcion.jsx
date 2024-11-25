@@ -58,8 +58,8 @@ export default function PlanesSuscripcion({
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 text-gray-900">
                         <PlanCard
                             tipo="Mensual"
-                            precio={`€${precioMensual}/mes`}
-                            pago={`€${precioMensual} al mes`}
+                            precio={`${precioMensual}/mes €`}
+                            pago={`${precioMensual} al mes €`}
                             regalo="🎁 5 DÍAS GRATIS 🎁"
                             abrirModal={abrirModal}
                             beneficios={[
@@ -73,11 +73,11 @@ export default function PlanesSuscripcion({
                         />
                         <PlanCard
                             tipo="Semestral"
-                            precio={`€${precioSemestral}/mes`}
-                            pago={`€${pagoSemestral} cada 6 meses`}
+                            precio={`${precioSemestral}/mes €`}
+                            pago={`${pagoSemestral} cada 6 meses €`}
                             descuento="-15% de descuento 🎉"
                             regalo="🎁 5 DÍAS GRATIS 🎁"
-                            precioTachado="€25/mes"
+                            precioTachado="25/mes €"
                             abrirModal={abrirModal}
                             beneficios={[
                                 "✅ Acceso ilimitado al gimnasio 🏋️‍♂️",
@@ -90,11 +90,11 @@ export default function PlanesSuscripcion({
                         />
                         <PlanCard
                             tipo="Anual"
-                            precio={`€${precioAnual}/mes`}
-                            pago={`€${pagoAnual} al año`}
+                            precio={`${precioAnual}/mes €`}
+                            pago={`${pagoAnual} al año €`}
                             descuento="-40% de descuento 🎉"
                             regalo="🎁 5 DÍAS GRATIS 🎁"
-                            precioTachado="€25/mes"
+                            precioTachado="25/mes €"
                             abrirModal={abrirModal}
                             beneficios={[
                                 "✅ Acceso ilimitado al gimnasio 🏋️‍♂️",
