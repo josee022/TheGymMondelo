@@ -83,13 +83,11 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::patch('comentarios/{comentarioForo}', [ComentarioForoController::class, 'update'])->name('comentarios.update');
     Route::delete('comentarios/{comentarioForo}', [ComentarioForoController::class, 'destroy'])->name('comentarios.destroy');
 
-    // Rutas para Stripe
+    // Rutas para pago suscripcion
     Route::post('/stripe/crear-intento-pago-suscripcion', [StripeController::class, 'crearIntentoPagoSuscripcion']);
     // Rutas para suscripciones
-    Route::resource('suscripciones', SuscripcionController::class)
-        ->only(['index', 'store', 'destroy']);
-    Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])
-        ->name('suscripciones.disable');
+    Route::resource('suscripciones', SuscripcionController::class)->only(['index', 'store', 'destroy']);
+    Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
 
     // Rutas para dietas
     Route::resource('dietas', DietaController::class);

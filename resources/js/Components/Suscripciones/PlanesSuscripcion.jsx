@@ -41,6 +41,7 @@ export default function PlanesSuscripcion({
                         </span>
                     </div>
                 )}
+
                 <div className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-xl p-10">
                     <div className="text-center mb-12">
                         <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
@@ -68,6 +69,7 @@ export default function PlanesSuscripcion({
                                 "✅ Pautas básicas de alimentación 🍎",
                                 "✅ Acceso a la comunidad online 🌐",
                             ]}
+                            usuarioTieneSuscripcion={usuarioTieneSuscripcion}
                         />
                         <PlanCard
                             tipo="Semestral"
@@ -84,6 +86,7 @@ export default function PlanesSuscripcion({
                                 "✅ Pautas personalizadas de alimentación 🥑",
                                 "✅ Acceso a la comunidad online 🌐",
                             ]}
+                            usuarioTieneSuscripcion={usuarioTieneSuscripcion}
                         />
                         <PlanCard
                             tipo="Anual"
@@ -101,9 +104,11 @@ export default function PlanesSuscripcion({
                                 "✅ Acceso a eventos exclusivos 🎟️",
                                 "✅ Acceso a la comunidad online 🌐",
                             ]}
+                            usuarioTieneSuscripcion={usuarioTieneSuscripcion}
                         />
                     </div>
                 </div>
+
                 {mostrarModal && (
                     <ModalPago
                         tipo={tipoSeleccionado}
@@ -131,13 +136,34 @@ function PlanCard({
     precioTachado,
     abrirModal,
     beneficios,
+    usuarioTieneSuscripcion,
 }) {
     return (
         <div className="relative bg-gradient-to-b from-gray-100 to-gray-50 p-8 rounded-lg shadow-lg">
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white py-2 px-4 rounded-full shadow-md">
-                {tipo}
+            <div
+                className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${
+                    tipo === "Mensual"
+                        ? "bg-green-500"
+                        : tipo === "Semestral"
+                        ? "bg-yellow-500"
+                        : "bg-blue-500"
+                } text-white py-2 px-4 rounded-full shadow-md`}
+            >
+                {tipo === "Mensual"
+                    ? "🔥 Mensual 🔥"
+                    : tipo === "Semestral"
+                    ? "🌟 Semestral"
+                    : "⭐ Anual ⭐"}
             </div>
-            <p className="text-center text-lg font-bold text-blue-700 mt-8">
+            <p
+                className={`text-center text-lg font-bold ${
+                    tipo === "Mensual"
+                        ? "text-green-700"
+                        : tipo === "Semestral"
+                        ? "text-yellow-700"
+                        : "text-blue-700"
+                } mt-8`}
+            >
                 Pago {tipo}
             </p>
             {descuento && (
@@ -150,18 +176,33 @@ function PlanCard({
             <p className="text-center text-xl font-extrabold text-black mt-4 mb-2">
                 {regalo}
             </p>
+            <p className="text-center text-md text-gray-600">Después:</p>
+            {precioTachado && (
+                <p className="text-center text-3xl font-extrabold text-red-500 line-through mt-2 mb-1">
+                    {precioTachado}
+                </p>
+            )}
             <p className="text-center text-3xl font-extrabold text-black mb-4">
                 {precio}
             </p>
             <p className="text-center text-sm text-gray-600 mb-6">
                 [Pago de {pago}]
             </p>
-            <button
-                onClick={() => abrirModal(tipo)}
-                className="w-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white py-3 px-6 rounded-lg hover:bg-indigo-600 transition-all duration-300"
-            >
-                ¡Suscribirme!
-            </button>
+            {/* Ocultar el botón si el usuario ya tiene una suscripción */}
+            {!usuarioTieneSuscripcion && (
+                <button
+                    onClick={() => abrirModal(tipo)}
+                    className={`relative w-full bg-gradient-to-r ${
+                        tipo === "Mensual"
+                            ? "from-green-400 to-lime-500"
+                            : tipo === "Semestral"
+                            ? "from-yellow-400 to-orange-500"
+                            : "from-blue-400 to-indigo-500"
+                    } text-white py-3 px-6 rounded-lg hover:bg-green-500 transition-all duration-300 font-bold tracking-wide animate-glow`}
+                >
+                    ¡Suscribirme! ✨
+                </button>
+            )}
             <ul className="mt-8 text-gray-800 text-md space-y-3">
                 {beneficios.map((beneficio, index) => (
                     <li key={index} className="border-b border-gray-200 pb-3">
@@ -186,12 +227,10 @@ function ModalPago({ tipo, monto, cerrarModal }) {
         const cardElement = elements.getElement(CardElement);
 
         try {
-            // Obtén el token CSRF de la metaetiqueta
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 ?.getAttribute("content");
 
-            // Crear el intento de pago en el backend
             const response = await fetch(
                 "/stripe/crear-intento-pago-suscripcion",
                 {
@@ -210,7 +249,6 @@ function ModalPago({ tipo, monto, cerrarModal }) {
 
             const { clientSecret } = await response.json();
 
-            // Confirmar el pago en Stripe
             const { error: stripeError } = await stripe.confirmCardPayment(
                 clientSecret,
                 {
@@ -224,7 +262,6 @@ function ModalPago({ tipo, monto, cerrarModal }) {
                 return;
             }
 
-            // Registrar la suscripción en el servidor
             await router.post(
                 route("suscripciones.store"),
                 { tipo },
@@ -232,7 +269,6 @@ function ModalPago({ tipo, monto, cerrarModal }) {
                     onSuccess: () => {
                         setLoading(false);
                         cerrarModal();
-                        alert("¡Suscripción creada con éxito!");
                     },
                     onError: (errors) => {
                         setError(errors);
@@ -252,12 +288,12 @@ function ModalPago({ tipo, monto, cerrarModal }) {
                 <h2 className="text-lg font-bold mb-4">
                     Pagar Suscripción {tipo}
                 </h2>
-                <p className="mb-4">Monto: €{monto}</p>
+                <p className="mb-4">Precio: {monto}€ </p>
                 <form onSubmit={handleSubmit}>
                     <CardElement
                         className="border p-3 rounded mb-4"
                         options={{
-                            hidePostalCode: true, // Elimina el campo del código postal
+                            hidePostalCode: true,
                         }}
                     />
                     {error && <p className="text-red-500">{error}</p>}

@@ -13,13 +13,11 @@ class StripeController extends Controller
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            // Calcular el monto total en centavos
             $monto = $request->total * 100;
 
-            // Crear un PaymentIntent
             $intent = PaymentIntent::create([
                 'amount' => $monto,
-                'currency' => 'usd', // Cambia según tu moneda preferida
+                'currency' => 'usd', 
                 'metadata' => ['user_id' => $request->user()->id],
             ]);
 
@@ -36,12 +34,12 @@ class StripeController extends Controller
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            $monto = $request->monto * 100; // Convertir a centavos
+            $monto = $request->monto * 100;
             $programaId = $request->programa_id;
 
             $intent = PaymentIntent::create([
                 'amount' => $monto,
-                'currency' => 'eur', // Cambia a tu moneda
+                'currency' => 'eur',
                 'payment_method_types' => ['card'],
                 'metadata' => [
                     'user_id' => $request->user()->id,
@@ -60,12 +58,12 @@ class StripeController extends Controller
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            $monto = $request->monto * 100; // Convertir a centavos
+            $monto = $request->monto * 100;
             $tipo = $request->tipo;
 
             $intent = PaymentIntent::create([
                 'amount' => $monto,
-                'currency' => 'eur', // Cambia a tu moneda
+                'currency' => 'eur',
                 'payment_method_types' => ['card'],
                 'metadata' => [
                     'user_id' => $request->user()->id,

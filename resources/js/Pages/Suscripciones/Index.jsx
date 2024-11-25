@@ -50,7 +50,7 @@ export default function Suscripciones({ auth, usuarioTieneSuscripcion }) {
                 pagoSemestral={pagoSemestral}
                 precioAnual={precioAnual}
                 pagoAnual={pagoAnual}
-                usuarioTieneSuscripcion={usuarioTieneSuscripcion} // Pasamos la variable aquí
+                usuarioTieneSuscripcion={usuarioTieneSuscripcion}
             />
 
             <Footer />
