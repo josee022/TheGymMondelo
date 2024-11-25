@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FiClock, FiTrendingUp, FiDollarSign } from "react-icons/fi";
+import { FiClock, FiTrendingUp } from "react-icons/fi";
+import { FaEuroSign } from "react-icons/fa";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -198,7 +199,7 @@ export default function ProgLista({ programas, usuarioTienePrograma }) {
                             <p>Nivel: {programa.nivel}</p>
                         </div>
                         <div className="text-lime-400 flex items-center mb-4">
-                            <FiDollarSign className="mr-2" />
+                            <FaEuroSign className="mr-2" />
                             <p>
                                 Precio: {parseFloat(programa.precio).toFixed(2)}{" "}
                                 €

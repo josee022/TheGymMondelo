@@ -139,7 +139,7 @@ function PlanCard({ plan, abrirModal, usuarioTieneDieta }) {
             <div className="flex items-center justify-center mb-6 text-lg font-semibold text-gray-700">
                 <span>Precio:</span>
                 <span className={`ml-2 text-${plan.color} text-2xl font-bold`}>
-                    €{plan.precio.toFixed(2)}
+                    {plan.precio.toFixed(2)} €
                 </span>
             </div>
             {/* Sección para mostrar detalles del plan */}
