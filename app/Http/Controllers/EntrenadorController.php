@@ -20,8 +20,9 @@ class EntrenadorController extends Controller
      */
     public function index()
     {
-        // Obtiene todos los entrenadores junto con la relación 'usuario'
-        $entrenadores = Entrenador::with('usuario')->get();
+        // Obtiene los entrenadores paginados junto con la relación 'usuario'
+        $entrenadores = Entrenador::with('usuario')->paginate(6);
+
         // Renderiza la vista 'Entrenadores/Index' y pasa los datos de los entrenadores
         return Inertia::render('Entrenadores/Index', [
             'entrenadores' => $entrenadores,
@@ -54,15 +55,9 @@ class EntrenadorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Entrenador $entrenador)
-    {
+    public function edit(Entrenador $entrenador) {}
 
-    }
-
-    public function update(Request $request, Entrenador $entrenador)
-    {
-
-    }
+    public function update(Request $request, Entrenador $entrenador) {}
 
 
     /**
