@@ -11,7 +11,7 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
     const plans = [
         {
             title: "Pérdida de Peso",
-            icon: <FiHeart className="text-green-500" size={32} />,
+            icon: <FiHeart className="text-green-500" size={48} />,
             description:
                 "Plan diseñado para perder peso de forma saludable, sin comprometer tu salud.",
             details: [
@@ -21,12 +21,13 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
                 "Asesoría personalizada semanal.",
             ],
             color: "green-500",
-            bgColor: "bg-green-50",
+            bgColor: "bg-green-100",
             objetivo: "Pérdida de peso",
+            precio: 29.99, // Precio en euros
         },
         {
             title: "Ganancia Muscular",
-            icon: <FiActivity className="text-blue-500" size={32} />,
+            icon: <FiActivity className="text-blue-500" size={48} />,
             description:
                 "Plan ideal para ganar masa muscular y mejorar la fuerza.",
             details: [
@@ -36,12 +37,13 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
                 "Asesoría en suplementos.",
             ],
             color: "blue-500",
-            bgColor: "bg-blue-50",
+            bgColor: "bg-blue-100",
             objetivo: "Ganancia muscular",
+            precio: 34.99, // Precio en euros
         },
         {
             title: "Mejor Rendimiento",
-            icon: <FiTrendingUp className="text-red-500" size={32} />,
+            icon: <FiTrendingUp className="text-red-500" size={48} />,
             description:
                 "Plan diseñado para maximizar el rendimiento deportivo y la resistencia física.",
             details: [
@@ -51,8 +53,9 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
                 "Diseñado para atletas.",
             ],
             color: "red-500",
-            bgColor: "bg-red-50",
+            bgColor: "bg-red-100",
             objetivo: "Mantenimiento",
+            precio: 39.99, // Precio en euros
         },
     ];
 
@@ -71,7 +74,7 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
                 {usuarioTieneDieta && (
                     <div className="absolute top-0 right-0 mt-4 mr-6 p-4 w-56 h-24 bg-gradient-to-r from-purple-700 to-purple-500 text-white rounded-lg shadow-md flex items-center justify-center text-center font-medium">
                         <span className="text-sm">
-                        🔒 Dieta en curso. <br />
+                            🔒 Dieta en curso. <br />
                             Deshabilítala en tu perfil <br />
                             para adquirir una nueva.
                         </span>
@@ -105,6 +108,12 @@ function PlanCard({ plan, handleDieta, usuarioTieneDieta }) {
                 {plan.title}
             </h3>
             <p className="text-gray-600 text-center mb-4">{plan.description}</p>
+            <div className="flex items-center justify-center mb-6 text-lg font-semibold text-gray-700">
+                <span>Precio:</span>
+                <span className={`ml-2 text-${plan.color} text-2xl font-bold`}>
+                    €{plan.precio.toFixed(2)}
+                </span>
+            </div>
             <ul className="text-gray-500 mb-6">
                 {plan.details.map((detail, i) => (
                     <li key={i} className="flex items-center mb-2">
@@ -114,7 +123,6 @@ function PlanCard({ plan, handleDieta, usuarioTieneDieta }) {
                 ))}
             </ul>
             <div className="text-center">
-                {/* Mostrar el botón de adquisición solo si el usuario no tiene una dieta */}
                 {!usuarioTieneDieta && (
                     <button
                         onClick={() =>
