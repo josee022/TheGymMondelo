@@ -28,7 +28,8 @@ const CalculadoraGrasaCorporal = () => {
                 163.205 *
                     Math.log10(
                         circunferenciaCintura +
-                            circunferenciaCadera - circunferenciaCuello
+                            circunferenciaCadera -
+                            circunferenciaCuello
                     ) -
                 97.684 * Math.log10(altura) -
                 78.387;
@@ -50,8 +51,8 @@ const CalculadoraGrasaCorporal = () => {
     };
 
     return (
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-semibold text-center text-lime-400 mb-4">
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs">
+            <h2 className="text-xl font-semibold text-center text-lime-400 mb-4">
                 Calculadora de Grasa Corporal
             </h2>
             <div className="space-y-4">
@@ -102,36 +103,48 @@ const CalculadoraGrasaCorporal = () => {
                 </div>
                 {/* Circunferencia del cuello */}
                 <div>
-                    <label className="block text-lime-400">Circunferencia Cuello (cm)</label>
+                    <label className="block text-lime-400">
+                        Circunferencia Cuello (cm)
+                    </label>
                     <input
                         type="number"
                         value={circunferenciaCuello}
-                        onChange={(e) => setCircunferenciaCuello(e.target.value)}
+                        onChange={(e) =>
+                            setCircunferenciaCuello(e.target.value)
+                        }
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder="Ingrese sus medias de cuello en cm"
+                        placeholder="Ingrese su cuello en cm"
                     />
                 </div>
                 {/* Circunferencia de la cintura */}
                 <div>
-                    <label className="block text-lime-400">Circunferencia Cintura (cm)</label>
+                    <label className="block text-lime-400">
+                        Circunferencia Cintura (cm)
+                    </label>
                     <input
                         type="number"
                         value={circunferenciaCintura}
-                        onChange={(e) => setCircunferenciaCintura(e.target.value)}
+                        onChange={(e) =>
+                            setCircunferenciaCintura(e.target.value)
+                        }
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder="Ingrese sus medidas de cintura en cm"
+                        placeholder="Ingrese su cintura en cm"
                     />
                 </div>
                 {/* Circunferencia de la cadera (solo mujeres) */}
                 {genero === "mujer" && (
                     <div>
-                        <label className="block text-lime-400">Circunferencia Cadera (cm)</label>
+                        <label className="block text-lime-400">
+                            Circunferencia Cadera (cm)
+                        </label>
                         <input
                             type="number"
                             value={circunferenciaCadera}
-                            onChange={(e) => setCircunferenciaCadera(e.target.value)}
+                            onChange={(e) =>
+                                setCircunferenciaCadera(e.target.value)
+                            }
                             className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                            placeholder="Ingrese sus medidas de cadera en cm"
+                            placeholder="Ingrese su cadera en cm"
                         />
                     </div>
                 )}
@@ -142,7 +155,7 @@ const CalculadoraGrasaCorporal = () => {
                     onClick={calcularGrasaCorporal}
                     className="bg-lime-400 text-gray-900 py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-lime-400"
                 >
-                    Calcular Grasa Corporal
+                    Calcular
                 </button>
                 <button
                     onClick={vaciarCampos}
@@ -155,7 +168,8 @@ const CalculadoraGrasaCorporal = () => {
             {grasaCorporal && (
                 <div className="mt-4 text-center text-lime-400 text-xl">
                     <p>
-                        Tu porcentaje de grasa corporal es: <strong>{grasaCorporal}%</strong>
+                        Tu porcentaje de grasa corporal es:{" "}
+                        <strong>{grasaCorporal}%</strong>
                     </p>
                 </div>
             )}

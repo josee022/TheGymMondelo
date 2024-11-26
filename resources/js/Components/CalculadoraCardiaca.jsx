@@ -76,7 +76,7 @@ const CalculadoraFrecuenciaCardiacaObjetivo = () => {
                     onClick={calcularFCObjetivo}
                     className="bg-lime-400 text-gray-900 py-2 px-4 rounded"
                 >
-                    Calcular Frecuencia Cardíaca Objetivo
+                    Calcular
                 </button>
                 <button
                     onClick={vaciarCampos}

@@ -51,7 +51,7 @@ const CalculadoraAguaCorporal = () => {
                         onChange={(e) => setPeso(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
                         aria-label="Peso corporal"
-                        placeholder="Ingrese su peso en kilogramos"
+                        placeholder="Ingrese su peso en kg"
                     />
                 </div>
                 {/* Campo para seleccionar el nivel de actividad */}
@@ -82,7 +82,7 @@ const CalculadoraAguaCorporal = () => {
                     onClick={calcularAgua}
                     className="bg-lime-400 text-gray-900 py-2 px-4 rounded"
                 >
-                    Calcular Agua
+                    Calcular
                 </button>
                 <button
                     onClick={vaciarCampos}

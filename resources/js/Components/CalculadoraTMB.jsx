@@ -89,7 +89,7 @@ const CalculadoraTMB = () => {
                     onClick={calcularTMB}
                     className="bg-lime-400 text-gray-900 py-2 px-4 rounded"
                 >
-                    Calcular TMB
+                    Calcular
                 </button>
                 <button
                     onClick={vaciarCampos}

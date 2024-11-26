@@ -78,13 +78,13 @@ const CalculadoraIMC = () => {
             <div className="mt-4 flex justify-center space-x-4">
                 <button
                     onClick={calcularIMC}
-                    className="bg-lime-400 text-gray-900 py-1 px-3 rounded hover:bg-lime-500 transition transform hover:-translate-y-1 hover:scale-105"
+                    className="bg-lime-400 text-gray-900 py-1 px-3 rounded "
                 >
-                    Calcular IMC
+                    Calcular
                 </button>
                 <button
                     onClick={vaciarCampos}
-                    className="bg-red-500 text-black py-1 px-3 rounded hover:bg-red-500 transition transform hover:-translate-y-1 hover:scale-105"
+                    className="bg-red-500 text-black py-1 px-3 rounded "
                 >
                     Vaciar
                 </button>
