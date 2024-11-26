@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminRespuestaContactoController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CalculadoraController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ClasesAdminController;
@@ -94,6 +95,8 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     // Rutas para dietas
     Route::resource('dietas', DietaController::class)->only(['index', 'store', 'destroy']);
     Route::post('/dietas/{id}/delete', [DietaController::class, 'delete'])->name('dietas.delete');
+    // Ruta para calculadoras
+    Route::get('/calculadoras', [CalculadoraController::class, 'index'])->name('calculadoras.index');
 
     // Rutas para programas
     Route::resource('programas', ProgramaController::class);
