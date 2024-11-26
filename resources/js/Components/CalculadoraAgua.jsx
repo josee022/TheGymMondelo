@@ -94,12 +94,9 @@ const CalculadoraAguaCorporal = () => {
             {/* Mostrar la cantidad de agua recomendada */}
             {aguaRecomendada && (
                 <div className="mt-6 text-center text-lime-400 text-lg font-semibold">
-                    <p>Deberías beber aproximadamente:</p>
-                    <p className="text-2xl font-bold">
-                        {aguaRecomendada} litros
-                    </p>
-                    <p className="mt-2">
-                        al día para mantenerte bien hidratado.
+                    <p>
+                        Deberías beber {aguaRecomendada} litros al día para
+                        mantenerte bien hidratado.
                     </p>
                 </div>
             )}

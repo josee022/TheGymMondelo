@@ -75,6 +75,7 @@ const CalculadoraGrasaCorporal = () => {
                         value={edad}
                         onChange={(e) => setEdad(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese su edad"
                     />
                 </div>
                 {/* Peso */}
@@ -85,6 +86,7 @@ const CalculadoraGrasaCorporal = () => {
                         value={peso}
                         onChange={(e) => setPeso(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese su peso en kg"
                     />
                 </div>
                 {/* Altura */}
@@ -95,6 +97,7 @@ const CalculadoraGrasaCorporal = () => {
                         value={altura}
                         onChange={(e) => setAltura(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese su altura en cm"
                     />
                 </div>
                 {/* Circunferencia del cuello */}
@@ -105,6 +108,7 @@ const CalculadoraGrasaCorporal = () => {
                         value={circunferenciaCuello}
                         onChange={(e) => setCircunferenciaCuello(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese sus medias de cuello en cm"
                     />
                 </div>
                 {/* Circunferencia de la cintura */}
@@ -115,6 +119,7 @@ const CalculadoraGrasaCorporal = () => {
                         value={circunferenciaCintura}
                         onChange={(e) => setCircunferenciaCintura(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese sus medidas de cintura en cm"
                     />
                 </div>
                 {/* Circunferencia de la cadera (solo mujeres) */}
@@ -126,6 +131,7 @@ const CalculadoraGrasaCorporal = () => {
                             value={circunferenciaCadera}
                             onChange={(e) => setCircunferenciaCadera(e.target.value)}
                             className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                            placeholder="Ingrese sus medidas de cadera en cm"
                         />
                     </div>
                 )}

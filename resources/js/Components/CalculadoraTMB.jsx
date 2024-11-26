@@ -57,6 +57,7 @@ const CalculadoraTMB = () => {
                         value={edad}
                         onChange={(e) => setEdad(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese su edad"
                     />
                 </div>
                 {/* Campo para ingresar el peso en kg */}
@@ -67,6 +68,7 @@ const CalculadoraTMB = () => {
                         value={peso}
                         onChange={(e) => setPeso(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese su peso en kg"
                     />
                 </div>
                 {/* Campo para ingresar la altura en cm */}
@@ -77,6 +79,7 @@ const CalculadoraTMB = () => {
                         value={altura}
                         onChange={(e) => setAltura(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder="Ingrese su altura en cm"
                     />
                 </div>
             </div>

@@ -48,7 +48,7 @@ const CalculadoraFrecuenciaCardiacaObjetivo = () => {
                         value={edad}
                         onChange={(e) => setEdad(e.target.value)}
                         className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder="Ingresa tu edad"
+                        placeholder="Ingrese su edad"
                         aria-label="Edad"
                     />
                 </div>
@@ -89,16 +89,9 @@ const CalculadoraFrecuenciaCardiacaObjetivo = () => {
             {resultado && (
                 <div className="mt-6 text-center text-lime-400 text-lg font-semibold">
                     <p>
-                        Tu rango de{" "}
-                        <strong>Frecuencia Cardíaca Objetivo</strong> es entre
-                    </p>
-                    <p className="text-2xl font-bold">
+                        Tu rango de frecuencia cardíaca debería estar entre{" "}
                         {resultado.fcrInferior.toFixed(0)} y{" "}
                         {resultado.fcrSuperior.toFixed(0)} latidos por minuto
-                    </p>
-                    <p className="mt-2 text-sm text-gray-300">
-                        Esto corresponde al 50% al 85% de tu frecuencia cardíaca
-                        máxima (FCM).
                     </p>
                 </div>
             )}
