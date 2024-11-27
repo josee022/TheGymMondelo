@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminRespuestaContactoController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdquisicionProgramaController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CalculadoraController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ClasesAdminController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\ProgramasAdminController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TrainerController;
 use Illuminate\Foundation\Application;
@@ -82,18 +84,26 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::patch('comentarios/{comentarioForo}', [ComentarioForoController::class, 'update'])->name('comentarios.update');
     Route::delete('comentarios/{comentarioForo}', [ComentarioForoController::class, 'destroy'])->name('comentarios.destroy');
 
+    // Rutas para pago suscripcion
+    Route::post('/stripe/crear-intento-pago-suscripcion', [StripeController::class, 'crearIntentoPagoSuscripcion']);
     // Rutas para suscripciones
-    Route::resource('suscripciones', SuscripcionController::class);
+    Route::resource('suscripciones', SuscripcionController::class)->only(['index', 'store', 'destroy']);
     Route::post('/suscripciones/{id}/disable', [SuscripcionController::class, 'disable'])->name('suscripciones.disable');
 
+    // Rutas para pagos de Dietas
+    Route::post('/stripe/crear-intento-pago-dieta', [StripeController::class, 'crearIntentoPagoDieta']);
     // Rutas para dietas
-    Route::resource('dietas', DietaController::class);
+    Route::resource('dietas', DietaController::class)->only(['index', 'store', 'destroy']);
     Route::post('/dietas/{id}/delete', [DietaController::class, 'delete'])->name('dietas.delete');
+    // Ruta para calculadoras
+    Route::get('/calculadoras', [CalculadoraController::class, 'index'])->name('calculadoras.index');
 
     // Rutas para programas
     Route::resource('programas', ProgramaController::class);
     Route::post('/inscribir-programa', [AdquisicionProgramaController::class, 'inscribir'])->name('inscribir.programa');
     Route::post('/programas/{id}/delete', [AdquisicionProgramaController::class, 'delete'])->name('programas.delete');
+    // Ruta para pago programas
+    Route::post('/crear-intento-pago-programa', [StripeController::class, 'crearIntentoPagoPrograma'])->middleware('auth');
 
     // Ruta para la vista de contacto
     Route::get('/contacto', function () {
@@ -108,9 +118,10 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::post('/carrito/actualizar', [PedidoController::class, 'actualizarCarrito']);
     Route::post('/carrito/eliminar', [PedidoController::class, 'eliminarDelCarrito']);
     Route::post('/carrito/pedido', [PedidoController::class, 'realizarPedido']);
-
     // Ruta para pedidos
     Route::get('/pedidos/{id}/show', [PedidoController::class, 'show'])->name('pedidos.show');
+    // Ruta para verificar pagos
+    Route::post('/crear-intento-pago', [StripeController::class, 'crearIntentoPago'])->middleware('auth');
 
     // Ruta para diario
     Route::get('/diario', [DiarioController::class, 'index'])->name('diario.index');

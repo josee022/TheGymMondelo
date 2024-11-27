@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import Footer from "@/Components/Footer";
 import SeccionTarjetas from "@/Components/Entrenadores/SeccionTarjetas";
 import SeccionDestacada from "@/Components/Entrenadores/SeccionDestacada";
 import SeccionContacto from "@/Components/Entrenadores/SeccionContacto";
 import SeccionSuscripcion from "@/Components/Entrenadores/SeccionSuscripcion";
+import Pagination from "@/Components/Pagination";
 
-export default function Index({ auth, entrenadores }) {
+export default function Index({ auth, entrenadores, search }) {
+    const [searchTerm, setSearchTerm] = useState(search || "");
+    const searchInputRef = useRef(null);
+
+    useEffect(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.focus();
+        }
+    }, [entrenadores]);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        router.get(
+            route("entrenadores.index"),
+            { search: value },
+            { replace: true, preserveScroll: true }
+        );
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -23,17 +44,35 @@ export default function Index({ auth, entrenadores }) {
                 {/* Contenedor principal de tarjetas de entrenadores */}
                 <div className="relative z-10 w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-lg p-10 space-y-10 mt-6">
                     <div className="text-center mb-6">
-                        <h1 className="text-5xl font-extrabold text-gray-900 tracking-widest relative">
-                            <span className="relative inline-block">
-                                <span className="relative">
-                                    Entrenadores Personalizados Para Ti
-                                </span>
+                        <h1 className="text-5xl font-extrabold text-gray-900 tracking-widest relative inline-block">
+                            <span className="relative">
+                                Entrenadores Personalizados Para Ti
                             </span>
+                            <span
+                                className="absolute left-0 bottom-0 w-full h-1 bg-green-500"
+                                style={{ transform: "translateY(0.3rem)" }}
+                            />
                         </h1>
+                    </div>
+                    {/* Barra de búsqueda */}
+                    <div className="w-full max-w-6xl mx-auto mb-6 px-4">
+                        <input
+                            type="text"
+                            placeholder="Buscar entrenadores..."
+                            className="w-full p-3 rounded-lg border border-gray-300 text-black bg-white shadow-md"
+                            value={searchTerm}
+                            ref={searchInputRef}
+                            onChange={handleSearchChange}
+                        />
                     </div>
 
                     {/* Sección de entrenadores */}
-                    <SeccionTarjetas entrenadores={entrenadores} />
+                    <SeccionTarjetas entrenadores={entrenadores.data} />
+
+                    {/* Componente de paginación */}
+                    <div className="mt-6">
+                        <Pagination links={entrenadores.links} />
+                    </div>
 
                     {/* Sección de contacto */}
                     <SeccionContacto />

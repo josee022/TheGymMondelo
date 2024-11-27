@@ -19,46 +19,39 @@ class ForoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtiene el usuario autenticado actual.
-        $user = auth()->user();
+        $user = auth()->user(); // Usuario autenticado
 
-        // Consulta los foros con relaciones y ordena los resultados.
+        $search = $request->input('search'); // Captura el término de búsqueda
+
         $foros = Foro::with([
-            'usuario', // Carga la relación del usuario que creó el foro.
+            'usuario',
             'comentarios' => function ($query) {
-                // Filtra los comentarios para obtener solo los comentarios principales
-                // (los que no tienen un comentario padre).
                 $query->whereNull('comentario_id')
-                    ->orderBy('fecha_comentario', 'desc') // Ordena los comentarios principales por fecha en orden descendente.
+                    ->orderBy('fecha_comentario', 'desc')
                     ->with([
-                        'usuario', // Carga la relación del usuario que creó el comentario.
+                        'usuario',
                         'respuestas' => function ($query) {
-                            // Carga las respuestas de los comentarios y ordena por fecha en orden descendente.
                             $query->orderBy('fecha_comentario', 'desc')
-                                ->with('usuario'); // Carga la relación del usuario que creó cada respuesta.
+                                ->with('usuario');
                         }
                     ]);
             }
         ])
-            ->orderBy('fecha_publicacion', 'desc') // Ordena los foros por fecha de publicación en orden descendente.
-            ->paginate(1); // Pagina los resultados mostrando 1 foro por página.
+            ->when($search, function ($query, $search) {
+                $query->where('titulo', 'like', '%' . $search . '%'); // Filtro por título
+            })
+            ->orderBy('fecha_publicacion', 'desc')
+            ->paginate(1) // Paginación
+            ->appends(['search' => $search]); // Mantiene el término de búsqueda en la paginación
 
-        // Devuelve una vista Inertia con los datos de los foros y el usuario autenticado.
         return Inertia::render('Foros/Index', [
-            'auth' => ['user' => $user], // Pasa el usuario autenticado a la vista.
-            'foros' => $foros, // Pasa los foros paginados a la vista.
+            'auth' => ['user' => $user],
+            'foros' => $foros,
+            'search' => $search, // Pasar el término de búsqueda a la vista
         ]);
     }
-
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

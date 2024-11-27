@@ -41,30 +41,27 @@ class SuscripcionController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar los datos recibidos
-        $validatedData = $request->validate([
+        $request->validate([
             'tipo' => 'required|string|in:Mensual,Semestral,Anual',
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Verificar si el usuario ya tiene una suscripción activa
         $suscripcionActiva = Suscripcion::where('usuario_id', $user->id)
             ->where('estado', 'Activa')
-            ->where('fecha_fin', '>=', Carbon::now())
             ->first();
 
         if ($suscripcionActiva) {
-            // Redirigir con un mensaje flash de error
             return redirect()->back()->with('error', 'Ya tienes una suscripción activa.');
         }
 
-        // Determinar las fechas de inicio y fin
-        $fechaInicio = Carbon::now();
+        // Calcular fechas
+        $fechaInicio = now();
         $fechaFin = match ($request->tipo) {
-            'Mensual' => $fechaInicio->copy()->addDays(30),
-            'Semestral' => $fechaInicio->copy()->addDays(182),
-            'Anual' => $fechaInicio->copy()->addDays(365),
+            'Mensual' => $fechaInicio->copy()->addMonth(),
+            'Semestral' => $fechaInicio->copy()->addMonths(6),
+            'Anual' => $fechaInicio->copy()->addYear(),
         };
 
         // Crear la suscripción en la base de datos
@@ -76,9 +73,9 @@ class SuscripcionController extends Controller
             'estado' => 'Activa',
         ]);
 
-        // Redirigir con un mensaje flash de éxito
-        return redirect()->back()->with('success', '¡Suscripción creada con éxito!');
+        return redirect()->route('suscripciones.index')->with('success', '¡Suscripción creada con éxito!');
     }
+
 
     public function disable($id)
     {

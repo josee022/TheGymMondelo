@@ -11,27 +11,39 @@ class AdminContactoController extends Controller
 {
     public function index(Request $request)
     {
-        // Obtenemos el término de búsqueda si está presente en la solicitud
-        $search = $request->input('search');
+        // Obtenemos los términos de búsqueda
+        $searchAsunto = $request->input('search_asunto');
+        $searchEmail = $request->input('search_email');
 
-        // Consulta para los mensajes no contestados con filtro de búsqueda
+        // Consulta para los mensajes no contestados con filtros de búsqueda
         $contactosNoContestados = Contacto::where('estado', 'NoContestado')
-            ->when($search, function ($query, $search) {
-                $query->whereRaw('LOWER(asunto) LIKE ?', ['%' . strtolower($search) . '%']);
+            ->when($searchAsunto, function ($query, $searchAsunto) {
+                $query->whereRaw('LOWER(asunto) LIKE ?', ['%' . strtolower($searchAsunto) . '%']);
+            })
+            ->when($searchEmail, function ($query, $searchEmail) {
+                $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($searchEmail) . '%']);
             })
             ->paginate(3, ['*'], 'noContestadosPage');
 
-        // Consulta para los mensajes contestados con filtro de búsqueda
+        // Consulta para los mensajes contestados con filtros de búsqueda
         $contactosContestados = Contacto::where('estado', 'Contestado')
-            ->when($search, function ($query, $search) {
-                $query->whereRaw('LOWER(asunto) LIKE ?', ['%' . strtolower($search) . '%']);
+            ->when($searchAsunto, function ($query, $searchAsunto) {
+                $query->whereRaw('LOWER(asunto) LIKE ?', ['%' . strtolower($searchAsunto) . '%']);
+            })
+            ->when($searchEmail, function ($query, $searchEmail) {
+                $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($searchEmail) . '%']);
             })
             ->paginate(3, ['*'], 'contestadosPage');
+
+        // Lista de correos distintos registrados en la base de datos
+        $emailsDistintos = Contacto::select('email')->distinct()->get();
 
         return Inertia::render('Admin/ContactosIndex', [
             'contactosNoContestados' => $contactosNoContestados,
             'contactosContestados' => $contactosContestados,
-            'search' => $search
+            'emailsDistintos' => $emailsDistintos,
+            'searchAsunto' => $searchAsunto,
+            'searchEmail' => $searchEmail,
         ]);
     }
 

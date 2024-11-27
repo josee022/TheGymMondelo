@@ -59,6 +59,7 @@ const CalculadoraIMC = () => {
                         value={peso}
                         onChange={(e) => setPeso(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder='Ingrese su peso en kg'
                     />
                 </div>
                 {/* Campo para ingresar la altura en cm */}
@@ -69,6 +70,7 @@ const CalculadoraIMC = () => {
                         value={altura}
                         onChange={(e) => setAltura(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        placeholder='Ingrese su altura en cm'
                     />
                 </div>
             </div>
@@ -76,20 +78,20 @@ const CalculadoraIMC = () => {
             <div className="mt-4 flex justify-center space-x-4">
                 <button
                     onClick={calcularIMC}
-                    className="bg-lime-400 text-gray-900 py-1 px-3 rounded hover:bg-lime-500 transition transform hover:-translate-y-1 hover:scale-105"
+                    className="bg-lime-400 text-gray-900 py-1 px-3 rounded "
                 >
-                    Calcular IMC
+                    Calcular
                 </button>
                 <button
                     onClick={vaciarCampos}
-                    className="bg-red-500 text-black py-1 px-3 rounded hover:bg-red-500 transition transform hover:-translate-y-1 hover:scale-105"
+                    className="bg-red-500 text-black py-1 px-3 rounded "
                 >
                     Vaciar
                 </button>
             </div>
             {/* Mostrar el IMC calculado y su interpretación */}
             {imc && (
-                <div className="mt-4 text-center text-lime-400 text-lg animate-pulse">
+                <div className="mt-4 text-center text-lime-400 text-lg ">
                     Tu IMC es de: {imc}
                 </div>
             )}

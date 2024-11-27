@@ -18,13 +18,23 @@ class EntrenadorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtiene todos los entrenadores junto con la relación 'usuario'
-        $entrenadores = Entrenador::with('usuario')->get();
-        // Renderiza la vista 'Entrenadores/Index' y pasa los datos de los entrenadores
+        $search = $request->input('search');
+
+        $entrenadores = Entrenador::with('usuario')
+            ->when($search, function ($query, $search) {
+                $query->whereHas('usuario', function ($q) use ($search) {
+                    $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                });
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(6)
+            ->appends(['search' => $search]);
+
         return Inertia::render('Entrenadores/Index', [
             'entrenadores' => $entrenadores,
+            'search' => $search,
         ]);
     }
     /**
@@ -54,15 +64,9 @@ class EntrenadorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Entrenador $entrenador)
-    {
+    public function edit(Entrenador $entrenador) {}
 
-    }
-
-    public function update(Request $request, Entrenador $entrenador)
-    {
-
-    }
+    public function update(Request $request, Entrenador $entrenador) {}
 
 
     /**
