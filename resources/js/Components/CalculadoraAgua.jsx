@@ -39,7 +39,7 @@ const CalculadoraAguaCorporal = () => {
     return (
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs">
             <h2 className="text-xl font-bold text-center text-lime-400 mb-4">
-                Cantidad de Agua Recomendada
+                Cantidad Agua Recomendada
             </h2>
             <div className="space-y-3">
                 {/* Campo para ingresar el peso en kg */}

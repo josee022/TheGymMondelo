@@ -7,8 +7,10 @@ use Inertia\Inertia;
 
 class CalculadoraController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return inertia('Calculadoras/Index');
+        return Inertia::render('Calculadoras/Index', [
+            'user' => $request->user(),
+        ]);
     }
 }

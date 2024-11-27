@@ -7,11 +7,13 @@ import CalculadoraKcal from "@/Components/CalculadoraKcal";
 import CalculadoraTMB from "@/Components/CalculadoraTMB";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "@/Components/Footer";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 
 const CalculadoraIndex = () => {
+    const { user } = usePage().props;
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={user}>
             <Head title="Calculadoras de Salud" />
             <div className="bg-gradient-to-b from-black via-green-800 to-lime-600 text-white py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -29,7 +31,6 @@ const CalculadoraIndex = () => {
                     </div>
                 </div>
             </div>
-            {/* Footer */}
             <Footer />
         </AuthenticatedLayout>
     );

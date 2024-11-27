@@ -7,7 +7,6 @@ import { usePage } from '@inertiajs/react';
 import HeroDieta from '@/Components/Dietas/HeroDieta';
 import ResumenInformativo from '@/Components/Dietas/ResumenInformativo';
 import PlanesDieta from '@/Components/Dietas/PlanesDieta';
-import CalculadorasDieta from '@/Components/Dietas/CalculadorasDieta';
 import { router } from '@inertiajs/react';
 
 export default function Dietas({ auth, usuarioTieneDieta }) {
@@ -36,9 +35,6 @@ export default function Dietas({ auth, usuarioTieneDieta }) {
 
             {/* Sección de planes de dieta */}
             <PlanesDieta handleDieta={handleDieta} usuarioTieneDieta={usuarioTieneDieta} />
-
-            {/* Sección de calculadoras */}
-            <CalculadorasDieta />
 
             <Footer />
             <ToastContainer />

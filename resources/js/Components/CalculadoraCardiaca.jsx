@@ -37,7 +37,7 @@ const CalculadoraFrecuenciaCardiacaObjetivo = () => {
     return (
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs">
             <h2 className="text-xl font-bold text-center text-lime-400 mb-4">
-                Calculadora de Frecuencia Cardíaca Objetivo
+                Frecuencia Cardíaca
             </h2>
             <div className="space-y-3">
                 {/* Campo para la edad */}
@@ -89,7 +89,7 @@ const CalculadoraFrecuenciaCardiacaObjetivo = () => {
             {resultado && (
                 <div className="mt-6 text-center text-lime-400 text-lg font-semibold">
                     <p>
-                        Tu rango de frecuencia cardíaca debería estar entre{" "}
+                        Tu rango de frecuencia cardíaca realizando ejercicio debería estar entre{" "}
                         {resultado.fcrInferior.toFixed(0)} y{" "}
                         {resultado.fcrSuperior.toFixed(0)} latidos por minuto
                     </p>

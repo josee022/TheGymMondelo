@@ -7,7 +7,6 @@ const CalculadoraGrasaCorporal = () => {
     const [altura, setAltura] = useState("");
     const [circunferenciaCuello, setCircunferenciaCuello] = useState("");
     const [circunferenciaCintura, setCircunferenciaCintura] = useState("");
-    const [circunferenciaCadera, setCircunferenciaCadera] = useState("");
     const [genero, setGenero] = useState("hombre");
     const [grasaCorporal, setGrasaCorporal] = useState(null);
 
@@ -26,11 +25,7 @@ const CalculadoraGrasaCorporal = () => {
             // Fórmula de la grasa corporal para mujeres
             grasaCalculada =
                 163.205 *
-                    Math.log10(
-                        circunferenciaCintura +
-                            circunferenciaCadera -
-                            circunferenciaCuello
-                    ) -
+                    Math.log10(circunferenciaCintura - circunferenciaCuello) -
                 97.684 * Math.log10(altura) -
                 78.387;
         }
@@ -45,7 +40,6 @@ const CalculadoraGrasaCorporal = () => {
         setAltura("");
         setCircunferenciaCuello("");
         setCircunferenciaCintura("");
-        setCircunferenciaCadera("");
         setGenero("hombre");
         setGrasaCorporal(null);
     };
@@ -53,7 +47,7 @@ const CalculadoraGrasaCorporal = () => {
     return (
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xs">
             <h2 className="text-xl font-semibold text-center text-lime-400 mb-4">
-                Calculadora de Grasa Corporal
+                Porcentaje Grasa Corporal
             </h2>
             <div className="space-y-4">
                 {/* Selección de género */}
@@ -131,23 +125,6 @@ const CalculadoraGrasaCorporal = () => {
                         placeholder="Ingrese su cintura en cm"
                     />
                 </div>
-                {/* Circunferencia de la cadera (solo mujeres) */}
-                {genero === "mujer" && (
-                    <div>
-                        <label className="block text-lime-400">
-                            Circunferencia Cadera (cm)
-                        </label>
-                        <input
-                            type="number"
-                            value={circunferenciaCadera}
-                            onChange={(e) =>
-                                setCircunferenciaCadera(e.target.value)
-                            }
-                            className="w-full mt-1 p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                            placeholder="Ingrese su cadera en cm"
-                        />
-                    </div>
-                )}
             </div>
             {/* Botones para calcular y vaciar */}
             <div className="mt-4 flex justify-center space-x-4">
