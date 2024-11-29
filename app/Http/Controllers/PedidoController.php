@@ -84,9 +84,19 @@ class PedidoController extends Controller
             ]);
         }
 
+        $puntosObtenidos = floor($total / 10);
+
+        $usuario = auth()->user();
+        $usuario->puntos += $puntosObtenidos;
+        $usuario->save();
+
         session()->forget('carrito');
 
-        return response()->json(['message' => 'Pedido realizado con éxito', 'carrito' => []]);
+        return response()->json([
+            'message' => 'Pedido realizado con éxito',
+            'carrito' => [],
+            'puntos_obtenidos' => $puntosObtenidos,
+        ]);
     }
 
     /**
