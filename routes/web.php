@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\ProgramasAdminController;
+use App\Http\Controllers\RecompensaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\StripeController;
@@ -132,6 +133,11 @@ Route::middleware(['auth', 'client', 'suspension'])->group(function () {
     Route::get('/diario/export/pdf', [DiarioController::class, 'exportarPDF'])->name('diario.export.pdf');
     Route::get('/diario/export/csv', [DiarioController::class, 'exportarCSV'])->name('diario.export.csv');
     Route::get('/diario/mensaje-motivacional', [DiarioController::class, 'obtenerMensajeMotivacional'])->name('diario.mensaje.motivacional');
+
+    // Rutas para recompensas
+    Route::get('/recompensas', [RecompensaController::class, 'index'])->name('recompensas.index');
+    Route::post('/recompensas/{id}/adquirir', [RecompensaController::class, 'adquirir'])->name('recompensas.adquirir');
+    Route::get('/recompensas/{id}/descargar-pdf', [RecompensaController::class, 'descargarPdf'])->name('recompensas.descargarPdf');
 });
 
 // Grupo de rutas de administración
