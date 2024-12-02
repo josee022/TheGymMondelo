@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 const Recompensas = () => {
     const { auth, recompensas, flash } = usePage().props;
 
-    // Muestra el SweetAlert cuando se recibe un mensaje flash
     useEffect(() => {
         if (flash.success) {
             Swal.fire("¡Adquirido!", flash.success, "success");
@@ -46,14 +45,13 @@ const Recompensas = () => {
                             );
                         },
                         onError: (error) => {
-                            // Asegurarse de que el mensaje de error se maneje correctamente
                             const errorMessage =
                                 error.response?.data?.error ||
                                 "Hubo un error al procesar tu solicitud.";
                             Swal.fire({
                                 icon: "error",
                                 title: "Error",
-                                text: errorMessage, // Aquí se usa el mensaje que nos pasa el backend
+                                text: errorMessage,
                             });
                         },
                     }
@@ -70,7 +68,7 @@ const Recompensas = () => {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
+                <h2 className="font-semibold text-4xl text-center text-lime-600 mt-4">
                     Recompensas 🎁
                 </h2>
             }
@@ -87,7 +85,8 @@ const Recompensas = () => {
                 </h1>
 
                 <p className="text-lg text-gray-400 mb-12 text-center">
-                    Tus puntos:{" "}
+                    Por cada 10€ de compras en nuestra tienda, obtendrás un
+                    punto. <br /> Tus puntos actuales son:{" "}
                     <span className="text-lime-500">{auth.user.puntos}</span>
                 </p>
 

@@ -39,10 +39,11 @@ export default function Authenticated({ user = {}, header, children }) {
                                 <Dropdown.Link href={route("clases.index")}>
                                     Clases
                                 </Dropdown.Link>
-                                <Dropdown.Link
-                                    href={route("suscripciones.index")}
-                                >
+                                <Dropdown.Link href={route("suscripciones.index")}>
                                     Suscripciones
+                                </Dropdown.Link>
+                                <Dropdown.Link href={route("recompensas.index")}>
+                                    Recompensas
                                 </Dropdown.Link>
                             </Dropdown.Content>
                         </Dropdown>
