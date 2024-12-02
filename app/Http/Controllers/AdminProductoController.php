@@ -17,7 +17,7 @@ class AdminProductoController extends Controller
                 $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(9);
 
         return Inertia::render('Admin/Productos', [
             'productos' => $productos,

@@ -284,7 +284,7 @@ export default function SuscripcionesProgramas({
                                     as="button"
                                     className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                                 >
-                                    Eliminar Programa
+                                    Deshabilitar Programa
                                 </Link>
                             </div>
                         </motion.div>

@@ -82,12 +82,19 @@ export default function Dashboard({
         <AuthenticatedLayout
             user={user}
             header={
-                <h2 className="font-semibold text-3xl text-center text-lime-600 mt-4">
-                    Panel de Control del Usuario 🔒
-                </h2>
+                <header className="flex justify-center items-center mt-4">
+                    <h2 className="font-semibold text-3xl text-center text-lime-600 mr-6">
+                        Panel de Control del Usuario 🔒
+                    </h2>
+                    <div className="flex items-center space-x-2 bg-lime-200 text-lime-800 px-4 py-2 rounded-full shadow-lg">
+                        <span className="font-medium">Puntos totales:</span>
+                        <span className="font-bold text-2xl">
+                            {user.puntos}
+                        </span>
+                    </div>
+                </header>
             }
         >
-
             {/* Información del Perfil y Reservas */}
             <div className="flex flex-col lg:flex-row gap-0">
                 <InfoPerfil user={user} isEntrenador={isEntrenador} />
