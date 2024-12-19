@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const ClasesList = ({ clases, onEdit, handleDelete }) => {
+    // Estado para manejar el término de búsqueda
     const [searchTerm, setSearchTerm] = useState("");
 
-    const filteredClases = clases.filter((clase) =>
-        clase?.nombre
-            ? clase.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-            : false
+    // Filtrar las clases según el término de búsqueda ingresado por el usuario
+    const filteredClases = clases.filter(
+        (clase) =>
+            clase?.nombre
+                ? clase.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+                : false // Verifica que `nombre` exista para evitar errores
     );
 
-    // Función para formatear hora a HH:mm:ss
+    // Función para formatear la hora a HH:mm:ss
     const formatTimeWithSeconds = (time) => {
         return time.length === 5 ? `${time}:00` : time; // Añade ":00" si no tiene segundos
     };
