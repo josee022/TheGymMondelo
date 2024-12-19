@@ -6,35 +6,44 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "@/Components/Footer";
 import { toast } from "react-toastify";
 
+// Componente para gestionar recompensas
 const Recompensas = () => {
-    const { auth, recompensas, flash } = usePage().props;
+    const { auth, recompensas, flash } = usePage().props; // Obtiene datos del usuario, recompensas y mensajes flash desde el backend
 
+    // Efecto para manejar notificaciones basadas en mensajes flash
     useEffect(() => {
         if (flash.success) {
-            Swal.fire("¡Adquirido!", flash.success, "success");
-            toast.success(flash.success);
+            // Notificación de éxito
+            Swal.fire("¡Adquirido!", flash.success, "success"); // Modal de éxito
+            toast.success(flash.success); // Notificación flotante
         }
 
         if (flash.error) {
-            Swal.fire("Error", flash.error, "error");
-            toast.error(flash.error);
+            // Notificación de error
+            Swal.fire("Error", flash.error, "error"); // Modal de error
+            toast.error(flash.error); // Notificación flotante
         }
-    }, [flash]);
+    }, [flash]); // Se ejecuta cuando cambian los mensajes flash
 
+    // Función para adquirir una recompensa
     const handleAdquirir = (recompensaId) => {
+        // Confirma la acción con un modal de SweetAlert2
         Swal.fire({
             title: "¿Estás seguro de que deseas adquirir esta recompensa?",
             icon: "question",
-            showCancelButton: true,
-            confirmButtonText: "Sí, adquirir",
-            cancelButtonText: "Cancelar",
+            showCancelButton: true, // Botón de cancelar
+            confirmButtonText: "Sí, adquirir", // Botón de confirmación
+            cancelButtonText: "Cancelar", // Botón de cancelación
         }).then((result) => {
             if (result.isConfirmed) {
+                // Si el usuario confirma, envía una solicitud POST para adquirir la recompensa
                 router.post(
-                    route("recompensas.adquirir", recompensaId),
-                    {},
+                    route("recompensas.adquirir", recompensaId), // Ruta de adquisición
+                    {}, // Datos del cuerpo (vacío en este caso)
                     {
+                        // Configura las acciones en caso de éxito o error
                         onSuccess: (response) => {
+                            // Muestra mensajes de éxito
                             Swal.fire(
                                 "¡Adquirido!",
                                 "¡Has adquirido la recompensa correctamente y se te han restado los puntos!",
@@ -45,6 +54,7 @@ const Recompensas = () => {
                             );
                         },
                         onError: (error) => {
+                            // Muestra mensajes de error
                             const errorMessage =
                                 error.response?.data?.error ||
                                 "Hubo un error al procesar tu solicitud.";
@@ -60,7 +70,9 @@ const Recompensas = () => {
         });
     };
 
+    // Función para descargar un PDF de una recompensa
     const handleDescargarPdf = (recompensaId) => {
+        // Redirige al usuario a la ruta para descargar el PDF
         window.location.href = route("recompensas.descargarPdf", recompensaId);
     };
 
