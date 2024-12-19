@@ -4,53 +4,59 @@ import { router } from "@inertiajs/react";
 import ComentariosForo from "@/Components/Foros/ComentariosForo";
 
 export default function ListaForo({
-    foros,
-    auth,
-    editingForoId,
-    handleEdit,
-    handleCancelEdit,
-    formatFechaForo,
+    foros, // Lista de foros disponibles
+    auth, // Información del usuario autenticado
+    editingForoId, // ID del foro actualmente en edición
+    handleEdit, // Función para activar el modo de edición
+    handleCancelEdit, // Función para cancelar la edición
+    formatFechaForo, // Función para formatear las fechas de los foros
 }) {
+    // Inicializa el formulario para editar un foro
     const {
-        data: editFormData,
-        setData: setEditFormData,
-        patch,
-        errors,
+        data: editFormData, // Datos actuales del formulario de edición
+        setData: setEditFormData, // Función para actualizar los campos del formulario
+        patch, // Realiza una solicitud PATCH al servidor
+        errors, // Almacena errores de validación
     } = useForm({
-        titulo: "",
-        contenido: "",
+        titulo: "", // Campo para el título del foro
+        contenido: "", // Campo para el contenido del foro
     });
-    const [commentData, setCommentData] = useState("");
 
+    const [commentData, setCommentData] = useState(""); // Estado para almacenar el contenido del comentario
+
+    // Maneja el envío del formulario de edición
     const handleEditSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
         patch(route("foros.update", editingForoId), {
-            onSuccess: () => handleCancelEdit(),
+            onSuccess: () => handleCancelEdit(), // Cierra el formulario de edición al guardar exitosamente
         });
     };
 
+    // Llena los datos del formulario de edición con la información del foro seleccionado
     const handleEditClick = (foro) => {
         setEditFormData({
-            titulo: foro.titulo,
-            contenido: foro.contenido,
+            titulo: foro.titulo, // Establece el título del foro
+            contenido: foro.contenido, // Establece el contenido del foro
         });
-        handleEdit(foro);
+        handleEdit(foro); // Activa el modo de edición
     };
 
+    // Maneja la eliminación de un foro
     const handleDelete = (foroId) => {
         if (confirm("¿Estás seguro de que quieres eliminar este foro?")) {
-            router.delete(route("foros.destroy", foroId));
+            router.delete(route("foros.destroy", foroId)); // Envía una solicitud DELETE al servidor
         }
     };
 
+    // Maneja el envío de un comentario
     const handleCommentSubmit = (e, foroId) => {
-        e.preventDefault();
-        if (!commentData.trim()) return;
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+        if (!commentData.trim()) return; // Si el comentario está vacío, no hace nada
         router.post(
-            route("comentarios.store", foroId),
-            { contenido: commentData },
+            route("comentarios.store", foroId), // Ruta para crear un comentario en el foro correspondiente
+            { contenido: commentData }, // Envía el contenido del comentario
             {
-                onSuccess: () => setCommentData(""),
+                onSuccess: () => setCommentData(""), // Limpia el campo de comentario al guardar exitosamente
             }
         );
     };

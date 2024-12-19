@@ -2,121 +2,131 @@ import React, { useState } from "react";
 import { router } from "@inertiajs/react";
 
 export default function ComentariosForo({
-    foro,
-    auth,
-    commentData,
-    setCommentData,
-    handleCommentSubmit,
-    hideForms, // Para ocultar formularios cuando se esté editando
+    foro, // Foro actual
+    auth, // Información del usuario autenticado
+    commentData, // Contenido del nuevo comentario
+    setCommentData, // Función para actualizar el contenido del nuevo comentario
+    handleCommentSubmit, // Función para manejar el envío de un nuevo comentario
+    hideForms, // Indicador para ocultar formularios de edición si es necesario
 }) {
-    const [responses, setResponses] = useState({});
-    const [editingCommentId, setEditingCommentId] = useState(null);
-    const [editingResponseId, setEditingResponseId] = useState(null);
+    // Estados para gestionar respuestas y edición de comentarios o respuestas
+    const [responses, setResponses] = useState({}); // Almacena las respuestas asociadas a cada comentario
+    const [editingCommentId, setEditingCommentId] = useState(null); // ID del comentario que se está editando
+    const [editingResponseId, setEditingResponseId] = useState(null); // ID de la respuesta que se está editando
 
+    // Maneja el envío de una respuesta a un comentario
     const handleResponseSubmit = (e, foroId, comentarioId) => {
         e.preventDefault();
-        const responseContent = responses[comentarioId] || "";
-        if (!responseContent.trim()) return;
+        const responseContent = responses[comentarioId] || ""; // Obtiene el contenido de la respuesta
+        if (!responseContent.trim()) return; // Evita enviar respuestas vacías
 
-        // Enviar la respuesta al servidor
         router.post(
-            route("comentarios.store", foroId),
+            route("comentarios.store", foroId), // Ruta para guardar la respuesta
             {
-                contenido: responseContent,
-                comentario_id: comentarioId,
+                contenido: responseContent, // Contenido de la respuesta
+                comentario_id: comentarioId, // ID del comentario al que responde
             },
             {
                 onSuccess: () => {
-                    setResponses((prev) => ({ ...prev, [comentarioId]: "" })); // Limpiar el campo de respuesta
+                    setResponses((prev) => ({ ...prev, [comentarioId]: "" })); // Limpia el campo de respuesta
                 },
                 onError: (error) => {
-                    console.error("Error al agregar respuesta:", error);
+                    console.error("Error al agregar respuesta:", error); // Muestra errores en consola
                 },
             }
         );
     };
 
+    // Activa el modo de edición para un comentario
     const handleEditComment = (comment) => {
-        setEditingCommentId(comment.id);
-        setResponses((prev) => ({ ...prev, [comment.id]: comment.contenido }));
+        setEditingCommentId(comment.id); // Establece el ID del comentario en edición
+        setResponses((prev) => ({ ...prev, [comment.id]: comment.contenido })); // Carga el contenido actual en el campo
     };
 
+    // Maneja el envío del formulario de edición de un comentario
     const handleEditCommentSubmit = async (e, commentId) => {
         e.preventDefault();
-        const updatedContent = responses[commentId];
+        const updatedContent = responses[commentId]; // Contenido actualizado
         try {
             await router.patch(route("comentarios.update", commentId), {
-                contenido: updatedContent,
+                contenido: updatedContent, // Envía el contenido actualizado
             });
-            setEditingCommentId(null);
-            setResponses((prev) => ({ ...prev, [commentId]: "" }));
+            setEditingCommentId(null); // Sale del modo de edición
+            setResponses((prev) => ({ ...prev, [commentId]: "" })); // Limpia el campo de respuesta
         } catch (error) {
-            console.error("Error al editar el comentario:", error);
+            console.error("Error al editar el comentario:", error); // Muestra errores
         }
     };
 
+    // Cancela el modo de edición de un comentario
     const handleCancelCommentEdit = () => {
-        setEditingCommentId(null);
+        setEditingCommentId(null); // Restablece el estado
         setResponses((prev) => {
             const newResponses = { ...prev };
-            delete newResponses[editingCommentId];
+            delete newResponses[editingCommentId]; // Elimina el contenido editado temporal
             return newResponses;
         });
     };
 
+    // Elimina un comentario
     const handleDeleteComment = (commentId) => {
         if (confirm("¿Estás seguro de que quieres eliminar este comentario?")) {
-            router.delete(route("comentarios.destroy", commentId));
+            router.delete(route("comentarios.destroy", commentId)); // Envía una solicitud DELETE
         }
     };
 
+    // Activa el modo de edición para una respuesta
     const handleEditResponse = (response) => {
-        setEditingResponseId(response.id);
+        setEditingResponseId(response.id); // Establece el ID de la respuesta en edición
         setResponses((prev) => ({
             ...prev,
-            [response.id]: response.contenido,
+            [response.id]: response.contenido, // Carga el contenido actual en el campo
         }));
     };
 
+    // Maneja el envío del formulario de edición de una respuesta
     const handleEditResponseSubmit = async (e, responseId) => {
         e.preventDefault();
-        const updatedContent = responses[responseId];
+        const updatedContent = responses[responseId]; // Contenido actualizado
         try {
             await router.patch(route("comentarios.update", responseId), {
-                contenido: updatedContent,
+                contenido: updatedContent, // Envía el contenido actualizado
             });
-            setEditingResponseId(null);
-            setResponses((prev) => ({ ...prev, [responseId]: "" }));
+            setEditingResponseId(null); // Sale del modo de edición
+            setResponses((prev) => ({ ...prev, [responseId]: "" })); // Limpia el campo
         } catch (error) {
-            console.error("Error al editar la respuesta:", error);
+            console.error("Error al editar la respuesta:", error); // Muestra errores
         }
     };
 
+    // Cancela el modo de edición de una respuesta
     const handleCancelResponseEdit = () => {
-        setEditingResponseId(null);
+        setEditingResponseId(null); // Restablece el estado
         setResponses((prev) => {
             const newResponses = { ...prev };
-            delete newResponses[editingResponseId];
+            delete newResponses[editingResponseId]; // Elimina el contenido editado temporal
             return newResponses;
         });
     };
 
+    // Elimina una respuesta
     const handleDeleteResponse = (responseId) => {
         if (confirm("¿Estás seguro de que quieres eliminar esta respuesta?")) {
-            router.delete(route("comentarios.destroy", responseId));
+            router.delete(route("comentarios.destroy", responseId)); // Envía una solicitud DELETE
         }
     };
 
+    // Formatea la fecha del foro
     const formatFechaForo = (timestamp) => {
-        const fecha = new Date(timestamp);
+        const fecha = new Date(timestamp); // Convierte el timestamp en un objeto Date
         const opciones = {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+            year: "numeric", // Año completo
+            month: "long", // Nombre completo del mes
+            day: "numeric", // Día del mes
+            hour: "2-digit", // Hora
+            minute: "2-digit", // Minutos
         };
-        return `Publicado el ${fecha.toLocaleDateString("es-ES", opciones)}`;
+        return `Publicado el ${fecha.toLocaleDateString("es-ES", opciones)}`; // Devuelve la fecha formateada
     };
 
     return (

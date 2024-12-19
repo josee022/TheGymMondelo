@@ -13,7 +13,6 @@ class ForoController extends Controller
 
     public function __construct()
     {
-        // Asegura que todas las rutas de este controlador requieran autenticación
         $this->middleware('auth');
     }
     /**

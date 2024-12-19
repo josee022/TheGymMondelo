@@ -2,15 +2,19 @@ import React from "react";
 import { useForm } from "@inertiajs/react";
 
 export default function FormForo() {
+    // Inicializa el formulario para crear un nuevo foro
     const { data, setData, post, reset, errors } = useForm({
-        titulo: "",
-        contenido: "",
+        titulo: "", // Campo para el título del foro
+        contenido: "", // Campo para el contenido del foro
     });
 
+    // Maneja el envío del formulario para crear un nuevo foro
     const handleCreateSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario (evita recargar la página)
+
+        // Realiza una solicitud POST al servidor para crear el foro
         post(route("foros.store"), {
-            onSuccess: () => reset(),
+            onSuccess: () => reset(), // Si se crea con éxito, limpia los campos del formulario
         });
     };
 
