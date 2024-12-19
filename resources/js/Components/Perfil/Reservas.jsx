@@ -3,37 +3,40 @@ import { Link } from "@inertiajs/react";
 import Pagination from "@/Components/Pagination";
 
 export default function Reservas({
-    reservas,
-    selectedDateReservas,
-    handleDateChange,
-    resetDateFilter,
+    reservas, // Lista de reservas realizadas
+    selectedDateReservas, // Fecha seleccionada para filtrar las reservas
+    handleDateChange, // Función para manejar cambios en la fecha seleccionada
+    resetDateFilter, // Función para reiniciar el filtro de fecha
 }) {
+    // Devuelve el color de fondo según el estado de la reserva
     const getReservaBackgroundColor = (estado) => {
         switch (estado) {
             case "Confirmada":
-                return "bg-lime-200";
+                return "bg-lime-200"; // Fondo verde claro para reservas confirmadas
             case "Cancelada":
-                return "bg-red-300";
+                return "bg-red-300"; // Fondo rojo claro para reservas canceladas
             default:
-                return "bg-gray-100";
+                return "bg-gray-100"; // Fondo gris claro para otros estados
         }
     };
 
+    // Formatea la fecha de creación de la reserva
     const formatFechaReserva = (timestamp) => {
-        const fecha = new Date(timestamp);
+        const fecha = new Date(timestamp); // Convierte el timestamp en un objeto Date
         return `La reserva se creó el ${fecha.toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        })} a las ${fecha.toLocaleTimeString("es-ES", { hour12: false })}`;
+            day: "2-digit", // Día en formato de 2 dígitos
+            month: "2-digit", // Mes en formato de 2 dígitos
+            year: "numeric", // Año completo
+        })} a las ${fecha.toLocaleTimeString("es-ES", { hour12: false })}`; // Hora en formato 24 horas
     };
 
+    // Formatea la fecha de la clase asociada a la reserva
     const formatFechaClase = (fecha) => {
-        const fechaObj = new Date(fecha);
+        const fechaObj = new Date(fecha); // Convierte la fecha en un objeto Date
         return fechaObj.toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
+            day: "2-digit", // Día en formato de 2 dígitos
+            month: "2-digit", // Mes en formato de 2 dígitos
+            year: "numeric", // Año completo
         });
     };
 

@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function InfoPerfil({ user, isEntrenador }) {
+    // Formateo de fechas en el perfil
     const formatFechaClase = (fecha) => {
         if (!fecha) return "No disponible";
         const fechaObj = new Date(fecha);

@@ -5,53 +5,63 @@ import { FaCrown } from "react-icons/fa";
 import { FiClock, FiTrendingUp } from "react-icons/fi";
 
 export default function SuscripcionesProgramas({
-    suscripciones,
-    adquisiciones,
+    suscripciones, // Lista de suscripciones activas
+    adquisiciones, // Lista de programas adquiridos
 }) {
+    // Función para formatear una fecha a "dd/mm/aaaa"
     const formatFecha = (fecha) => {
-        const fechaObj = new Date(fecha);
+        const fechaObj = new Date(fecha); // Convierte la fecha en un objeto Date
         return fechaObj.toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
+            day: "2-digit", // Día con dos dígitos
+            month: "2-digit", // Mes con dos dígitos
+            year: "numeric", // Año completo
         });
     };
 
+    // Función para calcular el tiempo restante hasta una fecha
     const calculateRemainingTime = (fechaFin) => {
-        const now = new Date();
-        const targetDate = new Date(fechaFin);
-        const difference = targetDate - now;
+        const now = new Date(); // Fecha y hora actual
+        const targetDate = new Date(fechaFin); // Convierte la fecha final en un objeto Date
+        const difference = targetDate - now; // Calcula la diferencia en milisegundos
 
         if (difference <= 0) {
-            return "Finalizado";
+            return "Finalizado"; // Si la diferencia es menor o igual a 0, el tiempo ha finalizado
         }
 
+        // Calcula días, horas, minutos y segundos restantes
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
         const minutes = Math.floor((difference / (1000 * 60)) % 60);
         const seconds = Math.floor((difference / 1000) % 60);
 
-        return { days, hours, minutes, seconds };
+        return { days, hours, minutes, seconds }; // Devuelve el tiempo restante en un objeto
     };
 
+    // Estado para el tiempo restante de las suscripciones
     const [timeRemainingSuscripciones, setTimeRemainingSuscripciones] =
-        useState(suscripciones.map((s) => calculateRemainingTime(s.fecha_fin)));
+        useState(
+            suscripciones.map((s) => calculateRemainingTime(s.fecha_fin)) // Calcula el tiempo restante para cada suscripción
+        );
 
+    // Estado para el tiempo restante de los programas adquiridos
     const [timeRemainingProgramas, setTimeRemainingProgramas] = useState(
         adquisiciones.map((a) =>
             calculateRemainingTime(
-                new Date(a.fecha_adquisicion).getTime() +
-                    a.programa.duracion * 7 * 24 * 60 * 60 * 1000
+                new Date(a.fecha_adquisicion).getTime() + // Fecha de adquisición en milisegundos
+                    a.programa.duracion * 7 * 24 * 60 * 60 * 1000 // Suma la duración del programa (en semanas convertidas a milisegundos)
             )
         )
     );
 
+    // Actualiza los tiempos restantes cada segundo
     useEffect(() => {
         const interval = setInterval(() => {
+            // Recalcula el tiempo restante para las suscripciones
             setTimeRemainingSuscripciones(
                 suscripciones.map((s) => calculateRemainingTime(s.fecha_fin))
             );
 
+            // Recalcula el tiempo restante para los programas adquiridos
             setTimeRemainingProgramas(
                 adquisiciones.map((a) =>
                     calculateRemainingTime(
@@ -60,10 +70,10 @@ export default function SuscripcionesProgramas({
                     )
                 )
             );
-        }, 1000);
+        }, 1000); // Actualización cada segundo
 
-        return () => clearInterval(interval);
-    }, [suscripciones, adquisiciones]);
+        return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
+    }, [suscripciones, adquisiciones]); // Se ejecuta nuevamente si cambian las suscripciones o adquisiciones
 
     return (
         <div className="bg-gradient-to-r from-black via-gray-900 to-green-800 p-8 rounded-lg shadow-md">
