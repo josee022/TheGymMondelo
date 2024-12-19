@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
 const EditarEntrenador = ({ entrenador, onClose, onEditar }) => {
-    const [especialidad, setEspecialidad] = useState(entrenador.especialidad);
-    const [tarifa, setTarifa] = useState(entrenador.tarifa);
+    // Estados locales para manejar los valores de especialidad y tarifa
+    const [especialidad, setEspecialidad] = useState(entrenador.especialidad); // Inicializa con la especialidad actual del entrenador
+    const [tarifa, setTarifa] = useState(entrenador.tarifa); // Inicializa con la tarifa actual del entrenador
 
+    // Maneja el envío del formulario
     const handleSubmit = (e) => {
-        e.preventDefault();
-        onEditar(entrenador.id, especialidad, tarifa);
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario
+        onEditar(entrenador.id, especialidad, tarifa); // Llama a la función de edición con los valores actualizados
     };
 
     return (
@@ -15,7 +17,9 @@ const EditarEntrenador = ({ entrenador, onClose, onEditar }) => {
                 <h2 className="text-xl font-bold mb-4">Editar Preferencias</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Especialidad</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Especialidad
+                        </label>
                         <input
                             type="text"
                             value={especialidad}
@@ -25,7 +29,9 @@ const EditarEntrenador = ({ entrenador, onClose, onEditar }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Tarifa</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Tarifa
+                        </label>
                         <input
                             type="number"
                             value={tarifa}
@@ -43,7 +49,10 @@ const EditarEntrenador = ({ entrenador, onClose, onEditar }) => {
                         >
                             Cancelar
                         </button>
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+                        <button
+                            type="submit"
+                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                        >
                             Guardar Cambios
                         </button>
                     </div>
