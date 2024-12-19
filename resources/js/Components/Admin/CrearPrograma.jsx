@@ -2,22 +2,26 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 const CrearPrograma = ({
-    selectedPrograma,
-    setSelectedPrograma,
-    handleSubmit,
+    selectedPrograma, // Programa seleccionado para edición
+    setSelectedPrograma, // Función para limpiar el programa seleccionado
+    handleSubmit, // Función para manejar el envío del formulario
 }) => {
+    // Estado inicial del formulario
     const [form, setForm] = useState({
         nombre: "",
         descripcion: "",
         duracion: "",
-        nivel: "Principiante",
+        nivel: "Principiante", // Valor predeterminado
         precio: "",
     });
 
+    // Actualiza el formulario si cambia el programa seleccionado
     useEffect(() => {
         if (selectedPrograma) {
+            // Rellena el formulario con los datos del programa seleccionado
             setForm(selectedPrograma);
         } else {
+            // Restaura el formulario a su estado inicial
             setForm({
                 nombre: "",
                 descripcion: "",
@@ -28,21 +32,24 @@ const CrearPrograma = ({
         }
     }, [selectedPrograma]);
 
+    // Maneja los cambios en los campos del formulario
     const onChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        setForm((prev) => ({ ...prev, [name]: value })); // Actualiza el campo correspondiente
     };
 
     const validateForm = () => {
+        // Desestructuración de los datos del formulario
         const { nombre, descripcion, duracion, nivel, precio } = form;
 
+        // Validación del nombre
         if (!nombre.trim()) {
             Swal.fire(
                 "Error",
                 "El nombre del programa es obligatorio.",
                 "error"
             );
-            return false;
+            return false; // Detiene la ejecución si el nombre está vacío
         }
         if (nombre.trim().length < 3) {
             Swal.fire(
@@ -50,12 +57,13 @@ const CrearPrograma = ({
                 "El nombre debe tener al menos 3 caracteres.",
                 "error"
             );
-            return false;
+            return false; // Detiene la ejecución si el nombre tiene menos de 3 caracteres
         }
 
+        // Validación de la descripción
         if (!descripcion.trim()) {
             Swal.fire("Error", "La descripción es obligatoria.", "error");
-            return false;
+            return false; // Detiene la ejecución si la descripción está vacía
         }
         if (descripcion.trim().length < 10) {
             Swal.fire(
@@ -63,39 +71,47 @@ const CrearPrograma = ({
                 "La descripción debe tener al menos 10 caracteres.",
                 "error"
             );
-            return false;
+            return false; // Detiene la ejecución si la descripción tiene menos de 10 caracteres
         }
 
+        // Validación de la duración
         if (!duracion || isNaN(duracion) || duracion < 1) {
             Swal.fire(
                 "Error",
                 "La duración debe ser un número mayor o igual a 1 (en semanas).",
                 "error"
             );
-            return false;
+            return false; // Detiene la ejecución si la duración es menor que 1 o no es un número
         }
 
+        // Validación del nivel
         if (!["Principiante", "Intermedio", "Avanzado"].includes(nivel)) {
             Swal.fire("Error", "El nivel seleccionado no es válido.", "error");
-            return false;
+            return false; // Detiene la ejecución si el nivel no es válido
         }
 
+        // Validación del precio
         if (!precio || isNaN(precio) || precio < 0) {
             Swal.fire(
                 "Error",
                 "El precio debe ser un número mayor o igual a 0.",
                 "error"
             );
-            return false;
+            return false; // Detiene la ejecución si el precio es menor que 0 o no es un número
         }
 
-        return true;
+        return true; // Retorna true si todas las validaciones pasan
     };
 
     const onSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario (recarga de la página)
+
         if (validateForm()) {
+            // Valida los datos del formulario
+            // Si la validación pasa, se llama a `handleSubmit` con los datos y el estado de edición
             handleSubmit(form, !!selectedPrograma);
+
+            // Restablece el formulario a su estado inicial después de enviar
             setForm({
                 nombre: "",
                 descripcion: "",
@@ -103,11 +119,14 @@ const CrearPrograma = ({
                 nivel: "Principiante",
                 precio: "",
             });
+
+            // Limpia el programa seleccionado (si está editando)
             setSelectedPrograma(null);
         }
     };
 
     const onClear = () => {
+        // Restablece el formulario a su estado inicial
         setForm({
             nombre: "",
             descripcion: "",
@@ -115,6 +134,8 @@ const CrearPrograma = ({
             nivel: "Principiante",
             precio: "",
         });
+
+        // Limpia la selección del programa (si se estaba editando)
         setSelectedPrograma(null);
     };
 
