@@ -4,29 +4,33 @@ import { loadStripe } from "@stripe/stripe-js";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { router } from "@inertiajs/react";
 
+// Clave stripe para el pago
 const stripePromise = loadStripe(
     "pk_test_51QNXpKEJzO4kuy9zOXZXYML8FDTkpqKxXWbBlj4ep3yqQow14nzLCtbdc6X3Pk78zkGMWIMQvKYQKUTQaM1bL6EK00A6v5vnA9"
 );
 
 export default function PlanesSuscripcion({
-    precioMensual,
-    precioSemestral,
-    pagoSemestral,
-    precioAnual,
-    pagoAnual,
-    usuarioTieneSuscripcion,
+    precioMensual, // Precio base mensual de la suscripción
+    precioSemestral, // Precio mensual con descuento para el plan semestral
+    pagoSemestral, // Costo total del plan semestral (6 meses)
+    precioAnual, // Precio mensual con descuento para el plan anual
+    pagoAnual, // Costo total del plan anual (12 meses)
+    usuarioTieneSuscripcion, // Indica si el usuario ya tiene una suscripción activa
 }) {
-    const [tipoSeleccionado, setTipoSeleccionado] = useState(null);
-    const [mostrarModal, setMostrarModal] = useState(false);
+    // Estados para gestionar el tipo de suscripción seleccionada y el modal
+    const [tipoSeleccionado, setTipoSeleccionado] = useState(null); // Plan seleccionado (mensual, semestral o anual)
+    const [mostrarModal, setMostrarModal] = useState(false); // Controla la visibilidad del modal
 
+    // Abre el modal y establece el tipo de suscripción seleccionada
     const abrirModal = (tipo) => {
-        setTipoSeleccionado(tipo);
-        setMostrarModal(true);
+        setTipoSeleccionado(tipo); // Define el plan seleccionado
+        setMostrarModal(true); // Muestra el modal
     };
 
+    // Cierra el modal y reinicia el plan seleccionado
     const cerrarModal = () => {
-        setTipoSeleccionado(null);
-        setMostrarModal(false);
+        setTipoSeleccionado(null); // Limpia la selección
+        setMostrarModal(false); // Oculta el modal
     };
 
     return (
@@ -215,70 +219,80 @@ function PlanCard({
 }
 
 function ModalPago({ tipo, monto, cerrarModal }) {
-    const stripe = useStripe();
-    const elements = useElements();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    // Inicializa Stripe y los elementos necesarios para el pago
+    const stripe = useStripe(); // Hook para interactuar con la API de Stripe
+    const elements = useElements(); // Hook para acceder a los elementos de pago (tarjeta)
 
+    const [loading, setLoading] = useState(false); // Indica si el proceso de pago está en curso
+    const [error, setError] = useState(null); // Almacena mensajes de error durante el proceso
+
+    // Maneja el envío del formulario de pago
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+        setLoading(true); // Activa el estado de carga
 
-        const cardElement = elements.getElement(CardElement);
+        const cardElement = elements.getElement(CardElement); // Obtiene el elemento de tarjeta de Stripe
 
         try {
+            // Obtiene el token CSRF del documento HTML para proteger la solicitud
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 ?.getAttribute("content");
 
+            // Solicita al servidor la creación de un intento de pago
             const response = await fetch(
                 "/stripe/crear-intento-pago-suscripcion",
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": csrfToken,
+                        "X-CSRF-TOKEN": csrfToken, // Incluye el token CSRF en la solicitud
                     },
-                    body: JSON.stringify({ tipo, monto }),
+                    body: JSON.stringify({ tipo, monto }), // Envia el tipo de suscripción y el monto
                 }
             );
 
             if (!response.ok) {
-                throw new Error("Error al crear el intento de pago.");
+                throw new Error("Error al crear el intento de pago."); // Maneja errores del servidor
             }
 
+            // Extrae el clientSecret del intento de pago creado
             const { clientSecret } = await response.json();
 
+            // Confirma el pago con Stripe utilizando el clientSecret
             const { error: stripeError } = await stripe.confirmCardPayment(
                 clientSecret,
                 {
-                    payment_method: { card: cardElement },
+                    payment_method: { card: cardElement }, // Método de pago: tarjeta
                 }
             );
 
             if (stripeError) {
+                // Maneja errores específicos de Stripe
                 setError(stripeError.message);
                 setLoading(false);
                 return;
             }
 
+            // Registra la suscripción en el servidor después de un pago exitoso
             await router.post(
                 route("suscripciones.store"),
-                { tipo },
+                { tipo }, // Envia el tipo de suscripción
                 {
                     onSuccess: () => {
-                        setLoading(false);
-                        cerrarModal();
+                        setLoading(false); // Finaliza el estado de carga
+                        cerrarModal(); // Cierra el modal de pago
                     },
                     onError: (errors) => {
-                        setError(errors);
+                        setError(errors); // Captura errores durante el registro
                         setLoading(false);
                     },
                 }
             );
         } catch (err) {
+            // Maneja errores generales
             setError(err.message || "Error procesando el pago.");
-            setLoading(false);
+            setLoading(false); // Finaliza el estado de carga en caso de error
         }
     };
 
