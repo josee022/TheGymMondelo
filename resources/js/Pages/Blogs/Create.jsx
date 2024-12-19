@@ -8,39 +8,46 @@ import "../../../css/create-blog.css";
 import { router } from "@inertiajs/react";
 
 export default function CreateBlog({ auth, isEntrenador, blogs, search }) {
-    const [searchTerm, setSearchTerm] = useState(search || "");
+    // Estado para manejar el término de búsqueda inicial
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Inicializa con el valor `search` o vacío si no existe
 
     // Manejar el cambio del campo de búsqueda
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Actualiza el estado del término de búsqueda
-        router.get(route("blogs.create"), { search: e.target.value }, {
-            preserveState: true, // Mantiene el estado de la paginación
-            preserveScroll: true, // Evita que el scroll suba
-        });
+        setSearchTerm(e.target.value); // Actualiza el estado del término de búsqueda con el valor ingresado
+        router.get(
+            route("blogs.create"), // Ruta para realizar la búsqueda en blogs
+            { search: e.target.value }, // Parámetro de búsqueda enviado al backend
+            {
+                preserveState: true, // Mantiene el estado actual (por ejemplo, paginación)
+                preserveScroll: true, // Evita que el scroll se reinicie
+            }
+        );
     };
 
-    const [editingBlogId, setEditingBlogId] = useState(null);
+    // Estado para manejar el blog en edición
+    const [editingBlogId, setEditingBlogId] = useState(null); // Almacena el ID del blog que se está editando o `null`
 
-    // Maneja la edición
+    // Manejar la edición de un blog
     const handleEdit = (blog) => {
-        setEditingBlogId(blog.id);
+        setEditingBlogId(blog.id); // Establece el ID del blog en edición
     };
 
+    // Cancelar la edición
     const handleCancelEdit = () => {
-        setEditingBlogId(null);
+        setEditingBlogId(null); // Restablece el estado, saliendo del modo de edición
     };
 
-    // Formatea la fecha
+    // Formatear la fecha del blog
     const formatFechaBlog = (timestamp) => {
-        const fecha = new Date(timestamp);
+        const fecha = new Date(timestamp); // Convierte el timestamp en un objeto Date
         const opciones = {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+            year: "numeric", // Año completo (ejemplo: 2024)
+            month: "long", // Nombre completo del mes (ejemplo: diciembre)
+            day: "numeric", // Día del mes
+            hour: "2-digit", // Hora con dos dígitos
+            minute: "2-digit", // Minutos con dos dígitos
         };
-        return `Creado el ${fecha.toLocaleDateString("es-ES", opciones)}`;
+        return `Creado el ${fecha.toLocaleDateString("es-ES", opciones)}`; // Devuelve la fecha formateada en español
     };
 
     return (
