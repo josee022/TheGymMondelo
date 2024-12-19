@@ -2,6 +2,7 @@ import React from "react";
 import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function VerRespuesta({ contacto, respuesta }) {
+    // Regreso a la página anterior
     const handleBack = () => {
         window.history.back();
     };

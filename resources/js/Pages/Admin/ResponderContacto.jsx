@@ -4,37 +4,37 @@ import { useForm, usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
 export default function ResponderContacto({ contacto }) {
-    const { flash } = usePage().props; // Captura los mensajes flash
+    const { flash } = usePage().props; // Captura los mensajes flash, que pueden ser de éxito o error.
     const { data, setData, post, processing, reset } = useForm({
-        respuesta: "",
+        respuesta: "", // Estado del formulario, en este caso solo se tiene el campo "respuesta".
     });
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Evita que el formulario se envíe de la manera tradicional y recargue la página
         post(route("admin.respuestas.store", contacto.id), {
             onSuccess: () => {
-                reset("respuesta");
+                reset("respuesta"); // Resetea el campo de respuesta después de enviar correctamente.
             },
         });
     };
 
     const handleBack = () => {
-        window.history.back();
+        window.history.back(); // Regresa a la página anterior en el historial del navegador
     };
 
     // Mostrar SweetAlert si hay un mensaje de éxito
     useEffect(() => {
         if (flash.success) {
             Swal.fire({
-                icon: "success",
-                title: "Respuesta enviada",
-                text: flash.success,
-                confirmButtonColor: "#3085d6",
+                icon: "success", // Icono de éxito
+                title: "Respuesta enviada", // Título del mensaje
+                text: flash.success, // Texto del mensaje de éxito
+                confirmButtonColor: "#3085d6", // Color del botón de confirmación
             }).then(() => {
                 window.location.href = route("admin.contactos.index"); // Redirige después de cerrar el SweetAlert
             });
         }
-    }, [flash.success]);
+    }, [flash.success]); // Solo se ejecuta cuando flash.success cambia
 
     return (
         <AdminLayout>
