@@ -3,6 +3,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Link } from "@inertiajs/react";
 
 export default function UsuarioDetalle({ usuario }) {
+    // Formateo de fechas en los detalles del usuario
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
