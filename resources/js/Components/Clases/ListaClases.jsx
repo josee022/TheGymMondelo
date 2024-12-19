@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "@inertiajs/react";
 
 export default function ListaClases({ clases }) {
+    // Formateo de fechas de las clases
     const formatFechaClase = (fecha) => {
         const fechaObj = new Date(fecha);
         return fechaObj.toLocaleDateString("es-ES", {

@@ -11,36 +11,41 @@ import MensajeFinal from "@/Components/Clases/MensajeFinal";
 import Pagination from "@/Components/Pagination";
 
 export default function Index({ clases, user, search }) {
-    const { flash } = usePage().props;
-    const [searchTerm, setSearchTerm] = useState(search || "");
-    const searchInputRef = useRef(null);
+    // Obtiene mensajes flash y configura el término de búsqueda inicial
+    const { flash } = usePage().props; // Mensajes de éxito o error desde el backend
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Estado para el término de búsqueda
+    const searchInputRef = useRef(null); // Referencia para el campo de búsqueda
 
+    // Mostrar notificaciones basadas en los mensajes flash
     useEffect(() => {
         if (flash?.success) {
-            toast.success(flash.success);
+            toast.success(flash.success); // Notificación de éxito
         }
 
         if (flash?.error) {
-            toast.error(flash.error);
+            toast.error(flash.error); // Notificación de error
         }
-    }, [flash]);
+    }, [flash]); // Se ejecuta cuando cambian los mensajes flash
 
+    // Colocar foco en el campo de búsqueda al cargar o actualizar las clases
     useEffect(() => {
         if (searchInputRef.current) {
-            searchInputRef.current.focus(); // Mantener el foco en el campo de búsqueda
+            searchInputRef.current.focus(); // Mantener el foco en el input de búsqueda
         }
-    }, [clases]);
+    }, [clases]); // Se ejecuta cuando la lista de clases cambia
 
+    // Manejar cambios en el campo de búsqueda
     const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value);
+        const value = e.target.value; // Obtiene el valor ingresado
+        setSearchTerm(value); // Actualiza el estado del término de búsqueda
 
+        // Realiza una solicitud al servidor para filtrar las clases
         router.get(
-            route("clases.index"),
-            { search: value },
+            route("clases.index"), // Ruta de la página de clases
+            { search: value }, // Parámetro de búsqueda enviado al backend
             {
-                replace: true,
-                preserveScroll: true,
+                replace: true, // Reemplaza la URL actual sin agregar al historial
+                preserveScroll: true, // Mantiene la posición de desplazamiento
             }
         );
     };
