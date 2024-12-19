@@ -11,6 +11,7 @@ import {
     Legend,
 } from "chart.js";
 
+// Registrar variables de chart necesarias para la gráfica
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -23,36 +24,38 @@ ChartJS.register(
 
 export default function IngresosChart() {
     const [chartData, setChartData] = useState({
-        labels: [],
+        labels: [], // Las etiquetas que se mostrarán en el eje X (por ejemplo, fechas)
         datasets: [
             {
-                label: "Ingresos",
-                data: [],
-                borderColor: "rgb(75, 192, 192)",
-                tension: 0.1,
+                label: "Ingresos", // Etiqueta para la serie de datos
+                data: [], // Los datos que se mostrarán en el gráfico
+                borderColor: "rgb(75, 192, 192)", // Color de la línea del gráfico
+                tension: 0.1, // Controla la curvatura de la línea (0 = líneas rectas, 1 = curvas suaves)
             },
         ],
     });
 
+
+    // Obtener datos de los ingresos
     useEffect(() => {
         fetch("/admin/reportes/ingresos-mensuales")
             .then((response) => response.json())
             .then((ingresos) => {
                 setChartData({
                     labels: ingresos.map(
-                        (item) => `${item.month}/${item.year}`
+                        (item) => `${item.month}/${item.year}` // Formato de la etiqueta del mes/año
                     ),
                     datasets: [
                         {
-                            label: "Ingresos",
-                            data: ingresos.map((item) => item.ingresos),
-                            borderColor: "rgb(75, 192, 192)",
-                            tension: 0.1,
+                            label: "Ingresos", // Etiqueta para la serie de ingresos
+                            data: ingresos.map((item) => item.ingresos), // Datos de los ingresos
+                            borderColor: "rgb(75, 192, 192)", // Color de la línea
+                            tension: 0.1, // Curvatura de la línea
                         },
                     ],
                 });
             });
-    }, []);
+    }, []); // Dependencia vacía asegura que esto solo se ejecute una vez al montar el componente
 
     return (
         <div

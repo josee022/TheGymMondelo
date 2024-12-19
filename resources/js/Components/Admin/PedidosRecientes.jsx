@@ -9,30 +9,30 @@ export default function PedidosRecientes({
     filtroEstado = "",
     filtroUsuario = "",
 }) {
-    const pedidosData = pedidos.data || [];
-    const pedidosLinks = pedidos.links || [];
+    const pedidosData = pedidos.data || []; // Datos de los pedidos, si existen
+    const pedidosLinks = pedidos.links || []; // Enlaces para paginación de los pedidos
 
-    const [estadoSeleccionado, setEstadoSeleccionado] = useState(filtroEstado);
+    const [estadoSeleccionado, setEstadoSeleccionado] = useState(filtroEstado); // Estado para el filtro de estado
     const [usuarioSeleccionado, setUsuarioSeleccionado] =
-        useState(filtroUsuario);
+        useState(filtroUsuario); // Estado para el filtro de usuario
 
     const handleFilterChange = (e) => {
-        const estado = e.target.value;
-        setEstadoSeleccionado(estado);
+        const estado = e.target.value; // Obtiene el valor seleccionado en el filtro de estado
+        setEstadoSeleccionado(estado); // Actualiza el estado del filtro de estado
         router.get(
-            "/admin/reportes",
-            { estado, usuario_id: usuarioSeleccionado },
-            { preserveState: true, replace: true }
+            "/admin/reportes", // Realiza una solicitud GET a la ruta de reportes
+            { estado, usuario_id: usuarioSeleccionado }, // Envia los filtros como parámetros de búsqueda
+            { preserveState: true, replace: true } // Mantiene el estado de la página y reemplaza la URL sin recargar
         );
     };
 
     const handleUsuarioChange = (e) => {
-        const usuarioId = e.target.value;
-        setUsuarioSeleccionado(usuarioId);
+        const usuarioId = e.target.value; // Obtiene el valor seleccionado en el filtro de usuario
+        setUsuarioSeleccionado(usuarioId); // Actualiza el estado del filtro de usuario
         router.get(
-            "/admin/reportes",
-            { estado: estadoSeleccionado, usuario_id: usuarioId },
-            { preserveState: true, replace: true }
+            "/admin/reportes", // Realiza una solicitud GET a la ruta de reportes
+            { estado: estadoSeleccionado, usuario_id: usuarioId }, // Envia los filtros como parámetros de búsqueda
+            { preserveState: true, replace: true } // Mantiene el estado de la página y reemplaza la URL sin recargar
         );
     };
 
