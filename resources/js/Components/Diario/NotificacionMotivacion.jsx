@@ -3,6 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function NotificacionMotivacion({ mensaje }) {
+    // Efecto del mensaje de la info del toast
     useEffect(() => {
         if (mensaje) {
             toast.info(mensaje, {

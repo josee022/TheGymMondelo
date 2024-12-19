@@ -5,61 +5,81 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function DiarioForm() {
-    const { ejerciciosPrevios } = usePage().props; // Recibimos los ejercicios previos desde el backend
+    // Recibe los ejercicios previos desde el backend
+    const { ejerciciosPrevios } = usePage().props;
+
+    // Inicializa el formulario con campos necesarios para registrar un ejercicio
     const { data, setData, post, processing, errors, reset } = useForm({
-        fecha: "",
-        ejercicio: "",
-        series: "",
-        repeticiones: "",
-        peso: "",
-        notas: "",
+        fecha: "", // Fecha del registro
+        ejercicio: "", // Nombre del ejercicio
+        series: "", // Número de series realizadas
+        repeticiones: "", // Número de repeticiones por serie
+        peso: "", // Peso utilizado en el ejercicio
+        notas: "", // Notas adicionales sobre el ejercicio
     });
 
+    // Valida los campos del formulario antes de enviarlo
     const validateFields = () => {
         let isValid = true;
+
+        // Validación de la fecha
         if (!data.fecha) {
             toast.error("La fecha es obligatoria. 📅");
             isValid = false;
         }
+
+        // Validación del ejercicio
         if (!data.ejercicio) {
             toast.error("El ejercicio es obligatorio. 🏋️");
             isValid = false;
         }
+
+        // Validación de las series
         if (!data.series || data.series <= 0) {
             toast.error("Las series deben ser un número mayor a 0. 🔄");
             isValid = false;
         }
+
+        // Validación de las repeticiones
         if (!data.repeticiones || data.repeticiones <= 0) {
             toast.error("Las repeticiones deben ser un número mayor a 0. 🔢");
             isValid = false;
         }
+
+        // Validación del peso (opcional)
         if (data.peso && data.peso < 0) {
             toast.error("El peso no puede ser un número negativo. ⚖️");
             isValid = false;
         }
+
+        // Validación de las notas (opcional)
         if (data.notas && data.notas.length > 200) {
             toast.error("Las notas no pueden tener más de 200 caracteres. 📝");
             isValid = false;
         }
+
         return isValid;
     };
 
+    // Maneja el envío del formulario
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Evita que se recargue la página
+
         if (!validateFields()) {
-            return;
+            return; // Detiene el proceso si la validación falla
         }
 
+        // Realiza una solicitud POST al servidor para guardar el registro
         post(route("diario.store"), {
             onSuccess: () => {
-                reset();
+                reset(); // Limpia el formulario si la solicitud es exitosa
                 Swal.fire({
                     title: "¡Registro Exitoso! 🎉",
                     text: "¡Bien hecho! Tu ejercicio ha sido guardado.",
                     icon: "success",
                     confirmButtonText: "💪 ¡A seguir entrenando!",
-                    background: "#f1f8e9",
-                    color: "#388e3c",
+                    background: "#f1f8e9", // Estilo del fondo del modal
+                    color: "#388e3c", // Color del texto
                 });
             },
             onError: () => {
@@ -68,22 +88,23 @@ export default function DiarioForm() {
                     text: "Algo salió mal. Intenta de nuevo.",
                     icon: "error",
                     confirmButtonText: "Intentar de nuevo",
-                    background: "#ffebee",
-                    color: "#d32f2f",
+                    background: "#ffebee", // Estilo del fondo del modal
+                    color: "#d32f2f", // Color del texto
                 });
             },
         });
     };
 
+    // Vacía el formulario y muestra una notificación
     const vaciarFormulario = () => {
-        reset();
+        reset(); // Limpia los datos del formulario
         Swal.fire({
             title: "Formulario Vacío",
             text: "Todos los campos han sido vaciados.",
             icon: "info",
             confirmButtonText: "Entendido",
-            background: "#e0f7fa",
-            color: "#00796b",
+            background: "#e0f7fa", // Estilo del fondo del modal
+            color: "#00796b", // Color del texto
         });
     };
 
