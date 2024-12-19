@@ -9,17 +9,19 @@ import {
     FiHeart,
     FiTrendingUp,
 } from "react-icons/fi";
-import { router } from "@inertiajs/react";
 
+// Configuración inicial de Stripe para manejar pagos
 const stripePromise = loadStripe(
     "pk_test_51QNXpKEJzO4kuy9zOXZXYML8FDTkpqKxXWbBlj4ep3yqQow14nzLCtbdc6X3Pk78zkGMWIMQvKYQKUTQaM1bL6EK00A6v5vnA9"
 );
 
+// Componente para mostrar los planes de dieta
 export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
+    // Lista de planes de dieta con detalles (título, descripción, precio, etc.)
     const plans = [
         {
             title: "Pérdida de Peso",
-            icon: <FiHeart className="text-green-500" size={48} />,
+            icon: <FiHeart className="text-green-500" size={48} />, // Ícono representativo
             description: "Plan diseñado para perder peso de forma saludable.",
             details: [
                 "Proporción óptima de macronutrientes.",
@@ -28,9 +30,9 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
                 "Asesoría personalizada semanal.",
             ],
             color: "green-500",
-            bgColor: "bg-green-100",
-            objetivo: "Pérdida de peso",
-            precio: 29.99,
+            bgColor: "bg-green-100", // Colores personalizados para el estilo
+            objetivo: "Pérdida de peso", // Objetivo del plan
+            precio: 29.99, // Precio del plan
         },
         {
             title: "Ganancia Muscular",
@@ -65,14 +67,19 @@ export default function PlanesDieta({ handleDieta, usuarioTieneDieta }) {
         },
     ];
 
+    // Estado para controlar el plan seleccionado en el modal
     const [planSeleccionado, setPlanSeleccionado] = useState(null);
+
+    // Estado para controlar si el modal está visible
     const [mostrarModal, setMostrarModal] = useState(false);
 
+    // Abre el modal con los detalles del plan seleccionado
     const abrirModal = (plan) => {
-        setPlanSeleccionado(plan);
-        setMostrarModal(true);
+        setPlanSeleccionado(plan); // Define el plan que se mostrará
+        setMostrarModal(true); // Muestra el modal
     };
 
+    // Cierra el modal y limpia el plan seleccionado
     const cerrarModal = () => {
         setPlanSeleccionado(null);
         setMostrarModal(false);
@@ -166,55 +173,66 @@ function PlanCard({ plan, abrirModal, usuarioTieneDieta }) {
 }
 
 function ModalPago({ plan, cerrarModal, handleDieta }) {
-    const stripe = useStripe();
-    const elements = useElements();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    // Configuración inicial para Stripe
+    const stripe = useStripe(); // Hook para interactuar con Stripe
+    const elements = useElements(); // Hook para acceder a los elementos de pago
 
+    // Estados para manejar la carga y los errores durante el proceso de pago
+    const [loading, setLoading] = useState(false); // Indica si el pago está en proceso
+    const [error, setError] = useState(null); // Almacena mensajes de error si ocurren
+
+    // Función para manejar el envío del formulario de pago
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+        setLoading(true); // Muestra que el proceso de pago ha comenzado
 
-        const cardElement = elements.getElement(CardElement);
+        const cardElement = elements.getElement(CardElement); // Obtiene el elemento de tarjeta de Stripe
 
         try {
+            // Obtiene el token CSRF para la seguridad de la solicitud
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 ?.getAttribute("content");
 
+            // Solicita al servidor la creación de un intento de pago en Stripe
             const response = await fetch("/stripe/crear-intento-pago-dieta", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken,
+                    "X-CSRF-TOKEN": csrfToken, // Token CSRF para protección
                 },
-                body: JSON.stringify({ monto: plan.precio }),
+                body: JSON.stringify({ monto: plan.precio }), // Envía el monto del plan seleccionado
             });
 
             if (!response.ok) {
-                throw new Error("Error al crear el intento de pago.");
+                throw new Error("Error al crear el intento de pago."); // Lanza un error si la respuesta no es exitosa
             }
 
+            // Obtiene el clientSecret para confirmar el pago
             const { clientSecret } = await response.json();
 
+            // Confirma el pago con Stripe usando el clientSecret y el elemento de tarjeta
             const { error: stripeError } = await stripe.confirmCardPayment(
                 clientSecret,
                 {
-                    payment_method: { card: cardElement },
+                    payment_method: { card: cardElement }, // Método de pago: tarjeta
                 }
             );
 
             if (stripeError) {
-                setError(stripeError.message);
-                setLoading(false);
+                // Maneja errores específicos de Stripe
+                setError(stripeError.message); // Muestra el mensaje de error de Stripe
+                setLoading(false); // Detiene el estado de carga
                 return;
             }
 
+            // Maneja la dieta si el pago es exitoso
             handleDieta(plan.objetivo, plan.description);
-            cerrarModal();
+            cerrarModal(); // Cierra el modal después del éxito
         } catch (err) {
-            setError(err.message || "Error procesando el pago.");
-            setLoading(false);
+            // Maneja errores generales
+            setError(err.message || "Error procesando el pago."); // Muestra el mensaje de error
+            setLoading(false); // Detiene el estado de carga
         }
     };
 
