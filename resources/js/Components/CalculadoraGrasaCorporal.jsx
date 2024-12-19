@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 
+// Componente para calcular el porcentaje de grasa corporal
 const CalculadoraGrasaCorporal = () => {
-    // Estados para los datos de entrada y resultados
-    const [edad, setEdad] = useState("");
-    const [peso, setPeso] = useState("");
-    const [altura, setAltura] = useState("");
-    const [circunferenciaCuello, setCircunferenciaCuello] = useState("");
-    const [circunferenciaCintura, setCircunferenciaCintura] = useState("");
-    const [genero, setGenero] = useState("hombre");
-    const [grasaCorporal, setGrasaCorporal] = useState(null);
+    // Estados para los datos de entrada
+    const [edad, setEdad] = useState(""); // Edad del usuario
+    const [peso, setPeso] = useState(""); // Peso en kilogramos
+    const [altura, setAltura] = useState(""); // Altura en centímetros
+    const [circunferenciaCuello, setCircunferenciaCuello] = useState(""); // Circunferencia del cuello en cm
+    const [circunferenciaCintura, setCircunferenciaCintura] = useState(""); // Circunferencia de la cintura en cm
+    const [genero, setGenero] = useState("hombre"); // Género del usuario (hombre o mujer)
+    const [grasaCorporal, setGrasaCorporal] = useState(null); // Resultado del cálculo de grasa corporal
 
-    // Función para calcular el porcentaje de grasa corporal
+    // Función para calcular el porcentaje de grasa corporal basado en género y medidas
     const calcularGrasaCorporal = () => {
         let grasaCalculada;
 
         if (genero === "hombre") {
-            // Fórmula de la grasa corporal para hombres
+            // Fórmula para hombres
             grasaCalculada =
                 86.01 *
                     Math.log10(circunferenciaCintura - circunferenciaCuello) -
                 70.041 * Math.log10(altura) +
                 36.76;
         } else {
-            // Fórmula de la grasa corporal para mujeres
+            // Fórmula para mujeres
             grasaCalculada =
                 163.205 *
                     Math.log10(circunferenciaCintura - circunferenciaCuello) -
@@ -30,10 +31,11 @@ const CalculadoraGrasaCorporal = () => {
                 78.387;
         }
 
-        setGrasaCorporal(grasaCalculada.toFixed(2)); // Redondear el resultado a dos decimales
+        // Guardar el resultado redondeado a dos decimales
+        setGrasaCorporal(grasaCalculada.toFixed(2));
     };
 
-    // Función para vaciar los campos y limpiar resultados
+    // Función para limpiar todos los campos y resetear los resultados
     const vaciarCampos = () => {
         setEdad("");
         setPeso("");
@@ -41,7 +43,7 @@ const CalculadoraGrasaCorporal = () => {
         setCircunferenciaCuello("");
         setCircunferenciaCintura("");
         setGenero("hombre");
-        setGrasaCorporal(null);
+        setGrasaCorporal(null); // Limpia el resultado
     };
 
     return (
