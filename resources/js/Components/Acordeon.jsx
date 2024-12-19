@@ -5,10 +5,12 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 const Acordeon = () => {
     const [openIndex, setOpenIndex] = useState(null);
 
+    // Inicializador del acordeon
     const handleToggle = (index) => {
         setOpenIndex(openIndex === index ? null : index);
     };
 
+    // Contenido acordeon
     const faqs = [
         {
             question: "¿Qué es TheGymMondelo?",
