@@ -5,124 +5,141 @@ import Swal from "sweetalert2";
 
 export default function ProductoEditar({ producto }) {
     const [formData, setFormData] = useState({
-        nombre: producto.nombre || "",
-        descripcion: producto.descripcion || "",
-        precio: producto.precio || "",
-        stock: producto.stock || "",
-        imagen: null,
+        nombre: producto.nombre || "", // El nombre del producto, con valor predeterminado si existe
+        descripcion: producto.descripcion || "", // Descripción del producto
+        precio: producto.precio || "", // Precio del producto
+        stock: producto.stock || "", // Cantidad de stock disponible
+        imagen: null, // Imagen del producto, inicialmente en null
     });
 
     const [preview, setPreview] = useState(
-        producto.imagen ? `/images/${producto.imagen}` : null
+        producto.imagen ? `/images/${producto.imagen}` : null // Vista previa de la imagen si ya existe
     );
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({}); // Estado para manejar los errores de validación
 
+    // Maneja los cambios en los campos del formulario (nombre, descripción, precio, etc.)
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value } = e.target; // Obtiene el nombre y el valor del campo
+        setFormData({ ...formData, [name]: value }); // Actualiza el estado de formData con el nuevo valor
     };
 
+    // Maneja el cambio en el campo de imagen (archivo)
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
+        const file = e.target.files[0]; // Obtiene el archivo seleccionado
         if (file) {
+            // Verifica que el archivo sea una imagen válida
             if (!file.type.startsWith("image/")) {
                 setErrors({
                     ...errors,
-                    imagen: "El archivo debe ser una imagen válida.",
+                    imagen: "El archivo debe ser una imagen válida.", // Mensaje de error si no es una imagen
                 });
-                return;
+                return; // Detiene la ejecución si no es una imagen válida
             }
+
+            // Si el archivo es una imagen válida, actualiza el estado de la imagen
             setFormData({ ...formData, imagen: file });
-            setPreview(URL.createObjectURL(file));
-            setErrors({ ...errors, imagen: null });
+            setPreview(URL.createObjectURL(file)); // Muestra una vista previa de la imagen
+            setErrors({ ...errors, imagen: null }); // Limpia cualquier error previo relacionado con la imagen
         }
     };
 
     const validateForm = () => {
-        const { nombre, descripcion, precio, stock } = formData;
-        const newErrors = {};
+        const { nombre, descripcion, precio, stock } = formData; // Extraemos los datos del formulario
+        const newErrors = {}; // Creamos un objeto para almacenar los errores
 
+        // Validación del nombre
         if (!nombre.trim()) {
-            newErrors.nombre = "El nombre del producto es obligatorio.";
+            newErrors.nombre = "El nombre del producto es obligatorio."; // Error si el nombre está vacío
         } else if (nombre.length < 3) {
-            newErrors.nombre = "El nombre debe tener al menos 3 caracteres.";
+            newErrors.nombre = "El nombre debe tener al menos 3 caracteres."; // Error si el nombre tiene menos de 3 caracteres
         }
 
+        // Validación de la descripción
         if (!descripcion.trim()) {
             newErrors.descripcion =
-                "La descripción del producto es obligatoria.";
+                "La descripción del producto es obligatoria."; // Error si la descripción está vacía
         } else if (descripcion.length < 10) {
             newErrors.descripcion =
-                "La descripción debe tener al menos 10 caracteres.";
+                "La descripción debe tener al menos 10 caracteres."; // Error si la descripción tiene menos de 10 caracteres
         }
 
+        // Validación del precio
         if (!precio || isNaN(precio) || precio < 0) {
             newErrors.precio =
-                "El precio debe ser un número mayor o igual a 0.";
+                "El precio debe ser un número mayor o igual a 0."; // Error si el precio no es válido
         }
 
+        // Validación del stock
         if (!stock || isNaN(stock) || stock < 0) {
             newErrors.stock =
-                "El stock debe ser un número entero mayor o igual a 0.";
+                "El stock debe ser un número entero mayor o igual a 0."; // Error si el stock no es un número válido o menor que 0
         }
 
+        // Establecemos los errores en el estado
         setErrors(newErrors);
 
+        // Si no hay errores, la función retorna true, lo que indica que el formulario es válido
         return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene la acción predeterminada del formulario (recarga de página)
 
-        if (!validateForm()) return;
+        if (!validateForm()) return; // Si la validación del formulario falla, no continúa
 
+        // Crear un nuevo objeto FormData para enviar datos al servidor
         const form = new FormData();
-        form.append("nombre", formData.nombre);
-        form.append("descripcion", formData.descripcion);
-        form.append("precio", formData.precio);
-        form.append("stock", formData.stock);
+        form.append("nombre", formData.nombre); // Nombre del producto
+        form.append("descripcion", formData.descripcion); // Descripción del producto
+        form.append("precio", formData.precio); // Precio del producto
+        form.append("stock", formData.stock); // Stock del producto
 
+        // Si hay una imagen seleccionada, la agregamos al FormData
         if (formData.imagen) {
             form.append("imagen", formData.imagen);
         }
 
-        // Incluye el método PUT explícitamente
+        // Incluimos el método PUT explícitamente para indicar que estamos actualizando
         form.append("_method", "PUT");
 
         try {
+            // Realizamos la solicitud al servidor para actualizar el producto
             const response = await fetch(
-                route("admin.productos.update", producto.id),
+                route("admin.productos.update", producto.id), // URL para actualizar el producto
                 {
-                    method: "POST",
-                    body: form,
+                    method: "POST", // Usamos el método POST con un formulario
+                    body: form, // Enviamos los datos del formulario como el cuerpo de la solicitud
                     headers: {
                         "X-CSRF-TOKEN": document
                             .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute("content"),
+                            ?.getAttribute("content"), // Token CSRF para proteger la solicitud
                     },
                 }
             );
 
+            // Si la respuesta no es exitosa, lanzamos un error
             if (!response.ok) {
                 throw new Error("Error al actualizar el producto.");
             }
 
+            // Si la actualización es exitosa, mostramos un mensaje de éxito
             Swal.fire({
-                title: "Producto Actualizado",
-                text: "El producto ha sido actualizado exitosamente.",
-                icon: "success",
-                confirmButtonText: "Aceptar",
+                title: "Producto Actualizado", // Título del mensaje
+                text: "El producto ha sido actualizado exitosamente.", // Texto del mensaje
+                icon: "success", // Icono de éxito
+                confirmButtonText: "Aceptar", // Texto del botón de confirmación
             }).then(() => {
-                router.visit(route("admin.productos"));
+                router.visit(route("admin.productos")); // Redirige a la lista de productos
             });
         } catch (error) {
-            console.error(error);
+            // Si ocurre un error, mostramos un mensaje de error
+            console.error(error); // Muestra el error en la consola
             Swal.fire({
-                title: "Error",
-                text: "Hubo un problema al actualizar el producto. Por favor, inténtalo de nuevo.",
-                icon: "error",
-                confirmButtonText: "Aceptar",
+                title: "Error", // Título del mensaje de error
+                text: "Hubo un problema al actualizar el producto. Por favor, inténtalo de nuevo.", // Texto del mensaje
+                icon: "error", // Icono de error
+                confirmButtonText: "Aceptar", // Texto del botón de confirmación
             });
         }
     };
