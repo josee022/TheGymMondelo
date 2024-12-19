@@ -12,15 +12,17 @@ import { usePage } from "@inertiajs/react";
 import "./Inicio.css";
 
 export default function Inicio({ auth }) {
-    const { blogs } = usePage().props;
+    const { blogs } = usePage().props; // Obtiene la lista de blogs desde las props de la página
 
-    // Ordena los blogs de más reciente a más antiguo
+    // Ordena los blogs por fecha de publicación, de más reciente a más antiguo
     const sortedBlogs = [...blogs].sort(
         (a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
     );
 
+    // Estado para controlar el índice del blog actualmente visible
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    // Formatea la fecha de publicación en formato "día/mes/año hora:minutos:segundos"
     const formatFechaBlog = (fecha_publicacion) => {
         const date = new Date(fecha_publicacion);
         return (
@@ -30,10 +32,12 @@ export default function Inicio({ auth }) {
         );
     };
 
+    // Muestra el blog anterior en la lista
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
     };
 
+    // Muestra el blog siguiente en la lista
     const handleNext = () => {
         setCurrentIndex((prevIndex) =>
             Math.min(prevIndex + 1, blogs.length - 1)
@@ -247,8 +251,8 @@ export default function Inicio({ auth }) {
 
             {/* Contenedor blanco con los posts */}
             <div className="contenedor-blanco">
-            <h1 className="masGrande">💡  💡  💡  💡  💡  💡</h1> <br />
-            <h1 className="masGrande2">
+                <h1 className="masGrande">💡 💡 💡 💡 💡 💡</h1> <br />
+                <h1 className="masGrande2">
                     <strong>
                         {" "}
                         NOTICIAS Y CONSEJOS DE NUESTROS ENTRENADORES{" "}
