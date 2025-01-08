@@ -13,112 +13,73 @@ use Illuminate\Support\Facades\Auth;
 
 class ClaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Este método muestra todas las clases futuras, con opción de búsqueda
     public function index(Request $request)
     {
+        // Capturamos el término de búsqueda proporcionado por el usuario
         $search = $request->input('search');
 
+        // Consultamos las clases futuras, permitiendo filtrar por el término de búsqueda
         $clases = Clase::query()
-            ->where('fecha', '>', now()->toDateString())
+            ->where('fecha', '>', now()->toDateString()) // Solo clases con fecha futura
             ->when($search, function ($query, $search) {
+                // Si hay un término de búsqueda, filtramos las clases por su nombre
                 $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
             })
-            ->orderBy('fecha')
-            ->paginate(6)
-            ->appends(['search' => $search]);
+            ->orderBy('fecha') // Ordenamos las clases por fecha
+            ->paginate(6) // Mostramos 6 clases por página
+            ->appends(['search' => $search]); // Mantenemos el término de búsqueda al paginar
 
+        // Retornamos la vista Inertia con los datos necesarios
         return Inertia::render('Clases/Index', [
-            'clases' => $clases,
-            'search' => $search,
-            'user' => auth()->user(),
+            'clases' => $clases, // Pasamos las clases al frontend
+            'search' => $search, // Pasamos el término de búsqueda
+            'user' => auth()->user(), // Pasamos la información del usuario autenticado
         ]);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreClaseRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
+    // Este método muestra los detalles de una clase específica
     public function show($id)
     {
-        // Obtiene la clase especificada por ID, incluyendo reservas confirmadas y la información del entrenador
+        // Obtenemos la clase con su entrenador y las reservas confirmadas
         $clase = Clase::with(['entrenador.usuario', 'reservas' => function ($query) {
+            // Solo mostramos las reservas confirmadas
             $query->where('estado', 'Confirmada');
         }])->findOrFail($id);
 
-        // Calcula las plazas disponibles restando las reservas confirmadas de la capacidad total
+        // Calculamos las plazas disponibles restando las reservas confirmadas de la capacidad total
         $plazasDisponibles = $clase->capacidad - $clase->reservas->count();
 
+        // Retornamos la vista Inertia con los detalles de la clase
         return Inertia::render('Clases/Show', [
-            'clase' => $clase,
-            'entrenador' => $clase->entrenador,
-            'plazasDisponibles' => $plazasDisponibles,
+            'clase' => $clase, // Pasamos los detalles de la clase
+            'entrenador' => $clase->entrenador, // Pasamos el entrenador de la clase
+            'plazasDisponibles' => $plazasDisponibles, // Pasamos las plazas disponibles
         ]);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateClaseRequest $request, Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Clase $clase)
-    {
-        //
-    }
-
+    // Este método permite a un usuario reservar una clase
     public function reserve(Request $request, Clase $clase)
     {
-        // Obtiene el usuario autenticado
+        // Obtenemos el usuario autenticado
         $user = Auth::user();
 
-        // Verifica si ya existe una reserva para esta clase por parte del usuario
+        // Verificamos si ya existe una reserva para esta clase por parte del usuario
         if (Reserva::where('usuario_id', $user->id)
             ->where('clase_id', $clase->id)
             ->exists()
         ) {
-            // Redirige de vuelta con un mensaje de error si ya se ha reservado la clase
+            // Si el usuario ya tiene una reserva, redirigimos con un mensaje de error
             return redirect()->back()->with('error', 'Ya has reservado esta clase.');
         }
 
-        // Crea una nueva reserva para el usuario y la clase especificada
+        // Si no hay reserva, creamos una nueva para el usuario y la clase
         Reserva::create([
-            'usuario_id' => $user->id,
-            'clase_id' => $clase->id,
+            'usuario_id' => $user->id, // ID del usuario que realiza la reserva
+            'clase_id' => $clase->id, // ID de la clase que se reserva
         ]);
 
-        // Redirige al perfil del usuario con un mensaje de éxito
+        // Redirigimos al perfil del usuario con un mensaje de éxito
         return redirect()->route('profile')->with('success', 'Clase reservada con éxito.');
     }
 }
