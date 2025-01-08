@@ -12,76 +12,31 @@ use Illuminate\Support\Facades\Auth;
 
 class ProgramaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
+        // Captura el término de búsqueda desde la solicitud
         $search = $request->input('search');
 
+        // Se obtiene la lista de programas, aplicando el filtro de búsqueda si se proporciona
         $programas = Programa::when($search, function ($query, $search) {
+            // Filtro por nombre, sin importar si está en mayúsculas o minúsculas
             $query->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%']);
         })
+            // Ordenar los resultados por nombre de manera ascendente
             ->orderBy('nombre', 'asc')
+            // Paginación de los resultados, mostrando 9 programas por página
             ->paginate(9)
+            // Mantener el término de búsqueda en la paginación
             ->appends(['search' => $search]);
 
-        // Verificar si el usuario tiene un programa adquirido
+        // Verificar si el usuario ya tiene un programa adquirido
         $usuarioTienePrograma = AdquisicionPrograma::where('usuario_id', Auth::id())->exists();
 
+        // Retorna la vista con los datos obtenidos y pasa el resultado de la verificación
         return Inertia::render('Programas/Index', [
-            'programas' => $programas,
-            'search' => $search,
-            'usuarioTienePrograma' => $usuarioTienePrograma, // Pasamos la variable a la vista
+            'programas' => $programas,  // Pasa la lista de programas a la vista
+            'search' => $search,        // Pasa el término de búsqueda a la vista
+            'usuarioTienePrograma' => $usuarioTienePrograma, // Pasa el estado de si el usuario tiene un programa adquirido
         ]);
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProgramaRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Programa $programa)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Programa $programa)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateProgramaRequest $request, Programa $programa)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Programa $programa)
-    {
-        //
     }
 }
