@@ -16,31 +16,26 @@ class BlogController extends Controller
     {
         $this->middleware('auth'); // Aplica el middleware de autenticación a todas las acciones del controlador.
     }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
+        // Obtener el usuario actualmente autenticado
         $user = auth()->user();
+        // Verificar si el usuario es un "entrenador"
         $isEntrenador = $user->entrenador()->exists();
 
-        $search = $request->input('search'); // Capturar el término de búsqueda
+        // Obtener el término de búsqueda desde la solicitud
+        $search = $request->input('search');
 
+        // Obtener blogs con relación al autor y filtrados por el título si se proporciona un término de búsqueda
         $blogs = Blog::with('autor')
             ->when($search, function ($query, $search) {
-                $query->where('titulo', 'like', '%' . $search . '%'); // Filtrar por título
+                $query->where('titulo', 'like', '%' . $search . '%');
             })
-            ->orderBy('fecha_publicacion', 'desc')
-            ->paginate(2); // Asegurarse de que la paginación funcione correctamente
+            ->orderBy('fecha_publicacion', 'desc') // Ordenar los blogs por la fecha de publicación, de forma descendente
+            ->paginate(2); // Paginación de los blogs
 
+        // Retornar la vista con los datos necesarios
         return Inertia::render('Blogs/Create', [
             'auth' => ['user' => $user],
             'isEntrenador' => $isEntrenador,
@@ -49,79 +44,55 @@ class BlogController extends Controller
         ]);
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // Validar los datos de entrada.
+        // Validar los datos del formulario de creación
         $request->validate([
-            'titulo' => 'required|string|max:255', // Título requerido, cadena de texto con un máximo de 255 caracteres.
-            'contenido' => 'required|string', // Contenido requerido, cadena de texto.
+            'titulo' => 'required|string|max:255',
+            'contenido' => 'required|string',
         ]);
 
-        // Crear un nuevo blog con los datos validados.
+        // Crear un nuevo blog con los datos del formulario
         Blog::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
-            'autor_id' => auth()->user()->id, // ID del autor (usuario actualmente autenticado).
-            'fecha_publicacion' => now(), // Fecha y hora actual.
+            'autor_id' => auth()->user()->id, // ID del autor (usuario autenticado)
+            'fecha_publicacion' => now(), // Fecha y hora actuales
         ]);
 
-        // Redirigir al usuario a la página de creación de blogs con un mensaje de éxito.
+        // Redirigir al usuario con un mensaje de éxito
         return redirect()->route('blogs.create')->with('success', 'Blog creado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Blog $blog)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Blog $blog)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Blog $blog)
     {
-        $this->authorize('update', $blog); // Verificar que el usuario está autorizado para actualizar el blog.
+        // Verificar que el usuario está autorizado para editar este blog
+        $this->authorize('update', $blog);
 
-        // Validar los datos de entrada.
+        // Validar los datos del formulario de edición
         $request->validate([
-            'titulo' => 'required|string|max:255', // Título requerido, cadena de texto con un máximo de 255 caracteres.
-            'contenido' => 'required|string', // Contenido requerido, cadena de texto.
+            'titulo' => 'required|string|max:255',
+            'contenido' => 'required|string',
         ]);
 
-        // Actualizar el blog con los datos validados.
+        // Actualizar los campos del blog con los datos validados
         $blog->titulo = $request->titulo;
         $blog->contenido = $request->contenido;
-        $blog->save(); // Guardar los cambios en la base de datos.
+        $blog->save(); // Guardar los cambios
 
-        // Redirigir al usuario a la página anterior con un mensaje de éxito.
+        // Redirigir al usuario con un mensaje de éxito
         return redirect()->back()->with('success', 'Blog actualizado exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Blog $blog)
     {
-        $this->authorize('delete', $blog); // Verificar que el usuario está autorizado para eliminar el blog.
+        // Verificar que el usuario está autorizado para eliminar este blog
+        $this->authorize('delete', $blog);
 
-        $blog->delete(); // Eliminar el blog de la base de datos.
+        // Eliminar el blog de la base de datos
+        $blog->delete();
 
-        // Redirigir al usuario a la página anterior con un mensaje de éxito.
+        // Redirigir al usuario con un mensaje de éxito
         return redirect()->back()->with('success', 'Blog eliminado exitosamente.');
     }
 }
