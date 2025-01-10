@@ -14,6 +14,19 @@ export default function ForgotPassword({ status }) {
         post(route("password.email"));
     };
 
+    // Traducción de mensajes de Laravel
+    const translateStatus = (message) => {
+        const translations = {
+            "We have emailed your password reset link.":
+                "Hemos enviado un enlace para restablecer tu contraseña.",
+            "We can't find a user with that email address.":
+                "No encontramos un usuario con esa dirección de correo electrónico.",
+            "The email field is required.":
+                "El campo de correo electrónico es obligatorio.",
+        };
+        return translations[message] || message; // Si no hay traducción, muestra el mensaje original
+    };
+
     return (
         <>
             <Head title="Recuperar Contraseña" />
@@ -74,7 +87,7 @@ export default function ForgotPassword({ status }) {
 
                         {status && (
                             <div className="mb-4 font-medium text-sm text-green-500">
-                                {status}
+                                {translateStatus(status)}
                             </div>
                         )}
 
@@ -98,7 +111,7 @@ export default function ForgotPassword({ status }) {
                                     }
                                 />
                                 <InputError
-                                    message={errors.email}
+                                    message={translateStatus(errors.email)}
                                     className="mt-2 text-red-500"
                                 />
                             </div>
