@@ -1,48 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
+// Componente para calcular el IMC (Índice de Masa Corporal)
 const CalculadoraIMC = () => {
     // Estados para los datos de entrada y resultados
-    const [peso, setPeso] = useState('');
-    const [altura, setAltura] = useState('');
-    const [imc, setImc] = useState(null);
-    const [interpretacionImc, setInterpretacionImc] = useState('');
+    const [peso, setPeso] = useState(""); // Peso en kilogramos
+    const [altura, setAltura] = useState(""); // Altura en centímetros
+    const [imc, setImc] = useState(null); // Resultado del IMC
+    const [interpretacionImc, setInterpretacionImc] = useState(""); // Interpretación del IMC
 
-    // Función para calcular el IMC (Índice de Masa Corporal)
+    // Función para calcular el IMC
     const calcularIMC = () => {
         if (peso && altura) {
-            const alturaEnMetros = altura / 100;
-            const imcCalculado = peso / (alturaEnMetros * alturaEnMetros);
-            setImc(imcCalculado.toFixed(2)); // Redondear el IMC a dos decimales
+            // Verifica que ambos campos estén completos
+            const alturaEnMetros = altura / 100; // Convierte la altura a metros
+            const imcCalculado = peso / (alturaEnMetros * alturaEnMetros); // Fórmula del IMC
+            setImc(imcCalculado.toFixed(2)); // Redondea el resultado a dos decimales
 
-            let interpretacion = '';
+            // Clasificación del IMC según los valores calculados
+            let interpretacion = "";
             if (imcCalculado < 16) {
-                interpretacion = 'Desnutrición severa';
+                interpretacion = "Desnutrición severa";
             } else if (imcCalculado >= 16 && imcCalculado < 17) {
-                interpretacion = 'Desnutrición moderada';
+                interpretacion = "Desnutrición moderada";
             } else if (imcCalculado >= 17 && imcCalculado < 18.5) {
-                interpretacion = 'Desnutrición leve';
+                interpretacion = "Desnutrición leve";
             } else if (imcCalculado >= 18.5 && imcCalculado < 25) {
-                interpretacion = 'Peso saludable';
+                interpretacion = "Peso saludable";
             } else if (imcCalculado >= 25 && imcCalculado < 30) {
-                interpretacion = 'Sobrepeso';
+                interpretacion = "Sobrepeso";
             } else if (imcCalculado >= 30 && imcCalculado < 35) {
-                interpretacion = 'Obesidad clase 1 (moderada)';
+                interpretacion = "Obesidad clase 1 (moderada)";
             } else if (imcCalculado >= 35 && imcCalculado < 40) {
-                interpretacion = 'Obesidad clase 2 (severa)';
+                interpretacion = "Obesidad clase 2 (severa)";
             } else {
-                interpretacion = 'Obesidad clase 3 (muy severa o mórbida)';
+                interpretacion = "Obesidad clase 3 (muy severa o mórbida)";
             }
 
-            setInterpretacionImc(interpretacion);
+            setInterpretacionImc(interpretacion); // Guarda la interpretación en el estado
         }
     };
 
-    // Función para vaciar los campos y limpiar resultados
+    // Función para limpiar los campos y resultados
     const vaciarCampos = () => {
-        setPeso('');
-        setAltura('');
-        setImc(null);
-        setInterpretacionImc('');
+        setPeso(""); // Limpia el peso
+        setAltura(""); // Limpia la altura
+        setImc(null); // Limpia el resultado del IMC
+        setInterpretacionImc(""); // Limpia la interpretación
     };
 
     return (
@@ -59,7 +62,7 @@ const CalculadoraIMC = () => {
                         value={peso}
                         onChange={(e) => setPeso(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder='Ingrese su peso en kg'
+                        placeholder="Ingrese su peso en kg"
                     />
                 </div>
                 {/* Campo para ingresar la altura en cm */}
@@ -70,7 +73,7 @@ const CalculadoraIMC = () => {
                         value={altura}
                         onChange={(e) => setAltura(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder='Ingrese su altura en cm'
+                        placeholder="Ingrese su altura en cm"
                     />
                 </div>
             </div>

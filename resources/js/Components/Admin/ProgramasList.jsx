@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 
 const ProgramasList = ({ programas, onEdit, handleDelete }) => {
+    // Estado para manejar el término de búsqueda
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Filtrar los programas según el término de búsqueda ingresado por el usuario
     const filteredProgramas = programas.filter(
         (programa) =>
-            programa &&
-            programa.nombre &&
-            programa.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+            programa && // Asegura que `programa` no sea nulo o indefinido
+            programa.nombre && // Asegura que `nombre` exista en el objeto
+            programa.nombre.toLowerCase().includes(searchTerm.toLowerCase()) // Verifica que el nombre incluya el término de búsqueda
     );
 
     return (

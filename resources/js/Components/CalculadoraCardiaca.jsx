@@ -1,37 +1,40 @@
 import React, { useState } from "react";
 
+// Componente para calcular la frecuencia cardíaca objetivo (FCO)
 const CalculadoraFrecuenciaCardiacaObjetivo = () => {
-    // Estados para los datos de entrada y el resultado
-    const [edad, setEdad] = useState("");
-    const [sexo, setSexo] = useState("masculino");
-    const [resultado, setResultado] = useState(null);
-    const [error, setError] = useState("");
+    // Estados para entradas y resultados
+    const [edad, setEdad] = useState(""); // Edad del usuario
+    const [sexo, setSexo] = useState("masculino"); // Género del usuario (masculino o femenino, aunque no afecta el cálculo aquí)
+    const [resultado, setResultado] = useState(null); // Resultado de la frecuencia cardíaca objetivo
+    const [error, setError] = useState(""); // Mensajes de error para validaciones
 
     // Función para calcular la frecuencia cardíaca objetivo
     const calcularFCObjetivo = () => {
-        setError(""); // Limpiar cualquier error previo
+        setError(""); // Limpia errores previos
 
+        // Validación de entrada de edad
         if (!edad || edad <= 0) {
-            setError("Por favor ingresa una edad válida.");
+            setError("Por favor ingresa una edad válida."); // Muestra error si la edad es inválida
             return;
         }
 
-        // Fórmula de Karvonen para la frecuencia cardíaca máxima (FCM)
+        // Fórmula de Karvonen: Frecuencia Cardíaca Máxima (FCM)
         const fcm = 220 - edad;
 
-        // Calculando el rango de la frecuencia cardíaca objetivo (50% - 85% de la FCM)
-        const fcrInferior = fcm * 0.5;
-        const fcrSuperior = fcm * 0.85;
+        // Rango de FCO: 50% a 85% de la FCM
+        const fcrInferior = fcm * 0.5; // Límite inferior
+        const fcrSuperior = fcm * 0.85; // Límite superior
 
+        // Guarda el resultado en el estado
         setResultado({ fcrInferior, fcrSuperior });
     };
 
-    // Función para vaciar los campos
+    // Función para limpiar los campos y resultados
     const vaciarCampos = () => {
-        setEdad("");
-        setSexo("masculino");
-        setResultado(null);
-        setError("");
+        setEdad(""); // Limpia la edad
+        setSexo("masculino"); // Reinicia el género al valor predeterminado
+        setResultado(null); // Limpia el resultado
+        setError(""); // Limpia mensajes de error
     };
 
     return (
@@ -89,8 +92,8 @@ const CalculadoraFrecuenciaCardiacaObjetivo = () => {
             {resultado && (
                 <div className="mt-6 text-center text-lime-400 text-lg font-semibold">
                     <p>
-                        Tu rango de frecuencia cardíaca realizando ejercicio debería estar entre{" "}
-                        {resultado.fcrInferior.toFixed(0)} y{" "}
+                        Tu rango de frecuencia cardíaca realizando ejercicio
+                        debería estar entre {resultado.fcrInferior.toFixed(0)} y{" "}
                         {resultado.fcrSuperior.toFixed(0)} latidos por minuto
                     </p>
                 </div>

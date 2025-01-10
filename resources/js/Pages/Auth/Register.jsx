@@ -2,49 +2,56 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 export default function Register() {
+    // Manejador de formulario con datos iniciales
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
         fecha_nacimiento: "",
-        sexo: "Masculino", // Valor predeterminado para el sexo
+        sexo: "Masculino", // Valor inicial predeterminado
         altura: "",
         peso: "",
-        nivel_actividad: "Sedentario", // Valor predeterminado para el nivel de actividad
-        biografia: "", // Nueva propiedad para la biografía
+        nivel_actividad: "Sedentario", // Nivel predeterminado
+        biografia: "",
     });
 
+    // Estado local para errores de validación personalizados
     const [localErrors, setLocalErrors] = useState({});
 
+    // Resetear contraseñas al desmontar el componente
     useEffect(() => {
         return () => {
             reset("password", "password_confirmation");
         };
     }, []);
 
-    // Función para convertir cada palabra del nombre a mayúscula
+    // Capitaliza cada palabra del nombre
     const capitalizeWords = (text) =>
         text.replace(/\b\w/g, (char) => char.toUpperCase());
 
+    // Validación de campos antes del envío
     const validateFields = () => {
         const errors = {};
 
-        // Validación de nombre completo con cada palabra en mayúscula
+        // Validar nombre obligatorio y formatearlo
         if (!data.name) {
             errors.name = "El nombre es obligatorio.";
         } else {
             setData("name", capitalizeWords(data.name));
         }
 
+        // Validar correo electrónico
         if (!data.email.includes("@"))
-            errors.email = "Introduce un correo electrónico válido.";
+            errors.email = "Introduce un correo válido.";
+
+        // Validar contraseña y confirmación
         if (data.password.length < 6)
             errors.password = "La contraseña debe tener al menos 6 caracteres.";
         if (data.password !== data.password_confirmation)
             errors.password_confirmation = "Las contraseñas no coinciden.";
 
-        // Validación de fecha de nacimiento para asegurar al menos 10 años
+        // Validar fecha de nacimiento para mayores de 10 años
         if (!data.fecha_nacimiento) {
             errors.fecha_nacimiento = "La fecha de nacimiento es obligatoria.";
         } else {
@@ -57,19 +64,22 @@ export default function Register() {
             }
         }
 
+        // Validar altura y peso si están presentes
         if (data.altura && (data.altura <= 0 || data.altura > 250))
             errors.altura = "Introduce una altura válida en cm.";
         if (data.peso && (data.peso <= 0 || data.peso > 500))
             errors.peso = "Introduce un peso válido en kg.";
 
+        // Actualizar errores locales y retornar si son válidos
         setLocalErrors(errors);
         return Object.keys(errors).length === 0;
     };
 
+    // Enviar el formulario si la validación es exitosa
     const submit = (e) => {
         e.preventDefault();
         if (validateFields()) {
-            post(route("register"));
+            post(route("register")); // Enviar datos al servidor
         }
     };
 

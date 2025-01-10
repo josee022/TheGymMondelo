@@ -4,6 +4,7 @@ import { FiCheckCircle, FiXCircle, FiPackage } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 export default function PedidoShow({ pedido }) {
+    // Icono y estilo diferente dependiendo del estado de la factura
     const estadoIcon = (estado) => {
         switch (estado) {
             case "Pendiente":

@@ -1,66 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
+// Componente para calcular calorías y macronutrientes
 const CalculadoraKcal = () => {
-    // Estados para los datos de entrada y resultados
-    const [edad, setEdad] = useState('');
-    const [peso, setPeso] = useState('');
-    const [altura, setAltura] = useState('');
-    const [genero, setGenero] = useState('hombre');
-    const [actividad, setActividad] = useState('1.2');
-    const [objetivo, setObjetivo] = useState('mantenimiento');
-    const [calorias, setCalorias] = useState(null);
-    const [proteinas, setProteinas] = useState(null);
-    const [grasas, setGrasas] = useState(null);
-    const [carbohidratos, setCarbohidratos] = useState(null);
+    // Estados para entradas del usuario y resultados
+    const [edad, setEdad] = useState(""); // Edad en años
+    const [peso, setPeso] = useState(""); // Peso en kilogramos
+    const [altura, setAltura] = useState(""); // Altura en centímetros
+    const [genero, setGenero] = useState("hombre"); // Género (hombre o mujer)
+    const [actividad, setActividad] = useState("1.2"); // Factor de actividad física
+    const [objetivo, setObjetivo] = useState("mantenimiento"); // Objetivo (mantenimiento, pérdida, ganancia)
+    const [calorias, setCalorias] = useState(null); // Calorías calculadas
+    const [proteinas, setProteinas] = useState(null); // Gramos de proteína
+    const [grasas, setGrasas] = useState(null); // Gramos de grasa
+    const [carbohidratos, setCarbohidratos] = useState(null); // Gramos de carbohidratos
 
-    // Función para calcular las calorías y macronutrientes
+    // Función para calcular calorías y macronutrientes
     const calcularCalorias = () => {
-        let tmb;
+        let tmb; // Tasa Metabólica Basal
 
-        // Cálculo del TMB (Tasa Metabólica Basal) según el género
-        if (genero === 'hombre') {
-            tmb = 88.36 + (13.4 * peso) + (4.8 * altura) - (5.7 * edad);
+        // Cálculo del TMB basado en el género
+        if (genero === "hombre") {
+            tmb = 88.36 + 13.4 * peso + 4.8 * altura - 5.7 * edad;
         } else {
-            tmb = 447.6 + (9.2 * peso) + (3.1 * altura) - (4.3 * edad);
+            tmb = 447.6 + 9.2 * peso + 3.1 * altura - 4.3 * edad;
         }
 
-        // Ajuste del TMB según el nivel de actividad
+        // Ajustar TMB según el nivel de actividad física
         let caloriasDiarias = tmb * parseFloat(actividad);
 
-        // Ajuste de las calorías según el objetivo
+        // Ajustar calorías según el objetivo del usuario
         switch (objetivo) {
-            case 'perdida':
-                caloriasDiarias *= 0.8; // Reducción de calorías para pérdida de grasa
+            case "perdida": // Reducir calorías para pérdida de grasa
+                caloriasDiarias *= 0.8;
                 break;
-            case 'ganancia':
-                caloriasDiarias *= 1.2; // Aumento de calorías para ganancia muscular
+            case "ganancia": // Aumentar calorías para ganancia muscular
+                caloriasDiarias *= 1.2;
                 break;
-            default:
+            default: // Mantenimiento (sin ajuste)
                 break;
         }
 
         // Cálculo de macronutrientes
-        const proteinasGramos = peso * (objetivo === 'ganancia' ? 2.2 : 1.6);
-        const grasasCalorias = caloriasDiarias * 0.25; // 25% de las calorías para grasas
-        const grasasGramos = grasasCalorias / 9; // 1 gramo de grasa = 9 calorías
-        const carbohidratosCalorias = caloriasDiarias - (proteinasGramos * 4) - (grasasGramos * 9);
-        const carbohidratosGramos = carbohidratosCalorias / 4; // 1 gramo de carbohidrato = 4 calorías
+        const proteinasGramos = peso * (objetivo === "ganancia" ? 2.2 : 1.6); // Gramos de proteína por kg de peso
+        const grasasCalorias = caloriasDiarias * 0.25; // 25% de calorías para grasas
+        const grasasGramos = grasasCalorias / 9; // Calorías de grasa convertidas a gramos
+        const carbohidratosCalorias =
+            caloriasDiarias - proteinasGramos * 4 - grasasGramos * 9; // Resto para carbohidratos
+        const carbohidratosGramos = carbohidratosCalorias / 4; // Calorías de carbohidratos convertidas a gramos
 
-        // Actualización del estado con los resultados
+        // Guardar resultados en el estado
         setCalorias(Math.round(caloriasDiarias));
         setProteinas(Math.round(proteinasGramos));
         setGrasas(Math.round(grasasGramos));
         setCarbohidratos(Math.round(carbohidratosGramos));
     };
 
-    // Función para vaciar los campos y limpiar resultados
+    // Función para limpiar los campos y reiniciar los resultados
     const vaciarCampos = () => {
-        setEdad('');
-        setPeso('');
-        setAltura('');
-        setGenero('hombre');
-        setActividad('1.2');
-        setObjetivo('mantenimiento');
+        setEdad("");
+        setPeso("");
+        setAltura("");
+        setGenero("hombre");
+        setActividad("1.2");
+        setObjetivo("mantenimiento");
         setCalorias(null);
         setProteinas(null);
         setGrasas(null);
@@ -93,7 +95,7 @@ const CalculadoraKcal = () => {
                         value={edad}
                         onChange={(e) => setEdad(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder='Ingrese su edad'
+                        placeholder="Ingrese su edad"
                     />
                 </div>
                 {/* Campo para ingresar el peso en kg */}
@@ -104,7 +106,7 @@ const CalculadoraKcal = () => {
                         value={peso}
                         onChange={(e) => setPeso(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder='Ingrese su peso en kg'
+                        placeholder="Ingrese su peso en kg"
                     />
                 </div>
                 {/* Campo para ingresar la altura en cm */}
@@ -115,7 +117,7 @@ const CalculadoraKcal = () => {
                         value={altura}
                         onChange={(e) => setAltura(e.target.value)}
                         className="w-full mt-1 p-1 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        placeholder='Ingrese su altura en cm'
+                        placeholder="Ingrese su altura en cm"
                     />
                 </div>
                 {/* Campo para seleccionar el nivel de actividad */}

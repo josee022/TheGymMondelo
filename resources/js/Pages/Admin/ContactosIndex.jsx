@@ -13,46 +13,46 @@ export default function ContactosIndex({
     searchAsunto,
     searchEmail,
 }) {
-    const { flash } = usePage().props;
+    const { flash } = usePage().props; // Accede a los mensajes flash desde la página actual
     const [searchTermAsunto, setSearchTermAsunto] = useState(
         searchAsunto || ""
-    );
-    const [selectedEmail, setSelectedEmail] = useState(searchEmail || "");
+    ); // Estado para almacenar el término de búsqueda por asunto
+    const [selectedEmail, setSelectedEmail] = useState(searchEmail || ""); // Estado para almacenar el correo electrónico seleccionado
 
     // Mostrar mensaje flash de éxito
     useEffect(() => {
         if (flash.success) {
             Swal.fire({
                 icon: "success",
-                title: "Éxito",
-                text: flash.success,
-                confirmButtonColor: "#3085d6",
+                title: "Éxito", // Título del mensaje de éxito
+                text: flash.success, // Mensaje de éxito
+                confirmButtonColor: "#3085d6", // Color del botón de confirmación
             });
         }
-    }, [flash.success]);
+    }, [flash.success]); // El useEffect se ejecuta cada vez que el mensaje flash de éxito cambia
 
     // Manejar búsqueda por asunto
     const handleSearchAsuntoChange = (e) => {
-        setSearchTermAsunto(e.target.value);
+        setSearchTermAsunto(e.target.value); // Actualiza el término de búsqueda por asunto
         router.get(
-            route("admin.contactos.index"),
-            { search_asunto: e.target.value, search_email: selectedEmail },
+            route("admin.contactos.index"), // Realiza una solicitud GET a la ruta especificada
+            { search_asunto: e.target.value, search_email: selectedEmail }, // Envía los parámetros de búsqueda
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado de la página actual
+                preserveScroll: true, // Mantiene el desplazamiento de la página
             }
         );
     };
 
-    // Manejar selección de correo
+    // Manejar selección de correo electrónico
     const handleEmailChange = (e) => {
-        setSelectedEmail(e.target.value);
+        setSelectedEmail(e.target.value); // Actualiza el correo electrónico seleccionado
         router.get(
-            route("admin.contactos.index"),
-            { search_asunto: searchTermAsunto, search_email: e.target.value },
+            route("admin.contactos.index"), // Realiza una solicitud GET a la ruta especificada
+            { search_asunto: searchTermAsunto, search_email: e.target.value }, // Envía los parámetros de búsqueda
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado de la página actual
+                preserveScroll: true, // Mantiene el desplazamiento de la página
             }
         );
     };

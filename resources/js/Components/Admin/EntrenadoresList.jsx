@@ -2,22 +2,33 @@ import React, { useState } from "react";
 import EditarEntrenador from "./EditarEntrenador";
 
 const EntrenadoresList = ({ entrenadores, onDeshabilitar, onEditar }) => {
+    // Estado para controlar la visibilidad del modal
     const [showModal, setShowModal] = useState(false);
+
+    // Estado para guardar el entrenador seleccionado para editar
     const [selectedEntrenador, setSelectedEntrenador] = useState(null);
+
+    // Estado para manejar el término de búsqueda
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Maneja el clic en "Editar" de un entrenador específico
     const handleEditarClick = (entrenador) => {
-        setSelectedEntrenador(entrenador);
-        setShowModal(true);
+        setSelectedEntrenador(entrenador); // Guarda el entrenador seleccionado
+        setShowModal(true); // Muestra el modal
     };
 
+    // Llama a la función `onEditar` con los datos proporcionados y cierra el modal
     const handleEditar = (entrenadorId, especialidad, tarifa) => {
-        onEditar(entrenadorId, especialidad, tarifa);
-        setShowModal(false);
+        onEditar(entrenadorId, especialidad, tarifa); // Ejecuta la función de edición
+        setShowModal(false); // Oculta el modal
     };
 
-    const filteredEntrenadores = entrenadores.filter((entrenador) =>
-        entrenador.usuario.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // Filtra los entrenadores según el término de búsqueda
+    const filteredEntrenadores = entrenadores.filter(
+        (entrenador) =>
+            entrenador.usuario.name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) // Coincidencia insensible a mayúsculas
     );
 
     return (

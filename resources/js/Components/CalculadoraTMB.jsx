@@ -1,34 +1,35 @@
 import React, { useState } from "react";
 
+// Componente para calcular el Gasto Calórico Basal (TMB)
 const CalculadoraTMB = () => {
-    // Estados para los datos de entrada y resultados
-    const [edad, setEdad] = useState("");
-    const [peso, setPeso] = useState("");
-    const [altura, setAltura] = useState("");
-    const [genero, setGenero] = useState("hombre");
-    const [tmb, setTmb] = useState(null);
+    // Estados para los datos de entrada y el resultado
+    const [edad, setEdad] = useState(""); // Edad del usuario
+    const [peso, setPeso] = useState(""); // Peso en kilogramos
+    const [altura, setAltura] = useState(""); // Altura en centímetros
+    const [genero, setGenero] = useState("hombre"); // Género (hombre o mujer)
+    const [tmb, setTmb] = useState(null); // Resultado del cálculo del TMB
 
     // Función para calcular el Gasto Calórico Basal (TMB)
     const calcularTMB = () => {
         let tmbCalculado;
 
-        // Fórmulas de Harris-Benedict para calcular el TMB según el género
+        // Fórmulas de Harris-Benedict para el TMB según el género
         if (genero === "hombre") {
             tmbCalculado = 88.36 + 13.4 * peso + 4.8 * altura - 5.7 * edad;
         } else {
             tmbCalculado = 447.6 + 9.2 * peso + 3.1 * altura - 4.3 * edad;
         }
 
-        setTmb(tmbCalculado.toFixed(2)); // Redondear el TMB a dos decimales
+        setTmb(tmbCalculado.toFixed(2)); // Guarda el resultado redondeado a dos decimales
     };
 
-    // Función para vaciar los campos y limpiar resultados
+    // Función para limpiar los campos de entrada y reiniciar el resultado
     const vaciarCampos = () => {
-        setEdad("");
-        setPeso("");
-        setAltura("");
-        setGenero("hombre");
-        setTmb(null);
+        setEdad(""); // Reinicia la edad
+        setPeso(""); // Reinicia el peso
+        setAltura(""); // Reinicia la altura
+        setGenero("hombre"); // Vuelve al valor predeterminado del género
+        setTmb(null); // Limpia el resultado del TMB
     };
 
     return (

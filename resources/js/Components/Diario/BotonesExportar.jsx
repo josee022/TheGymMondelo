@@ -1,28 +1,36 @@
 import React, { useState } from "react";
 
 export default function BotonesExportar({ filtroFecha }) {
-    const [fechaInicio, setFechaInicio] = useState("");
-    const [fechaFin, setFechaFin] = useState("");
+    // Estados para manejar las fechas de inicio y fin de los filtros
+    const [fechaInicio, setFechaInicio] = useState(""); // Fecha de inicio seleccionada por el usuario
+    const [fechaFin, setFechaFin] = useState(""); // Fecha de fin seleccionada por el usuario
 
+    // Función para exportar datos a PDF
     const handleExportPDF = (exportarTodo = false) => {
+        // Construye la URL según el tipo de exportación (todo o rango de fechas)
         const url = exportarTodo
-            ? `/diario/export/pdf?exportar_todo=true`
-            : `/diario/export/pdf?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
-        window.location.href = url;
-        limpiarFiltros(); // Limpia los filtros al exportar
+            ? `/diario/export/pdf?exportar_todo=true` // Exporta todos los datos
+            : `/diario/export/pdf?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`; // Exporta datos dentro del rango de fechas
+
+        window.location.href = url; // Redirige al usuario para descargar el archivo PDF
+        limpiarFiltros(); // Limpia los filtros después de exportar
     };
 
+    // Función para exportar datos a CSV
     const handleExportCSV = (exportarTodo = false) => {
+        // Construye la URL según el tipo de exportación (todo o rango de fechas)
         const url = exportarTodo
-            ? `/diario/export/csv?exportar_todo=true`
-            : `/diario/export/csv?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
-        window.location.href = url;
-        limpiarFiltros(); // Limpia los filtros al exportar
+            ? `/diario/export/csv?exportar_todo=true` // Exporta todos los datos
+            : `/diario/export/csv?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`; // Exporta datos dentro del rango de fechas
+
+        window.location.href = url; // Redirige al usuario para descargar el archivo CSV
+        limpiarFiltros(); // Limpia los filtros después de exportar
     };
 
+    // Función para limpiar los filtros de fecha
     const limpiarFiltros = () => {
-        setFechaInicio("");
-        setFechaFin("");
+        setFechaInicio(""); // Resetea la fecha de inicio
+        setFechaFin(""); // Resetea la fecha de fin
     };
 
     return (

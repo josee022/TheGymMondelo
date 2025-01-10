@@ -11,26 +11,29 @@ import {
     Chart,
 } from "chart.js";
 
+// Registro de los componentes necesarios para la gráfica de Chart.js
 Chart.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+    CategoryScale, // Escala de categorías (eje X)
+    LinearScale, // Escala lineal (eje Y)
+    PointElement, // Elemento de puntos en la gráfica
+    LineElement, // Elemento de líneas en la gráfica
+    Title, // Componente para mostrar el título
+    Tooltip, // Herramientas emergentes al pasar el cursor (tooltips)
+    Legend // Leyenda de la gráfica
 );
 
+// Componente que muestra una gráfica de usuarios registrados por mes
 export default function UserTrendChart({ usuariosPorMes }) {
+    // Datos para la gráfica
     const chartData = {
-        labels: usuariosPorMes.map((item) => item.mes),
+        labels: usuariosPorMes.map((item) => item.mes), // Etiquetas para el eje X (meses)
         datasets: [
             {
-                label: "Usuarios Registrados",
-                data: usuariosPorMes.map((item) => item.total),
-                fill: false,
-                borderColor: "rgb(75, 192, 192)",
-                tension: 0.1,
+                label: "Usuarios Registrados", // Leyenda para la línea
+                data: usuariosPorMes.map((item) => item.total), // Valores del eje Y (usuarios por mes)
+                fill: false, // No rellena el área bajo la línea
+                borderColor: "rgb(75, 192, 192)", // Color de la línea
+                tension: 0.1, // Curvatura de la línea (0 para líneas rectas, valores más altos para curvas)
             },
         ],
     };

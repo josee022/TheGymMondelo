@@ -1,39 +1,42 @@
 import React, { useState } from "react";
 
+// Componente para calcular la cantidad diaria recomendada de agua corporal
 const CalculadoraAguaCorporal = () => {
-    // Estados para los datos de entrada y resultados
-    const [peso, setPeso] = useState("");
-    const [actividad, setActividad] = useState("sedentario");
-    const [aguaRecomendada, setAguaRecomendada] = useState(null);
-    const [error, setError] = useState("");
+    // Estados para las entradas del usuario y resultados
+    const [peso, setPeso] = useState(""); // Peso en kilogramos
+    const [actividad, setActividad] = useState("sedentario"); // Nivel de actividad física
+    const [aguaRecomendada, setAguaRecomendada] = useState(null); // Cantidad de agua recomendada en litros
+    const [error, setError] = useState(""); // Mensajes de error para validaciones
 
-    // Factores de actividad para ajustar la cantidad de agua recomendada
+    // Factores de actividad que ajustan la cantidad de agua según el nivel físico
     const factoresActividad = {
-        sedentario: 0.033,
-        ligero: 0.04,
-        moderado: 0.045,
-        intenso: 0.05,
+        sedentario: 0.033, // Sedentario: 33 ml por kg
+        ligero: 0.04, // Actividad ligera: 40 ml por kg
+        moderado: 0.045, // Actividad moderada: 45 ml por kg
+        intenso: 0.05, // Actividad intensa: 50 ml por kg
     };
 
     // Función para calcular la cantidad de agua recomendada
     const calcularAgua = () => {
-        setError(""); // Limpiar cualquier error previo
+        setError(""); // Limpia errores previos
 
+        // Validación del peso ingresado
         if (!peso || peso <= 0) {
-            setError("Por favor ingresa un peso válido.");
+            setError("Por favor ingresa un peso válido."); // Mensaje de error si el peso es inválido
             return;
         }
 
-        const cantidadAgua = peso * factoresActividad[actividad]; // En litros
-        setAguaRecomendada(cantidadAgua.toFixed(2)); // Redondear a dos decimales
+        // Cálculo de agua: peso * factor de actividad
+        const cantidadAgua = peso * factoresActividad[actividad];
+        setAguaRecomendada(cantidadAgua.toFixed(2)); // Redondea el resultado a dos decimales
     };
 
-    // Función para vaciar los campos y resultados
+    // Función para limpiar los campos de entrada y resultados
     const vaciarCampos = () => {
-        setPeso("");
-        setActividad("sedentario");
-        setAguaRecomendada(null);
-        setError("");
+        setPeso(""); // Limpia el peso
+        setActividad("sedentario"); // Reinicia al nivel de actividad predeterminado
+        setAguaRecomendada(null); // Limpia el resultado de agua
+        setError(""); // Limpia mensajes de error
     };
 
     return (
@@ -95,8 +98,8 @@ const CalculadoraAguaCorporal = () => {
             {aguaRecomendada && (
                 <div className="mt-6 text-center text-lime-400 text-lg font-semibold">
                     <p>
-                        Deberías beber como mínimo {aguaRecomendada} litros al día para
-                        mantenerte bien hidratado.
+                        Deberías beber como mínimo {aguaRecomendada} litros al
+                        día para mantenerte bien hidratado.
                     </p>
                 </div>
             )}

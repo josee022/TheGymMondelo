@@ -2,28 +2,32 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function ListaProductos({ productos, agregarAlCarrito }) {
-    const [sortedProductos, setSortedProductos] = useState(productos);
-    const [sortType, setSortType] = useState(null);
+    // Estados para gestionar los productos ordenados y el tipo de orden
+    const [sortedProductos, setSortedProductos] = useState(productos); // Lista de productos ordenada
+    const [sortType, setSortType] = useState(null); // Tipo de orden actual (ascendente, descendente o ninguno)
 
+    // Ordenar productos por precio ascendente
     const sortProductsByPriceAsc = () => {
         const sorted = [...sortedProductos].sort(
-            (a, b) => parseFloat(a.precio) - parseFloat(b.precio)
+            (a, b) => parseFloat(a.precio) - parseFloat(b.precio) // Ordena de menor a mayor precio
         );
-        setSortedProductos(sorted);
-        setSortType("asc");
+        setSortedProductos(sorted); // Actualiza la lista ordenada
+        setSortType("asc"); // Establece el tipo de orden como ascendente
     };
 
+    // Ordenar productos por precio descendente
     const sortProductsByPriceDesc = () => {
         const sorted = [...sortedProductos].sort(
-            (a, b) => parseFloat(b.precio) - parseFloat(a.precio)
+            (a, b) => parseFloat(b.precio) - parseFloat(a.precio) // Ordena de mayor a menor precio
         );
-        setSortedProductos(sorted);
-        setSortType("desc");
+        setSortedProductos(sorted); // Actualiza la lista ordenada
+        setSortType("desc"); // Establece el tipo de orden como descendente
     };
 
+    // Restablecer el orden al estado original
     const resetSort = () => {
-        setSortedProductos(productos);
-        setSortType(null);
+        setSortedProductos(productos); // Restaura la lista original de productos
+        setSortType(null); // Elimina cualquier tipo de orden actual
     };
 
     return (

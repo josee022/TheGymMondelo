@@ -9,23 +9,30 @@ import SeccionSuscripcion from "@/Components/Entrenadores/SeccionSuscripcion";
 import Pagination from "@/Components/Pagination";
 
 export default function Index({ auth, entrenadores, search }) {
-    const [searchTerm, setSearchTerm] = useState(search || "");
-    const searchInputRef = useRef(null);
+    // Estado para almacenar el término de búsqueda y referencia para el input
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Inicializa el término de búsqueda con un valor predeterminado o vacío
+    const searchInputRef = useRef(null); // Referencia para el campo de búsqueda
 
+    // Efecto para enfocar el input de búsqueda al cargar o actualizar la lista de entrenadores
     useEffect(() => {
         if (searchInputRef.current) {
-            searchInputRef.current.focus();
+            searchInputRef.current.focus(); // Coloca el foco en el input de búsqueda
         }
-    }, [entrenadores]);
+    }, [entrenadores]); // Se ejecuta cuando cambia la lista de entrenadores
 
+    // Maneja los cambios en el campo de búsqueda
     const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value);
+        const value = e.target.value; // Obtiene el valor ingresado
+        setSearchTerm(value); // Actualiza el estado del término de búsqueda
 
+        // Realiza una solicitud al servidor para filtrar los entrenadores
         router.get(
-            route("entrenadores.index"),
-            { search: value },
-            { replace: true, preserveScroll: true }
+            route("entrenadores.index"), // Ruta para la lista de entrenadores
+            { search: value }, // Parámetro de búsqueda enviado al servidor
+            {
+                replace: true, // Reemplaza la URL actual sin agregarla al historial del navegador
+                preserveScroll: true, // Mantiene la posición de desplazamiento de la página
+            }
         );
     };
 

@@ -6,34 +6,39 @@ import Swal from "sweetalert2";
 import { router } from "@inertiajs/react";
 
 export default function Usuarios({ usuarios, search }) {
-    const [searchTerm, setSearchTerm] = useState(search || "");
+    // Estado para manejar el término de búsqueda
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Inicializa con un valor predeterminado o vacío
 
+    // Función para manejar el cambio en el campo de búsqueda
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
+        setSearchTerm(e.target.value); // Actualiza el término de búsqueda en el estado
         router.get(
-            route("admin.usuarios"),
-            { search: e.target.value },
+            route("admin.usuarios"), // Ruta para buscar usuarios
+            { search: e.target.value }, // Envía el término de búsqueda como parámetro
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado actual
+                preserveScroll: true, // Evita que el scroll vuelva al inicio al filtrar
             }
         );
     };
 
+    // Función para eliminar un usuario
     const handleDelete = (id) => {
         Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Esta acción eliminará al usuario de forma permanente.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
+            title: "¿Estás seguro?", // Título del modal
+            text: "Esta acción eliminará al usuario de forma permanente.", // Advertencia
+            icon: "warning", // Icono de advertencia
+            showCancelButton: true, // Muestra un botón de cancelar
+            confirmButtonColor: "#d33", // Color del botón de confirmación (rojo)
+            cancelButtonColor: "#3085d6", // Color del botón de cancelar (azul)
+            confirmButtonText: "Sí, eliminar", // Texto del botón de confirmación
+            cancelButtonText: "Cancelar", // Texto del botón de cancelar
         }).then((result) => {
             if (result.isConfirmed) {
+                // Si el usuario confirma la eliminación
                 router.delete(route("admin.usuarios.destroy", id), {
                     onSuccess: () => {
+                        // Muestra un mensaje de éxito tras la eliminación
                         Swal.fire(
                             "¡Eliminado!",
                             "El usuario ha sido eliminado correctamente.",
@@ -45,24 +50,27 @@ export default function Usuarios({ usuarios, search }) {
         });
     };
 
+    // Función para suspender o reactivar un usuario
     const handleSuspend = (id, suspendido) => {
         Swal.fire({
-            title: suspendido ? "¿Reactivar Usuario?" : "¿Suspender Usuario?",
+            title: suspendido ? "¿Reactivar Usuario?" : "¿Suspender Usuario?", // Título según la acción
             text: suspendido
-                ? "El usuario podrá volver a acceder al sistema."
-                : "El usuario no podrá acceder al sistema.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: suspendido ? "#4CAF50" : "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: suspendido ? "Sí, reactivar" : "Sí, suspender",
+                ? "El usuario podrá volver a acceder al sistema." // Texto si se reactiva
+                : "El usuario no podrá acceder al sistema.", // Texto si se suspende
+            icon: "warning", // Icono de advertencia
+            showCancelButton: true, // Muestra un botón de cancelar
+            confirmButtonColor: suspendido ? "#4CAF50" : "#d33", // Verde para reactivar, rojo para suspender
+            cancelButtonColor: "#3085d6", // Azul para cancelar
+            confirmButtonText: suspendido ? "Sí, reactivar" : "Sí, suspender", // Texto del botón según la acción
         }).then((result) => {
             if (result.isConfirmed) {
+                // Si el usuario confirma la acción
                 router.post(
-                    route("admin.usuarios.suspend", id),
-                    {},
+                    route("admin.usuarios.suspend", id), // Ruta para suspender o reactivar
+                    {}, // Sin datos adicionales
                     {
                         onSuccess: () => {
+                            // Muestra un mensaje de éxito tras la acción
                             Swal.fire(
                                 suspendido ? "Reactivado" : "Suspendido",
                                 `El usuario ha sido ${

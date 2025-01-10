@@ -10,6 +10,7 @@ import Footer from "@/Components/Footer";
 import { Head, usePage } from "@inertiajs/react";
 
 const CalculadoraIndex = () => {
+    // Acceso a la propiedad de la página actual
     const { user } = usePage().props;
 
     return (

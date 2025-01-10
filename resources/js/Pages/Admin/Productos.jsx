@@ -5,38 +5,46 @@ import Pagination from "@/Components/Pagination";
 import Swal from "sweetalert2";
 
 export default function Productos({ productos, search }) {
-    const [searchTerm, setSearchTerm] = useState(search || "");
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Estado para manejar el término de búsqueda
 
+    // Función para manejar el cambio en el campo de búsqueda
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
+        setSearchTerm(e.target.value); // Actualiza el estado con el término de búsqueda
+
+        // Realiza la búsqueda mediante una solicitud GET con el término de búsqueda
         router.get(
-            route("admin.productos"),
-            { search: e.target.value },
+            route("admin.productos"), // La ruta para la lista de productos
+            { search: e.target.value }, // Enviar el término de búsqueda como parámetro
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado actual de la página
+                preserveScroll: true, // Evita que el scroll se mueva al principio
             }
         );
     };
 
+    // Función para manejar la eliminación de un producto
     const handleDelete = (id) => {
+        // Muestra un modal de confirmación antes de eliminar
         Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Esta acción eliminará el producto de forma permanente.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
+            title: "¿Estás seguro?", // Título del modal de confirmación
+            text: "Esta acción eliminará el producto de forma permanente.", // Mensaje de advertencia
+            icon: "warning", // Icono de advertencia
+            showCancelButton: true, // Muestra el botón de cancelación
+            confirmButtonColor: "#d33", // Color para el botón de confirmación
+            cancelButtonColor: "#3085d6", // Color para el botón de cancelación
+            confirmButtonText: "Sí, eliminar", // Texto del botón de confirmación
+            cancelButtonText: "Cancelar", // Texto del botón de cancelación
         }).then((result) => {
             if (result.isConfirmed) {
+                // Si el usuario confirma la eliminación
+                // Realiza una solicitud DELETE para eliminar el producto
                 router.delete(route("admin.productos.destroy", id), {
                     onSuccess: () => {
+                        // Muestra un mensaje de éxito al eliminar el producto
                         Swal.fire(
-                            "¡Eliminado!",
-                            "El producto ha sido eliminado correctamente.",
-                            "success"
+                            "¡Eliminado!", // Título del mensaje de éxito
+                            "El producto ha sido eliminado correctamente.", // Mensaje de éxito
+                            "success" // Icono de éxito
                         );
                     },
                 });

@@ -4,6 +4,7 @@ import { Link, useForm } from "@inertiajs/react";
 const AccessDenied = () => {
     const { post } = useForm();
 
+    // Volver a logueo
     const handleLogout = (e) => {
         e.preventDefault();
         post(route("logout"), {

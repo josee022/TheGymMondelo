@@ -12,70 +12,35 @@ use Illuminate\Support\Facades\Redirect;
 
 class ComentarioForoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Método para almacenar un nuevo comentario
     public function store(Request $request, Foro $foro)
     {
         // Valida los datos del formulario
         $request->validate([
-            'contenido' => 'required|string|max:1000', // El campo 'contenido' es obligatorio, debe ser una cadena de texto y no puede exceder los 1000 caracteres
-            'comentario_id' => 'nullable|exists:comentarios_foros,id', // Validar que el comentario_id exista si se envía
+            'contenido' => 'required|string|max:1000', // El contenido es obligatorio, debe ser una cadena de texto y no debe exceder 1000 caracteres
+            'comentario_id' => 'nullable|exists:comentarios_foros,id', // Si se pasa un comentario_id, debe ser un ID válido en la tabla 'comentarios_foros'
         ]);
 
         // Crea una nueva instancia del modelo ComentarioForo
         $comentario = new ComentarioForo();
         $comentario->foro_id = $foro->id; // Asigna el ID del foro al que pertenece el comentario
-        $comentario->usuario_id = Auth::id(); // Asigna el ID del usuario autenticado
+        $comentario->usuario_id = Auth::id(); // Asigna el ID del usuario autenticado al comentario
         $comentario->contenido = $request->input('contenido'); // Asigna el contenido del comentario
-        $comentario->fecha_comentario = now(); // Asigna la fecha actual
+        $comentario->fecha_comentario = now(); // Asigna la fecha actual del comentario
 
-        // Si el request tiene un comentario_id, este comentario es una respuesta
+        // Si el request tiene un comentario_id, este comentario será una respuesta a otro comentario
         if ($request->filled('comentario_id')) {
             $comentario->comentario_id = $request->input('comentario_id');
         }
-        $comentario->save(); // Guarda el comentario en la base de datos
+
+        // Guarda el comentario en la base de datos
+        $comentario->save();
 
         // Redirige de vuelta a la página anterior con un mensaje de éxito
         return Redirect::back()->with('success', 'Comentario añadido con éxito.');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ComentarioForo $comentarioForo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ComentarioForo $comentarioForo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // Método para actualizar un comentario existente
     public function update(Request $request, ComentarioForo $comentarioForo)
     {
         // Autoriza la acción de actualización para el comentario
@@ -83,18 +48,17 @@ class ComentarioForoController extends Controller
 
         // Valida los datos del formulario
         $request->validate([
-            'contenido' => 'required|string|max:1000', // El campo 'contenido' es obligatorio, debe ser una cadena de texto y no puede exceder los 1000 caracteres
+            'contenido' => 'required|string|max:1000', // El contenido es obligatorio, debe ser una cadena de texto y no debe exceder 1000 caracteres
         ]);
 
-        // Actualiza el comentario con los datos proporcionados
+        // Actualiza el comentario con los nuevos datos
         $comentarioForo->update($request->only('contenido'));
 
         // Redirige de vuelta a la página anterior con un mensaje de éxito
         return Redirect::back()->with('success', 'Comentario actualizado con éxito.');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+
+    // Método para eliminar un comentario
     public function destroy(ComentarioForo $comentarioForo)
     {
         // Autoriza la acción de eliminación para el comentario

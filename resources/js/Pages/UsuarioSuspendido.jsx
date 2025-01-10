@@ -3,6 +3,7 @@ import React from "react";
 import { router } from "@inertiajs/react";
 
 export default function UsuarioSuspendido() {
+    // Redireccion a logueo
     const handleLogout = () => {
         router.post(
             route("logout"),

@@ -2,22 +2,31 @@ import React, { useState } from "react";
 import ConvertirMister from "./ConvertirMister";
 
 const UsuariosList = ({ usuarios, onConvertir }) => {
+    // Estado para controlar la visibilidad del modal
     const [showModal, setShowModal] = useState(false);
+
+    // Estado para guardar el ID del usuario seleccionado
     const [selectedUserId, setSelectedUserId] = useState(null);
+
+    // Estado para manejar el término de búsqueda
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Manejador para el clic en "Convertir a Mister"
     const handleConvertirClick = (userId) => {
-        setSelectedUserId(userId);
-        setShowModal(true);
+        setSelectedUserId(userId); // Guarda el ID del usuario seleccionado
+        setShowModal(true); // Muestra el modal
     };
 
+    // Manejador para convertir al usuario
     const handleConvertir = (userId, especialidad, tarifa) => {
-        onConvertir(userId, especialidad, tarifa);
-        setShowModal(false);
+        onConvertir(userId, especialidad, tarifa); // Llama a la función para realizar la conversión
+        setShowModal(false); // Cierra el modal
     };
 
-    const filteredUsuarios = usuarios.filter((usuario) =>
-        usuario.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // Filtra los usuarios según el término de búsqueda
+    const filteredUsuarios = usuarios.filter(
+        (usuario) =>
+            usuario.name.toLowerCase().includes(searchTerm.toLowerCase()) // Coincidencia insensible a mayúsculas
     );
 
     return (

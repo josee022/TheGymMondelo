@@ -10,70 +10,79 @@ import Footer from "@/Components/Footer";
 import { getDietaInfo } from "@/Utils/dietaInfo";
 
 export default function Dashboard({
-    auth,
-    isEntrenador,
-    reservas = { data: [] },
-    suscripciones = [],
-    dieta,
-    adquisiciones = [],
-    pedidos = { data: [] },
+    // Props recibidas por el componente
+    auth, // Información del usuario autenticado
+    isEntrenador, // Indica si el usuario es un entrenador
+    reservas = { data: [] }, // Reservas realizadas, inicializado como un objeto vacío
+    suscripciones = [], // Lista de suscripciones activas
+    dieta, // Información sobre la dieta actual del usuario
+    adquisiciones = [], // Lista de adquisiciones realizadas
+    pedidos = { data: [] }, // Pedidos realizados, inicializado como un objeto vacío
 }) {
-    const user = auth.user;
+    const user = auth.user; // Información del usuario autenticado
 
+    // Si hay una dieta, se obtiene la información asociada al objetivo
     const dietaInfo = dieta ? getDietaInfo(dieta.objetivo) : null;
 
+    // Obtiene las fechas de búsqueda iniciales de las reservas y facturas desde las props
     const { searchDateReservas, searchDateFacturas } = usePage().props;
+
+    // Estados para manejar las fechas seleccionadas para filtrar reservas y facturas
     const [selectedDateReservas, setSelectedDateReservas] = useState(
-        searchDateReservas || ""
+        searchDateReservas || "" // Inicializa con la fecha de búsqueda o vacío
     );
     const [selectedDateFacturas, setSelectedDateFacturas] = useState(
-        searchDateFacturas || ""
+        searchDateFacturas || "" // Inicializa con la fecha de búsqueda o vacío
     );
 
+    // Maneja el cambio de la fecha seleccionada para reservas
     const handleDateChangeReservas = (e) => {
-        setSelectedDateReservas(e.target.value);
+        setSelectedDateReservas(e.target.value); // Actualiza el estado con la fecha seleccionada
         router.get(
-            route("dashboard"),
-            { fecha_reservas: e.target.value },
+            route("dashboard"), // Realiza una solicitud GET a la ruta del dashboard
+            { fecha_reservas: e.target.value }, // Envía la fecha seleccionada como parámetro
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado actual del dashboard
+                preserveScroll: true, // Evita que el scroll regrese al inicio
             }
         );
     };
 
+    // Maneja el cambio de la fecha seleccionada para facturas
     const handleDateChangeFacturas = (e) => {
-        setSelectedDateFacturas(e.target.value);
+        setSelectedDateFacturas(e.target.value); // Actualiza el estado con la fecha seleccionada
         router.get(
-            route("dashboard"),
-            { fecha_facturas: e.target.value },
+            route("dashboard"), // Realiza una solicitud GET a la ruta del dashboard
+            { fecha_facturas: e.target.value }, // Envía la fecha seleccionada como parámetro
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado actual del dashboard
+                preserveScroll: true, // Evita que el scroll regrese al inicio
             }
         );
     };
 
+    // Reinicia el filtro de fecha para reservas
     const resetDateFilterReservas = () => {
-        setSelectedDateReservas("");
+        setSelectedDateReservas(""); // Limpia la fecha seleccionada
         router.get(
-            route("dashboard"),
-            { fecha_reservas: "" },
+            route("dashboard"), // Realiza una solicitud GET para actualizar el dashboard
+            { fecha_reservas: "" }, // Envía un valor vacío para eliminar el filtro
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado actual
+                preserveScroll: true, // Evita que el scroll regrese al inicio
             }
         );
     };
 
+    // Reinicia el filtro de fecha para facturas
     const resetDateFilterFacturas = () => {
-        setSelectedDateFacturas("");
+        setSelectedDateFacturas(""); // Limpia la fecha seleccionada
         router.get(
-            route("dashboard"),
-            { fecha_facturas: "" },
+            route("dashboard"), // Realiza una solicitud GET para actualizar el dashboard
+            { fecha_facturas: "" }, // Envía un valor vacío para eliminar el filtro
             {
-                preserveState: true,
-                preserveScroll: true,
+                preserveState: true, // Mantiene el estado actual
+                preserveScroll: true, // Evita que el scroll regrese al inicio
             }
         );
     };

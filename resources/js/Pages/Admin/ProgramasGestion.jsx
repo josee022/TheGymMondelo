@@ -6,21 +6,27 @@ import CrearPrograma from "@/Components/Admin/CrearPrograma";
 import { router } from "@inertiajs/react";
 
 const ProgramasGestion = ({ programas }) => {
+    // Estado para manejar el programa actualmente seleccionado
     const [selectedPrograma, setSelectedPrograma] = useState(null);
+
+    // Estado para la lista de programas, inicializada con los datos proporcionados
     const [programasList, setProgramasList] = useState(programas);
 
+    // Función para manejar la eliminación de un programa
     const handleDelete = (id) => {
         Swal.fire({
-            title: "¿Estás seguro? 💥",
-            text: "Esta acción eliminará el programa.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
+            title: "¿Estás seguro? 💥", // Título del modal de confirmación
+            text: "Esta acción eliminará el programa.", // Mensaje descriptivo
+            icon: "warning", // Icono de advertencia
+            showCancelButton: true, // Botón de cancelar
+            confirmButtonText: "Sí, eliminar", // Texto del botón de confirmación
+            cancelButtonText: "Cancelar", // Texto del botón de cancelar
         }).then((result) => {
             if (result.isConfirmed) {
+                // Si el usuario confirma la acción, realiza la solicitud de eliminación
                 router.delete(route("admin.programas.destroy", id), {
                     onSuccess: () => {
+                        // Actualiza la lista de programas eliminando el que coincide con el ID
                         setProgramasList((prevList) =>
                             prevList.filter((p) => p.id !== id)
                         );
@@ -28,7 +34,14 @@ const ProgramasGestion = ({ programas }) => {
                             "Eliminado!",
                             "El programa ha sido eliminado.",
                             "success"
-                        );
+                        ); // Mensaje de éxito
+                    },
+                    onError: () => {
+                        Swal.fire(
+                            "Error!",
+                            "Hubo un problema al eliminar el programa.",
+                            "error"
+                        ); // Mensaje de error si la solicitud falla
                     },
                 });
             }
@@ -37,41 +50,46 @@ const ProgramasGestion = ({ programas }) => {
 
     const handleSubmit = (data, isEditing) => {
         if (isEditing) {
+            // Caso: Actualizar un programa existente
             router.put(route("admin.programas.update", data.id), data, {
                 onSuccess: () => {
+                    // Actualiza la lista de programas con los datos actualizados
                     setProgramasList((prevList) =>
                         prevList.map((p) => (p.id === data.id ? data : p))
                     );
+
+                    // Muestra un mensaje de éxito
                     Swal.fire(
                         "Actualizado!",
                         "El programa ha sido actualizado correctamente.",
                         "success"
                     );
+
+                    // Limpia la selección de programa
                     setSelectedPrograma(null);
                 },
             });
         } else {
+            // Caso: Crear un nuevo programa
             router.post(route("admin.programas.store"), data, {
                 onSuccess: ({ props }) => {
+                    // Si el backend devuelve `newPrograma`, úsalo para actualizar la lista
                     if (props && props.newPrograma) {
                         setProgramasList((prevList) => [
                             ...prevList,
                             props.newPrograma,
                         ]);
-                        Swal.fire(
-                            "Creado!",
-                            "El programa ha sido creado correctamente.",
-                            "success"
-                        );
                     } else {
-                        // Si `newPrograma` no está en `props`, añadimos `data` directamente
+                        // Si no hay `newPrograma`, usa directamente los datos enviados
                         setProgramasList((prevList) => [...prevList, data]);
-                        Swal.fire(
-                            "Creado!",
-                            "El programa ha sido creado correctamente.",
-                            "success"
-                        );
                     }
+
+                    // Muestra un mensaje de éxito
+                    Swal.fire(
+                        "Creado!",
+                        "El programa ha sido creado correctamente.",
+                        "success"
+                    );
                 },
             });
         }

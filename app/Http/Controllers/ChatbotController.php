@@ -8,6 +8,7 @@ class ChatbotController extends Controller
 {
     public function getResponse(Request $request)
     {
+        // Pasar cadena a minúscula
         $question = strtolower($request->input('question'));
 
         $responses = [
@@ -622,7 +623,9 @@ class ChatbotController extends Controller
         ];
 
         foreach ($responses as $keyword => $response) {
+            // Verifica si la palabra clave está presente en la pregunta
             if (strpos($question, $keyword) !== false) {
+                // Si la palabra clave se encuentra, devuelve la respuesta correspondiente
                 return response($response);
             }
         }

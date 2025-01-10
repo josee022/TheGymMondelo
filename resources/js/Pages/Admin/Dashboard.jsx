@@ -8,12 +8,12 @@ import { usePage } from "@inertiajs/react";
 
 export default function Dashboard() {
     const {
-        totalUsuarios,
-        totalProductos,
-        ingresosMensuales,
-        ultimosUsuarios,
-        ultimosPedidos,
-        usuariosPorMes = [],
+        totalUsuarios, // Número total de usuarios registrados en la plataforma
+        totalProductos, // Número total de productos disponibles en la plataforma
+        ingresosMensuales, // Total de ingresos mensuales en la plataforma
+        ultimosUsuarios, // Lista de los usuarios más recientes que se han registrado
+        ultimosPedidos, // Lista de los pedidos más recientes realizados
+        usuariosPorMes = [], // Datos de usuarios registrados por mes (por defecto, un array vacío si no está disponible)
     } = usePage().props;
 
     return (

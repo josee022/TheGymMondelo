@@ -8,30 +8,31 @@ import {
     Legend,
 } from "chart.js";
 
+// Registrar componentes de chat necesarios para la grafica
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 const ProductosGrafica = () => {
     const [data, setData] = useState({
-        labels: [],
+        labels: [], // Etiquetas de los productos
         datasets: [
             {
-                label: "Productos Más Adquiridos",
-                data: [],
+                label: "Productos Más Adquiridos", // Nombre de la serie
+                data: [], // Datos de los productos adquiridos
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
                     "rgba(255, 206, 86, 0.2)",
                     "rgba(75, 192, 192, 0.2)",
                     "rgba(153, 102, 255, 0.2)",
-                ],
+                ], // Colores de fondo para las secciones
                 borderColor: [
                     "rgba(255, 99, 132, 1)",
                     "rgba(54, 162, 235, 1)",
                     "rgba(255, 206, 86, 1)",
                     "rgba(75, 192, 192, 1)",
                     "rgba(153, 102, 255, 1)",
-                ],
-                borderWidth: 1,
+                ], // Colores de borde para las secciones
+                borderWidth: 1, // Grosor de los bordes
             },
         ],
     });
@@ -41,11 +42,11 @@ const ProductosGrafica = () => {
             .then((response) => response.json())
             .then((productos) => {
                 setData({
-                    labels: productos.map((producto) => producto.nombre),
+                    labels: productos.map((producto) => producto.nombre), // Nombres de los productos
                     datasets: [
                         {
                             label: "Productos Más Adquiridos",
-                            data: productos.map((producto) => producto.total),
+                            data: productos.map((producto) => producto.total), // Totales de los productos
                             backgroundColor: [
                                 "rgba(255, 99, 132, 0.2)",
                                 "rgba(54, 162, 235, 0.2)",

@@ -9,11 +9,15 @@ import ContenedorPersuasivo from "@/Components/Clases/ContenedorPersuasivo";
 import { motion } from "framer-motion";
 
 export default function Show({ auth, clase, entrenador, plazasDisponibles }) {
-    const { post } = useForm({ clase_id: clase.id });
+    // Inicializa el formulario con la clase seleccionada
+    const { post } = useForm({ clase_id: clase.id }); // `clase_id` contiene el ID de la clase que se desea reservar
 
+    // Maneja el evento de reserva de una clase
     const handleReserve = (e) => {
-        e.preventDefault();
-        post(route("reservas.store"));
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+
+        // Realiza una solicitud POST al servidor para crear la reserva
+        post(route("reservas.store")); // Usa la ruta "reservas.store" para registrar la reserva en el backend
     };
 
     return (

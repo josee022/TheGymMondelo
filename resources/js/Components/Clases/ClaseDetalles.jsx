@@ -3,6 +3,7 @@ import { FaCalendarAlt, FaClock, FaUsers, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function ClaseDetalles({ clase, plazasDisponibles }) {
+    // Formateo de fechas de las clases
     const formatFechaClase = (fecha) => {
         const fechaObj = new Date(fecha);
         return fechaObj.toLocaleDateString("es-ES", {

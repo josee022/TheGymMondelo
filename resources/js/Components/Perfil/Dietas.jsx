@@ -3,6 +3,7 @@ import { FaWeight, FaDumbbell, FaHeartbeat } from "react-icons/fa";
 import { Link } from "@inertiajs/react";
 
 export default function Dietas({ dieta, dietaInfo }) {
+    // Obtener un emoji y color distinto para según que dieta se haya adquirido
     const getDietaIcon = (objetivo) => {
         switch (objetivo) {
             case "Pérdida de peso":

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
+    // Estado inicial del formulario
     const initialFormState = {
         nombre: "",
         descripcion: "",
@@ -12,22 +13,26 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
         capacidad: "",
     };
 
+    // Estado para manejar los datos del formulario
     const [form, setForm] = useState(initialFormState);
 
+    // Actualiza el formulario cuando cambia la clase seleccionada
     useEffect(() => {
         if (selectedClase) {
-            setForm(selectedClase);
+            setForm(selectedClase); // Si hay una clase seleccionada, rellena el formulario con sus datos
         } else {
-            setForm(initialFormState);
+            setForm(initialFormState); // Si no hay clase seleccionada, restablece el formulario
         }
     }, [selectedClase]);
 
+    // Maneja los cambios en los campos del formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prevForm) => ({ ...prevForm, [name]: value }));
+        setForm((prevForm) => ({ ...prevForm, [name]: value })); // Actualiza el estado del formulario
     };
 
     const validateForm = () => {
+        // Desestructuración del estado del formulario
         const {
             nombre,
             descripcion,
@@ -38,7 +43,7 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
             capacidad,
         } = form;
 
-        // Validar campos vacíos
+        // Validar campos vacíos o mínimos caracteres
         if (!nombre.trim()) {
             Swal.fire(
                 "Error",
@@ -75,12 +80,13 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
         // Validar que la fecha sea futura
         const selectedDate = new Date(fecha);
         const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0);
+        currentDate.setHours(0, 0, 0, 0); // Ajusta la hora para solo comparar fechas
         if (selectedDate <= currentDate) {
             Swal.fire("Error", "La fecha debe ser una fecha futura.", "error");
             return false;
         }
 
+        // Validar horas de inicio y fin
         if (!hora_inicio) {
             Swal.fire("Error", "La hora de inicio es obligatoria.", "error");
             return false;
@@ -89,8 +95,6 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
             Swal.fire("Error", "La hora de fin es obligatoria.", "error");
             return false;
         }
-
-        // Validar que la hora de fin sea posterior a la hora de inicio
         if (hora_inicio >= hora_fin) {
             Swal.fire(
                 "Error",
@@ -100,11 +104,13 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
             return false;
         }
 
+        // Validar entrenador seleccionado
         if (!entrenador_id) {
             Swal.fire("Error", "Debes seleccionar un entrenador.", "error");
             return false;
         }
 
+        // Validar capacidad
         if (!capacidad || capacidad <= 0) {
             Swal.fire(
                 "Error",
@@ -114,19 +120,21 @@ const CrearClase = ({ entrenadores, selectedClase, onSubmit }) => {
             return false;
         }
 
+        // Si todas las validaciones pasan, retorna `true`
         return true;
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene que el formulario recargue la página al enviarse.
 
         if (validateForm()) {
-            onSubmit(form);
+            // Si la validación es exitosa
+            onSubmit(form); // Llama a la función `onSubmit` con los datos del formulario.
         }
     };
 
     const resetForm = () => {
-        setForm(initialFormState);
+        setForm(initialFormState); // Restaura el formulario a su estado inicial.
     };
 
     return (

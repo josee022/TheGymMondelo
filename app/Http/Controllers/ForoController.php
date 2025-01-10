@@ -13,125 +13,97 @@ class ForoController extends Controller
 
     public function __construct()
     {
-        // Asegura que todas las rutas de este controlador requieran autenticación
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
-        $user = auth()->user(); // Usuario autenticado
+        // Obtiene el usuario autenticado
+        $user = auth()->user();
 
-        $search = $request->input('search'); // Captura el término de búsqueda
+        // Obtiene el término de búsqueda del formulario
+        $search = $request->input('search');
 
+        // Obtiene todos los foros con sus comentarios y respuestas, con filtros y paginación
         $foros = Foro::with([
-            'usuario',
+            'usuario', // Relación con el usuario del foro
             'comentarios' => function ($query) {
-                $query->whereNull('comentario_id')
-                    ->orderBy('fecha_comentario', 'desc')
+                $query->whereNull('comentario_id') // Filtra solo los comentarios principales (no respuestas)
+                    ->orderBy('fecha_comentario', 'desc') // Ordena los comentarios por fecha
                     ->with([
-                        'usuario',
+                        'usuario', // Relación con el usuario que hizo el comentario
                         'respuestas' => function ($query) {
-                            $query->orderBy('fecha_comentario', 'desc')
-                                ->with('usuario');
+                            $query->orderBy('fecha_comentario', 'desc') // Ordena las respuestas por fecha
+                                ->with('usuario'); // Relación con el usuario que hizo la respuesta
                         }
                     ]);
             }
         ])
+            // Aplica un filtro de búsqueda por título del foro
             ->when($search, function ($query, $search) {
-                $query->where('titulo', 'like', '%' . $search . '%'); // Filtro por título
+                $query->where('titulo', 'like', '%' . $search . '%');
             })
+            // Ordena los foros por fecha de publicación de manera descendente
             ->orderBy('fecha_publicacion', 'desc')
-            ->paginate(1) // Paginación
-            ->appends(['search' => $search]); // Mantiene el término de búsqueda en la paginación
+            // Aplica la paginación de los resultados (1 por página en este caso)
+            ->paginate(1)
+            // Mantiene el término de búsqueda en la URL al paginar
+            ->appends(['search' => $search]);
 
+        // Renderiza la vista 'Foros/Index' con los datos
         return Inertia::render('Foros/Index', [
             'auth' => ['user' => $user],
-            'foros' => $foros,
-            'search' => $search, // Pasar el término de búsqueda a la vista
+            'foros' => $foros, // Lista de foros con comentarios y respuestas
+            'search' => $search, // Término de búsqueda
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Valida los datos del formulario
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'contenido' => 'required|string',
+            'titulo' => 'required|string|max:255', // Título obligatorio con una longitud máxima
+            'contenido' => 'required|string', // Contenido obligatorio
         ]);
 
-        // Crea un nuevo foro con los datos proporcionados
+        // Crea un nuevo foro en la base de datos
         Foro::create([
-            'titulo' => $request->titulo,
-            'contenido' => $request->contenido,
-            'usuario_id' => auth()->user()->id,
-            'fecha_publicacion' => now(),
+            'titulo' => $request->titulo, // Título del foro
+            'contenido' => $request->contenido, // Contenido del foro
+            'usuario_id' => auth()->user()->id, // ID del usuario que está creando el foro
+            'fecha_publicacion' => now(), // Fecha y hora actual
         ]);
 
         // Redirige al índice de foros con un mensaje de éxito
         return redirect()->route('foros.index')->with('success', 'Foro creado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Foro $foro)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Foro $foro)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Foro $foro)
     {
-        // Autoriza la acción de actualización del foro
+        // Autoriza que el usuario tenga permisos para actualizar el foro
         $this->authorize('update', $foro);
 
         // Valida los datos del formulario
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'contenido' => 'required|string',
+            'titulo' => 'required|string|max:255', // Título obligatorio con una longitud máxima
+            'contenido' => 'required|string', // Contenido obligatorio
         ]);
 
-        // Actualiza los datos del foro
+        // Actualiza el foro con los nuevos datos
         $foro->titulo = $request->titulo;
         $foro->contenido = $request->contenido;
-        $foro->save();
+        $foro->save(); // Guarda los cambios
 
         // Redirige hacia atrás con un mensaje de éxito
         return redirect()->back()->with('success', 'Foro actualizado exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Foro $foro)
     {
-        // Autoriza la acción de eliminación del foro
+        // Autoriza que el usuario tenga permisos para eliminar el foro
         $this->authorize('delete', $foro);
 
-        // Elimina el foro
+        // Elimina el foro de la base de datos
         $foro->delete();
 
         // Redirige hacia atrás con un mensaje de éxito

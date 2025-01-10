@@ -7,39 +7,46 @@ import ListaForo from "@/Components/Foros/ListaForo";
 import Pagination from "@/Components/Pagination";
 
 export default function CrearForo({ auth, foros, search }) {
-    const [searchTerm, setSearchTerm] = useState(search || ""); // Estado para el término de búsqueda
-    const [editingForoId, setEditingForoId] = useState(null);
+    // Estado para manejar el término de búsqueda y el foro en edición
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Inicializa el término de búsqueda con un valor predeterminado o vacío
+    const [editingForoId, setEditingForoId] = useState(null); // ID del foro que se está editando o `null` si no hay edición activa
 
+    // Manejar cambios en el campo de búsqueda
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Actualizar el término de búsqueda
+        setSearchTerm(e.target.value); // Actualiza el estado con el valor ingresado
+
+        // Realiza una solicitud GET al backend para filtrar foros
         router.get(
-            route("foros.index"),
-            { search: e.target.value },
+            route("foros.index"), // Ruta para listar foros
+            { search: e.target.value }, // Parámetro de búsqueda
             {
-                preserveState: true, // Mantener estado de paginación
-                preserveScroll: true, // Evitar que el scroll suba al filtrar
+                preserveState: true, // Mantiene el estado actual (como la paginación)
+                preserveScroll: true, // Evita que el scroll vuelva al inicio al filtrar
             }
         );
     };
 
+    // Activar el modo de edición para un foro específico
     const handleEdit = (foro) => {
-        setEditingForoId(foro.id);
+        setEditingForoId(foro.id); // Establece el ID del foro que se está editando
     };
 
+    // Cancelar la edición
     const handleCancelEdit = () => {
-        setEditingForoId(null);
+        setEditingForoId(null); // Restablece el estado de edición
     };
 
+    // Formatear la fecha del foro
     const formatFechaForo = (timestamp) => {
-        const fecha = new Date(timestamp);
+        const fecha = new Date(timestamp); // Convierte el timestamp en un objeto Date
         const opciones = {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+            year: "numeric", // Año completo (ejemplo: 2024)
+            month: "long", // Nombre completo del mes (ejemplo: diciembre)
+            day: "numeric", // Día del mes
+            hour: "2-digit", // Hora con dos dígitos
+            minute: "2-digit", // Minutos con dos dígitos
         };
-        return `Publicado el ${fecha.toLocaleDateString("es-ES", opciones)}`;
+        return `Publicado el ${fecha.toLocaleDateString("es-ES", opciones)}`; // Devuelve la fecha formateada en español
     };
 
     return (

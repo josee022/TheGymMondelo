@@ -2,37 +2,42 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Chatbot = () => {
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState("");
+    // Estado para almacenar los mensajes en el chat
+    const [messages, setMessages] = useState([]); // Lista de mensajes
+    const [input, setInput] = useState(""); // Entrada del usuario
 
+    // Función para enviar un mensaje
     const sendMessage = () => {
-        if (input.trim() === "") return;
+        if (input.trim() === "") return; // Si la entrada está vacía, no hace nada
 
-        // Añadir el mensaje del usuario al estado de mensajes
+        // Añade el mensaje del usuario al estado de mensajes
         setMessages([...messages, { text: input, user: true }]);
 
-        // Enviar la consulta al servidor usando axios
+        // Enviar el mensaje al backend utilizando axios
         axios
-            .post("/chatbot", { question: input })
+            .post("/chatbot", { question: input }) // Envia el texto del usuario como `question`
             .then((response) => {
-                // Capturar la respuesta como texto plano y añadirla al estado de mensajes
-                const responseText = response.data;
+                // Captura la respuesta del servidor
+                const responseText = response.data; // Respuesta del chatbot
+
+                // Añade la respuesta al estado de mensajes
                 setMessages((prevMessages) => [
                     ...prevMessages,
-                    { text: responseText, user: false },
+                    { text: responseText, user: false }, // Mensaje del chatbot
                 ]);
             })
             .catch((error) => {
                 console.error(
                     "Error al obtener la respuesta del chatbot:",
                     error
-                );
+                ); // Muestra el error en la consola
             });
 
-        setInput(""); // Limpiar el campo de entrada
+        setInput(""); // Limpia el campo de entrada después de enviar
     };
 
-    const clearChat = () => setMessages([]); // Función para limpiar el chat
+    // Función para limpiar el chat
+    const clearChat = () => setMessages([]); // Reinicia el estado de mensajes
 
     return (
         <div className="bg-gradient-to-br from-lime-500 to-green-700 p-6 rounded-xl shadow-2xl w-full mt-8 space-y-4">

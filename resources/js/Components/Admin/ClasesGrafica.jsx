@@ -10,6 +10,7 @@ import {
     Legend,
 } from "chart.js";
 
+// Registrar componentes de chat necesarios para la grafica
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -21,14 +22,14 @@ ChartJS.register(
 
 const ClasesGrafica = () => {
     const [data, setData] = useState({
-        labels: [],
+        labels: [], // Etiquetas de las clases
         datasets: [
             {
-                label: "Clases Más Adquiridas",
-                data: [],
-                backgroundColor: "rgba(54, 162, 235, 0.2)",
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 1,
+                label: "Clases Más Adquiridas", // Título de la serie de datos
+                data: [], // Datos de las clases adquiridas
+                backgroundColor: "rgba(54, 162, 235, 0.2)", // Color de fondo de las barras
+                borderColor: "rgba(54, 162, 235, 1)", // Color de borde de las barras
+                borderWidth: 1, // Grosor del borde de las barras
             },
         ],
     });
@@ -38,11 +39,11 @@ const ClasesGrafica = () => {
             .then((response) => response.json())
             .then((clases) => {
                 setData({
-                    labels: clases.map((clase) => clase.nombre),
+                    labels: clases.map((clase) => clase.nombre), // Nombre de las clases
                     datasets: [
                         {
                             label: "Clases Más Adquiridas",
-                            data: clases.map((clase) => clase.total),
+                            data: clases.map((clase) => clase.total), // Total de clases adquiridas
                             backgroundColor: "rgba(54, 162, 235, 0.2)",
                             borderColor: "rgba(54, 162, 235, 1)",
                             borderWidth: 1,

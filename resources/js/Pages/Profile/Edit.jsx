@@ -8,37 +8,43 @@ import Footer from "@/Components/Footer";
 import React, { useState } from "react";
 
 export default function Edit({ user }) {
+    // Inicializa el formulario con los datos del usuario actual
     const { data, setData, errors } = useForm({
-        name: user.name || "",
-        email: user.email || "",
-        biografia: user.biografia || "",
-        fecha_nacimiento: user.fecha_nacimiento || "",
-        sexo: user.sexo || "",
-        altura: user.altura || "",
-        peso: user.peso || "",
-        nivel_actividad: user.nivel_actividad || "",
-        foto_perfil: null,
+        name: user.name || "", // Nombre del usuario (o vacío si no existe)
+        email: user.email || "", // Email del usuario
+        biografia: user.biografia || "", // Biografía del usuario
+        fecha_nacimiento: user.fecha_nacimiento || "", // Fecha de nacimiento
+        sexo: user.sexo || "", // Sexo del usuario
+        altura: user.altura || "", // Altura en cm
+        peso: user.peso || "", // Peso en kg
+        nivel_actividad: user.nivel_actividad || "", // Nivel de actividad física
+        foto_perfil: null, // Foto de perfil (por defecto, null)
     });
 
+    // Estado para mostrar una vista previa de la foto de perfil seleccionada
     const [preview, setPreview] = useState(
-        user.foto_perfil ? `/fotos_perfil/${user.foto_perfil}` : null
+        user.foto_perfil ? `/fotos_perfil/${user.foto_perfil}` : null // Si el usuario tiene foto, muestra la URL
     );
 
-    const [isProcessing, setIsProcessing] = useState(false); // Declaramos el estado isProcessing
+    // Estado para indicar si el formulario está procesando la solicitud
+    const [isProcessing, setIsProcessing] = useState(false);
 
+    // Maneja el cambio de imagen al seleccionar una nueva foto
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        setData("foto_perfil", file);
+        const file = e.target.files[0]; // Obtiene el archivo seleccionado
+        setData("foto_perfil", file); // Actualiza el estado con el archivo seleccionado
 
         if (file) {
-            setPreview(URL.createObjectURL(file));
+            setPreview(URL.createObjectURL(file)); // Genera una vista previa del archivo
         }
     };
 
+    // Maneja el envío del formulario
     const submit = async (e) => {
-        e.preventDefault();
-        setIsProcessing(true); // Activar el estado de procesamiento
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+        setIsProcessing(true); // Activa el estado de procesamiento
 
+        // Crea un objeto FormData para enviar los datos, incluyendo la imagen
         const formData = new FormData();
         formData.append("name", data.name);
         formData.append("email", data.email);
@@ -49,16 +55,18 @@ export default function Edit({ user }) {
         formData.append("peso", data.peso);
         formData.append("nivel_actividad", data.nivel_actividad);
 
+        // Si se seleccionó una nueva foto de perfil, agrégala a los datos
         if (data.foto_perfil) {
             formData.append("foto_perfil", data.foto_perfil);
         }
 
         try {
+            // Envía los datos al servidor para actualizar el perfil
             await router.post(route("profile.update"), formData, {
-                forceFormData: true,
+                forceFormData: true, // Asegura que los datos se envíen como FormData
             });
         } catch (error) {
-            console.error("Error al actualizar el perfil:", error);
+            console.error("Error al actualizar el perfil:", error); // Maneja errores de la solicitud
         }
     };
 

@@ -10,55 +10,39 @@ use Illuminate\Support\Facades\Auth;
 
 class DietaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function index()
     {
         // Verificar si el usuario tiene una dieta activa
         $usuarioTieneDieta = Dieta::where('usuario_id', Auth::id())->exists();
 
+        // Pasamos la variable a la vista para mostrar si el usuario ya tiene una dieta activa
         return inertia('Dietas/Index', [
-            'usuarioTieneDieta' => $usuarioTieneDieta, // Pasamos la variable a la vista
+            'usuarioTieneDieta' => $usuarioTieneDieta, // Indicamos si el usuario tiene una dieta activa
         ]);
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // Validar los datos recibidos
+        // Validamos los datos recibidos del formulario
         $request->validate([
-            'objetivo' => 'required|in:Pérdida de peso,Ganancia muscular,Mantenimiento', // Incluimos 'Mejor rendimiento'
-            'descripcion' => 'required|string',
+            'objetivo' => 'required|in:Pérdida de peso,Ganancia muscular,Mantenimiento', // Objetivo de la dieta
+            'descripcion' => 'required|string', // Descripción de la dieta
         ]);
 
-        // Verificar si el usuario ya tiene una dieta
+        // Verificar si el usuario ya tiene una dieta activa
         $dietaExistente = Dieta::where('usuario_id', Auth::id())->first();
 
+        // Si ya tiene una dieta activa, redirigir con un mensaje de error
         if ($dietaExistente) {
-            // Si ya tiene una dieta, redirigir con un mensaje de error
             return redirect()->back()->with('error', 'Ya tienes una dieta activa. No puedes adquirir otra.');
         }
 
-        // Si no tiene una dieta, proceder a crear una nueva
+        // Si no tiene una dieta activa, crear una nueva dieta
         $dieta = new Dieta();
         $dieta->usuario_id = Auth::id(); // El usuario que está logueado
-        $dieta->objetivo = $request->objetivo; // El objetivo seleccionado
-        $dieta->descripcion = $request->descripcion; // La descripción
-        $dieta->save(); // Guardar en la base de datos
+        $dieta->objetivo = $request->objetivo; // El objetivo de la dieta
+        $dieta->descripcion = $request->descripcion; // Descripción de la dieta
+        $dieta->save(); // Guardar la dieta en la base de datos
 
         // Redirigir con un mensaje de éxito
         return redirect()->back()->with('success', '¡Dieta seleccionada con éxito!');
@@ -66,11 +50,12 @@ class DietaController extends Controller
 
     public function delete($id)
     {
-        // Obtener la dieta por ID
+        // Obtener la dieta por su ID
         $dieta = Dieta::findOrFail($id);
 
         // Verificar que la dieta pertenece al usuario autenticado
         if ($dieta->usuario_id !== Auth::id()) {
+            // Si no pertenece al usuario, redirigir con error
             return redirect()->back()->withErrors(['No tienes permiso para eliminar esta dieta.']);
         }
 
@@ -79,40 +64,5 @@ class DietaController extends Controller
 
         // Redirigir con mensaje de éxito
         return redirect()->back()->with('success', 'Dieta eliminada exitosamente.');
-    }
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Dieta $dieta)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Dieta $dieta)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDietaRequest $request, Dieta $dieta)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Dieta $dieta)
-    {
-        //
     }
 }

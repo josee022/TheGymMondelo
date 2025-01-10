@@ -19,40 +19,44 @@ const stripePromise = loadStripe(
 );
 
 export default function Programas({
-    auth,
-    programas,
-    search,
-    usuarioTienePrograma,
+    auth, // Información del usuario autenticado
+    programas, // Lista de programas disponibles
+    search, // Término de búsqueda inicial
+    usuarioTienePrograma, // Indica si el usuario ya tiene un programa activo
 }) {
-    const { flash } = usePage().props;
-    const [searchTerm, setSearchTerm] = useState(search || "");
-    const searchInputRef = useRef(null);
+    const { flash } = usePage().props; // Obtiene mensajes flash del backend
+    const [searchTerm, setSearchTerm] = useState(search || ""); // Estado para el término de búsqueda
+    const searchInputRef = useRef(null); // Referencia para el campo de búsqueda
 
+    // Muestra notificaciones basadas en los mensajes flash recibidos
     useEffect(() => {
         if (flash?.success) {
-            toast.success(flash.success);
+            toast.success(flash.success); // Muestra un mensaje de éxito
         }
         if (flash?.error) {
-            toast.error(flash.error);
+            toast.error(flash.error); // Muestra un mensaje de error
         }
-    }, [flash]);
+    }, [flash]); // Se ejecuta cuando `flash` cambia
 
+    // Focaliza automáticamente el campo de búsqueda al cargar o cambiar los programas
     useEffect(() => {
         if (searchInputRef.current) {
-            searchInputRef.current.focus();
+            searchInputRef.current.focus(); // Coloca el foco en el input de búsqueda
         }
-    }, [programas]);
+    }, [programas]); // Se ejecuta cuando cambia la lista de programas
 
+    // Maneja el cambio en el campo de búsqueda
     const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value);
+        const value = e.target.value; // Obtiene el valor ingresado
+        setSearchTerm(value); // Actualiza el estado del término de búsqueda
 
+        // Realiza una consulta al servidor para filtrar los programas
         router.get(
-            route("programas.index"),
-            { search: value },
+            route("programas.index"), // Ruta del listado de programas
+            { search: value }, // Parámetros de búsqueda
             {
-                replace: true,
-                preserveScroll: true,
+                replace: true, // Reemplaza la URL actual sin agregarla al historial
+                preserveScroll: true, // Mantiene la posición de desplazamiento
             }
         );
     };

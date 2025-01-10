@@ -7,59 +7,62 @@ import {
     CategoryScale,
     LinearScale,
     Title,
-    Tooltip, // Importa Tooltip
+    Tooltip,
 } from "chart.js";
 
-// Registra todos los elementos necesarios, incluyendo Tooltip
+// Registra los elementos necesarios para la gráfica de ChartJS, incluyendo Tooltip
 ChartJS.register(
-    LineElement,
-    PointElement,
-    CategoryScale,
-    LinearScale,
-    Title,
-    Tooltip
+    LineElement, // Elemento de línea para gráficos
+    PointElement, // Elemento de puntos para la gráfica
+    CategoryScale, // Escala para las etiquetas (eje X)
+    LinearScale, // Escala lineal para los valores (eje Y)
+    Title, // Título de la gráfica
+    Tooltip // Herramientas de información al pasar el cursor (tooltips)
 );
 
 export default function GraficaProgreso({ datos }) {
+    // Configuración de los datos para la gráfica
     const data = {
-        labels: datos.map((d) => d.fecha), // Fechas de cada entrada
+        labels: datos.map((d) => d.fecha), // Fechas de las entradas, mostradas en el eje X
         datasets: [
             {
-                label: "Peso (kg)",
-                data: datos.map((d) => d.peso), // Valores de peso
-                borderColor: "#4ade80",
-                backgroundColor: "rgba(74, 222, 128, 0.5)",
-                tension: 0.2,
-                pointBackgroundColor: "#4ade80", // Color del punto
-                pointBorderColor: "#4ade80", // Borde del punto
-                pointRadius: 5, // Tamaño del punto
+                label: "Peso (kg)", // Etiqueta para la línea de peso
+                data: datos.map((d) => d.peso), // Valores de peso para la gráfica
+                borderColor: "#4ade80", // Color de la línea
+                backgroundColor: "rgba(74, 222, 128, 0.5)", // Color de fondo bajo la línea
+                tension: 0.2, // Suavidad de la línea (0 para recta, mayor para curva)
+                pointBackgroundColor: "#4ade80", // Color del punto en la línea
+                pointBorderColor: "#4ade80", // Color del borde del punto
+                pointRadius: 5, // Tamaño de los puntos
             },
             {
-                label: "Repeticiones",
-                data: datos.map((d) => d.repeticiones), // Valores de repeticiones
-                borderColor: "#34d399",
-                backgroundColor: "rgba(52, 211, 153, 0.5)",
-                tension: 0.2,
-                pointBackgroundColor: "#34d399", // Color del punto
-                pointBorderColor: "#34d399", // Borde del punto
-                pointRadius: 5, // Tamaño del punto
+                label: "Repeticiones", // Etiqueta para la línea de repeticiones
+                data: datos.map((d) => d.repeticiones), // Valores de repeticiones para la gráfica
+                borderColor: "#34d399", // Color de la línea
+                backgroundColor: "rgba(52, 211, 153, 0.5)", // Color de fondo bajo la línea
+                tension: 0.2, // Suavidad de la línea
+                pointBackgroundColor: "#34d399", // Color del punto en la línea
+                pointBorderColor: "#34d399", // Color del borde del punto
+                pointRadius: 5, // Tamaño de los puntos
             },
         ],
     };
 
+    // Opciones para configurar el comportamiento y estilo de la gráfica
     const options = {
-        responsive: true,
+        responsive: true, // La gráfica se adapta al tamaño del contenedor
         plugins: {
             title: {
-                display: true,
-                text: "Progreso de Ejercicio",
+                display: true, // Muestra el título de la gráfica
+                text: "Progreso de Ejercicio", // Texto del título
             },
             tooltip: {
-                enabled: true, // Activa las tooltips
+                enabled: true, // Activa las tooltips al pasar el cursor
                 callbacks: {
                     label: function (context) {
-                        const label = context.dataset.label || "";
-                        return `${label}: ${context.raw}`;
+                        // Personaliza el texto mostrado en las tooltips
+                        const label = context.dataset.label || ""; // Obtiene la etiqueta del dataset
+                        return `${label}: ${context.raw}`; // Muestra el valor del punto
                     },
                 },
             },
@@ -67,6 +70,7 @@ export default function GraficaProgreso({ datos }) {
     };
 
     return (
+        // Renderiza la gráfica de tipo línea con los datos y opciones configurados
         <div className="bg-white p-6 rounded-lg shadow-lg my-6">
             <Line data={data} options={options} />
         </div>

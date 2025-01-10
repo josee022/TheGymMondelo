@@ -6,6 +6,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+// Emoji según el nivel del programa
 const getEmojiForLevel = (nivel) => {
     switch (nivel) {
         case "Avanzado":
@@ -20,23 +21,27 @@ const getEmojiForLevel = (nivel) => {
 };
 
 export default function ProgLista({ programas, usuarioTienePrograma }) {
-    const [sortedProgramas, setSortedProgramas] = useState(programas || []);
-    const [sortType, setSortType] = useState(null);
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
-    const [selectedPrograma, setSelectedPrograma] = useState(null);
+    // Estados para gestionar programas, orden, y el modal de pago
+    const [sortedProgramas, setSortedProgramas] = useState(programas || []); // Lista de programas ordenados
+    const [sortType, setSortType] = useState(null); // Tipo de orden (ascendente o descendente)
+    const [showPaymentModal, setShowPaymentModal] = useState(false); // Controla la visibilidad del modal de pago
+    const [selectedPrograma, setSelectedPrograma] = useState(null); // Programa seleccionado para el pago
 
+    // Hooks de Stripe
     const stripe = useStripe();
     const elements = useElements();
 
-    // Ordenar programas
+    // **Ordenar programas**
+    // Ordenar programas por precio de forma ascendente
     const sortProgramsByPriceAsc = () => {
         const sorted = [...sortedProgramas].sort(
             (a, b) => parseFloat(a.precio) - parseFloat(b.precio)
         );
-        setSortedProgramas(sorted);
-        setSortType("asc");
+        setSortedProgramas(sorted); // Actualiza la lista ordenada
+        setSortType("asc"); // Establece el tipo de orden
     };
 
+    // Ordenar programas por precio de forma descendente
     const sortProgramsByPriceDesc = () => {
         const sorted = [...sortedProgramas].sort(
             (a, b) => parseFloat(b.precio) - parseFloat(a.precio)
@@ -45,46 +50,50 @@ export default function ProgLista({ programas, usuarioTienePrograma }) {
         setSortType("desc");
     };
 
+    // Restablecer el orden al estado original
     const resetSort = () => {
         setSortedProgramas(programas || []);
         setSortType(null);
     };
 
-    // Mostrar el modal de pago
+    // **Mostrar el modal de pago**
     const iniciarPago = (programa) => {
-        setSelectedPrograma(programa);
-        setShowPaymentModal(true); // Mostrar el modal
+        setSelectedPrograma(programa); // Define el programa seleccionado
+        setShowPaymentModal(true); // Muestra el modal
     };
 
-    // Manejar el pago e inscripción
+    // **Manejar el pago e inscripción**
     const handlePago = async () => {
+        // Verifica que Stripe esté listo
         if (!stripe || !elements) {
             toast.error("Stripe no está listo.");
             return;
         }
 
         try {
+            // Crea un intento de pago con el backend
             const response = await axios.post("/crear-intento-pago-programa", {
-                programa_id: selectedPrograma.id,
-                monto: selectedPrograma.precio,
+                programa_id: selectedPrograma.id, // ID del programa
+                monto: selectedPrograma.precio, // Precio del programa
             });
 
-            const { clientSecret } = response.data;
+            const { clientSecret } = response.data; // Obtiene el `clientSecret` del intento de pago
 
+            // Confirma el pago con Stripe
             const { error, paymentIntent } = await stripe.confirmCardPayment(
                 clientSecret,
                 {
                     payment_method: {
-                        card: elements.getElement(CardElement),
+                        card: elements.getElement(CardElement), // Elemento de tarjeta de Stripe
                         billing_details: {
-                            name: "Usuario",
+                            name: "Usuario", // Nombre del usuario (puedes personalizarlo)
                         },
                     },
                 }
             );
 
             if (error) {
-                // Manejo de errores específicos
+                // Manejo de errores específicos de la tarjeta
                 switch (error.code) {
                     case "card_declined":
                         toast.error(
@@ -93,41 +102,41 @@ export default function ProgLista({ programas, usuarioTienePrograma }) {
                         break;
                     case "insufficient_funds":
                         toast.error(
-                            "El pago ha sido rechazado debido a fondos insuficientes."
+                            "Fondos insuficientes. Intenta con otra tarjeta."
                         );
                         break;
                     case "expired_card":
                         toast.error(
-                            "La tarjeta ha expirado. Por favor, utiliza una tarjeta válida."
+                            "La tarjeta ha expirado. Usa una tarjeta válida."
                         );
                         break;
                     case "incorrect_cvc":
-                        toast.error(
-                            "El código de seguridad (CVC) ingresado es incorrecto."
-                        );
+                        toast.error("El CVC ingresado es incorrecto.");
                         break;
                     case "authentication_required":
                         toast.error(
-                            "La autenticación de tu banco ha fallado. Intenta nuevamente."
+                            "Falla de autenticación con el banco. Intenta nuevamente."
                         );
                         break;
                     default:
                         toast.error(
-                            "Hubo un error con tu tarjeta. Por favor, intenta nuevamente."
+                            "Error con tu tarjeta. Por favor, intenta nuevamente."
                         );
                 }
             } else if (paymentIntent.status === "succeeded") {
+                // Si el pago es exitoso
                 toast.success("Pago realizado con éxito. Inscribiéndote...");
                 await axios.post("/inscribir-programa", {
-                    programa_id: selectedPrograma.id,
+                    programa_id: selectedPrograma.id, // Inscribe al usuario en el programa
                 });
-                setShowPaymentModal(false); // Cerrar el modal
+                setShowPaymentModal(false); // Cierra el modal de pago
                 toast.success("¡Inscripción completada con éxito!");
 
-                // Recargar la página para actualizar la vista
+                // Recarga la página para reflejar los cambios
                 window.location.reload();
             }
         } catch (err) {
+            // Manejo de errores generales
             toast.error(
                 err.response?.data?.error ||
                     "Hubo un error al procesar tu inscripción."
