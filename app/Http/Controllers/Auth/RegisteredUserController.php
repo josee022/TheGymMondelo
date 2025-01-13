@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'altura' => 'nullable|numeric',
             'peso' => 'nullable|numeric',
             'nivel_actividad' => 'nullable|string',
+            'biografia' => 'nullable|string|max:500',
         ]);
 
         $user = User::create([
@@ -51,6 +52,7 @@ class RegisteredUserController extends Controller
             'altura' => $request->altura,
             'peso' => $request->peso,
             'nivel_actividad' => $request->nivel_actividad,
+            'biografia' => $request->biografia,
         ]);
 
         event(new Registered($user));
