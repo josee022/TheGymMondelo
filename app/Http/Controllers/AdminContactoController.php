@@ -39,6 +39,8 @@ class AdminContactoController extends Controller
             ->when($searchEmail, function ($query, $searchEmail) {
                 $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($searchEmail) . '%']);
             })
+            //Odenamos de más reciente a más antiguo porque ya están contestados, los no contestados al contrario para contestar antes a los que contactaron primero.
+            ->orderBy('created_at', 'desc')
             // Paginamos los resultados, limitándolos a 3 por página
             ->paginate(3, ['*'], 'contestadosPage');
 

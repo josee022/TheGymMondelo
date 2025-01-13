@@ -231,8 +231,8 @@ export default function UsuarioEditar({ usuario }) {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2"
-                        required
+                        className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-200 cursor-not-allowed"
+                        readOnly
                     />
                 </div>
 

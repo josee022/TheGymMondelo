@@ -11,8 +11,13 @@ class RecompensaController extends Controller
     // Método para mostrar todas las recompensas disponibles
     public function index()
     {
+        // Usuario autenticado
+        $user = Auth::user();
         // Obtiene todas las recompensas de la base de datos
-        $recompensas = Recompensa::all();
+        $recompensas = Recompensa::all()->map(function ($recompensa) use ($user) {
+            $recompensa->adquirida = $user->recompensas()->where('recompensa_id', $recompensa->id)->exists();
+            return $recompensa;
+        });
 
         // Retorna la vista Inertia 'Recompensas/Index' con las recompensas
         return inertia('Recompensas/Index', ['recompensas' => $recompensas]);
@@ -21,52 +26,48 @@ class RecompensaController extends Controller
     // Método para adquirir una recompensa
     public function adquirir(Request $request, $id)
     {
-        // Obtiene el usuario autenticado
         $user = Auth::user();
-
-        // Busca la recompensa por su ID o lanza un error si no se encuentra
         $recompensa = Recompensa::findOrFail($id);
 
-        // Verifica si el usuario tiene puntos suficientes para adquirir la recompensa
-        if ($user->puntos < $recompensa->puntos) {
-            // Si no tiene puntos suficientes, redirige con un mensaje de error
-            return redirect()->back()->with('error', 'No tienes puntos suficientes para esta recompensa.');
+        // Verificar si el usuario ya tiene esta recompensa
+        if ($user->recompensas()->where('recompensa_id', $id)->exists()) {
+            return redirect()->back()->with('error', 'Ya has adquirido esta recompensa.');
         }
 
-        // Resta los puntos de la recompensa del usuario
+        // Verificar si el usuario tiene suficientes puntos
+        if ($user->puntos < $recompensa->puntos) {
+            return redirect()->back()->with('error', 'No tienes suficientes puntos.');
+        }
+
+        // Restar los puntos al usuario
         $user->puntos -= $recompensa->puntos;
         $user->save();
 
-        // Cambia el estado de la recompensa a "adquirido"
-        $recompensa->estado = 'adquirido';
-        $recompensa->save();
+        // Asociar la recompensa con el usuario
+        $user->recompensas()->attach($recompensa, ['adquirido_en' => now()]);
 
-        // Redirige a la lista de recompensas con un mensaje de éxito
         return redirect()->route('recompensas.index')->with('success', '¡Has adquirido la recompensa correctamente y se te han restado los puntos!');
     }
 
     // Método para descargar el archivo PDF de una recompensa adquirida
     public function descargarPdf($id)
     {
-        // Busca la recompensa por su ID o lanza un error si no se encuentra
+        $user = Auth::user();
         $recompensa = Recompensa::findOrFail($id);
 
-        // Verifica si la recompensa ha sido adquirida
-        if ($recompensa->estado !== 'adquirido') {
-            // Si la recompensa no ha sido adquirida, redirige con un mensaje de error
-            return back()->with('error', 'La recompensa aún no ha sido adquirida.');
+        // Verificar si el usuario ha adquirido la recompensa
+        if (!$user->recompensas()->where('recompensa_id', $id)->exists()) {
+            return back()->with('error', 'No tienes acceso a esta descarga.');
         }
 
-        // Obtiene la ruta del archivo PDF de la recompensa
+        // Obtener la ruta del PDF
         $pdfPath = public_path($recompensa->ruta_pdf);
 
-        // Verifica si el archivo PDF existe
+        // Verificar si el archivo PDF existe
         if (!file_exists($pdfPath)) {
-            // Si el archivo no existe, redirige con un mensaje de error
             return back()->with('error', 'El archivo PDF no está disponible.');
         }
 
-        // Si el archivo existe, devuelve el archivo PDF para ser descargado
         return response()->download($pdfPath);
     }
 }

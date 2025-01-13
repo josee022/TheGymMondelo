@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import preguntasChatbot from "./preguntasChatbot";
 
 const Chatbot = () => {
     // Estado para almacenar los mensajes en el chat
@@ -44,6 +45,33 @@ const Chatbot = () => {
             <h2 className="text-2xl font-bold text-center text-white mb-4">
                 Chatbot 🤖 ( Tu asistente personal 24/h)
             </h2>
+            
+            <div className="mb-2 bg-white p-2 rounded-lg shadow-md">
+                <label className="block text-gray-800 font-semibold mb-1 text-xs">
+                    🔽 Selecciona una categoría:
+                </label>
+                <div className="grid grid-cols-2 gap-1">
+                    {preguntasChatbot.map((categoria, index) => (
+                        <details key={index} className="border-b">
+                            <summary className="cursor-pointer text-black font-semibold text-xs bg-gray-300 px-2 py-1 rounded-md">
+                                {categoria.titulo}
+                            </summary>
+                            <ul className="mt-1 pl-2">
+                                {categoria.preguntas.map((pregunta, i) => (
+                                    <li
+                                        key={i}
+                                        className="cursor-pointer text-gray-700 hover:text-black transition text-xs py-0.5"
+                                        onClick={() => setInput(pregunta)}
+                                    >
+                                        {pregunta}
+                                    </li>
+                                ))}
+                            </ul>
+                        </details>
+                    ))}
+                </div>
+            </div>
+
             <div className="chat-box bg-white p-4 rounded-lg h-64 overflow-y-auto shadow-inner space-y-2">
                 {messages.map((msg, index) => (
                     <div

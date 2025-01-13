@@ -1,5 +1,7 @@
 import React from "react";
 import Pagination from "@/Components/Pagination";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
 
 export default function Facturas({
     pedidos,
@@ -61,8 +63,16 @@ export default function Facturas({
                                 </span>
                             </div>
                             <p className="text-lg text-gray-600 mb-2">
-                                <strong>Fecha:</strong> {pedido.fecha_pedido}
+                                <strong>Fecha:</strong>{" "}
+                                {dayjs(pedido.fecha_pedido).format(
+                                    "DD/MM/YYYY"
+                                )}
                             </p>
+                            <p className="text-lg text-gray-600 mb-2">
+                                <strong>Horario:</strong>{" "}
+                                {dayjs(pedido.fecha_pedido).format("HH:mm")}
+                            </p>
+
                             <p className="text-lg text-gray-600 mb-4">
                                 <strong>Total:</strong>{" "}
                                 {parseFloat(pedido.total).toFixed(2)} €

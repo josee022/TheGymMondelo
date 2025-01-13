@@ -113,4 +113,9 @@ class User extends Authenticatable
     {
         return $this->rol === 'admin';
     }
+
+    public function recompensas()
+    {
+        return $this->belongsToMany(Recompensa::class, 'recompensas_usuarios')->withTimestamps();
+    }
 }

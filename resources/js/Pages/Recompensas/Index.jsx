@@ -124,16 +124,7 @@ const Recompensas = () => {
                                 </span>
                             </p>
 
-                            {recompensa.estado === "disponible" ? (
-                                <button
-                                    onClick={() =>
-                                        handleAdquirir(recompensa.id)
-                                    }
-                                    className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded-lg"
-                                >
-                                    Adquirir
-                                </button>
-                            ) : (
+                            {recompensa.adquirida ? (
                                 <button
                                     onClick={() =>
                                         handleDescargarPdf(recompensa.id)
@@ -141,6 +132,15 @@ const Recompensas = () => {
                                     className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg"
                                 >
                                     Descargar PDF
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() =>
+                                        handleAdquirir(recompensa.id)
+                                    }
+                                    className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded-lg"
+                                >
+                                    Adquirir
                                 </button>
                             )}
                         </motion.div>

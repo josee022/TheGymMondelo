@@ -38,9 +38,11 @@ const ClasesGestion = ({ clases, entrenadores }) => {
                         "Actualizado!",
                         "La clase ha sido actualizada.",
                         "success"
-                    );
+                    ).then(() => {
+                        window.location.reload(); // Recargar la página tras actualizar la clase
+                    });
 
-                    // Actualiza la lista de clases en el estado local
+                    // Actualiza la lista de clases en el estado local (opcional si recargamos)
                     setClasesList((prevClases) =>
                         prevClases.map((c) =>
                             c.id === selectedClase.id ? { ...c, ...form } : c
@@ -72,9 +74,11 @@ const ClasesGestion = ({ clases, entrenadores }) => {
                         "Creado!",
                         "La clase ha sido creada exitosamente.",
                         "success"
-                    );
+                    ).then(() => {
+                        window.location.reload(); // Recargar la página tras crear la clase
+                    });
 
-                    // Obtén los datos de la nueva clase desde la respuesta o usa el formulario
+                    // Obtén los datos de la nueva clase desde la respuesta o usa el formulario (opcional si recargamos)
                     const newClase = page.props.newClase || form;
 
                     // Agrega la nueva clase a la lista de clases
