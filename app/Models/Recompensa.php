@@ -10,4 +10,9 @@ class Recompensa extends Model
     use HasFactory;
 
     protected $fillable = ['nombre', 'descripcion', 'puntos', 'ruta_pdf', 'estado'];
+
+    public function usuarios()
+    {
+        return $this->belongsToMany(User::class, 'recompensas_usuarios')->withTimestamps();
+    }
 }
