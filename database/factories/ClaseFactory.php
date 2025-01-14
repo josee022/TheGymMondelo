@@ -17,7 +17,13 @@ class ClaseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nombre' => fake()->word(),
+            'descripcion' => fake()->sentence(),
+            'fecha' => now()->addDays(rand(1, 30)),
+            'hora_inicio' => now()->format('H:i:s'),
+            'hora_fin' => now()->addHour()->format('H:i:s'),
+            'entrenador_id' => \App\Models\Entrenador::factory(),
+            'capacidad' => fake()->numberBetween(5, 20),
         ];
     }
 }
