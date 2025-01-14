@@ -17,7 +17,9 @@ class EntrenadorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'usuario_id' => \App\Models\User::factory(),
+            'especialidad' => fake()->word(),
+            'tarifa' => fake()->randomFloat(2, 10, 100),
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Dieta;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +11,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DietaFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Dieta::class;
+
     public function definition(): array
     {
         return [
-            //
+            'usuario_id' => User::factory(),
+            'objetivo' => $this->faker->randomElement(['Pérdida de peso', 'Ganancia muscular', 'Mantenimiento']),
+            'descripcion' => $this->faker->sentence(10),
+            'precio' => $this->faker->randomFloat(2, 5, 100), 
         ];
     }
 }
