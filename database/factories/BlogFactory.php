@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Blog;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +11,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BlogFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Blog::class;
+
     public function definition(): array
     {
         return [
-            //
+            'titulo' => $this->faker->sentence,
+            'contenido' => $this->faker->paragraphs(3, true),
+            'autor_id' => User::factory(),
+            'fecha_publicacion' => now(),
         ];
     }
 }
