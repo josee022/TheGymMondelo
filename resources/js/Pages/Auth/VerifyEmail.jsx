@@ -1,45 +1,61 @@
-import GuestLayout from '@/Layouts/GuestLayout';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
 
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('verification.send'));
+        post(route("verification.send"));
     };
 
     return (
-        <GuestLayout>
-            <Head title="Email Verification" />
+        <div className="flex items-center justify-center h-screen bg-gray-900">
+            <Head title="Verificación de Correo Electrónico" />
+            <div className="bg-gray-800 text-lime-400 rounded-lg shadow-lg p-8 w-full max-w-4xl">
+                <div className="text-center">
+                    <h1 className="text-4xl font-bold text-lime-500 mb-6">
+                        Verifica tu Correo Electrónico
+                    </h1>
+                    <p className="text-gray-300 text-lg">
+                        Gracias por registrarte en{" "}
+                        <span className="text-lime-400">TheGymMondelo</span>.
+                        Por favor, revisa tu correo y haz clic en el enlace de
+                        verificación para completar tu registro.
+                    </p>
+                    <p className="text-gray-400 mt-4">
+                        ¿No recibiste el correo? Haz clic en el botón de abajo
+                        para reenviar el enlace.
+                    </p>
+                </div>
 
-            <div className="mb-4 text-sm text-gray-600">
-                Thanks for signing up! Before getting started, could you verify your email address by clicking on the
-                link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+                {status === "verification-link-sent" && (
+                    <div className="mt-6 bg-lime-600 text-black rounded-lg p-4 text-center font-medium">
+                        Un nuevo enlace de verificación ha sido enviado a tu
+                        correo.
+                    </div>
+                )}
+
+                <form onSubmit={submit} className="mt-8">
+                    <div className="flex flex-col items-center space-y-4">
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="bg-lime-500 text-black font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-lime-400 transition duration-200 w-full max-w-sm"
+                        >
+                            Reenviar Correo de Verificación
+                        </button>
+
+                        <Link
+                            href={route("logout")}
+                            method="post"
+                            as="button"
+                            className="text-gray-300 underline hover:text-lime-500 transition duration-200"
+                        >
+                            Cerrar Sesión
+                        </Link>
+                    </div>
+                </form>
             </div>
-
-            {status === 'verification-link-sent' && (
-                <div className="mb-4 font-medium text-sm text-green-600">
-                    A new verification link has been sent to the email address you provided during registration.
-                </div>
-            )}
-
-            <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>Resend Verification Email</PrimaryButton>
-
-                    <Link
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Log Out
-                    </Link>
-                </div>
-            </form>
-        </GuestLayout>
+        </div>
     );
 }

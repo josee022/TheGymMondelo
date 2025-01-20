@@ -31,6 +31,7 @@ use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TrainerController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -39,6 +40,8 @@ use Inertia\Inertia;
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+Auth::routes(['verify' => true]);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -50,7 +53,7 @@ Route::get('/', function () {
 });
 
 // Grupo de rutas de clientes
-Route::middleware(['auth', 'client', 'suspension'])->group(function () {
+Route::middleware(['auth', 'verified', 'client', 'suspension'])->group(function () {
 
     Route::get('/dashboard', [ProfileController::class, 'show'])->name('dashboard');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
