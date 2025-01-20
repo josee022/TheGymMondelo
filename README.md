@@ -1,68 +1,200 @@
 # TheGymMondelo
-Proyecto DAW
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+TheGymMondelo -> Tu Web de asesoría profesional ideal para conseguir ese gran cambio físico.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Descripción General
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+La web del gimnasio será una plataforma integral que permitirá a los usuarios gestionar diversas actividades relacionadas con su salud y estado físico. La plataforma será desarrollada utilizando Laravel como framework backend y React como framework frontend, todo conectado a través de Inertia, y contará con una serie de funcionalidades destinadas a mejorar la experiencia del usuario y facilitar la gestión de las actividades del gimnasio.  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Características Principales
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Lista de las funcionalidades principales del proyecto :
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Adquisición de distintas dietas dependiendo de tu objetivo.
+- Diferentes clases con nuestros entrenadores más profesionales.
+- Programas de ejercicios diferenciales cada uno con un campo específico.
+- Varias suscripciones con diferentes ventajas dependiendo de cual adquieras.
+- Servicio de recompensas para usuarios activos en nuestra tienda.
+- Apartado para conocer nuestros entrenadores.
+- Tienda online con variedad de productos fitness.
+- Blogs de noticias utilizado por los entrenadores para motivar, ayudar y aconsejar clientes.
+- Foro interactivo donde los clientes conversarán entre ellos con un sistema de comentarios y respuestas.
+- Interfaz de diario donde se podrá registrar los ejercicios realizados en el dia y llevar su desarrollo temporal.
+- Apartado de contacto donde podrás contactar con el soporte o hablar con nuestro chatbot interactivo.
+- Típico perfil del usuario donde tendremos toda la información del usuario, tanto datos, puntos, servicios adquiridos y facturas.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Tecnologías Utilizadas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Para el desarrollo de la web se han utilizado diferentes tecnologías como :  
 
-### Premium Partners
+- **Frontend:** React.js, Tailwind CSS.
+- **Backend:** Laravel 10.0.
+- **Base de datos:** PostgreSQL 12.
+- **Comunicación:** Inertia.js.
+- **Lenguajes:** HTML5, CSS, JS, PHP.
+- **Plugins:** SweetAlert, DayJS, Chartjs ...
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## Guía de Instalación
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Clonar el repositorio:**
 
-## Code of Conduct
+   ```bash
+   git clone https://github.com/josee022/TheGymMondelo
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Navegar al directorio del proyecto:**
 
-## Security Vulnerabilities
+   ```bash
+   cd TheGymMondelo
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. **Renombrar el archivo de configuración:**
 
-## License
+   Copia el archivo `CopiaPega` y renómbralo a `.env`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4. **Configurar la base de datos:**
+
+   - Crea una base de datos llamada `josee022`.
+   - Configura el usuario y la contraseña como `josee022` en el archivo `.env`.
+
+5. **Instalar dependencias del backend:**
+
+   ```bash
+   composer install
+   composer dump-autoload
+   sudo apt install php-pgsql -y
+   php -m | grep pdo_pgsql
+   sudo reboot
+   ```
+
+6. **Instalar dependencias del frontend:**
+
+   ```bash
+   sudo apt update && sudo apt autoclean && sudo apt autoremove -y
+   sudo apt --fix-broken install
+   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+   sudo apt install -y nodejs
+   npm install
+   ```
+
+7. **Configurar y migrar la base de datos:**
+
+   ```bash
+   php artisan migrate
+   php artisan db:seed
+   php artisan storage:link
+   ```
+
+8. **Iniciar la aplicación:**
+
+   - Inicia el backend:
+     ```bash
+     php artisan serve
+     ```
+   - Inicia el frontend:
+     ```bash
+     npm run dev
+     ```
+
+9. **Acceso a la aplicación:**
+
+   Abre tu navegador y accede a la URL proporcionada por el comando `php artisan serve`, normalmente:
+
+   ```
+   http://127.0.0.1:8000
+   ```
+
+---
+
+## Requisitos Funcionales del Proyecto
+
+### CATÁLOGO DE REQUISITOS
+
+(Tanto los requisitos mínimos generales como los requisitos de las partes de cliente, servidor, diseño, despliegue y propios.)
+
+| Requisito (cód. + desc. corta)                                  | Prioridad   | Tipo       | Complejidad | Entrega |
+|----------------------------------------------------------------|-------------|------------|-------------|---------|
+| **REQUISITOS BÁSICOS**                                         |             |            |             |         |
+| Requisitos convertidos en incidencias (issues)                | Mínimo      | Técnico    | Fácil       | v1      |
+| Código fuente                                                 | Mínimo      | Técnico    | Fácil       | v1      |
+| Estilo del código                                              | Mínimo      | Técnico    | Fácil       | v1      |
+| Tres lanzamientos (v1, v2 ,v3)                                | Mínimo      | Técnico    | Fácil       | v1      |
+| Descripción principal (readme.md)                             | Mínimo      | Técnico    | Fácil       | v1      |
+| Administración y resolución de incidencias                    | Mínimo      | Técnico    | Fácil       | v1      |
+| Usar etiquetas y hitos                                        | Mínimo      | Técnico    | Fácil       | v1      |
+| Rama master reflejando la aplicación                          | Mínimo      | Técnico    | Fácil       | v1      |
+| Usar GitHub Projects para la gestión general del proyecto     | Mínimo      | Técnico    | Fácil       | v1      |
+| Finalizar cada iteración                                      | Mínimo      | Técnico    | Fácil       | v1      |
+| **REQUISITOS CLIENTE**                                        |             |            |             |         |
+| Validación de formularios                                    | Mínimo      | Técnico    | Fácil       | v1      |
+| Gestión de ventanas                                           | Mínimo      | Técnico    | Fácil       | v1      |
+| Mecanismo de manejo de eventos                                | Mínimo      | Técnico    | Fácil       | v1      |
+| Uso del DOM                                                   | Mínimo      | Técnico    | Fácil       | v1      |
+| Mecanismos de almacenamiento                                  | Mínimo      | Técnico    | Fácil       | v1      |
+| Ajax                                                          | Mínimo      | Técnico    | Fácil       | v1      |
+| React                                                         | Mínimo      | Técnico    | Fácil       | v1      |
+| Incluir al menos un plugin no trabajado en clase              | Mínimo      | Técnico    | Fácil       | v1      |
+| **REQUISITOS SERVIDOR**                                       |             |            |             |         |
+| PHP 8.0 o superior                                            | Mínimo      | Técnico    | Fácil       | v1      |
+| Laravel Framework 10.0 ó superior                            | Mínimo      | Técnico    | Fácil       | v1      |
+| PostgreSQL versión 12 ó superior                             | Mínimo      | Técnico    | Fácil       | v1      |
+| Despliegue en local o en algún cloud computing               | Mínimo      | Técnico    | Fácil       | v1      |
+| Pruebas funcionales.                                         | Mínimo      | Técnico    | Fácil       | v1      |
+| Aplicación escalable                                         | Mínimo      | Técnico    | Fácil       | v1      |
+| Comunicación asíncrona                                       | Mínimo      | Técnico    | Fácil       | v1      |
+| **REQUISITOS DISEÑO**                                        |             |            |             |         |
+| Documentación del diseño en figma                            | Mínimo      | Técnico    | Fácil       | v1      |
+| Estructurar el contenido usando HTML5                        | Mínimo      | Técnico    | Fácil       | v1      |
+| Presentación mediante CSS                                    | Mínimo      | Técnico    | Fácil       | v1      |
+| Transiciones, transformaciones, animaciones y multimedia.    | Mínimo      | Técnico    | Fácil       | v1      |
+| Validación HTML5 y CSS (al menos nivel AA)                   | Mínimo      | Técnico    | Fácil       | v1      |
+| Accesibilidad (solucionarlas)                                | Mínimo      | Técnico    | Fácil       | v1      |
+| Diseño responsive (3 tipos de dispositivos)                  | Mínimo      | Técnico    | Fácil       | v1      |
+| Usabilidad (6 leyes)                                         | Mínimo      | Técnico    | Fácil       | v1      |
+| Comprobación navegadores                                     | Mínimo      | Técnico    | Fácil       | v1      |
+| **REQUISITOS DESPLIEGUE**                                    |             |            |             |         |
+| Despliegue en servidor virtual                               | Mínimo      | Técnico    | Fácil       | v1      |
+| Cliente con acceso a la aplicación web                       | Mínimo      | Técnico    | Fácil       | v1      |
+| **MIS REQUISITOS**                                           |             |            |             |         |
+| R1- Instalación de todas las dependencias necesarias         | Importante  | Técnico    | Fácil       | v1      |
+| R2- Migraciones y modelos de todas las tablas               | Importante  | Técnico    | Medio       | v1      |
+| R3- User login/register                                      | Importante  | Técnico    | Fácil       | v1      |
+| R4- Creación perfil y panel de control                      | Importante  | Funcional  | Fácil       | v1      |
+| R5- Perfil de usuario logueado                              | Importante  | Funcional  | Fácil       | v1      |
+| R6- Desarrollo de entrenadores personales                   | Importante  | Funcional  | Fácil       | v1      |
+| R7- Reservas de clases                                      | Importante  | Funcional  | Medio       | v1      |
+| R8- Calculadora kcal diarias                                | Importante  | Funcional  | Medio       | v1      |
+| R9- Calculadora de índice de masa corporal (IMC)            | Importante  | Funcional  | Medio       | v1      |
+| R10- Creación de blogs de noticias fitness                 | Importante  | Funcional  | Medio       | v1      |
+| R11- Foro donde los usuarios puedan dejar sus opiniones     | Importante  | Funcional  | Medio       | v1      |
+| R12- Poder comentar otros comentarios                       | Importante  | Funcional  | Difícil     | v1      |
+| R13- Adquirir suscripción mensual/semestral/anual           | Importante  | Funcional  | Medio       | v1      |
+| R14- Adquisición de dietas dependiendo del objetivo         | Importante  | Funcional  | Medio       | v1      |
+| R15- Adquisición de programas dependiendo de su nivel       | Importante  | Funcional  | Medio       | v1      |
+| R16- Tienda de productos                                    | Importante  | Funcional  | Medio       | v2      |
+| R17- Añadir productos a un carrito                          | Importante  | Funcional  | Medio       | v2      |
+| R18- Poder decrementar o incrementar productos              | Importante  | Funcional  | Medio       | v2      |
+| R19- Realizar una factura que se vea en el perfil del usuario | Importante | Funcional  | Medio       | v2      |
+| R20- Imprimir en el perfil las adquisiciones del usuario    | Importante  | Funcional  | Medio       | v2      |
+| R21- Métodos CRUD necesarios para diario                   | Importante  | Funcional  | Medio       | v2      |
+| R22- Creación de una interfaz que actúe como diario         | Importante  | Funcional  | Medio       | v2      |
+| R23- Dar puntos al usuario por compras, adquisiciones, fidelidad | Importante | Funcional  | Medio   | v3      |
+| R24- Recompensas o descuentos canjeables por puntos         | Opcional    | Funcional  | Medio       | v3      |
+| R25- Opción de ordenar programas y productos de mayor a menor precio o al contrario | Importante | Funcional | Fácil | v3 |
+| R26- Asegurar la validación de todos los datos de la web    | Importante  | Funcional  | Medio       | v3      |
+| R27- Notificaciones de recordatorio de programas o clases   | Opcional    | Funcional  | Difícil     | v3      |
+
+---
+
+## Créditos del Autor
+
+Desarrollo completo realizado por José Mondelo Álvarez.  
+
