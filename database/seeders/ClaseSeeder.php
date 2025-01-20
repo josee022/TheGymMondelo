@@ -20,7 +20,7 @@ class ClaseSeeder extends Seeder
                 'fecha' => '2025-11-01',
                 'hora_inicio' => '08:00:00',
                 'hora_fin' => '09:00:00',
-                'entrenador_id' => 2,
+                'entrenador_id' => 1,
                 'capacidad' => 20,
             ],
             [
@@ -29,7 +29,7 @@ class ClaseSeeder extends Seeder
                 'fecha' => '2025-11-02',
                 'hora_inicio' => '18:00:00',
                 'hora_fin' => '19:30:00',
-                'entrenador_id' => 6,
+                'entrenador_id' => 1,
                 'capacidad' => 15,
             ],
             [
@@ -38,7 +38,7 @@ class ClaseSeeder extends Seeder
                 'fecha' => '2025-11-03',
                 'hora_inicio' => '07:00:00',
                 'hora_fin' => '08:00:00',
-                'entrenador_id' => 7,
+                'entrenador_id' => 1,
                 'capacidad' => 25,
             ],
             [
@@ -47,7 +47,7 @@ class ClaseSeeder extends Seeder
                 'fecha' => '2025-11-04',
                 'hora_inicio' => '09:30:00',
                 'hora_fin' => '10:30:00',
-                'entrenador_id' => 9,
+                'entrenador_id' => 1,
                 'capacidad' => 10,
             ],
             [
@@ -56,7 +56,7 @@ class ClaseSeeder extends Seeder
                 'fecha' => '2025-11-05',
                 'hora_inicio' => '17:00:00',
                 'hora_fin' => '18:00:00',
-                'entrenador_id' => 15,
+                'entrenador_id' => 1,
                 'capacidad' => 30,
             ],
             [
@@ -65,7 +65,7 @@ class ClaseSeeder extends Seeder
                 'fecha' => '2025-11-06',
                 'hora_inicio' => '19:00:00',
                 'hora_fin' => '20:30:00',
-                'entrenador_id' => 18,
+                'entrenador_id' => 1,
                 'capacidad' => 20,
             ],
         ]);
