@@ -42,7 +42,69 @@ Para el desarrollo de la web se han utilizado diferentes tecnologías como :  
 
 ---
 
-## Guía de Instalación
+## Instalación de Tecnologías Necesarias
+
+### Instalar PHP
+
+```bash
+sudo apt install -y software-properties-common apt-transport-https ca-certificates lsb-release
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt install -y php
+sudo apt install -y php-{bcmath,bz2,intl,gd,mbstring,mysql,zip,xml,curl}
+php -v
+```
+
+### Instalar Composer
+
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "echo hash_file('sha384', 'composer-setup.php') . PHP_EOL;"
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+composer -V
+```
+
+### Instalar NPM
+
+```bash
+sudo apt install curl -y
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install nodejs -y
+curl --version
+node -v
+npm -v
+```
+
+### Instalar Git
+
+```bash
+sudo apt update
+sudo apt install git -y
+git config --global user.name "Tu Nombre"
+git config --global user.email "tuemail@ejemplo.com"
+git config --list
+git clone URL_DEL_REPOSITORIO
+```
+
+### Instalar PostgreSQL
+
+```bash
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt update
+sudo apt install -y postgresql
+psql --version
+sudo -u postgres psql
+
+CREATE USER josee022 WITH PASSWORD 'josee022';
+CREATE DATABASE josee022;
+ALTER DATABASE josee022 OWNER TO josee022;
+GRANT ALL PRIVILEGES ON DATABASE josee022 TO josee022;
+```
+
+---
+
+## Guía de Instalación del Proyecto
 
 1. **Clonar el repositorio:**
 
@@ -120,77 +182,77 @@ Para el desarrollo de la web se han utilizado diferentes tecnologías como :  
 
 (Tanto los requisitos mínimos generales como los requisitos de las partes de cliente, servidor, diseño, despliegue y propios.)
 
-| Requisito (cód. + desc. corta)                                  | Prioridad   | Tipo       | Complejidad | Entrega |
-|----------------------------------------------------------------|-------------|------------|-------------|---------|
-| **REQUISITOS BÁSICOS**                                         |             |            |             |         |
-| Requisitos convertidos en incidencias (issues)                | Mínimo      | Técnico    | Fácil       | v1      |
-| Código fuente                                                 | Mínimo      | Técnico    | Fácil       | v1      |
-| Estilo del código                                              | Mínimo      | Técnico    | Fácil       | v1      |
-| Tres lanzamientos (v1, v2 ,v3)                                | Mínimo      | Técnico    | Fácil       | v1      |
-| Descripción principal (readme.md)                             | Mínimo      | Técnico    | Fácil       | v1      |
-| Administración y resolución de incidencias                    | Mínimo      | Técnico    | Fácil       | v1      |
-| Usar etiquetas y hitos                                        | Mínimo      | Técnico    | Fácil       | v1      |
-| Rama master reflejando la aplicación                          | Mínimo      | Técnico    | Fácil       | v1      |
-| Usar GitHub Projects para la gestión general del proyecto     | Mínimo      | Técnico    | Fácil       | v1      |
-| Finalizar cada iteración                                      | Mínimo      | Técnico    | Fácil       | v1      |
-| **REQUISITOS CLIENTE**                                        |             |            |             |         |
-| Validación de formularios                                    | Mínimo      | Técnico    | Fácil       | v1      |
-| Gestión de ventanas                                           | Mínimo      | Técnico    | Fácil       | v1      |
-| Mecanismo de manejo de eventos                                | Mínimo      | Técnico    | Fácil       | v1      |
-| Uso del DOM                                                   | Mínimo      | Técnico    | Fácil       | v1      |
-| Mecanismos de almacenamiento                                  | Mínimo      | Técnico    | Fácil       | v1      |
-| Ajax                                                          | Mínimo      | Técnico    | Fácil       | v1      |
-| React                                                         | Mínimo      | Técnico    | Fácil       | v1      |
-| Incluir al menos un plugin no trabajado en clase              | Mínimo      | Técnico    | Fácil       | v1      |
-| **REQUISITOS SERVIDOR**                                       |             |            |             |         |
-| PHP 8.0 o superior                                            | Mínimo      | Técnico    | Fácil       | v1      |
-| Laravel Framework 10.0 ó superior                            | Mínimo      | Técnico    | Fácil       | v1      |
-| PostgreSQL versión 12 ó superior                             | Mínimo      | Técnico    | Fácil       | v1      |
-| Despliegue en local o en algún cloud computing               | Mínimo      | Técnico    | Fácil       | v1      |
-| Pruebas funcionales.                                         | Mínimo      | Técnico    | Fácil       | v1      |
-| Aplicación escalable                                         | Mínimo      | Técnico    | Fácil       | v1      |
-| Comunicación asíncrona                                       | Mínimo      | Técnico    | Fácil       | v1      |
-| **REQUISITOS DISEÑO**                                        |             |            |             |         |
-| Documentación del diseño en figma                            | Mínimo      | Técnico    | Fácil       | v1      |
-| Estructurar el contenido usando HTML5                        | Mínimo      | Técnico    | Fácil       | v1      |
-| Presentación mediante CSS                                    | Mínimo      | Técnico    | Fácil       | v1      |
-| Transiciones, transformaciones, animaciones y multimedia.    | Mínimo      | Técnico    | Fácil       | v1      |
-| Validación HTML5 y CSS (al menos nivel AA)                   | Mínimo      | Técnico    | Fácil       | v1      |
-| Accesibilidad (solucionarlas)                                | Mínimo      | Técnico    | Fácil       | v1      |
-| Diseño responsive (3 tipos de dispositivos)                  | Mínimo      | Técnico    | Fácil       | v1      |
-| Usabilidad (6 leyes)                                         | Mínimo      | Técnico    | Fácil       | v1      |
-| Comprobación navegadores                                     | Mínimo      | Técnico    | Fácil       | v1      |
-| **REQUISITOS DESPLIEGUE**                                    |             |            |             |         |
-| Despliegue en servidor virtual                               | Mínimo      | Técnico    | Fácil       | v1      |
-| Cliente con acceso a la aplicación web                       | Mínimo      | Técnico    | Fácil       | v1      |
-| **MIS REQUISITOS**                                           |             |            |             |         |
-| R1- Instalación de todas las dependencias necesarias         | Importante  | Técnico    | Fácil       | v1      |
-| R2- Migraciones y modelos de todas las tablas               | Importante  | Técnico    | Medio       | v1      |
-| R3- User login/register                                      | Importante  | Técnico    | Fácil       | v1      |
-| R4- Creación perfil y panel de control                      | Importante  | Funcional  | Fácil       | v1      |
-| R5- Perfil de usuario logueado                              | Importante  | Funcional  | Fácil       | v1      |
-| R6- Desarrollo de entrenadores personales                   | Importante  | Funcional  | Fácil       | v1      |
-| R7- Reservas de clases                                      | Importante  | Funcional  | Medio       | v1      |
-| R8- Calculadora kcal diarias                                | Importante  | Funcional  | Medio       | v1      |
-| R9- Calculadora de índice de masa corporal (IMC)            | Importante  | Funcional  | Medio       | v1      |
-| R10- Creación de blogs de noticias fitness                 | Importante  | Funcional  | Medio       | v1      |
-| R11- Foro donde los usuarios puedan dejar sus opiniones     | Importante  | Funcional  | Medio       | v1      |
-| R12- Poder comentar otros comentarios                       | Importante  | Funcional  | Difícil     | v1      |
-| R13- Adquirir suscripción mensual/semestral/anual           | Importante  | Funcional  | Medio       | v1      |
-| R14- Adquisición de dietas dependiendo del objetivo         | Importante  | Funcional  | Medio       | v1      |
-| R15- Adquisición de programas dependiendo de su nivel       | Importante  | Funcional  | Medio       | v1      |
-| R16- Tienda de productos                                    | Importante  | Funcional  | Medio       | v2      |
-| R17- Añadir productos a un carrito                          | Importante  | Funcional  | Medio       | v2      |
-| R18- Poder decrementar o incrementar productos              | Importante  | Funcional  | Medio       | v2      |
-| R19- Realizar una factura que se vea en el perfil del usuario | Importante | Funcional  | Medio       | v2      |
-| R20- Imprimir en el perfil las adquisiciones del usuario    | Importante  | Funcional  | Medio       | v2      |
-| R21- Métodos CRUD necesarios para diario                   | Importante  | Funcional  | Medio       | v2      |
-| R22- Creación de una interfaz que actúe como diario         | Importante  | Funcional  | Medio       | v2      |
-| R23- Dar puntos al usuario por compras, adquisiciones, fidelidad | Importante | Funcional  | Medio   | v3      |
-| R24- Recompensas o descuentos canjeables por puntos         | Opcional    | Funcional  | Medio       | v3      |
-| R25- Opción de ordenar programas y productos de mayor a menor precio o al contrario | Importante | Funcional | Fácil | v3 |
-| R26- Asegurar la validación de todos los datos de la web    | Importante  | Funcional  | Medio       | v3      |
-| R27- Notificaciones de recordatorio de programas o clases   | Opcional    | Funcional  | Difícil     | v3      |
+| Requisito (cód. + desc. corta)                                                      | Prioridad  | Tipo      | Complejidad | Entrega |
+| ----------------------------------------------------------------------------------- | ---------- | --------- | ----------- | ------- |
+| **REQUISITOS BÁSICOS**                                                              |            |           |             |         |
+| Requisitos convertidos en incidencias (issues)                                      | Mínimo     | Técnico   | Fácil       | v1      |
+| Código fuente                                                                       | Mínimo     | Técnico   | Fácil       | v1      |
+| Estilo del código                                                                   | Mínimo     | Técnico   | Fácil       | v1      |
+| Tres lanzamientos (v1, v2 ,v3)                                                      | Mínimo     | Técnico   | Fácil       | v1      |
+| Descripción principal (readme.md)                                                   | Mínimo     | Técnico   | Fácil       | v1      |
+| Administración y resolución de incidencias                                          | Mínimo     | Técnico   | Fácil       | v1      |
+| Usar etiquetas y hitos                                                              | Mínimo     | Técnico   | Fácil       | v1      |
+| Rama master reflejando la aplicación                                                | Mínimo     | Técnico   | Fácil       | v1      |
+| Usar GitHub Projects para la gestión general del proyecto                           | Mínimo     | Técnico   | Fácil       | v1      |
+| Finalizar cada iteración                                                            | Mínimo     | Técnico   | Fácil       | v1      |
+| **REQUISITOS CLIENTE**                                                              |            |           |             |         |
+| Validación de formularios                                                           | Mínimo     | Técnico   | Fácil       | v1      |
+| Gestión de ventanas                                                                 | Mínimo     | Técnico   | Fácil       | v1      |
+| Mecanismo de manejo de eventos                                                      | Mínimo     | Técnico   | Fácil       | v1      |
+| Uso del DOM                                                                         | Mínimo     | Técnico   | Fácil       | v1      |
+| Mecanismos de almacenamiento                                                        | Mínimo     | Técnico   | Fácil       | v1      |
+| Ajax                                                                                | Mínimo     | Técnico   | Fácil       | v1      |
+| React                                                                               | Mínimo     | Técnico   | Fácil       | v1      |
+| Incluir al menos un plugin no trabajado en clase                                    | Mínimo     | Técnico   | Fácil       | v1      |
+| **REQUISITOS SERVIDOR**                                                             |            |           |             |         |
+| PHP 8.0 o superior                                                                  | Mínimo     | Técnico   | Fácil       | v1      |
+| Laravel Framework 10.0 ó superior                                                   | Mínimo     | Técnico   | Fácil       | v1      |
+| PostgreSQL versión 12 ó superior                                                    | Mínimo     | Técnico   | Fácil       | v1      |
+| Despliegue en local o en algún cloud computing                                      | Mínimo     | Técnico   | Fácil       | v1      |
+| Pruebas funcionales.                                                                | Mínimo     | Técnico   | Fácil       | v1      |
+| Aplicación escalable                                                                | Mínimo     | Técnico   | Fácil       | v1      |
+| Comunicación asíncrona                                                              | Mínimo     | Técnico   | Fácil       | v1      |
+| **REQUISITOS DISEÑO**                                                               |            |           |             |         |
+| Documentación del diseño en figma                                                   | Mínimo     | Técnico   | Fácil       | v1      |
+| Estructurar el contenido usando HTML5                                               | Mínimo     | Técnico   | Fácil       | v1      |
+| Presentación mediante CSS                                                           | Mínimo     | Técnico   | Fácil       | v1      |
+| Transiciones, transformaciones, animaciones y multimedia.                           | Mínimo     | Técnico   | Fácil       | v1      |
+| Validación HTML5 y CSS (al menos nivel AA)                                          | Mínimo     | Técnico   | Fácil       | v1      |
+| Accesibilidad (solucionarlas)                                                       | Mínimo     | Técnico   | Fácil       | v1      |
+| Diseño responsive (3 tipos de dispositivos)                                         | Mínimo     | Técnico   | Fácil       | v1      |
+| Usabilidad (6 leyes)                                                                | Mínimo     | Técnico   | Fácil       | v1      |
+| Comprobación navegadores                                                            | Mínimo     | Técnico   | Fácil       | v1      |
+| **REQUISITOS DESPLIEGUE**                                                           |            |           |             |         |
+| Despliegue en servidor virtual                                                      | Mínimo     | Técnico   | Fácil       | v1      |
+| Cliente con acceso a la aplicación web                                              | Mínimo     | Técnico   | Fácil       | v1      |
+| **MIS REQUISITOS**                                                                  |            |           |             |         |
+| R1- Instalación de todas las dependencias necesarias                                | Importante | Técnico   | Fácil       | v1      |
+| R2- Migraciones y modelos de todas las tablas                                       | Importante | Técnico   | Medio       | v1      |
+| R3- User login/register                                                             | Importante | Técnico   | Fácil       | v1      |
+| R4- Creación perfil y panel de control                                              | Importante | Funcional | Fácil       | v1      |
+| R5- Perfil de usuario logueado                                                      | Importante | Funcional | Fácil       | v1      |
+| R6- Desarrollo de entrenadores personales                                           | Importante | Funcional | Fácil       | v1      |
+| R7- Reservas de clases                                                              | Importante | Funcional | Medio       | v1      |
+| R8- Calculadora kcal diarias                                                        | Importante | Funcional | Medio       | v1      |
+| R9- Calculadora de índice de masa corporal (IMC)                                    | Importante | Funcional | Medio       | v1      |
+| R10- Creación de blogs de noticias fitness                                          | Importante | Funcional | Medio       | v1      |
+| R11- Foro donde los usuarios puedan dejar sus opiniones                             | Importante | Funcional | Medio       | v1      |
+| R12- Poder comentar otros comentarios                                               | Importante | Funcional | Difícil     | v1      |
+| R13- Adquirir suscripción mensual/semestral/anual                                   | Importante | Funcional | Medio       | v1      |
+| R14- Adquisición de dietas dependiendo del objetivo                                 | Importante | Funcional | Medio       | v1      |
+| R15- Adquisición de programas dependiendo de su nivel                               | Importante | Funcional | Medio       | v1      |
+| R16- Tienda de productos                                                            | Importante | Funcional | Medio       | v2      |
+| R17- Añadir productos a un carrito                                                  | Importante | Funcional | Medio       | v2      |
+| R18- Poder decrementar o incrementar productos                                      | Importante | Funcional | Medio       | v2      |
+| R19- Realizar una factura que se vea en el perfil del usuario                       | Importante | Funcional | Medio       | v2      |
+| R20- Imprimir en el perfil las adquisiciones del usuario                            | Importante | Funcional | Medio       | v2      |
+| R21- Métodos CRUD necesarios para diario                                            | Importante | Funcional | Medio       | v2      |
+| R22- Creación de una interfaz que actúe como diario                                 | Importante | Funcional | Medio       | v2      |
+| R23- Dar puntos al usuario por compras, adquisiciones, fidelidad                    | Importante | Funcional | Medio       | v3      |
+| R24- Recompensas o descuentos canjeables por puntos                                 | Opcional   | Funcional | Medio       | v3      |
+| R25- Opción de ordenar programas y productos de mayor a menor precio o al contrario | Importante | Funcional | Fácil       | v3      |
+| R26- Asegurar la validación de todos los datos de la web                            | Importante | Funcional | Medio       | v3      |
+| R27- Notificaciones de recordatorio de programas o clases                           | Opcional   | Funcional | Difícil     | v3      |
 
 ---
 
