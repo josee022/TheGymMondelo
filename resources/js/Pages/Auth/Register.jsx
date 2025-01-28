@@ -224,7 +224,6 @@ export default function Register() {
                                 error={errors.nivel_actividad}
                             />
 
-                            {/* Campo de biografía */}
                             <InputField
                                 id="biografia"
                                 label="Biografía"

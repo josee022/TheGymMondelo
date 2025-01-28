@@ -60,12 +60,10 @@ export default function CrearForo({ auth, foros, search }) {
         >
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-b from-black via-green-800 to-lime-600 py-12">
                 <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
-                    {/* Formulario de creación de foros */}
                     <FormForo />
                 </div>
 
                 <div className="w-full max-w-4xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
-                    {/* Campo de búsqueda */}
                     <div className="mb-6">
                         <input
                             type="text"
@@ -83,7 +81,6 @@ export default function CrearForo({ auth, foros, search }) {
                         </span>
                     </h2>
 
-                    {/* Lista de foros */}
                     <ListaForo
                         foros={foros.data}
                         auth={auth}
@@ -93,7 +90,6 @@ export default function CrearForo({ auth, foros, search }) {
                         formatFechaForo={formatFechaForo}
                     />
 
-                    {/* Paginación */}
                     <Pagination class="mt-6" links={foros.links} />
                 </div>
             </div>

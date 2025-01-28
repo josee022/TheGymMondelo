@@ -149,7 +149,6 @@ function PlanCard({ plan, abrirModal, usuarioTieneDieta }) {
                     {plan.precio.toFixed(2)} €
                 </span>
             </div>
-            {/* Sección para mostrar detalles del plan */}
             <ul className="text-gray-500 mb-6">
                 {plan.details.map((detail, index) => (
                     <li key={index} className="flex items-center mb-2">

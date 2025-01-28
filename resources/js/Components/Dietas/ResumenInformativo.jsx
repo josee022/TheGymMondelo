@@ -4,7 +4,7 @@ import { FiActivity, FiTarget, FiTrendingUp, FiCheckCircle, FiHeart, FiAlertCirc
 
 export default function ResumenInformativo() {
     return (
-        <div className="bg-gradient-to-r from-green-100 to-green-200 py-16"> {/* Aumenta ligeramente la altura */}
+        <div className="bg-gradient-to-r from-green-100 to-green-200 py-16"> 
             <div className="container mx-auto px-6">
                 <motion.h2
                     className="text-5xl font-bold text-center text-gray-800 mb-12 underline underline-offset-8 decoration-slate-400"
@@ -23,7 +23,7 @@ export default function ResumenInformativo() {
                             </>
                         }
                         icon={<FiActivity className="h-8 w-8 text-green-700 mr-2" />}
-                        bgColor="bg-green-200" // Fondo verde más fuerte
+                        bgColor="bg-green-200"
                     />
                     <InfoCard
                         title="Tipos de Dietas"
@@ -33,7 +33,7 @@ export default function ResumenInformativo() {
                             </>
                         }
                         icon={<FiTarget className="h-8 w-8 text-blue-700 mr-2" />}
-                        bgColor="bg-blue-200" // Fondo azul más fuerte
+                        bgColor="bg-blue-200"
                     />
                     <InfoCard
                         title="Resultados en Intervalos"
@@ -43,7 +43,7 @@ export default function ResumenInformativo() {
                             </>
                         }
                         icon={<FiTrendingUp className="h-8 w-8 text-yellow-700 mr-2" />}
-                        bgColor="bg-yellow-200" // Fondo amarillo más fuerte
+                        bgColor="bg-yellow-200"
                     />
                     <InfoCard
                         title="Entrenamiento y Dietas"
@@ -53,7 +53,7 @@ export default function ResumenInformativo() {
                             </>
                         }
                         icon={<FiCheckCircle className="h-8 w-8 text-red-700 mr-2" />}
-                        bgColor="bg-red-200" // Fondo rojo más fuerte
+                        bgColor="bg-red-200"
                     />
                     <InfoCard
                         title="Alimentos Clave"
@@ -63,7 +63,7 @@ export default function ResumenInformativo() {
                             </>
                         }
                         icon={<FiHeart className="h-8 w-8 text-purple-700 mr-2" />}
-                        bgColor="bg-purple-200" // Fondo morado más fuerte
+                        bgColor="bg-purple-200"
                     />
                     <InfoCard
                         title="Suplementación"
@@ -73,7 +73,7 @@ export default function ResumenInformativo() {
                             </>
                         }
                         icon={<FiAlertCircle className="h-8 w-8 text-pink-700 mr-2" />}
-                        bgColor="bg-pink-200" // Fondo rosa más fuerte
+                        bgColor="bg-pink-200"
                     />
                 </div>
             </div>
@@ -93,7 +93,7 @@ function InfoCard({ title, description, icon, bgColor }) {
                 {icon}
                 <h3 className="text-2xl font-semibold text-gray-800">{title}</h3>
             </div>
-            <p className="text-gray-700">{description}</p> {/* Cambié el color del texto a gris más oscuro para mejor visibilidad */}
+            <p className="text-gray-700">{description}</p>
         </motion.div>
     );
 }

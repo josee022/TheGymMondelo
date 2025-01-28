@@ -63,7 +63,6 @@ export default function Index({ clases, user, search }) {
             <ToastContainer />
 
             <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-r from-slate-50 to-lime-400 py-12">
-                {/* Barra de búsqueda con el mismo ancho que ListaClases */}
                 <div className="w-full max-w-7xl mx-auto mb-6">
                     <input
                         type="text"

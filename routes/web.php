@@ -82,7 +82,6 @@ Route::middleware(['auth', 'verified', 'client', 'suspension'])->group(function 
 
     // Rutas para foros
     Route::resource('foros', ForoController::class);
-
     // Rutas para comentarios
     Route::post('/comentarios/{foro}', [ComentarioForoController::class, 'store'])->name('comentarios.store');
     Route::patch('comentarios/{comentarioForo}', [ComentarioForoController::class, 'update'])->name('comentarios.update');

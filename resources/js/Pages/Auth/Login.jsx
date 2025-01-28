@@ -82,7 +82,6 @@ export default function GrayBackgroundPage() {
                             </span>
                         </h1>
 
-                        {/* Mostrar mensaje de error general si existe */}
                         {generalError && <p className="text-red-500 text-sm mb-4">{generalError}</p>}
 
                         <form className="w-full max-w-md mt-8" onSubmit={handleSubmit}>
