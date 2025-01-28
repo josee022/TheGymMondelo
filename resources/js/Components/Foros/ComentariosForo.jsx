@@ -201,7 +201,6 @@ export default function ComentariosForo({
                                     </div>
                                     <div className="text-gray-600 text-sm">
                                         {formatFechaForo(comentario.created_at)}{" "}
-                                        {/* Usamos `formatFechaForo` aquí */}
                                     </div>
                                 </div>
                                 <p className="text-gray-800 whitespace-pre-wrap break-words">
@@ -336,7 +335,6 @@ export default function ComentariosForo({
                                                         {formatFechaForo(
                                                             respuesta.created_at
                                                         )}{" "}
-                                                        {/* Usamos `formatFechaForo` aquí */}
                                                     </div>
                                                 </div>
                                                 <p className="text-gray-800 whitespace-pre-wrap break-words">

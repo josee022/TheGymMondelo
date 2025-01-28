@@ -9,7 +9,6 @@ export default function FiltroEjercicio({
 }) {
     return (
         <div className="mt-8 bg-gradient-to-r from-lime-200 to-green-300 p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Selector de ejercicio */}
             <div className="flex items-center space-x-3">
                 <span className="text-lg font-semibold text-green-800">
                     🏋️ Ejercicio:
@@ -28,7 +27,6 @@ export default function FiltroEjercicio({
                 </select>
             </div>
 
-            {/* Botones alineados a la derecha */}
             <div className="flex items-center space-x-4">
                 <button
                     onClick={mostrarGrafica}

@@ -228,7 +228,6 @@ export default function Historial({ ejercicios, auth }) {
                             </div>
                         )}
                     </div>
-                    {/* Filtro de Ejercicio y Gráfica */}
                     <FiltroEjercicio
                         filtroEjercicio={filtroEjercicio}
                         setFiltroEjercicio={setFiltroEjercicio}
@@ -238,11 +237,9 @@ export default function Historial({ ejercicios, auth }) {
                             new Set(filteredEjercicios.map((e) => e.ejercicio))
                         )}
                     />
-                    {/* Gráfica de Progreso */}
                     {datosGrafico && (
                         <ContenedorGrafica datosGrafico={datosGrafico} />
                     )}
-                    {/* Botones de exportación */}
                     <BotonesExportar filtroFecha={filtroFecha} />
                 </div>
             </div>

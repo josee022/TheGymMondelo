@@ -38,9 +38,7 @@ export default function PedidosRecientes({
 
     return (
         <div>
-            {/* Contenedor para alinear los filtros horizontalmente */}
             <div className="mb-6 flex flex-wrap gap-4 items-center">
-                {/* Filtro de estado */}
                 <div className="flex items-center gap-2">
                     <label
                         htmlFor="estado"
@@ -63,7 +61,6 @@ export default function PedidosRecientes({
                     </select>
                 </div>
 
-                {/* Filtro de usuario */}
                 <div className="flex items-center gap-2">
                     <label
                         htmlFor="usuario"
@@ -87,7 +84,6 @@ export default function PedidosRecientes({
                 </div>
             </div>
 
-            {/* Listado de pedidos */}
             {pedidosData.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {pedidosData.map((pedido) => (
@@ -133,7 +129,6 @@ export default function PedidosRecientes({
                 <p className="text-gray-700">No hay pedidos disponibles.</p>
             )}
 
-            {/* Paginación */}
             {pedidosLinks.length > 0 && <Pagination links={pedidosLinks} />}
         </div>
     );

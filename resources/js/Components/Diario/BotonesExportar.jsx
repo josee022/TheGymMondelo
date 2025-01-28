@@ -65,7 +65,6 @@ export default function BotonesExportar({ filtroFecha }) {
                 </button>
             </div>
             <div className="grid grid-cols-2 gap-6">
-                {/* Primera columna */}
                 <div className="flex flex-col space-y-2">
                     <button
                         onClick={() => handleExportPDF(false)}
@@ -81,7 +80,6 @@ export default function BotonesExportar({ filtroFecha }) {
                     </button>
                 </div>
 
-                {/* Segunda columna */}
                 <div className="flex flex-col space-y-2">
                     <button
                         onClick={() => handleExportPDF(true)}

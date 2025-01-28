@@ -24,7 +24,6 @@ export default function MensajeFinal() {
                 ¡Toma el primer paso hacia tu mejor versión!
             </p>
 
-            {/* Contenedor de mensaje motivacional final */}
             <div className="mt-10 p-8 bg-white bg-opacity-20 backdrop-blur-md rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:bg-opacity-30">
                 <p className="text-2xl font-semibold italic text-white">
                     “La verdadera fuerza no proviene de tus músculos, sino de tu
