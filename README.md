@@ -12,7 +12,7 @@ La web del gimnasio será una plataforma integral que permitirá a los usuarios 
 
 ## Características Principales
 
-Lista de las funcionalidades principales del proyecto :
+Lista de las funcionalidades principales del proyecto:
 
 - Adquisición de distintas dietas dependiendo de tu objetivo.
 - Diferentes clases con nuestros entrenadores más profesionales.
@@ -259,4 +259,3 @@ GRANT ALL PRIVILEGES ON DATABASE josee022 TO josee022;
 ## Créditos del Autor
 
 Desarrollo completo realizado por José Mondelo Álvarez.  
-
